@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">VNPay Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="before">
+                <div invisible="context.get('vnpay_onboarding', False) or (code != 'vnpay' or vnpay_tmn_code or vnpay_hash_secret_key)">
+                </div>
+            </group>
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'vnpay'" name="vnpay_credentials">
+                    <field name="vnpay_tmn_code" required="code == 'vnpay' and state != 'disabled'"/>
+                    <field name="vnpay_hash_secret_key" required="code == 'vnpay' and state != 'disabled'" password="True"/>
+                </group>
+            </group>
+        </field>            
+    </record>
+
+</odoo>

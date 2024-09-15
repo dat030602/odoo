@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_account_payment_form_inherit_payment" model="ir.ui.view">
+        <field name="name">view.account.payment.form.inherit.payment</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="cashier" invisible="0"/>
+            </xpath>
+            <!-- <xpath expr="//field[@name='payment_transaction_id']" position="after">
+                <field name="pos_order_id" invisible="0"/>
+            </xpath> -->
+        </field>
+    </record>
+
+</odoo>

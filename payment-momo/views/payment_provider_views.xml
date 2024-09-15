@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">Momo Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+                <group invisible="code != 'momo'" name="momo_credentials">
+                    <field name="momo_partner_code" required="code == 'momo' and state != 'disabled'"/>
+                    <field name="momo_access_key" required="code == 'momo' and state != 'disabled'"/>
+                    <field name="momo_public_key" required="code == 'momo' and state != 'disabled'"/>
+                    <field name="momo_secret_key" required="code == 'momo' and state != 'disabled'" password="True"/>
+                </group>
+            </group>
+        </field>            
+    </record>
+
+</odoo>

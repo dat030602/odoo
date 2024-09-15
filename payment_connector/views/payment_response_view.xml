@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payment_response_line_tree" model="ir.ui.view">
+            <field name="name">payment.response.tree</field>
+            <field name="model">payment.response</field>
+            <field name="arch" type="xml">
+                <tree edit="0" create="0">
+                    <field name="name"/>
+                    <field name="payment_api_model_id"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_payment_response_line_form" model="ir.ui.view">
+            <field name="name">payment.response.form</field>
+            <field name="model">payment.response</field>
+            <field name="arch" type="xml">
+                <form string="Tables">
+                    <header>
+                        <field name="status" widget="statusbar" statusbar_visible="pending,failed,processing,done"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="payment_api_model_id"/>
+                        </group>
+                        <group></group>
+                        <group>
+                            <field name="json_data" widget="ace"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_payment_response_line_search" model="ir.ui.view">
+            <field name="name">payment.response.search</field>
+            <field name="model">payment.response</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name"/>
+                    <field name="json_data"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

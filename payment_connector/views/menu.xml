@@ -1,0 +1,83 @@
+<odoo>
+    <!-- Menu root -->
+    <menuitem
+        id="menu_payment_connector_root"
+        name="Payment Connector"
+        sequence="12"
+        groups="base.group_system"
+    />
+
+    <record id="action_payment_model" model="ir.actions.act_window">
+        <field name="name">Models</field>
+        <field name="res_model">payment.model</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Please add something
+            </p>
+        </field>
+    </record>
+
+    <record id="action_payment_response" model="ir.actions.act_window">
+        <field name="name">Response</field>
+        <field name="res_model">payment.response</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Please add something
+            </p>
+        </field>
+    </record>
+
+    <record id="action_payment_api" model="ir.actions.act_window">
+        <field name="name">APIs</field>
+        <field name="res_model">payment.api.model</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Please add something
+            </p>
+        </field>
+    </record>
+
+    <record id="action_payment_model_line" model="ir.actions.act_window">
+        <field name="name">Model lines</field>
+        <field name="res_model">payment.model.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Please add something
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_payment_response"
+        parent="menu_payment_connector_root"
+        name="Response"
+        sequence="10"
+        action="action_payment_response"/>
+
+    <menuitem id="menu_payment_model_root"
+        parent="menu_payment_connector_root"
+        sequence="5"
+        name="Models"/>
+    
+    <menuitem id="menu_payment_model"
+        parent="menu_payment_model_root"
+        name="Models"
+        sequence="5"
+        action="action_payment_model"/>
+
+
+    <menuitem id="menu_relation"
+        parent="menu_payment_model_root"
+        name="APIs"
+        sequence="10"
+        action="action_payment_api"/>
+
+    <menuitem id="menu_payment"
+        parent="menu_payment_model_root"
+        name="Payment Lines"
+        sequence="12"
+        action="action_payment_model_line"/>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payment_api_model_tree" model="ir.ui.view">
+            <field name="name">payment.api.model.tree</field>
+            <field name="model">payment.api.model</field>
+            <field name="arch" type="xml">
+                <tree edit="0">
+                    <field name="name"/>
+                    <field name="methob"/>
+                    <field name="type" widget="selection"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_payment_api_model_form" model="ir.ui.view">
+            <field name="name">payment.api.model.form</field>
+            <field name="model">payment.api.model</field>
+            <field name="arch" type="xml">
+                <form string="Tables">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="methob" widget="selection"/>
+                            <field name="type"/>
+                            <field name="payment_model_id"/>
+                        </group>
+                        <notebook>
+                            <page name="payment_model_ids" string="Providers">
+                                <field name="payment_model_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_payment_api_model_search" model="ir.ui.view">
+            <field name="name">payment.api.model.search</field>
+            <field name="model">payment.api.model</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name"/>
+                    <field name="methob"/>
+                    <field name="type"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

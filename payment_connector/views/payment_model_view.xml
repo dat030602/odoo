@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payment_model_tree" model="ir.ui.view">
+            <field name="name">payment.model.tree</field>
+            <field name="model">payment.model</field>
+            <field name="arch" type="xml">
+                <tree edit="0">
+                    <field name="sequence"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_payment_model_form" model="ir.ui.view">
+            <field name="name">payment.model.form</field>
+            <field name="model">payment.model</field>
+            <field name="arch" type="xml">
+                <form string="Tables">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="image" class="oe_avatar" widget="image" />
+                        </group>
+                        <notebook>
+                            <page name="provider_ids" string="Providers">
+                                <field name="provider_ids"/>
+                            </page>
+                            <page name="supported_country_ids" string="Countries">
+                                <field name="supported_country_ids"/>
+                            </page>
+                            <page name="supported_currency_ids" string="Currencies">
+                                <field name="supported_currency_ids"/>
+                            </page>
+                            <page name="model_api_ids" string="APIs">
+                                <field name="model_api_ids"/>
+                            </page>
+                            <page name="key_ids" string="Keys">
+                                <field name="key_ids"/>
+                            </page>
+                            <page name="column_ids" string="Others">
+                                <group>
+                                    <field name="support_tokenization"/>
+                                    <field name="support_express_checkout"/>
+                                    <field name="support_refund"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        <record id="view_payment_model_search" model="ir.ui.view">
+            <field name="name">payment.model.search</field>
+            <field name="model">payment.model</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

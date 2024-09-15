@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payment_model_line_tree" model="ir.ui.view">
+            <field name="name">payment.model.line.tree</field>
+            <field name="model">payment.model.line</field>
+            <field name="arch" type="xml">
+                <tree edit="0">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="payment_model_id"/>
+                    <field name="payment_api_model_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_payment_model_line_form" model="ir.ui.view">
+            <field name="name">payment.model.line.form</field>
+            <field name="model">payment.model.line</field>
+            <field name="arch" type="xml">
+                <form string="Tables">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="type" widget="selection"/>
+                            <field name="payment_model_id"/>
+                            <field name="payment_api_model_id"/>
+                        </group>
+                        <group></group>
+                        <group>
+                            <field name="key"/>
+                        </group>
+                        <group>
+                            <field name="value"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_payment_model_line_search" model="ir.ui.view">
+            <field name="name">payment.model.line.search</field>
+            <field name="model">payment.model.line</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name"/>
+                    <field name="type"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>
