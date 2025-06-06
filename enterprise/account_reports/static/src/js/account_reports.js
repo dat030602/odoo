@@ -1209,6 +1209,9 @@ var accountReportsWidget = AbstractAction.extend({
 
 core.action_registry.add('account_report', accountReportsWidget);
 
-return accountReportsWidget;
+return {
+    accountReportsWidget,
+    M2MFilters
+};
 
 });

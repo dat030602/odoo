@@ -6,7 +6,7 @@ import logging
 import random
 
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, Command, fields, models, _
@@ -758,7 +758,9 @@ class HrPayslip(models.Model):
         generate_from = min(p.date_from for p in self)
         current_month_end = date_utils.end_of(fields.Date.today(), 'month')
         generate_to = max(min(fields.Date.to_date(p.date_to), current_month_end) for p in self)
-        self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
+        generate_from_dt = datetime.combine(generate_from, time.min)
+        generate_to_dt = datetime.combine(generate_to, time.max)
+        self.mapped('contract_id')._generate_work_entries(generate_from_dt, generate_to_dt)
 
         for slip in valid_slips:
             if not slip.struct_id.use_worked_day_lines:

@@ -10,7 +10,7 @@ Module to import CSV bank statements.
 ======================================
 
 This module allows you to import CSV Files in Odoo: they are parsed and stored in human readable format in
-Accounting \ Bank and Cash \ Bank Statements.
+Accounting \\ Bank and Cash \\ Bank Statements.
 
 Important Note
 ---------------------------------------------
