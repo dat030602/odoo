@@ -17,6 +17,11 @@ Theo mặc định, Odoo thường ghi log vào một file tại thư mục `/va
 
     Nếu bạn đã cấu hình Odoo để ghi log vào một vị trí khác (ví dụ, trong file cấu hình Odoo, tham số `logfile = /duong/dan/den/odoo.log`), bạn cần kiểm tra đường dẫn đó.
 
+* **Thêm quyền:**
+    ```
+    sudo chown dat:odoo_group /opt/
+    sudo chmod 777 /opt/
+    ```
 ---
 
 ## 2. Cách Xem Log Server Odoo
