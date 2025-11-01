@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_peppol
-# 
+#
 # Translators:
 # Eino Mäkitalo <eino.makitalo@netitbe.fi>, 2023
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2023
@@ -11,34 +11,48 @@
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2023
 # Martin Trigaux, 2023
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2023
-# Teija Hölttä <teija.holtta@gmail.com>, 2023
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2024
-# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024
-# 
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2025
+# Jessica Jakara, 2025
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-29 10:45+0000\n"
+"POT-Creation-Date: 2025-09-25 18:36+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024\n"
+"Last-Translator: Jessica Jakara, 2025\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
+msgid ""
+"<br/>\n"
+"                                In Belgium, electronic invoicing is "
+"<u>mandatory as of January 2026</u> - don't wait to register."
+msgstr ""
+"<br/>\n"
+"                                Belgiassa sähköinen laskutus <u>tulee "
+"pakolliseksi tammikuusta 2026</u> lähtien - älä lykkää rekisteröitymistä "
+"myöhemmäksi."
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.account_peppol_view_move_form
 msgid ""
 "<span class=\"mx-1\" invisible=\"not peppol_is_demo_uuid\"> (Demo)</span>\n"
-"                    <span class=\"text-muted mx-3\" invisible=\"peppol_move_state != 'to_send'\">\n"
+"                    <span class=\"text-muted mx-3\" "
+"invisible=\"peppol_move_state != 'to_send'\">\n"
 "                        The invoice will be sent automatically to PEPPOL\n"
 "                    </span>"
 msgstr ""
 "<span class=\"mx-1\" invisible=\"not peppol_is_demo_uuid\"> (Demo)</span>\n"
-"                    <span class=\"text-muted mx-3\" invisible=\"peppol_move_state != 'to_send'\">\n"
+"                    <span class=\"text-muted mx-3\" "
+"invisible=\"peppol_move_state != 'to_send'\">\n"
 "                        Lasku lähetetään automaattisesti PEPPOLille\n"
 "                    </span>"
 
@@ -48,31 +62,39 @@ msgid ""
 "<span class=\"o_form_label\">\n"
 "                                    Peppol Details\n"
 "                                </span>\n"
-"                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\"/>"
+"                                <span class=\"fa fa-lg fa-building-o\" "
+"title=\"Values set here are company-specific.\"/>"
 msgstr ""
 "<span class=\"o_form_label\">\n"
 "                                    Peppol tiedot\n"
 "                                </span>\n"
-"                                <span class=\"fa fa-lg fa-building-o\" title=\"Nämä arvot ovat yrityskohtaisia.\"/>"
+"                                <span class=\"fa fa-lg fa-building-o\" "
+"title=\"Nämä arvot ovat yrityskohtaisia.\"/>"
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid ""
-"<span class=\"text-info\" invisible=\"not account_peppol_edi_mode == 'demo'\"> (Demo)</span>\n"
-"                                        <span class=\"text-info\" invisible=\"not account_peppol_edi_mode == 'test'\"> (Test)</span>"
+"<span class=\"text-info\" invisible=\"not account_peppol_edi_mode == "
+"'demo'\"> (Demo)</span>\n"
+"                                        <span class=\"text-info\" "
+"invisible=\"not account_peppol_edi_mode == 'test'\"> (Test)</span>"
 msgstr ""
-"<span class=\"text-info\" invisible=\"not account_peppol_edi_mode == 'demo'\"> (Demo)</span>\n"
-"                                        <span class=\"text-info\" invisible=\"not account_peppol_edi_mode == 'test'\"> (Testi)</span>"
+"<span class=\"text-info\" invisible=\"not account_peppol_edi_mode == "
+"'demo'\"> (Demo)</span>\n"
+"                                        <span class=\"text-info\" "
+"invisible=\"not account_peppol_edi_mode == 'test'\"> (Testi)</span>"
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid ""
 "<span>\n"
-"                                    I want to migrate my Peppol connection to Odoo (optional):\n"
+"                                    I want to migrate my Peppol connection "
+"to Odoo (optional):\n"
 "                                </span>"
 msgstr ""
 "<span>\n"
-"                                    Haluan siirtää Peppol-yhteyteni Odoohon (valinnainen):\n"
+"                                    Haluan siirtää Peppol-yhteyteni Odoohon "
+"(valinnainen):\n"
 "                                </span>"
 
 #. module: account_peppol
@@ -80,15 +102,12 @@ msgstr ""
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
 msgid ""
-"A participant with these details has already been registered on the network."
-" If you have previously registered to an alternative Peppol service, please "
-"deregister from that service, or request a migration key before trying "
-"again."
+"A participant with these details has already been registered on the network. "
+"If you have previously registered to a Peppol service, please deregister."
 msgstr ""
-"Osallistuja, jolla on nämä tiedot, on jo rekisteröity verkkoon. Jos olet "
-"aiemmin rekisteröitynyt johonkin toiseen Peppol-palveluun, poista "
-"rekisteröinti kyseisestä palvelusta tai pyydä siirtymisavain ennen kuin "
-"yrität uudelleen."
+"Osallistuja on jo rekisteröity verkkoon näillä tiedoilla. Jos olet aiemmin "
+"rekisteröitynyt johonkin toiseen Peppol-palveluun, poista rekisteröinti "
+"kyseisestä palvelusta."
 
 #. module: account_peppol
 #. odoo-python
@@ -171,13 +190,6 @@ msgid "Can't deregister with this status: %s"
 msgstr "Rekisteröintiä ei voi poistaa tällä tilalla: %s"
 
 #. module: account_peppol
-#. odoo-python
-#: code:addons/account_peppol/models/res_config_settings.py:0
-#, python-format
-msgid "Can't migrate registration with this status: %s"
-msgstr "Rekisteröintiä ei voi siirtää tällä tilalla: %s"
-
-#. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.account_peppol_view_move_form
 msgid "Cancel PEPPOL"
 msgstr "Peruuta PEPPOL"
@@ -201,6 +213,11 @@ msgid "Cannot cancel an entry that has already been sent to PEPPOL"
 msgstr "Ei voi peruuttaa merkintää, joka on jo lähetetty PEPPOLiin"
 
 #. module: account_peppol
+#: model:ir.model.fields.selection,name:account_peppol.selection__res_partner__account_peppol_verification_label__not_valid_format
+msgid "Cannot receive this format"
+msgstr "Emme voi vastaanottaa tätä formaattia"
+
+#. module: account_peppol
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
@@ -218,10 +235,13 @@ msgstr "Tarkistettu"
 #: model:ir.model.fields,help:account_peppol.field_res_config_settings__account_peppol_eas
 msgid ""
 "Code used to identify the Endpoint for BIS Billing 3.0 and its derivatives.\n"
-"             List available at https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/"
+"             List available at https://docs.peppol.eu/poacc/billing/3.0/"
+"codelist/eas/"
 msgstr ""
-"Koodi, jota käytetään BIS Billing 3.0:n ja sen johdannaisten päätepisteen tunnistamiseen.\n"
-"             Luettelo on saatavilla osoitteessa https://docs.peppol.eu/poacc/billing/3.0/codelist/eas/"
+"Koodi, jota käytetään BIS Billing 3.0:n ja sen johdannaisten päätepisteen "
+"tunnistamiseen.\n"
+"             Luettelo on saatavilla osoitteessa https://docs.peppol.eu/poacc/"
+"billing/3.0/codelist/eas/"
 
 #. module: account_peppol
 #: model:ir.model,name:account_peppol.model_res_company
@@ -263,8 +283,8 @@ msgstr "Yhteystiedot päivitettiin."
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
-msgid "Contact email and phone number are required."
-msgstr "Yhteyshenkilön sähköpostiosoite ja puhelinnumero vaaditaan."
+msgid "Contact email and mobile number are required."
+msgstr "Yhteyshenkilön sähköpostiosoite ja matkapuhelinnumero vaaditaan."
 
 #. module: account_peppol
 #. odoo-python
@@ -332,6 +352,12 @@ msgid "Incoming Invoices Journal"
 msgstr "Saapuvat laskut -lehti"
 
 #. module: account_peppol
+#: model:ir.model.fields,field_description:account_peppol.field_res_partner__is_peppol_edi_format
+#: model:ir.model.fields,field_description:account_peppol.field_res_users__is_peppol_edi_format
+msgid "Is Peppol Edi Format"
+msgstr "Onko Peppol EDI formaatti"
+
+#. module: account_peppol
 #: model:ir.model,name:account_peppol.model_account_journal
 msgid "Journal"
 msgstr "Päiväkirja"
@@ -354,13 +380,6 @@ msgid "Live"
 msgstr "Live"
 
 #. module: account_peppol
-#. odoo-javascript
-#: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.xml:0
-#, python-format
-msgid "Migrate registration to another service"
-msgstr "Siirrä rekisteröinti toiseen palveluun"
-
-#. module: account_peppol
 #: model:ir.model.fields,field_description:account_peppol.field_res_company__account_peppol_migration_key
 #: model:ir.model.fields,field_description:account_peppol.field_res_config_settings__account_peppol_migration_key
 msgid "Migration Key"
@@ -370,6 +389,17 @@ msgstr "Siirtymisavain"
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid "Migration key"
 msgstr "Siirtymisavain"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
+msgid "Mobile Number"
+msgstr "Matkapuhelinnumero"
+
+#. module: account_peppol
+#: model:ir.model.fields,field_description:account_peppol.field_res_company__account_peppol_phone_number
+#: model:ir.model.fields,field_description:account_peppol.field_res_config_settings__account_peppol_phone_number
+msgid "Mobile number (for validation)"
+msgstr "Matkapuhelinnumero (vahvistusta varten)"
 
 #. module: account_peppol
 #: model:ir.model.fields.selection,name:account_peppol.selection__res_company__account_peppol_proxy_state__not_registered
@@ -390,6 +420,11 @@ msgstr "Ei vahvistettu"
 #: model:ir.model.fields.selection,name:account_peppol.selection__res_partner__account_peppol_verification_label__not_verified
 msgid "Not verified yet"
 msgstr "Ei vahvistettu vielä"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
+msgid "Odoo"
+msgstr "Odoo"
 
 #. module: account_peppol
 #: model:ir.model.fields.selection,name:account_peppol.selection__account_edi_proxy_client_user__proxy_type__peppol
@@ -501,14 +536,6 @@ msgid "Peppol document has been received successfully"
 msgstr "Peppol-asiakirja on vastaanotettu onnistuneesti"
 
 #. module: account_peppol
-#. odoo-python
-#: code:addons/account_peppol/models/account_edi_proxy_user.py:0
-#, python-format
-msgid "Peppol document has been received successfully. Sender endpoint: %s"
-msgstr ""
-"Peppol-asiakirja on vastaanotettu onnistuneesti. Lähettäjän päätepiste: %s"
-
-#. module: account_peppol
 #: model:ir.model.fields,field_description:account_peppol.field_res_company__peppol_eas
 #: model:ir.model.fields,field_description:account_peppol.field_res_config_settings__account_peppol_eas
 msgid "Peppol e-address (EAS)"
@@ -522,7 +549,6 @@ msgstr "Peppolin päätepisteen pätevyys"
 
 #. module: account_peppol
 #. odoo-python
-#: code:addons/account_peppol/models/account_edi_proxy_user.py:0
 #: code:addons/account_peppol/models/account_edi_proxy_user.py:0
 #, python-format
 msgid "Peppol error: %s"
@@ -547,28 +573,16 @@ msgstr "Peppolin tilapäivitys: %s"
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
-msgid "Phone Number"
-msgstr "Puhelinnumero"
-
-#. module: account_peppol
-#: model:ir.model.fields,field_description:account_peppol.field_res_company__account_peppol_phone_number
-#: model:ir.model.fields,field_description:account_peppol.field_res_config_settings__account_peppol_phone_number
-msgid "Phone number (for validation)"
-msgstr "Puhelinnumero (vahvistusta varten)"
-
-#. module: account_peppol
-#: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid ""
-"Please do not hesitate to contact our support if you need further "
-"assistance."
+"Please do not hesitate to contact our support if you need further assistance."
 msgstr "Älä epäröi ottaa yhteyttä asiakaspalveluumme, jos tarvitset lisäapua."
 
 #. module: account_peppol
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
-msgid "Please enter a phone number to verify your application."
-msgstr "Anna puhelinnumero hakemuksesi vahvistamiseksi."
+msgid "Please enter a mobile number to verify your application."
+msgstr "Anna matkapuhelinnumero sovelluksesi vahvistamiseksi."
 
 #. module: account_peppol
 #. odoo-python
@@ -576,19 +590,18 @@ msgstr "Anna puhelinnumero hakemuksesi vahvistamiseksi."
 #, python-format
 msgid "Please enter a primary contact email to verify your application."
 msgstr ""
-"Anna ensisijainen yhteystietosi sähköpostiosoite hakemuksesi "
-"vahvistamiseksi."
+"Anna ensisijainen yhteystietosi sähköpostiosoite hakemuksesi vahvistamiseksi."
 
 #. module: account_peppol
 #. odoo-python
 #: code:addons/account_peppol/models/res_company.py:0
 #, python-format
 msgid ""
-"Please enter the phone number in the correct international format.\n"
+"Please enter the mobile number in the correct international format.\n"
 "For example: +32123456789, where +32 is the country code.\n"
 "Currently, only European countries are supported."
 msgstr ""
-"Kirjoita puhelinnumero oikeassa kansainvälisessä muodossa.\n"
+"Kirjoita matkapuhelinnumero oikeassa kansainvälisessä muodossa.\n"
 "Esimerkiksi: +32123456789, jossa +32 on maakoodi.\n"
 "Tällä hetkellä vain Euroopan maat ovat tuettuja."
 
@@ -708,10 +721,12 @@ msgstr "Testi"
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid ""
 "Test mode allows registration of the user on the test Peppol network.\n"
-"                                        By clicking the button below I accept that Odoo may process my e-invoices."
+"                                        By clicking the button below I "
+"accept that Odoo may process my e-invoices."
 msgstr ""
 "Testitila mahdollistaa käyttäjän rekisteröitymisen Peppol-testiverkkoon.\n"
-"                                        Klikkaamalla alla olevaa painiketta hyväksyn, että Odoo voi käsitellä verkkolaskujani."
+"                                        Klikkaamalla alla olevaa painiketta "
+"hyväksyn, että Odoo voi käsitellä verkkolaskujani."
 
 #. module: account_peppol
 #. odoo-python
@@ -719,6 +734,13 @@ msgstr ""
 #, python-format
 msgid "The Peppol endpoint identification number is not correct."
 msgstr "Peppol-päätepisteen tunnistenumero ei ole oikea."
+
+#. module: account_peppol
+#. odoo-python
+#: code:addons/account_peppol/models/res_config_settings.py:0
+#, python-format
+msgid "The Peppol service that is used is likely to be %s."
+msgstr "Käytetty Peppol-palvelu on luultavasti %s."
 
 #. module: account_peppol
 #. odoo-python
@@ -775,16 +797,6 @@ msgstr "Asiakirjojen peppol-tila on nollattu, kun siirryt Demosta Liveen."
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
-#: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_form_account_peppol
-msgid ""
-"The recommended EAS code for Belgium is 0208. The Endpoint should be the "
-"Company Registry number."
-msgstr ""
-"Suositeltu EAS-koodi Belgialle on 0208. Päätepisteen tulisi olla yrityksen "
-"yritystunnus."
-
-#. module: account_peppol
-#: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid "The rejection reason has been sent to you via email."
 msgstr "Hylkäyksen syy on lähetetty sinulle sähköpostitse."
 
@@ -811,8 +823,32 @@ msgstr "Vahvistuskoodin on sisällettävä kuusi numeroa."
 #. odoo-python
 #: code:addons/account_peppol/models/res_config_settings.py:0
 #, python-format
+msgid ""
+"This feature is deprecated. Contact odoo support if you need a migration key."
+msgstr ""
+"Tämä ominaisuus on poistettu käytöstä. Ota yhteyttä Odoo-tukeen, jos "
+"tarvitset siirtymisavaimen."
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
+msgid "This invoice has also been"
+msgstr "Tämä lasku on myös"
+
+#. module: account_peppol
+#. odoo-python
+#: code:addons/account_peppol/models/res_config_settings.py:0
+#, python-format
 msgid "This verification code has expired. Please request a new one."
 msgstr "Tämä vahvistuskoodi on vanhentunut. Pyydä uusi."
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_form_account_peppol
+msgid ""
+"To generate complete electronic invoices, also set a country for this "
+"partner."
+msgstr ""
+"Jos haluat luoda täydellisiä sähköisiä laskuja, määritä tälle kumppanille "
+"myös maa."
 
 #. module: account_peppol
 #. odoo-python
@@ -861,7 +897,6 @@ msgstr "Vahvistettu"
 #. module: account_peppol
 #. odoo-javascript
 #: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.js:0
-#: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.js:0
 #, python-format
 msgid "Validate registration"
 msgstr "Vahvista rekisteröinti"
@@ -896,16 +931,16 @@ msgid "Verify Peppol"
 msgstr "Tarkista Peppol"
 
 #. module: account_peppol
-#: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_form_account_peppol
-msgid "Verify partner's PEPPOL endpoint"
-msgstr "Kumppanin PEPPOL-päätepisteen tarkistaminen"
-
-#. module: account_peppol
 #. odoo-javascript
 #: code:addons/account_peppol/static/src/components/res_config_settings_buttons/res_config_settings_buttons.xml:0
 #, python-format
-msgid "Verify phone number"
-msgstr "Tarkista puhelinnumero"
+msgid "Verify mobile number"
+msgstr "Vahvista matkapuhelinnumero"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.res_partner_form_account_peppol
+msgid "Verify partner's PEPPOL endpoint"
+msgstr "Kumppanin PEPPOL-päätepisteen tarkistaminen"
 
 #. module: account_peppol
 #: model:ir.model.fields,field_description:account_peppol.field_account_move_send__peppol_warning
@@ -932,8 +967,8 @@ msgstr ""
 #. module: account_peppol
 #: model:ir.model.fields,help:account_peppol.field_res_company__account_peppol_phone_number
 #: model:ir.model.fields,help:account_peppol.field_res_config_settings__account_peppol_phone_number
-msgid "You will receive a verification code to this phone number"
-msgstr "Saat vahvistuskoodin tähän puhelinnumeroon"
+msgid "You will receive a verification code to this mobile number"
+msgstr "Saat vahvistuskoodin tähän matkapuhelinnumeroon"
 
 #. module: account_peppol
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
@@ -956,3 +991,30 @@ msgstr "Siirtymisavaimesi on:"
 #: model_terms:ir.ui.view,arch_db:account_peppol.res_config_settings_view_form
 msgid "Your registration should be activated within a day."
 msgstr "Rekisteröitymisesi pitäisi aktivoitua päivän kuluessa."
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
+msgid "could not be sent via Peppol"
+msgstr "ei voida lähettää Peppolin kautta"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
+msgid "sent via Peppol"
+msgstr "lähettää Peppolin kautta"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
+msgid "to send invoices, but this one"
+msgstr "lähettää laskuja, mutta tämä"
+
+#. module: account_peppol
+#: model_terms:ir.ui.view,arch_db:account_peppol.mail_notification_layout_with_responsible_signature_and_peppol
+msgid "uses"
+msgstr "käyttää"
+
+#~ msgid ""
+#~ "The recommended EAS code for Belgium is 0208. The Endpoint should be the "
+#~ "Company Registry number."
+#~ msgstr ""
+#~ "Suositeltu EAS-koodi Belgialle on 0208. Päätepisteen tulisi olla "
+#~ "yrityksen yritystunnus."

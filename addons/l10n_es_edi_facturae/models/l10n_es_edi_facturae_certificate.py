@@ -1,4 +1,3 @@
-import re
 from base64 import b64decode, b64encode, encodebytes
 from copy import deepcopy
 from hashlib import sha1
@@ -73,7 +72,17 @@ class Certificate(models.Model):
         root = deepcopy(edi_data)
         cert_private, cert_public = self._decode_certificate()
         public_key_numbers = cert_public.public_key().public_numbers()
-        issuer = ', '.join(sorted(element.rfc4514_string() for element in cert_public.issuer.rdns if re.match(r'[A-Z]{1,2}', element.rfc4514_string())))
+
+        rfc4514_attr = dict(element.rfc4514_string().split("=", 1) for element in cert_public.issuer.rdns)
+
+        # The 'Organizational Unit' field is optional
+        issuer = f"CN={rfc4514_attr.pop('CN')}, "
+        if 'OU' in rfc4514_attr:
+            issuer += f"OU={rfc4514_attr.pop('OU')}, "
+        issuer += f"O={rfc4514_attr.pop('O')}, C={rfc4514_attr.pop('C')}"
+
+        # Add remaining certificate fields (not all certificates have other fields)
+        issuer += "".join([f", {key}={value}" for key, value in rfc4514_attr.items()])
 
         # Identifiers
         document_id = f"Document-{sha1(etree.tostring(edi_data)).hexdigest()}"

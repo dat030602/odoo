@@ -5,7 +5,7 @@ from markupsafe import Markup
 
 from odoo import fields, models, api, _, Command
 from odoo.exceptions import UserError
-from odoo.tools import float_repr, date_utils
+from odoo.tools import float_repr, date_utils, float_round
 from odoo.tools.xml_utils import cleanup_xml_node, find_xml_value
 
 PHONE_CLEAN_TABLE = str.maketrans({" ": None, "-": None, "(": None, ")": None, "+": None})
@@ -87,6 +87,7 @@ class AccountMove(models.Model):
             and not self.l10n_es_edi_facturae_xml_id \
             and not self.l10n_es_is_simplified \
             and self.is_invoice(include_receipts=True) \
+            and (self.partner_id.is_company or self.partner_id.vat) \
             and self.company_id.country_code == 'ES' \
             and self.company_id.currency_id.name == 'EUR'
 
@@ -218,6 +219,8 @@ class AccountMove(models.Model):
         }
         taxes = []
         taxes_withheld = []
+        invoice_ref = self.ref[:20] if self.ref else False
+        unit_price_decimals = self.env['decimal.precision'].precision_get('Product Price')
         for line in self.invoice_line_ids:
             if line.display_type in {'line_section', 'line_note'}:
                 continue
@@ -234,9 +237,7 @@ class AccountMove(models.Model):
             price_before_discount = sum(to_update['price_subtotal'] for _dummy, to_update in tax_before_discount['base_lines_to_update'])
             discount = max(0., (price_before_discount - line.price_subtotal))
             surcharge = abs(min(0., (price_before_discount - line.price_subtotal)))
-            totals['total_gross_amount'] += price_before_discount
-            totals['total_general_discounts'] += discount
-            totals['total_general_surcharges'] += surcharge
+            totals['total_gross_amount'] += line.price_subtotal
             base_line = self.env['account.tax']._convert_to_tax_base_line_dict(
                 line, partner=line.partner_id, currency=line.currency_id, product=line.product_id, taxes=line.tax_ids,
                 price_unit=line.price_unit, quantity=line.quantity, discount=line.discount, account=line.account_id,
@@ -253,11 +254,21 @@ class AccountMove(models.Model):
             tax_withheld_output = [self._l10n_es_edi_facturae_convert_computed_tax_to_template(tax) for tax in taxes_withheld_computed]
             totals['total_taxes_withheld'] += sum((abs(tax["tax_amount"]) for tax in taxes_withheld_computed))
 
+            receiver_transaction_reference = (
+                line.sale_line_ids.order_id.client_order_ref[:20]
+                if 'sale_line_ids' in line._fields and line.sale_line_ids.order_id.client_order_ref
+                else invoice_ref
+            )
+
             invoice_line_values.update({
+                'ReceiverTransactionReference': receiver_transaction_reference,
+                'FileReference': invoice_ref,
+                'ReceiverContractReference': invoice_ref,
+                'FileDate': fields.Date.context_today(self),
                 'ItemDescription': line.name,
                 'Quantity': line.quantity,
                 'UnitOfMeasure': line.product_uom_id.l10n_es_edi_facturae_uom_code,
-                'UnitPriceWithoutTax': line.currency_id.round(price_before_discount / line.quantity if line.quantity else 0.),
+                'UnitPriceWithoutTax': float_round(price_before_discount / line.quantity if line.quantity else 0, precision_digits=unit_price_decimals),
                 'TotalCost': price_before_discount,
                 'DiscountsAndRebates': [{
                     'DiscountReason': '/',
@@ -284,6 +295,18 @@ class AccountMove(models.Model):
 
         :return: (data needed to render the full template, data needed to render the signature template)
         """
+        def extract_party_name(party):
+            name = {'firstname': 'UNKNOWN', 'surname': 'UNKNOWN', 'surname2': ''}
+            if not party.is_company:
+                name_split = [part for part in party.name.replace(', ', ' ').split(' ') if part]
+                if len(name_split) > 2:
+                    name['firstname'] = ' '.join(name_split[:-2])
+                    name['surname'], name['surname2'] = name_split[-2:]
+                elif len(name_split) == 2:
+                    name['firstname'] = ' '.join(name_split[:-1])
+                    name['surname'] = name_split[-1]
+            return name
+
         self.ensure_one()
         company = self.company_id
         partner = self.commercial_partner_id
@@ -297,20 +320,15 @@ class AccountMove(models.Model):
         if self.move_type == "entry":
             return False
 
+        operation_date = None
+        if self.delivery_date and self.delivery_date != self.invoice_date:
+            operation_date = self.delivery_date.isoformat()
+
         eur_curr = self.env['res.currency'].search([('name', '=', 'EUR')])
         inv_curr = self.currency_id
+        unit_price_decimals = self.env['decimal.precision'].precision_get('Product Price')
         legal_literals = self.narration.striptags() if self.narration else False
         legal_literals = legal_literals.split(";") if legal_literals else False
-
-        partner_name = {'firstname': 'UNKNOWN', 'surname': 'UNKNOWN', 'surname2': ''}
-        if not partner.is_company:
-            name_split = [part for part in partner.name.replace(', ', ' ').split(' ') if part]
-            if len(name_split) > 2:
-                partner_name['firstname'] = ' '.join(name_split[:-2])
-                partner_name['surname'], partner_name['surname2'] = name_split[-2:]
-            elif len(name_split) == 2:
-                partner_name['firstname'] = ' '.join(name_split[:-1])
-                partner_name['surname'] = name_split[-1]
 
         invoice_issuer_signature_type = 'supplier' if self.move_type == 'out_invoice' else 'customer'
         need_conv = bool(inv_curr != eur_curr)
@@ -320,16 +338,19 @@ class AccountMove(models.Model):
         total_exec_am_in_currency = abs(self.amount_total_in_currency_signed)
         total_exec_am = abs(self.amount_total_signed)
         items, taxes, taxes_withheld, totals = self._l10n_es_edi_facturae_inv_lines_to_items(conversion_rate)
+        tax_lines = self.line_ids.filtered('tax_line_id')
         template_values = {
             'self_party': company.partner_id,
             'self_party_country_code': COUNTRY_CODE_MAP[company.country_id.code],
+            'self_party_name': extract_party_name(company.partner_id),
             'other_party': partner,
             'other_party_country_code': COUNTRY_CODE_MAP[partner.country_id.code],
             'other_party_phone': partner.phone.translate(PHONE_CLEAN_TABLE) if partner.phone else False,
-            'other_party_name': partner_name,
+            'other_party_name': extract_party_name(partner),
             'is_outstanding': self.move_type.startswith('out_'),
             'float_repr': float_repr,
             'file_currency': inv_curr,
+            'unit_price_decimals': unit_price_decimals,
             'eur': eur_curr,
             'conversion_needed': need_conv,
             'refund_multiplier': -1 if self.move_type.endswith('refund') else 1,
@@ -353,13 +374,17 @@ class AccountMove(models.Model):
             'Invoices': [{
                 'invoice_record': self,
                 'invoice_currency': inv_curr,
-                'InvoiceDocumentType': 'FC',
-                'InvoiceClass': 'OO',
+                'InvoiceDocumentType': 'FA' if self.l10n_es_is_simplified else 'FC',
+                'InvoiceClass': 'OR' if self.move_type in ['out_refund', 'in_refund'] else 'OO',
                 'Corrective': self._l10n_es_edi_facturae_get_corrective_data(),
                 'InvoiceIssueData': {
+                    'OperationDate': operation_date,
                     'ExchangeRateDetails': need_conv,
                     'ExchangeRate': f"{round(conversion_rate, 4):.4f}",
                     'LanguageName': self._context.get('lang', 'en_US').split('_')[0],
+                    'ReceiverTransactionReference': self.ref[:20] if self.ref else False,
+                    'FileReference': self.ref[:20] if self.ref else False,
+                    'ReceiverContractReference': self.ref[:20] if self.ref else False,
                 },
                 'TaxOutputs': taxes,
                 'TaxesWithheld': taxes_withheld,
@@ -367,8 +392,8 @@ class AccountMove(models.Model):
                 'TotalGeneralDiscounts': totals['total_general_discounts'],
                 'TotalGeneralSurcharges': totals['total_general_surcharges'],
                 'TotalGrossAmountBeforeTaxes': totals['total_gross_amount'] - totals['total_general_discounts'] + totals['total_general_surcharges'],
-                'TotalTaxOutputs': totals['total_tax_outputs'],
-                'TotalTaxesWithheld': totals['total_taxes_withheld'],
+                'TotalTaxOutputs': sum(tax_lines.filtered(lambda tax_line: tax_line.tax_line_id.amount > 0.0).mapped('balance')) * self.direction_sign,
+                'TotalTaxesWithheld': sum(tax_lines.filtered(lambda tax_line: tax_line.tax_line_id.amount < 0.0).mapped('balance')) * self.direction_sign,
                 'PaymentsOnAccount': [],
                 'TotalOutstandingAmount': total_outst_am_in_currency,
                 'InvoiceTotal': abs(self.amount_total_in_currency_signed),
@@ -413,7 +438,10 @@ class AccountMove(models.Model):
 
     def _get_edi_decoder(self, file_data, new=False):
         def is_facturae(tree):
-            return tree.tag == '{http://www.facturae.es/Facturae/2014/v3.2.1/Facturae}Facturae'
+            return tree.tag in [
+                '{http://www.facturae.es/Facturae/2014/v3.2.1/Facturae}Facturae',
+                '{http://www.facturae.gob.es/formato/Versiones/Facturaev3_2_2.xml}Facturae',
+            ]
 
         if file_data['type'] == 'xml' and is_facturae(file_data['xml_tree']):
             return self._import_invoice_facturae
@@ -458,7 +486,8 @@ class AccountMove(models.Model):
 
         if not partner and name:
             partner_vals = {'name': name, 'email': mail, 'phone': phone}
-            country = self.env['res.country'].search([('code', '=', country_code.lower())]) if country_code else False
+            country_code = REVERSED_COUNTRY_CODE.get(country_code)
+            country = self.env['res.country'].search([('code', '=', country_code)]) if country_code else False
             if country:
                 partner_vals['country_id'] = country.id
             partner = self.env['res.partner'].create(partner_vals)
@@ -636,3 +665,8 @@ class AccountMove(models.Model):
         code_and_name = re.match(r"(\[(?P<default_code>.*?)\]\s)?(?P<name>.*)", item_description).groupdict()
         product = self.env['product.product']._retrieve_product(**code_and_name)
         return product
+
+    def _generate_pdf_and_send_invoice(self, template, force_synchronous=True, allow_fallback_pdf=True, bypass_download=False, **kwargs):
+        if self.company_id.country_code == "ES" and not self.company_id.l10n_es_edi_facturae_certificate_id:
+            kwargs['l10n_es_edi_facturae_checkbox_xml'] = False
+        return super()._generate_pdf_and_send_invoice(template, force_synchronous, allow_fallback_pdf, bypass_download, **kwargs)

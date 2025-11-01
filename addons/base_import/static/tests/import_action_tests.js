@@ -93,6 +93,8 @@ async function executeImport(data, shouldWait = false) {
     }
     if (data[3].skip + 1 < (data[3].has_headers ? totalRows - 1 : totalRows)) {
         res.nextrow = data[3].skip + data[3].limit;
+    } else {
+        res.nextrow = 0;
     }
     if (shouldWait) {
         // make sure the progress bar is shown
@@ -313,6 +315,7 @@ QUnit.module("Base Import Tests", (hooks) => {
 
     QUnit.test("Import view: UI before file upload", async function (assert) {
         const templateURL = "/myTemplateURL.xlsx";
+        const secondTemplateURL = "/mySecondTemplateURL.xlsx";
 
         await createImportAction({
             "partner/get_import_templates": (route, args) => {
@@ -322,6 +325,10 @@ QUnit.module("Base Import Tests", (hooks) => {
                         label: "Some Import Template",
                         template: templateURL,
                     },
+                    {
+                        label: "Another Import Template",
+                        template: secondTemplateURL,
+                    }
                 ]);
             },
             "base_import.import/create": (route, args) => {
@@ -332,13 +339,27 @@ QUnit.module("Base Import Tests", (hooks) => {
 
         assert.containsOnce(target, ".o_import_action", "import view is displayed");
         assert.strictEqual(
-            target.querySelector(".o_nocontent_help .btn-outline-primary").textContent,
+            target.querySelectorAll(".o_nocontent_help .btn-outline-primary").length,
+            2,
+            "there are two import template buttons"
+        )
+        assert.strictEqual(
+            target.querySelectorAll(".o_nocontent_help .btn-outline-primary")[0].textContent,
             " Some Import Template"
         );
         assert.strictEqual(
-            target.querySelector(".o_nocontent_help .btn-outline-primary").href,
+            target.querySelectorAll(".o_nocontent_help .btn-outline-primary")[0].href,
             window.location.origin + templateURL,
-            "button has the right download url"
+            "1st button has the right download url"
+        );
+        assert.strictEqual(
+            target.querySelectorAll(".o_nocontent_help .btn-outline-primary")[1].textContent,
+            " Another Import Template"
+        );
+        assert.strictEqual(
+            target.querySelectorAll(".o_nocontent_help .btn-outline-primary")[1].href,
+            window.location.origin + secondTemplateURL,
+            "2nd button has the right download url"
         );
         assert.verifySteps(["partner/get_import_templates", "base_import.import/create"]);
         // Contains invisible mobile buttons
@@ -1305,6 +1326,88 @@ QUnit.module("Base Import Tests", (hooks) => {
             );
         }
     );
+
+    QUnit.test("Import view: batch import relational fields", async function (assert) {
+        let executeImportCount = 0;
+        registerFakeHTTPService();
+
+        patchWithCleanup(ImportAction.prototype, {
+            get isBatched() { // Make sure the UI displays the batched import options
+                return true;
+            },
+        });
+
+        await createImportAction({
+            "base_import.import/parse_preview": (route, args) => {
+                // Parse a file where all rows besides the first are used for relational data
+                return customParsePreview(args[1], {
+                    fields: [
+                        { id: "id", name: "id", string: "External ID", fields: [], type: "id" },
+                        {
+                            id: "display_name",
+                            name: "display_name",
+                            string: "Display Name",
+                            fields: [],
+                            type: "id",
+                        },
+                        {
+                            id: "many2many_field",
+                            name: "many2many_field",
+                            string: "Many2Many",
+                            fields: [
+                                {
+                                    id: "id",
+                                    name: "id",
+                                    string: "External ID",
+                                    fields: [],
+                                    type: "id",
+                                },
+                            ],
+                            type: "id",
+                        },
+                    ],
+                    headers: ["id", "display_name", "many2many_field/id"],
+                    rowCount: 6,
+                    matches: {
+                        0: ["id"],
+                        1: ["display_name"],
+                        2: ["many2many_field", "id"],
+                    },
+                    preview: [
+                        ["1"],
+                        ["Record Name"],
+                        ["1", "2", "3", "4", "5"],
+                    ],
+                });
+            },
+            "base_import.import/execute_import": async (route, args) => {
+                ++executeImportCount;
+                const res = await executeImport(args);
+                // Import batch limit doesn't apply to relational fields, so set `nextrow`
+                // to 0 to indicate all rows were imported on first call
+                res.nextrow = 0;
+                return res;
+            },
+        });
+
+        const file = new File(["fake_file"], "fake_file.xlsx", { type: "text/plain" });
+        await editInput(target, ".o_control_panel_main_buttons .d-none input[type='file']", file);
+
+        // Set batch limit to 1
+        await editInput(target, "input#o_import_batch_limit", 1);
+
+        // Start test
+        await click(
+            target.querySelector(".o_control_panel_main_buttons .d-none button:nth-child(2)")
+        );
+
+        assert.strictEqual(
+            target.querySelector(".o_import_data_content .alert-info").textContent,
+            "Everything seems valid.",
+            "A message should indicate the import test was successful"
+        );
+        assert.strictEqual(executeImportCount, 1, "Execute import should finish in 1 step");
+    });
 
     QUnit.test("Import view: import errors with relational fields", async function (assert) {
         registerFakeHTTPService();

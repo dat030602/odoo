@@ -25,14 +25,13 @@ export class VideoSelector extends Component {
             youtube: 'youtube',
             dailymotion: 'dailymotion',
             vimeo: 'vimeo',
-            youku: 'youku',
         };
 
         this.OPTIONS = {
             autoplay: {
                 label: _t("Autoplay"),
                 description: _t("Videos are muted when autoplay is enabled"),
-                platforms: [this.PLATFORMS.youtube, this.PLATFORMS.dailymotion, this.PLATFORMS.vimeo],
+                platforms: [this.PLATFORMS.youtube, this.PLATFORMS.vimeo],
                 urlParameter: 'autoplay=1',
             },
             loop: {
@@ -42,7 +41,7 @@ export class VideoSelector extends Component {
             },
             hide_controls: {
                 label: _t("Hide player controls"),
-                platforms: [this.PLATFORMS.youtube, this.PLATFORMS.dailymotion, this.PLATFORMS.vimeo],
+                platforms: [this.PLATFORMS.youtube, this.PLATFORMS.vimeo],
                 urlParameter: 'controls=0',
             },
             hide_fullscreen: {
@@ -50,22 +49,6 @@ export class VideoSelector extends Component {
                 platforms: [this.PLATFORMS.youtube],
                 urlParameter: 'fs=0',
                 isHidden: () => this.state.options.filter(option => option.id === 'hide_controls')[0].value,
-            },
-            hide_yt_logo: {
-                label: _t("Hide Youtube logo"),
-                platforms: [this.PLATFORMS.youtube],
-                urlParameter: 'modestbranding=1',
-                isHidden: () => this.state.options.filter(option => option.id === 'hide_controls')[0].value,
-            },
-            hide_dm_logo: {
-                label: _t("Hide Dailymotion logo"),
-                platforms: [this.PLATFORMS.dailymotion],
-                urlParameter: 'ui-logo=0',
-            },
-            hide_dm_share: {
-                label: _t("Hide sharing button"),
-                platforms: [this.PLATFORMS.dailymotion],
-                urlParameter: 'sharing-enable=0',
             },
         };
 
@@ -94,16 +77,7 @@ export class VideoSelector extends Component {
             }
         });
 
-        onMounted(async () => {
-            await Promise.all(this.props.vimeoPreviewIds.map(async (videoId) => {
-                const { thumbnail_url: thumbnailSrc } = await this.http.get(`https://vimeo.com/api/oembed.json?url=http%3A//vimeo.com/${encodeURIComponent(videoId)}`);
-                this.state.vimeoPreviews.push({
-                    id: videoId,
-                    thumbnailSrc,
-                    src: `https://player.vimeo.com/video/${encodeURIComponent(videoId)}`
-                });
-            }));
-        });
+        onMounted(async () => this.prepareVimeoPreviews());
 
         useAutofocus();
 
@@ -232,6 +206,24 @@ export class VideoSelector extends Component {
             div.querySelector('iframe').src = video.src;
             return div;
         });
+    }
+
+    /**
+     * Based on the config vimeo ids, prepare the vimeo previews.
+     */
+    async prepareVimeoPreviews() {
+        return Promise.all(this.props.vimeoPreviewIds.map(async (videoId) => {
+            try {
+                const { thumbnail_url: thumbnailSrc } = await this.http.get(`https://vimeo.com/api/oembed.json?url=http%3A//vimeo.com/${encodeURIComponent(videoId)}`);
+                this.state.vimeoPreviews.push({
+                    id: videoId,
+                    thumbnailSrc,
+                    src: `https://player.vimeo.com/video/${encodeURIComponent(videoId)}`
+                });
+            } catch (err) {
+                console.warn(`Could not get video #${videoId} from vimeo: ${err}`);
+            }
+        }));
     }
 }
 VideoSelector.mediaSpecificClasses = ['media_iframe_video'];

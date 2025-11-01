@@ -1,24 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* payment_mercado_pago
-# 
+# * payment_mercado_pago
+#
 # Translators:
 # Wil Odoo, 2023
 # Junko Augias, 2024
-# 
+#
+# "Junko Augias (juau)" <juau@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-06 13:57+0000\n"
-"PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Junko Augias, 2024\n"
-"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"PO-Revision-Date: 2025-10-28 08:05+0000\n"
+"Last-Translator: \"Junko Augias (juau)\" <juau@odoo.com>\n"
+"Language-Team: Japanese <https://translate.odoo.com/projects/odoo-17/"
+"payment_mercado_pago/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: payment_mercado_pago
 #: model_terms:ir.ui.view,arch_db:payment_mercado_pago.payment_provider_form
@@ -99,7 +102,7 @@ msgstr "決済プロバイダー"
 #. module: payment_mercado_pago
 #: model:ir.model,name:payment_mercado_pago.model_payment_transaction
 msgid "Payment Transaction"
-msgstr "決済トランザクション"
+msgstr "支払取引"
 
 #. module: payment_mercado_pago
 #. odoo-python
@@ -107,13 +110,6 @@ msgstr "決済トランザクション"
 #, python-format
 msgid "Payment was not processed, use another card or contact issuer."
 msgstr "支払が処理されませんでした。別のカードを使用するか、発行会社に連絡して下さい。"
-
-#. module: payment_mercado_pago
-#. odoo-python
-#: code:addons/payment_mercado_pago/models/payment_transaction.py:0
-#, python-format
-msgid "Prices in the currency %s must be expressed in integer values."
-msgstr "通貨の価格%sは整数値で表して下さい。"
 
 #. module: payment_mercado_pago
 #. odoo-python
@@ -190,7 +186,7 @@ msgid ""
 "We are processing your payment. Don't worry, less than 2 business days we "
 "will notify you by e-mail if your payment has been credited or if we need "
 "more information."
-msgstr "お客様のお支払を処理中です。2営業日以内に、お支払いが入金されたかどうか、または詳しい情報が必要な場合は、Eメールでお知らせいたします。"
+msgstr "お支払を処理中です。2営業日以内に、お支払いが入金されたかどうか、または詳しい情報が必要な場合は、Eメールでお知らせいたします。"
 
 #. module: payment_mercado_pago
 #. odoo-python
@@ -215,7 +211,7 @@ msgstr "支払いを処理できませんでしたので、他のカードをご
 msgid ""
 "You have already made a payment for that value. If you need to pay again, "
 "use another card or another payment method."
-msgstr "その金額分の支払はすでに完了しています。再度お支払いが必要な場合は、別のカードまたは別のお支払い方法をご利用下さい。"
+msgstr "その金額分の支払はすでに完了しています。再度支払いが必要な場合は、別のカードまたは別のお支払い方法をご利用下さい。"
 
 #. module: payment_mercado_pago
 #. odoo-python
@@ -247,4 +243,4 @@ msgstr "カードの残高が不足しています。"
 msgid ""
 "Your payment has been credited. In your summary you will see the charge as a"
 " statement descriptor."
-msgstr "お支払いが入金されました。お客様の概要には、明細の説明として請求が表示されます。"
+msgstr "お支払いが入金されました。概要には、取引明細の説明として手数料が表示されます。"

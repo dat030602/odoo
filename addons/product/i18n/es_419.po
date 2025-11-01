@@ -1,26 +1,29 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* product
-# 
+# * product
+#
 # Translators:
 # Wil Odoo, 2023
 # Iran Villalobos López, 2023
-# Fernanda Alvarez, 2024
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2024
-# 
+# Fernanda Alvarez, 2025
+# "Fernanda Alvarez (mfar)" <mfar@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-26 21:55+0000\n"
-"PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2024\n"
-"Language-Team: Spanish (Latin America) (https://app.transifex.com/odoo/teams/41243/es_419/)\n"
+"POT-Creation-Date: 2025-05-07 20:36+0000\n"
+"PO-Revision-Date: 2025-10-30 01:45+0000\n"
+"Last-Translator: \"Fernanda Alvarez (mfar)\" <mfar@odoo.com>\n"
+"Language-Team: Spanish (Latin America) <https://translate.odoo.com/projects/"
+"odoo-17/product/es_419/>\n"
+"Language: es_419\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es_419\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: product
 #. odoo-python
@@ -83,6 +86,7 @@ msgstr "%s %% de descuento"
 
 #. module: product
 #. odoo-python
+#: code:addons/product/models/product_pricelist.py:0
 #: code:addons/product/models/product_tag.py:0
 #: code:addons/product/models/product_template.py:0
 #, python-format
@@ -329,9 +333,9 @@ msgid ""
 "A consumable product is a product for which stock is not managed.\n"
 "A service is a non-material product you provide."
 msgstr ""
-"Un producto almacenable es un producto para el que gestiona existencias. Debe tener instalada la aplicación Inventario.\n"
-"Un producto consumible es un producto para el que no gestiona las existencias.\n"
-"Un servicio es un producto no material."
+"Un producto almacenable es un producto del que gestiona las existencias. Debe tener instalada la aplicación Inventario.\n"
+"Un producto consumible es un producto del que no gestiona las existencias.\n"
+"Un servicio es el producto no material que proporciona."
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__access_token
@@ -390,7 +394,7 @@ msgstr "Actividades"
 #: model:ir.model.fields,field_description:product.field_product_product__activity_exception_decoration
 #: model:ir.model.fields,field_description:product.field_product_template__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Decoración de actividad de excepción"
+msgstr "Decoración de la actividad de excepción"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist__activity_state
@@ -582,7 +586,7 @@ msgstr "Valor del atributo"
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_value_list
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_view_form
 msgid "Attribute Values"
-msgstr "Valores de atributo"
+msgstr "Valores del atributo"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.attribute_action
@@ -864,7 +868,7 @@ msgstr "Contacto"
 #. module: product
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid "Contact Us"
-msgstr "Contáctenos"
+msgstr "Contáctanos"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_packaging__qty
@@ -923,7 +927,7 @@ msgstr "Crear una nueva lista de precios"
 #: model_terms:ir.actions.act_window,help:product.product_template_action
 #: model_terms:ir.actions.act_window,help:product.product_template_action_all
 msgid "Create a new product"
-msgstr "Crear un nuevo producto"
+msgstr "Cree un nuevo producto"
 
 #. module: product
 #: model_terms:ir.actions.act_window,help:product.product_normal_action
@@ -1048,7 +1052,7 @@ msgstr "Precio adicional predeterminado"
 #: model:ir.model.fields,help:product.field_product_template__uom_id
 msgid "Default unit of measure used for all stock operations."
 msgstr ""
-"Unidad de medida predeterminada que se usa para todas las operaciones de "
+"Unidad de medida de uso predeterminado para todas las operaciones de "
 "existencias."
 
 #. module: product
@@ -1257,7 +1261,7 @@ msgstr "Dymo"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__create_variant__dynamic
 msgid "Dynamically"
-msgstr "Dinámico"
+msgstr "Dinámica"
 
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_template_attribute_value_attribute_value_unique
@@ -1351,7 +1355,7 @@ msgstr "Contenido del archivo (base64)"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__raw
 msgid "File Content (raw)"
-msgstr "Contenido del archivo (raw)"
+msgstr "Contenido del archivo (sin procesar)"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_document__file_size
@@ -1541,16 +1545,14 @@ msgstr "Icono que indica una actividad de excepción."
 #: model:ir.model.fields,help:product.field_product_product__message_needaction
 #: model:ir.model.fields,help:product.field_product_template__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
-"Si se encuentra seleccionado, hay nuevos mensajes que requieren su atención."
+msgstr "Si está seleccionado, hay nuevos mensajes que requieren tu atención."
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist__message_has_error
 #: model:ir.model.fields,help:product.field_product_product__message_has_error
 #: model:ir.model.fields,help:product.field_product_template__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
-"Si se encuentra seleccionado, algunos mensajes presentan error de entrega."
+msgstr "Si está seleccionado, algunos mensajes tienen error de envío."
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__product_id
@@ -1637,7 +1639,7 @@ msgstr "Importar plantilla para listas de precios"
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "Import Template for Products"
-msgstr "Importar plantilla de productos"
+msgstr "Plantilla de importación para productos"
 
 #. module: product
 #. odoo-python
@@ -1664,7 +1666,7 @@ msgstr "Lugar de trabajo individual"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__create_variant__always
 msgid "Instantly"
-msgstr "Instantáneo"
+msgstr "Instantánea"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -1680,8 +1682,7 @@ msgstr "Referencia interna"
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__barcode
 msgid "International Article Number used for product identification."
-msgstr ""
-"Número de artículo internacional usado para la identificación de producto."
+msgstr "Número de artículo internacional usado para identificar el producto."
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -1842,7 +1843,7 @@ msgstr ""
 #. module: product
 #: model:res.groups,name:product.group_stock_packaging
 msgid "Manage Product Packaging"
-msgstr "Administrar el embalaje del producto"
+msgstr "Gestionar el embalaje del producto"
 
 #. module: product
 #: model:res.groups,name:product.group_product_variant
@@ -1901,14 +1902,14 @@ msgstr "Cantidad min."
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__display_type__multi
 msgid "Multi-checkbox (option)"
-msgstr "Multi casillas (opciones)"
+msgstr "Varias casillas (opción)"
 
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_attribute_check_multi_checkbox_no_variant
 msgid ""
 "Multi-checkbox display type is not compatible with the creation of variants"
 msgstr ""
-"El tipo de visualización con multi casillas no es compatible con la creación"
+"El tipo de visualización con varias casillas es incompatible con la creación"
 " de variantes"
 
 #. module: product
@@ -2115,7 +2116,7 @@ msgstr "Paquete tipo A"
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "Packaging"
-msgstr "Empaquetado"
+msgstr "Embalaje"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_category__parent_id
@@ -2492,19 +2493,19 @@ msgstr "Paquetes de productos"
 #: model:ir.model.fields,field_description:product.field_product_packaging__name
 #: model_terms:ir.ui.view,arch_db:product.product_packaging_form_view
 msgid "Product Packaging"
-msgstr "Empaquetado del producto"
+msgstr "Embalaje del producto"
 
 #. module: product
 #: model:ir.actions.report,name:product.report_product_packaging
 msgid "Product Packaging (PDF)"
-msgstr "Empaquetado del producto (PDF)"
+msgstr "Embalaje del producto (PDF)"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.action_packaging_view
 #: model:ir.model.fields,field_description:product.field_res_config_settings__group_stock_packaging
 #: model_terms:ir.ui.view,arch_db:product.product_packaging_tree_view
 msgid "Product Packagings"
-msgstr "Empaquetado de los productos"
+msgstr "Embalajes del producto"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_category__product_properties_definition
@@ -2542,7 +2543,7 @@ msgstr "Exclusión de atributos del modelo del producto"
 #. module: product
 #: model:ir.model,name:product.model_product_template_attribute_line
 msgid "Product Template Attribute Line"
-msgstr "Linea de atributo de la plantilla de producto"
+msgstr "Línea del atributo de la plantilla del producto"
 
 #. module: product
 #: model:ir.model,name:product.model_product_template_attribute_value
@@ -2688,7 +2689,7 @@ msgstr "Propiedades"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "Purchase"
-msgstr "Compra"
+msgstr "Compras"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__description_purchase
@@ -3056,7 +3057,7 @@ msgid ""
 "The attribute %(attribute)s must have at least one value for the product "
 "%(product)s."
 msgstr ""
-"El atributo %(attribute)sdebe tener al menos un valor para el producto "
+"El atributo %(attribute)s debe tener al menos un valor para el producto "
 "%(product)s."
 
 #. module: product
@@ -3158,9 +3159,9 @@ msgid ""
 "expressed in the vendor Product Unit of Measure if not any, in the default "
 "unit of measure of the product otherwise."
 msgstr ""
-"La cantidad a comprar de este proveedor para beneficiarse del precio, "
-"expresado en la unidad de medida del producto del proveedor, si no existe, "
-"en la unidad de medida predeterminada del producto."
+"La cantidad a comprar a este proveedor para beneficiarse del precio, "
+"expresada en la unidad de medida del producto del proveedor si existe o en "
+"la unidad de medida predeterminada del producto en caso contrario."
 
 #. module: product
 #. odoo-python
@@ -3246,8 +3247,8 @@ msgid ""
 "This pricelist will be used, instead of the default one, for sales to the "
 "current partner"
 msgstr ""
-"Se utilizará esta lista de precios con este contacto en lugar de la lista de"
-" precios predeterminada"
+"Se utilizará esta lista de precios en lugar de la predeterminada al vender "
+"al contacto actual"
 
 #. module: product
 #. odoo-python
@@ -3344,7 +3345,7 @@ msgstr "Unidad de medida"
 #: model:ir.model.fields,field_description:product.field_product_product__uom_name
 #: model:ir.model.fields,field_description:product.field_product_template__uom_name
 msgid "Unit of Measure Name"
-msgstr "Nombre de unidad de medida"
+msgstr "Nombre de la unidad de medida"
 
 #. module: product
 #. odoo-javascript
@@ -3437,7 +3438,7 @@ msgstr "Conteo de valor"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__price_extra
 msgid "Value Price Extra"
-msgstr "Valor del precio adicional"
+msgstr "Precio adicional del valor"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__standard_price
@@ -3681,10 +3682,11 @@ msgid ""
 "This may cause inconsistencies in computations.\n"
 "Please increase the rounding of those units of measure, or the digits of this Decimal Accuracy."
 msgstr ""
-"La precisión decimal que está indicando es menos exacta que la unidad de medida:\n"
+"Estás configurando una precisión decimal menos exacta que la de las UdM:\n"
 "%s\n"
-"Esto puede hacer que los cálculos no sean consistentes.\n"
-"Aumente el redondeo de esas unidades de medida o los dígitos de esta precisión decimal."
+"Esto puede causar inconsistencias en los cálculos.\n"
+"Aumenta el redondeo de esas unidades de medida o los dígitos de esta "
+"precisión decimal."
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__percent_price
@@ -3709,7 +3711,7 @@ msgid ""
 "link to your file."
 msgstr ""
 "Puede subir un archivo desde su computadora o copiar y pegar un enlace de "
-"internet en su archivo."
+"internet a su archivo."
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_attribute_value__image
@@ -3802,15 +3804,16 @@ msgid ""
 "You cannot define the decimal precision of 'Account' as greater than the "
 "rounding factor of the company's main currency"
 msgstr ""
-"No puede definir una precisión decimal de las cuentas que sea mayor que el "
-"factor de redondeo de la divisa actual de la empresa."
+"No puedes definir la precisión decimal de las cuentas como mayor que el "
+"factor de redondeo de la moneda principal de la empresa."
 
 #. module: product
 #. odoo-python
 #: code:addons/product/models/product_category.py:0
+#: code:addons/product/models/product_category.py:0
 #, python-format
 msgid "You cannot delete the %s product category."
-msgstr "No puede eliminar la categoría de producto %s."
+msgstr "No puedes eliminar la categoría de productos %s."
 
 #. module: product
 #. odoo-python
@@ -3843,8 +3846,8 @@ msgstr ""
 msgid ""
 "You cannot delete this product category, it is the default generic category."
 msgstr ""
-"No puede eliminar esta categoría de producto, es la categoría predeterminada"
-" general."
+"No puedes eliminar esta categoría de productos, es la categoría genérica "
+"predeterminada."
 
 #. module: product
 #. odoo-python

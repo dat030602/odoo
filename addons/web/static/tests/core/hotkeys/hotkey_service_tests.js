@@ -54,6 +54,20 @@ QUnit.test("register / unregister", async (assert) => {
     assert.verifySteps([key]);
 });
 
+QUnit.test("should ignore when IME is composing", async (assert) => {
+    const key = "enter";
+    env.services.hotkey.add(key, () => assert.step(key));
+    await nextTick();
+
+    triggerHotkey(key);
+    await nextTick();
+    assert.verifySteps([key]);
+
+    triggerHotkey(key, false, { isComposing: true });
+    await nextTick();
+    assert.verifySteps([]);
+});
+
 QUnit.test("hotkey handles wrongly formed KeyboardEvent", async (assert) => {
     // This test's aim is to assert that Chrome's autofill bug is handled.
     // When filling a form with the autofill feature of Chrome, a keyboard event without any
@@ -236,6 +250,36 @@ QUnit.test("data-hotkey", async (assert) => {
     await nextTick();
 
     assert.verifySteps(["click"]);
+});
+
+QUnit.test("input with [accesskey] is correctly focused", async (assert) => {
+    const inputEl = document.createElement("input");
+    inputEl.className = "foo";
+    inputEl.accessKey = "a";
+    inputEl.onclick = () => assert.step("click");
+    inputEl.textContent = "foo";
+    target.appendChild(inputEl);
+
+    // div must only have [accesskey] attribute
+    assert.containsOnce(target, ".foo");
+    assert.containsOnce(target, ".foo[accesskey]");
+    assert.containsNone(target, ".foo[data-hotkey]");
+
+    // press any hotkey, i.e. the left arrow
+    triggerHotkey("arrowleft");
+    await nextTick();
+
+    // div should now only have [data-hotkey] attribute
+    assert.containsOnce(target, ".foo");
+    assert.containsOnce(target, ".foo[data-hotkey]");
+    assert.containsNone(target, ".foo[accesskey]");
+
+    // try to press the related hotkey, just to make sure it works
+    assert.verifySteps([]);
+    triggerHotkey("a", true);
+    await nextTick();
+    assert.verifySteps(["click"]);
+    assert.strictEqual(document.activeElement, inputEl);
 });
 
 QUnit.test("invisible data-hotkeys are not enabled. ", async (assert) => {
@@ -722,6 +766,7 @@ QUnit.test("registrations and elements belong to the correct UI owner", async (a
     await nextTick();
 
     destroy(comp2);
+    await Promise.resolve();
     triggerHotkey("a");
     triggerHotkey("b", true);
     await nextTick();

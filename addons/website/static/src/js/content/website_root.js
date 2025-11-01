@@ -108,7 +108,7 @@ export const WebsiteRoot = publicRootData.PublicRoot.extend({
                 const key = await this._getGMapAPIKey(refetch);
 
                 window.odoo_gmap_api_post_load = (async function odoo_gmap_api_post_load() {
-                    await this._startWidgets(undefined, {editableMode: editableMode});
+                    await this._startWidgets($("section.s_google_map"), {editableMode: editableMode});
                     resolve(key);
                 }).bind(this);
 
@@ -205,7 +205,7 @@ export const WebsiteRoot = publicRootData.PublicRoot.extend({
      */
     _unslugHtmlDataObject: function (dataAttr) {
         var repr = $('html').data(dataAttr);
-        var match = repr && repr.match(/(.+)\((\d+),(.*)\)/);
+        var match = repr && repr.match(/(.+)\((-?\d+),(.*)\)/);
         if (!match) {
             return null;
         }

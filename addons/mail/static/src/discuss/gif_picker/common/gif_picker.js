@@ -61,7 +61,6 @@ export class GifPicker extends Component {
             "scroller",
             () => {
                 if (!this.state.showCategories) {
-                    this.state.loadingGif = true;
                     if (!this.showFavorite) {
                         this.search();
                     } else {
@@ -114,7 +113,6 @@ export class GifPicker extends Component {
                     return;
                 }
                 this.clear();
-                this.state.loadingGif = true;
                 this.search();
                 if (this.searchTerm) {
                     this.closeCategories();
@@ -272,9 +270,6 @@ export class GifPicker extends Component {
             );
             this.offset += 20;
             this.state.favorites.gifs.push(...results);
-            for (const gif of results) {
-                this.pushGif(gif);
-            }
         } catch {
             this.state.loadingError = true;
         }

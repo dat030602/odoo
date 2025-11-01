@@ -1,24 +1,28 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* uom
-# 
+# * uom
+#
 # Translators:
 # Wil Odoo, 2023
 # Larissa Manderfeld, 2024
-# 
+#
+# "Larissa Manderfeld (lman)" <lman@odoo.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 21:56+0000\n"
-"PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Larissa Manderfeld, 2024\n"
-"Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
+"PO-Revision-Date: 2025-08-26 01:40+0000\n"
+"Last-Translator: \"Larissa Manderfeld (lman)\" <lman@odoo.com>\n"
+"Language-Team: Spanish <https://translate.odoo.com/projects/odoo-17/uom/es/>"
+"\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
-"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. module: uom
 #: model_terms:ir.ui.view,arch_db:uom.product_uom_form_view
@@ -39,7 +43,7 @@ msgid ""
 "                                </span>"
 msgstr ""
 "<span class=\"oe_grey oe_inline\">\n"
-"                                    p.ej: 1*(esta unidad)=ratio*(unidad de referencia)\n"
+"                                    p. ej: 1*(esta unidad)=ratio*(unidad de referencia)\n"
 "                                </span>"
 
 #. module: uom
@@ -50,12 +54,12 @@ msgstr "Activo"
 #. module: uom
 #: model_terms:ir.actions.act_window,help:uom.product_uom_form_action
 msgid "Add a new unit of measure"
-msgstr "Agregar una nueva unidad de medida"
+msgstr "Añadir una nueva unidad de medida"
 
 #. module: uom
 #: model_terms:ir.actions.act_window,help:uom.product_uom_categ_form_action
 msgid "Add a new unit of measure category"
-msgstr "Agregar una nueva categoría de unidad de medida"
+msgstr "Añadir una nueva categoría de unidad de medida"
 
 #. module: uom
 #: model_terms:ir.ui.view,arch_db:uom.uom_uom_view_search
@@ -65,7 +69,7 @@ msgstr "Archivado"
 #. module: uom
 #: model:ir.model.fields,field_description:uom.field_uom_uom__factor_inv
 msgid "Bigger Ratio"
-msgstr "Mayor ratio"
+msgstr "Ratio más grande"
 
 #. module: uom
 #: model:ir.model.fields.selection,name:uom.selection__uom_uom__uom_type__bigger
@@ -86,7 +90,7 @@ msgstr "Color"
 #. module: uom
 #: model:ir.model.fields,field_description:uom.field_uom_uom__ratio
 msgid "Combined Ratio"
-msgstr "Proporción combinada"
+msgstr "Ratio combinado"
 
 #. module: uom
 #: model:ir.model.fields,help:uom.field_uom_uom__category_id
@@ -95,7 +99,7 @@ msgid ""
 "same category. The conversion will be made based on the ratios."
 msgstr ""
 "La conversión entre las unidades de medidas sólo puede ocurrir si pertenecen"
-" a la misma categoría. La conversión se basará en los índices establecidos."
+" a la misma categoría. La conversión se hará en función de las ratios."
 
 #. module: uom
 #: model:ir.model.fields,field_description:uom.field_uom_category__create_uid
@@ -118,7 +122,7 @@ msgstr "Días"
 #: model:ir.model.fields,field_description:uom.field_uom_category__display_name
 #: model:ir.model.fields,field_description:uom.field_uom_uom__display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr "Nombre para mostrar"
 
 #. module: uom
 #: model:uom.uom,name:uom.product_uom_dozen
@@ -142,7 +146,7 @@ msgid ""
 "Measure in this category: 1 * (this unit) = ratio * (reference unit)"
 msgstr ""
 "Cuantas veces esta unidad de medida es más grande que la unidad de medida de"
-" referencia en esta categoría: 1 * (esta unidad) = razón * (unidad de "
+" referencia en esta categoría: 1 * (esta unidad) = ratio * (unidad de "
 "referencia)"
 
 #. module: uom
@@ -266,7 +270,7 @@ msgstr ""
 #. module: uom
 #: model:ir.model.constraint,message:uom.constraint_uom_uom_factor_gt_zero
 msgid "The conversion ratio for a unit of measure cannot be 0!"
-msgstr "¡El ratio de conversión para una unidad de medida no puede ser 0!"
+msgstr "¡La ratio de conversión para una unidad de medida no puede ser 0!"
 
 #. module: uom
 #. odoo-python
@@ -309,7 +313,7 @@ msgstr ""
 #: code:addons/uom/models/uom_uom.py:0
 #, python-format
 msgid "The value of ratio could not be Zero"
-msgstr "El valor de la proporción no puede ser cero"
+msgstr "El valor de la ratio no puede ser cero"
 
 #. module: uom
 #: model:ir.model.fields,field_description:uom.field_uom_uom__uom_type
@@ -434,7 +438,7 @@ msgid ""
 "You must define a conversion rate between several Units of\n"
 "            Measure within the same category."
 msgstr ""
-"Debe definir un ratio de conversión entre varias unidades de\n"
+"Debe definir una proporción de conversión entre varias unidades de\n"
 "medida dentro de la misma categoría."
 
 #. module: uom

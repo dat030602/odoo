@@ -201,7 +201,7 @@ class MailActivity(models.Model):
             # Date.context_today is correct because date_deadline is a Date and is meant to be
             # expressed in user TZ
             base = force_base_date
-        elif activity_type.delay_from == 'previous_activity' and 'activity_previous_deadline' in self.env.context:
+        elif activity_type.delay_from == 'previous_activity' and self.env.context.get('activity_previous_deadline'):
             base = fields.Date.from_string(self.env.context.get('activity_previous_deadline'))
         else:
             base = fields.Date.context_today(self)
@@ -343,11 +343,9 @@ class MailActivity(models.Model):
 
         # subscribe (batch by model and user to speedup)
         for model, activity_data in activities._classify_by_model().items():
-            per_user = dict()
+            per_user = defaultdict(list)
             for activity in activity_data['activities'].filtered(lambda act: act.user_id):
-                if activity.user_id not in per_user:
-                    per_user[activity.user_id] = [activity.res_id]
-                else:
+                if activity.res_id not in per_user[activity.user_id]:
                     per_user[activity.user_id].append(activity.res_id)
             for user, res_ids in per_user.items():
                 pids = user.partner_id.ids if user.partner_id in readable_user_partners else user.sudo().partner_id.ids
@@ -674,7 +672,7 @@ class MailActivity(models.Model):
         activity_domain = [('res_model', '=', res_model)]
         is_filtered = domain or limit or offset
         if is_filtered:
-            activity_domain.append(('res_id', 'in', DocModel._search(domain or [], offset, limit) if is_filtered else []))
+            activity_domain.append(('res_id', 'in', DocModel._search(domain or [], offset, limit, DocModel._order) if is_filtered else []))
         all_activities = Activity.with_context(active_test=not fetch_done).search(
             activity_domain, order='date_done DESC, date_deadline ASC')
         all_ongoing = all_activities.filtered('active')

@@ -278,7 +278,7 @@ class MailPluginController(http.Controller):
         Returns enrichment data for a given domain, in case an error happens the response will
         contain an enrichment_info key explaining what went wrong
         """
-        if domain in iap_tools._MAIL_DOMAIN_BLACKLIST:
+        if domain in iap_tools._MAIL_PROVIDERS:
             # Can not enrich the provider domain names (gmail.com; outlook.com, etc)
             return {'enrichment_info': {'type': 'missing_data'}}
 
@@ -357,7 +357,7 @@ class MailPluginController(http.Controller):
                 if response.ok:
                     new_company_info['image_1920'] = base64.b64encode(response.content)
             except Exception as e:
-                _logger.warning('Download of image for new company %s failed, error %s', new_company_info.name, e)
+                _logger.warning('Download of image for new company %s failed, error %s', new_company_info['name'], e)
 
         if iap_data.get('country_code'):
             country = request.env['res.country'].search([('code', '=', iap_data['country_code'].upper())])

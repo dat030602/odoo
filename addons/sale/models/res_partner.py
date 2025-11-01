@@ -73,23 +73,31 @@ class ResPartner(models.Model):
     def _compute_credit_to_invoice(self):
         # EXTENDS 'account'
         super()._compute_credit_to_invoice()
+        if not (commercial_partners := self.commercial_partner_id & self):
+            return  # nothing to compute
         company = self.env.company
         domain = [
             ('company_id', '=', company.id),
-            ('partner_id', 'in', self.ids),
+            ('partner_invoice_id', 'any', [
+                ('commercial_partner_id', 'in', commercial_partners.ids),
+            ]),
+            ('amount_to_invoice', '>', 0),
             ('state', '=', 'sale')
         ]
 
-        group = self.env['sale.order']._read_group(domain, ['partner_id', 'currency_id'], ['amount_to_invoice:array_agg'])
-        for partner, currency, amount_to_invoice_agg in group:
-            amount_to_invoice_sum = sum(max(float(amount), 0) for amount in amount_to_invoice_agg)
+        group = self.env['sale.order']._read_group(
+            domain,
+            ['partner_invoice_id', 'currency_id'],
+            ['amount_to_invoice:sum'],
+        )
+        for partner, currency, amount_to_invoice_sum in group:
             credit_company_currency = currency._convert(
                 amount_to_invoice_sum,
                 company.currency_id,
                 company,
                 fields.Date.context_today(self)
             )
-            partner.credit_to_invoice += credit_company_currency
+            partner.commercial_partner_id.credit_to_invoice += credit_company_currency
 
     def unlink(self):
         # Unlink draft/cancelled SO so that the partner can be removed from database

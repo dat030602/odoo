@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import lxml.html
 
+from odoo.addons.sms_twilio.tests.common import MockSmsTwilioApi
 from odoo.addons.test_mass_mailing.tests.common import TestMassMailCommon
 from odoo.fields import Command
 from odoo.tests.common import users, tagged
@@ -75,6 +76,45 @@ class TestMailingTest(TestMassMailCommon):
         with self.mock_mail_gateway(), self.assertRaises(Exception):
             mailing_test.send_mail_test()
 
+    @users('user_marketing')
+    @mute_logger('odoo.addons.mail.models.mail_render_mixin')
+    def test_mailing_test_button_links(self):
+        """This tests that the link provided by the View in Browser snippet is correctly replaced
+        when sending a test mailing while the Unsubscribe button's link isn't, to preserve the testing route
+        /unsubscribe_from_list.
+        This also checks that other links containing the /view route aren't replaced along the way.
+        """
+        mailing = self.test_mailing_bl.with_env(self.env)
+        mailing_test = self.env['mailing.mailing.test'].create({
+            'email_to': 'test@test.com',
+            'mass_mailing_id': mailing.id,
+        })
+        # Test if link snippets are correctly converted
+        mailing.write({
+            'body_html':
+                '''<p>
+                Hello <a href="http://www.example.com/view">World<a/>
+                    <div class="o_snippet_view_in_browser o_mail_snippet_general pt16 pb16" style="text-align: center; padding-left: 15px; padding-right: 15px;">
+                        <a href="/view">
+                            View Online
+                        </a>
+                    </div>
+                    <div class="o_mail_footer_links">
+                        <a role="button" href="/unsubscribe_from_list" class="btn btn-link">Unsubscribe</a>
+                    </div>
+                </p>''',
+            'preview': 'Preview {{ object.name }}',
+            'subject': 'Subject {{ object.name }}',
+        })
+
+        with self.mock_mail_gateway():
+            mailing_test.send_mail_test()
+
+        body_html = self._mails.pop()['body']
+        self.assertIn(f'/mailing/{mailing.id}/view', body_html)  # Is replaced
+        self.assertIn('/unsubscribe_from_list', body_html)  # Isn't replaced
+        self.assertIn('http://www.example.com/view', body_html)  # Isn't replaced
+
     def test_mailing_test_equals_reality(self):
         """ Check that both test and real emails will format the qweb and inline
         placeholders correctly in body and subject. """
@@ -111,3 +151,48 @@ class TestMailingTest(TestMassMailCommon):
             subject=expected_subject,
             body_content=expected_body,
         )
+
+
+@tagged('mailing_manage', 'twilio')
+class TestMailingSMSTest(TestMassMailCommon, MockSmsTwilioApi):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls._setup_sms_twilio(cls.user_marketing.company_id)
+
+    def test_mass_sms_test_button_twilio(self):
+        """ Test the testing tool when twilio is activated on company """
+        self._setup_sms_twilio(self.user_marketing.company_id)
+
+        mailing = self.env['mailing.mailing'].create({
+            'name': 'TestButton',
+            'subject': 'Subject {{ object.name }}',
+            'preview': 'Preview {{ object.name }}',
+            'state': 'draft',
+            'mailing_type': 'sms',
+            'body_plaintext': 'Hello {{ object.name }}',
+            'mailing_model_id': self.env['ir.model']._get('res.partner').id,
+        })
+        mailing_test = self.env['mailing.sms.test'].with_user(self.user_marketing).create({
+            'numbers': '+32456001122',
+            'mailing_id': mailing.id,
+        })
+
+        for error_type, exp_state, exp_msg in [
+            (False, 'outgoing', '<ul><li>Test SMS successfully sent to +32456001122</li></ul>'),
+            (
+                'wrong_number_format', 'outgoing',  # not sure why outgoing but hey
+                "<ul><li>Test SMS could not be sent to +32456001122: The number you're trying to reach is not correctly formatted</li></ul>"
+            ),
+        ]:
+            with self.subTest(error_type=error_type):
+                with self.with_user('user_marketing'):
+                    with self.mock_sms_twilio_gateway(error_type=error_type):
+                        mailing_test.action_send_sms()
+
+                notification = mailing.message_ids[0]
+                self.assertEqual(notification.body, exp_msg)
+                self.assertSMS(
+                    self.env["res.partner"], '+32456001122', exp_state,
+                )

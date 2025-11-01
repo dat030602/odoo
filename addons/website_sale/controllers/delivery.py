@@ -26,7 +26,9 @@ class WebsiteSaleDelivery(WebsiteSale):
 
     @http.route(['/shop/carrier_rate_shipment'], type='json', auth='public', methods=['POST'], website=True)
     def cart_carrier_rate_shipment(self, carrier_id, **kw):
-        order = request.website.sale_get_order(force_create=True)
+        order = request.website.sale_get_order()
+        if not order:
+            raise UserError(_("Your cart is empty."))
 
         if not int(carrier_id) in order._get_delivery_methods().ids:
             raise UserError(_('It seems that a delivery method is not compatible with your address. Please refresh the page and try again.'))
@@ -77,7 +79,7 @@ class WebsiteSaleDelivery(WebsiteSale):
             # the price with another pricelist at this state since the customer has already accepted
             # the amount and validated the payment.
             order_sudo.env.remove_to_compute(order_sudo._fields['pricelist_id'], order_sudo)
-        elif order_sudo.partner_shipping_id.name.endswith(order_sudo.name):
+        elif order_sudo.name in order_sudo.partner_shipping_id.name:
             self._create_or_edit_partner(
                 partial_shipping_address,
                 edit=True,
@@ -101,17 +103,33 @@ class WebsiteSaleDelivery(WebsiteSale):
                     name=_('Anonymous express checkout partner for order %s', order_sudo.name),
             )
 
-        # Returns the list of develivery carrier available for the sale order.
+        # Returns the list of delivery carrier available for the sale order.
         return sorted([{
             'id': carrier.id,
             'name': carrier.name,
             'description': carrier.website_description,
-            'minorAmount': payment_utils.to_minor_currency_units(
-                WebsiteSaleDelivery._get_rate(carrier, order_sudo, is_express_checkout_flow=True)['price'],
-                order_sudo.currency_id,
-            ),
-        } for carrier in order_sudo._get_delivery_methods()],
-        key=lambda carrier: carrier['minorAmount'])
+            'minorAmount': payment_utils.to_minor_currency_units(price, order_sudo.currency_id),
+        } for carrier, price in WebsiteSaleDelivery._get_carriers_express_checkout(order_sudo).items()
+        ], key=lambda carrier: carrier['minorAmount'])
+
+    @staticmethod
+    def _get_carriers_express_checkout(order_sudo):
+        """ Return available carriers and their prices for the given order.
+
+        :param sale.order order_sudo: The sudoed sales order.
+        :rtype: dict
+        :return: A dict with a `delivery.carrier` recordset as key, and a rate shipment price as
+                 value.
+        """
+        res = {}
+        for carrier in order_sudo._get_delivery_methods():
+            rate = WebsiteSaleDelivery._get_rate(carrier, order_sudo, is_express_checkout_flow=True)
+            if rate['success']:
+                fname = f'{carrier.delivery_type}_use_locations'
+                if hasattr(carrier, fname) and getattr(carrier, fname):
+                    continue  # Express checkout doesn't allow selecting locations.
+                res[carrier] = rate['price']
+        return res
 
     @http.route('/shop/access_point/set', type='json', auth='public', methods=['POST'], website=True, sitemap=False)
     def set_access_point(self, access_point_encoded):
