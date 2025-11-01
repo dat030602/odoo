@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_partner_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="vmax_general.view_partner_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='special_notes']" position="after">
+                <field name="budget_code" string="Mã ngân sách nhà nước"/>
+		<field name="identification_no" string="CCCD"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

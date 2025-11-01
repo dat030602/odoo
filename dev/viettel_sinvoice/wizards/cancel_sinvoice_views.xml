@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_sinvoice_cancel_form">
+			<field name="name">sinvoice.cancel.form</field>
+			<field name="model">viettel.sinvoice.cancel</field>
+			<field name="arch" type="xml">
+				<form string="Sinvoice cancel">
+					<sheet>
+						<group>
+                            <field name="additionalReferenceDesc" string="Hợp đồng thoả thuận"/>
+                            <field name="additionalReferenceDate" string="Ngày thoả thuận"/>
+                            <field name="reason" string="Lý do huỷ"/>
+	                    </group>
+						<footer>
+	                        <button string="Cancel S-Invoice" name="do_cancel" type="object" default_focus="1" class="btn-primary"/>
+	                        <button string="Discard" class="btn-secondary" special="cancel"/>
+	                    </footer>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_sinvoice_cancel" model="ir.actions.act_window">
+			<field name="name">Sinvoice cancel</field>
+			<field name="res_model">viettel.sinvoice.cancel</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+			<field name="view_mode">form</field>
+		</record>
+
+    </data>
+</odoo>

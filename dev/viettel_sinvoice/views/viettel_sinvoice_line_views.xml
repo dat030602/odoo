@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_viettel_sinvoice_line_tree" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.line.tree</field>
+            <field name="model">viettel.sinvoice.line</field>
+            <field name="arch" type="xml">
+                <tree string="Viettel S-Invoice Line" create="0" edit="0">
+                	<field name="sinvoice_id"/>
+                	<field name="name"/>
+                	<field name="product_id"/>
+                	<field name="quantity"/>
+                	<field name="uom_id" string="Unit"/>
+                	<field name="account_id"/>
+                	<field name="sinvoice_line_tax_id"/>
+                	<field name="price_unit" optional="hide"/>
+                	<field name="price_subtotal" optional="hide"/>
+                	<field name="price_total" optional="hide"/>
+                	<field name="price_tax" optional="show"/>
+                	<field name="state"/>
+                	<field name="is_valid"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_viettel_sinvoice_line_form" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.line.form</field>
+            <field name="model">viettel.sinvoice.line</field>
+            <field name="arch" type="xml">
+                <form string="Viettel S-Invoice Line" create="0" edit="0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sinvoice_id"/>
+                                <field name="is_valid"/>
+                                <field name="product_id"/>
+                                <field name="name"/>
+                                <field name="account_id"/>
+                                <field name="sinvoice_line_tax_id"/>
+                                <field name="org_line_id" invisible="child_line_id == False"/>
+                                <field name="child_line_id" widget="many2many_tags" invisible="child_line_id == False"/>
+                            </group>
+                            <group>
+                                <field name="quantity"/>
+                                <field name="uom_id" groups="uom.group_uom"/>
+                                <field name="price_unit" string="Unit Price"/>
+                                <field name="price_subtotal" string="Subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <field name="price_tax"/>
+                                <field name="price_total" string="Total" groups="account.group_show_line_subtotals_tax_included"/>
+                                <field name="price_discount"/>
+                                <field name="discount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_viettel_sinvoice_line_filter" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.line.search</field>
+            <field name="model">viettel.sinvoice.line</field>
+            <field name="arch" type="xml">
+                <search string="Search S-Invoice Items">
+                    <field name="name" string="name" filter_domain="['|', '|', ('name', 'ilike', self), ('sinvoice_id', 'ilike', self), ('product_id', 'ilike', self)]"/>
+                    <separator/>
+                    <filter name="invoiceIssuedDate" string="Issued Date"  date="invoiceIssuedDate"/>
+                    <filter name="create_date" string="Created Date" date="create_date"/>
+                    <filter string="Is Valid" name="is_valid" domain="[('is_valid', '=', True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="S-Invoice" name="group_sinvoice_id" domain="[]" context="{'group_by': 'sinvoice_id'}"/>
+                        <filter string="Contact" name="group_partner" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Legal Customer" name="group_partner_vat" domain="[]" context="{'group_by': 'partner_vat_id'}"/>
+                        <filter string="State" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Tax" name="group_sinvoice_line_tax_id" domain="[]" context="{'group_by': 'sinvoice_line_tax_id'}"/>
+                        <separator/>
+                        <filter string="Create Date" name="group_create_date" domain="[]" context="{'group_by': 'create_date'}"/>
+                        <filter string="Issued Date" name="group_invoiceIssuedDate" domain="[]" context="{'group_by': 'invoiceIssuedDate'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_open_viettel_sinvoice_line" model="ir.actions.act_window">
+            <field name="name">S-Invoice Items</field>
+            <field name="res_model">viettel.sinvoice.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_viettel_sinvoice_line_tree"/>
+            <field name="context">{'search_default_is_valid': 1, 'search_default_group_sinvoice_line_tax_id': 1, 'create': 0}</field>
+        </record>
+        <menuitem id="menu_viettel_sinvoice_line"
+          action="action_open_viettel_sinvoice_line"
+          parent="account.menu_finance_receivables"
+          groups="base.group_no_one"
+          sequence="101"/>
+    </data>
+</odoo>

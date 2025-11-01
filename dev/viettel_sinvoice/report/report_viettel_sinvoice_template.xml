@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="external_layout_customize_empty">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+    </template>
+	<template id="report_viettel_viettel_sinvoice_template">
+		<t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="viettel_sinvoice.external_layout_customize_empty">
+                    <t t-set="doc" t-value="o"/>
+                    <div class="container pt-3" style="min-height:1250px;font-family:'Verdana',sans-serif; font-size: 13px;line-height: 1.7;border: 3px #333 double;">
+                        <div class="row">
+                            <div class="col-3" style="text-align:center;">
+                                <img t-if="doc.branch_id.partner_id.image_1920" t-att-src="image_data_uri(doc.branch_id.partner_id.image_1920)" style="max-height: 65px;" alt="Logo"/>
+                            </div>
+                            <div class="col-9">
+                                <div style="text-transform:uppercase;font-weight:bold;">Công ty TNHH công nghệ Hoàng Mai</div>
+                                <div><strong>Mã số thuế: 0309474284</strong></div>
+                                <div>Địa chỉ: 396 - 398 Nguyễn Kiệm, Phường 03, Quận Phú Nhuận, TP Hồ Chí Minh</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-2">
+                                Số tài khoản:
+                            </div>
+                            <div class="col-7 text-left" style="margin-left: -40px">
+                            <t t-set="bks" t-value="doc.branch_id.get_description_banks()"/>
+                            <t t-foreach="bks" t-as="b">
+                                <div>
+                                    <span t-esc="b"/>
+                                </div>
+                            </t>
+                          </div>
+                        </div>
+                        <div class="row pt-3">
+                            <div class="col-6" style="text-align:right;">
+                                <div style="text-transform:uppercase;color:#245AA7;font-weight:700;font-size:25px;">Hóa đơn giá trị gia tăng</div>
+                                <div style="text-transform:uppercase;color:#245AA7;font-size:22px;font-style:italic;font-weight:300;">Invoice (VAT)</div>
+                                <div class="pt-1"><strong>Bản thể hiện của hóa đơn điện tử</strong></div>
+                                <div style="font-style:italic;">(Electronic invoice display)</div>
+                            </div>
+                            <div class="col-6 pt-1" style="padding-left:50px;line-height:1.8">
+                                <div>Mẫu số <em>(Form):</em> <strong t-field="doc.templateCode"/></div>
+                                <div>Ký hiệu <em>(Serial No.):</em> <strong t-field="doc.invoiceSeries"/></div>
+                                <div>Số <em>(Invoice No.):</em> <span style="color:red;font-size:20px;font-weight:bold;"> NHÁP</span></div>
+                                <div>Ngày hóa đơn <em>(Invoice date):</em> <strong t-field="doc.invoiceIssuedDate" options="{'format': 'dd-mm-YY'}"/></div>
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <div class="col-12" style="line-height:2;">
+                                <div>Đơn vị bán hàng <em>(Seller):</em> <span style="text-transform:uppercase;font-weight:bold;" t-field="doc.branch_id.name"/></div>
+                                <div>Mã số thuế <em>(Tax code):</em> <strong t-field="doc.branch_id.vat"/> </div>
+                                <div>Địa chỉ <em>(Address):</em> <span t-field="doc.branch_id.partner_id.partner_address"/></div>
+                                <div>Số tài khoản <em>(Account No.):</em> <span t-field="doc.branch_id.acc_number"/><span t-if="doc.branch_id.bank">; </span><span t-field="doc.branch_id.bank"/></div>
+                                <div>Họ tên người mua hàng <em>(Customer's name):</em> <span t-if="doc.customer_name" t-field="doc.customer_name"/></div>
+                                <div>Tên đơn vị <em>(Company's name):</em> <span style="text-transform:uppercase;" t-if="doc.legal_customer_name" t-field="doc.legal_customer_name"/></div>
+                                <div>Mã số thuế <em>(Tax code):</em> <span t-if="doc.customer_vat" t-field="doc.customer_vat"/></div>
+                                <div>Địa chỉ <em>(Address):</em> <span t-if="doc.customer_address" t-field="doc.customer_address"/></div>
+                                <div>Hình thức thanh toán <em>(Method of payment):</em> CK/TM
+                                <span style="padding-left:50px;">Số tài khoản <em>(A/C No.):</em></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <style>
+                                table {
+                                    width: 100%;
+                                    border: 1px solid black;
+                                    border-collapse: collapse;
+                                }
+                                th {
+                                    text-align:center;
+                                    height:50px;
+                                    border: 1px solid black;
+                                    vertical-align: middle;
+                                    font-weight:normal;
+                                    padding:0 2px;
+                                }
+                                td {
+                                    padding:0 5px;
+                                    border: 1px solid black;
+                                    vertical-align: middle;
+                                }
+                            </style>
+                            <div class="col-12 p-0 m-0">
+                                <table class="text-center">
+                                    <tr>
+                                        <th rowspan="2" width="8"><strong>STT</strong><br/><em>(No.)</em></th>
+                                        <th rowspan="2" width="300"><strong>Tên hàng hóa, dịch vụ</strong><br/><em>(Name of goods and services)</em></th>
+                                        <th rowspan="2"><strong>Đơn vị</strong><br/><em>(Unit)</em></th>
+                                        <th rowspan="2" width="50"><strong>Số<br/> lượng</strong><br/><em>(Quantity)</em></th>
+                                        <th rowspan="2"><strong>Đơn giá</strong></th>
+                                        <th rowspan="2" width="100"><strong>Tiền<br/> trước thuế</strong><br/><em>(Amount<br/>before tax)</em></th>
+                                        <th colspan="2"><strong>Thuế GTGT</strong><br/><em>(Tax)</em></th>
+                                        <th rowspan="2" width="100"><strong>Thành tiền<br/> sau thuế</strong><br/><em>(Amount<br/> after tax)</em></th>
+                                    </tr>
+                                    <tr>
+                                        <th><strong>%</strong><br/><em>(Percent)</em></th>
+                                        <th><strong>Số tiền</strong><br/><em>(Amount)</em></th>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>3</td>
+                                        <td>4</td>
+                                        <td>5</td>
+                                        <td>6=4x5</td>
+                                        <td>7</td>
+                                        <td>8=6x7</td>
+                                        <td>9=6+8</td>
+                                    </tr>
+                                    <!-- Start show product -->
+                                    <t t-set="i" t-value="0"/>
+                                    <t t-foreach="doc.sinvoice_line.sorted(key=lambda l:l.selection)" t-as="line">
+                                        <tr>
+                                            <t t-if="line.selection == '1'" t-set="i" t-value="i+1"/>
+                                            <td><span t-if="line.selection == '1'" t-esc="i"/></td>
+                                            <td style="text-align:left;"><span t-field="line.name"/></td>
+                                            <td><span t-field="line.uom_id.name"/></td>
+                                            <td class="text-right"><span t-field="line.quantity"/></td>
+                                            <td class="text-right"><span t-esc="abs(line.price)"/></td>
+                                            <td class="text-right"><span t-esc="abs(line.price_subtotal)"/></td>
+                                            <td class="text-right"><span t-esc="'{:,.0f}'.format(line.sinvoice_line_tax_id.amount)"/></td>
+                                            <td class="text-right"><span t-esc="abs(line.price_tax)"/></td>
+                                            <td class="text-right"><span t-esc="abs(line.price_total)"/></td>
+                                        </tr>
+                                    </t>
+                                    <!-- End show product -->
+                                    <tr style="text-align:right;border-top:1px solid black;">
+                                      <td colspan="8">Cộng tiền hàng <em>(Subtotal): </em></td>
+                                      <td><span t-field="doc.amount_untaxed"/></td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                      <td colspan="8">Cộng tiền thuế <em>(VAT Tax): </em></td>
+                                      <td><span t-field="doc.amount_tax"/></td>
+                                    </tr>
+                                    <tr style="text-align:right;">
+                                      <td colspan="8">Tổng cộng tiền thanh toán <em>(Grand total): </em></td>
+                                      <td><span t-field="doc.amount_total"/></td>
+                                    </tr>
+                                    <tr style="text-align:left;">
+                                      <td colspan="9">Số tiền viết bằng chữ <em>(Total amount in words):</em>&#160;<span t-esc="doc.get_amount_text(doc.amount_total)"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row pt-3 text-center">
+                            <div style="width: 30%;">
+                                <div><b>Người mua hàng <em>(Customer)</em></b></div>
+                                <div>Ký, ghi rõ họ tên <em>(Signature, full name)</em></div>
+                            </div>
+                            <div style="width: 30%;">
+                                <div><b>Người bán hàng <br/> <em>(Seller)</em></b></div>
+                                <div>Ký, ghi rõ họ tên <br/> <em>(Signature, full name)</em></div>
+                            </div>
+                            <div style="width: 40%;">
+                                <div><b>Thủ trưởng đơn vị <em>(Director)</em></b></div>
+                                <div>Ký, đóng dấu, ghi rõ họ tên <br/> <em>(Signature, full name)</em></div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="action_report_viettel_sinvoice_customize" model="ir.actions.report">
+        <field name="name">Hoá đơn nháp</field>
+        <field name="model">viettel.sinvoice</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">viettel_sinvoice.report_viettel_viettel_sinvoice_template</field>
+        <field name="report_file">viettel_sinvoice.report_viettel_viettel_sinvoice_template</field>
+        <field name="binding_model_id" ref="viettel_sinvoice.model_viettel_sinvoice"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="hoangmai_module.paperformat_a4_portrait_customize_empty"/>
+    </record>
+</odoo>

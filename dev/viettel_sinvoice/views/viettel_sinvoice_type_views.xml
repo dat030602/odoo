@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_viettel_sinvoice_type_tree" model="ir.ui.view">
+        <field name="name">viettel.sinvoice.type.tree</field>
+        <field name="model">viettel.sinvoice.type</field>
+        <field name="arch" type="xml">
+            <tree string="Viettel Sinvoice">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_viettel_sinvoice_type_form" model="ir.ui.view">
+        <field name="name">viettel.sinvoice.type.form</field>
+        <field name="model">viettel.sinvoice.type</field>
+        <field name="arch" type="xml">
+            <form string="Invoice Type">
+            <header>
+            </header>
+                <sheet string="Invoice Type">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_open_viettel_sinvoice_type" model="ir.actions.act_window">
+        <field name="name">S-Invoice Types</field>
+        <field name="res_model">viettel.sinvoice.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_viettel_sinvoice_type_tree"/>
+        <field name="context">{'create': False, 'edit': False}</field>
+    </record>
+    <menuitem id="menu_viettel_sinvoice_conf"
+              name="Viettel S-Invoice Services"
+              parent="account.menu_finance_configuration"
+              groups="account.group_account_manager"
+              sequence="105"/>
+    <menuitem id="menu_viettel_sinvoice_type"
+              action="action_open_viettel_sinvoice_type"
+              parent="viettel_sinvoice.menu_viettel_sinvoice_conf"
+              groups="account.group_account_manager"
+              sequence="106"/>
+</odoo>

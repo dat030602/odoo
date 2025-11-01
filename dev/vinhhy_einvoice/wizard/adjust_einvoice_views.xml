@@ -1,0 +1,33 @@
+<?xml version='1.0' ?>
+<odoo>
+    <record id="adjust_einvoice_form_view" model="ir.ui.view">
+        <field name="name">adjust.einvoice.form.view</field>
+        <field name="model">adjust.einvoice</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <group>
+                    <div class="oe_grey" colspan="4">
+                        Choose Adjust Invoice Type.
+                        <br/>
+                    </div>
+                </group>
+                <group>
+                    <field name="adjustmentInvoiceType"/>
+                </group>
+                <footer>
+                    <button name="action_create_adjust_inv" string="Confirm" type="object" attrs="{'invisible': [('adjustmentInvoiceType', '=', False)]}"/>
+                    <button name="cancel" string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_adjust_einvoice" model="ir.actions.act_window">
+        <field name="name">Choose Adjust Invoice Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">adjust.einvoice</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="vinhhy_einvoice_service.adjust_einvoice_form_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

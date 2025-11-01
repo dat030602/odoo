@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_einvoice_tax_tree" model="ir.ui.view">
+        <field name="name">einvoice.tax.tree</field>
+        <field name="model">einvoice.tax</field>
+        <field name="arch" type="xml">
+            <tree string="VH E-Invoice Tax" editable="top">
+                <field name="name"/>
+                <field name="amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_open_einvoice_tax" model="ir.actions.act_window">
+        <field name="name">E-Invoice Tax</field>
+        <field name="res_model">einvoice.tax</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_einvoice_tax_tree"/>
+    </record>
+</odoo>
