@@ -9,7 +9,7 @@ class Partner(models.Model):
     district_id = fields.Many2one(comodel_name='res.country.district', string='District', domain="[('state_id','=', state_id)]")
     ward_id = fields.Many2one(comodel_name='res.country.ward', string='Ward', domain="[('district_id', '=', district_id)]")
 
-    shipping_address = fields.Char(compute='_compute_complete_shipping_address')
+    vi_full_address = fields.Char(compute='_compute_vi_full_address')
 
     @staticmethod
     def replace_address_name(pattern, name):
