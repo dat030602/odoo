@@ -1,5 +1,6 @@
 from odoo import models, fields
-
+from psycopg2.extras import Json
+import requests
 
 class ResCompany(models.Model):
     _inherit = 'res.company'

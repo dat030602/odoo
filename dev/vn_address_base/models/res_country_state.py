@@ -2,14 +2,20 @@ import re
 from odoo import models, fields
 
 
-class CountryState(models.Model):
+class ResCountryState(models.Model):
     _inherit = 'res.country.state'
-    _order = 'code_ext'
+    _order = 'code'
 
-    def _make_code_ext(self):
-        for record in self:
-            if not record.code_ext:
-                record.code_ext = record.code
-
-    code_ext = fields.Char(string='State Code', required=True, compute=_make_code_ext, store=True)
-    district_ids = fields.One2many('res.country.district', 'state_id')
+    phone_code = fields.Integer(string='Phone Code')
+    code_number = fields.Integer(string='Code Number')
+    division_type = fields.Selection([
+        ("tỉnh", "Tỉnh"),
+        ("thành phố trung ương", "Thành phố trung ương"),
+        ("huyện", "Huyện"),
+        ("quận", "Quận"),
+        ("thành phố", "Thành phố"),
+        ("thị xã", "Thị xã"),
+        ("xã", "Xã"),
+        ("thị trấn", "Thị trấn"),
+        ("phường", "Phường"),
+    ], string='Division Type')
