@@ -4,7 +4,6 @@ from asyncore import write
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, AccessError
 from urllib.parse import urlencode
-from odoo.addons.web.controllers.main import xml2json_from_elementtree
 from datetime import datetime
 import base64
 
@@ -41,6 +40,33 @@ HEADERS = {
 TIMEOUT = 5
 
 API_URL = "https://ehoadondientu.com/MyService.asmx"
+
+
+def xml2json_from_elementtree(el, preserve_whitespaces=False):
+    """ xml2json-direct
+    Simple and straightforward XML-to-JSON converter in Python
+    New BSD Licensed
+    http://code.google.com/p/xml2json-direct/
+    """
+    res = {}
+    if el.tag[0] == "{":
+        ns, name = el.tag.rsplit("}", 1)
+        res["tag"] = name
+        res["namespace"] = ns[1:]
+    else:
+        res["tag"] = el.tag
+    res["attrs"] = {}
+    for k, v in el.items():
+        res["attrs"][k] = v
+    kids = []
+    if el.text and (preserve_whitespaces or el.text.strip() != ''):
+        kids.append(el.text)
+    for kid in el:
+        kids.append(xml2json_from_elementtree(kid, preserve_whitespaces))
+        if kid.tail and (preserve_whitespaces or kid.tail.strip() != ''):
+            kids.append(kid.tail)
+    res["children"] = kids
+    return res
 
 
 class VinhHyEInvoice(models.Model):
@@ -99,7 +125,7 @@ class VinhHyEInvoice(models.Model):
     customer_name = fields.Char('Contact Name', related='partner_id.name', store=True)
     customer_code = fields.Char('Customer Code', related='partner_id.ref', store=True)
     customer_vat = fields.Char('VAT', related='partner_id.vat', store=True, tracking=True)
-    customer_address = fields.Char('VAT Address', related='partner_id.street', store=True)
+    customer_address = fields.Char('VAT Address', related='partner_id.vi_full_address', store=True)
     customer_email = fields.Char('Customer Emails', related='partner_id.email', tracking=True)
     is_individual_customer = fields.Boolean(related='partner_id.is_company', store=True)
     tax_id = fields.Many2one('account.tax', string='VAT', compute='_compute_vat', store=True, tracking=True)

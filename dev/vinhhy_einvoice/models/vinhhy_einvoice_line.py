@@ -59,5 +59,5 @@ class VinhHyEInvoiceLine(models.Model):
     company_currency_id = fields.Many2one('res.currency', related='vh_inv_id.company_currency_id', readonly=True)
     base_einv_line_id = fields.Many2one('vinhhy.einvoice.line', string='Base Vinh Hy E-Invoice Line')
     # inv_line_source_id = fields.Many2one('account.move.line', string='Odoo Invoice Line')
-    sale_line_source_id = fields.Many2one('sale.order.line', string='Sale Order Line')
+    sale_line_id = fields.Many2one('sale.order.line', string='Sale Order Line')
     company_id = fields.Many2one('res.company', related='vh_inv_id.company_id', default=lambda self: self.env.company)

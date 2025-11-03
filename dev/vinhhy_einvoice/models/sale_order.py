@@ -39,18 +39,18 @@ class SaleOrder(models.Model):
 
     def _prepare_einv_line_values(self):
         line_vals = []
-        for line in self.order_line:
+        for line in self.order_line.filtered(lambda l: l.display_type is False):
             name = line.product_id.name or ''
             # Recompute tax for VAT Invoice
             val = (0, 0, {
                 'name': name,
-                'price_unit': line.product_id.lst_price if line.product_id else line.price_unit,
+                'price_unit': line.price_unit,
                 'quantity': line.product_uom_qty,
                 'discount': line.discount,
-                'uom_id': line.product_id.uom_id.id if line.product_id else line.product_uom.id,
+                'uom_id': line.product_id.uom_id.id,
                 'product_id': line.product_id.id or False,
                 'tax_id': line.tax_id[0] if line.tax_id else False,
-                'sale_line_source_id': line.id #FIXME
+                'sale_line_id': line.id #FIXME
             })
             line_vals.append(val)
         return line_vals
@@ -60,7 +60,7 @@ class SaleOrder(models.Model):
         invs = self.vh_einv_ids
         if len(invs) == 1:
             return {
-                'name': _('Vinh Hy E-Invoice'),
+                'name': _('E-Invoice'),
                 'type': 'ir.actions.act_window',
                 'view_mode': 'form',
                 'res_model': 'vinhhy.einvoice',

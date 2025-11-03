@@ -11,7 +11,7 @@
     'website': "https://erp.vmax.vn/",
     'category': '',
     'version': '1.0',
-    'depends': ['base', 'account', 'stock', 'sale'],
+    'depends': ['base', 'account', 'stock', 'sale', 'vn_address_base'],
 
     # always loaded
     'data': [
