@@ -25,13 +25,6 @@ class AccountMove(models.Model):
     sinvoice_ref = fields.Char('S-Invoice Reference', compute='_compute_sinvoice_reference', store=False)
     sinvoice_date = fields.Datetime('S-Invoice Date', readonly=True)
     sinvoice_count = fields.Integer('S-Invoices Count', compute='_compute_sinvoice_reference')
-    default_viettel_sinvoice_template_id = fields.Many2one('viettel.sinvoice.template', 'Default Template')
-
-    @api.onchange('team_id')
-    def _onchange_team_id(self):
-        for move in self:
-            if move.team_id:
-                move.default_viettel_sinvoice_template_id = self.team_id.default_viettel_sinvoice_template_id
 
     @api.depends('viettel_sinvoice_ids')
     def _compute_sinvoice_reference(self):
@@ -61,7 +54,7 @@ class AccountMove(models.Model):
                 'discount': line.discount,
                 'uom_id': line.product_id.uom_id.id,
                 'product_id': line.product_id.id or False,
-                'sinvoice_line_tax_id': line.tax_ids.ids[0] if line.tax_ids else False,
+                'tax_id': line.tax_ids.ids[0] if line.tax_ids else False,
             }
             if float_compare(line.price_unit * line.quantity, 0, 0) == -1:
                 val['selection'] = '3'
@@ -74,7 +67,7 @@ class AccountMove(models.Model):
         if len(self) > 1:
             group_keys = [
                 'selection', 'name', 'origin', 'account_id', 'price_unit', 'discount', 'uom_id', 'product_id',
-                'sinvoice_line_tax_id']
+                'tax_id']
             grouper = itemgetter(*group_keys)
             grouped_rslt = []
             for keys, grouped_values in groupby(sorted(line_vals, key=grouper), key=grouper):
@@ -87,6 +80,13 @@ class AccountMove(models.Model):
             for item in line_vals:
                 format_list_results.append((0, 0, item))
         return format_list_results
+
+    def _get_meta_data(self):
+        """
+        Override this method to customize metadata.
+        Returns a list of metadata dictionaries.
+        """
+        return []
 
     def get_default_viettel_sinvoice_template(self):
         return self.env['viettel.sinvoice.template'].search([('company_id', '=', self.env.company.id)], limit=1).id

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_vnpay_token_provider_form" model="ir.ui.view">
+        <field name="name">payment.provider.form.vnpay.token</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position="inside">
+              <group invisible="code != 'vnpay_token'" name="vnpay_token_credentials">
+                <!-- Sử dụng chung field từ payment_vnpay -->
+                <field name="vnpay_tmn_code" string="TMN Code" 
+                       invisible="code != 'vnpay_token'" required="code == 'vnpay_token'"/>
+                <field name="vnpay_hash_secret_key" string="Hash Secret Key" password="True"
+                       invisible="code != 'vnpay_token'" required="code == 'vnpay_token'"/>
+                <field name="vnpay_api_url" string="API URL" 
+                       invisible="code != 'vnpay_token'"/>
+                <field name="vnpay_version" string="Version" 
+                       invisible="code != 'vnpay_token'"/>
+                <field name="vnpay_currency_code" string="Currency Code" 
+                       invisible="code != 'vnpay_token'"/>
+                <!-- VNPay Token specific fields -->
+                <field name="vnpay_token_return_url" string="Token Return URL" 
+                       invisible="code != 'vnpay_token'"/>
+                <field name="vnpay_token_cancel_url" string="Token Cancel URL" 
+                       invisible="code != 'vnpay_token'"/>
+                <field name="vnpay_token_webhook_url" string="Token Webhook URL" 
+                       invisible="code != 'vnpay_token'"/>
+                <field name="vnpay_token_create_url" string="Token Create URL" 
+                       invisible="code != 'vnpay_token'"/>
+                <field name="vnpay_token_pay_url" string="Token Pay URL" 
+                       invisible="code != 'vnpay_token'"/>
+                <field name="vnpay_token_delete_url" string="Token Delete URL" 
+                       invisible="code != 'vnpay_token'"/>
+              </group>
+            </group>
+        </field>
+    </record>
+</odoo>

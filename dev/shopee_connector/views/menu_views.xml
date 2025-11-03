@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_shopee_sale_order" model="ir.actions.act_window">
+            <field name="name">Sale Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('shopee_connector_id','!=',False)]</field>
+        </record>
+
+        <!-- Main Menu -->
+        <menuitem id="menu_shopee_connector_root" 
+                  name="Shopee Connector" 
+                  web_icon="shopee_connector,static/description/icon.png"
+                  sequence="50"/>
+ 
+        <!-- Sub Menus -->
+        <menuitem id="menu_shopee_sale_order"
+                  name="Sale Orders"
+                  parent="menu_shopee_connector_root"
+                  action="action_shopee_sale_order"
+                  sequence="5"/>
+
+        <menuitem id="menu_shopee_response_list" 
+                  name="Response" 
+                  parent="menu_shopee_connector_root" 
+                  action="action_shopee_response" 
+                  sequence="10"/>
+
+        <menuitem id="menu_shopee_product_mapping" 
+                  name="Products" 
+                  parent="menu_shopee_connector_root" 
+                  action="action_shopee_product_mapping" 
+                  sequence="20"/>
+
+        <menuitem id="menu_shopee_connector_config_list" 
+                  name="Config" 
+                  parent="menu_shopee_connector_root" 
+                  action="action_shopee_connector" 
+                  sequence="100"/>
+
+    </data>
+</odoo>

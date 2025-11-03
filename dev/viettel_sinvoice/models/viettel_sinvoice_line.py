@@ -23,7 +23,7 @@ class ViettelSinvoiceData(models.Model):
     _name = "viettel.sinvoice.line"
     _description = "S-Invoice Line Items"
 
-    @api.depends('price_unit', 'discount', 'sinvoice_line_tax_id', 'quantity',
+    @api.depends('price_unit', 'discount', 'tax_id', 'quantity',
                  'product_id', 'sinvoice_id.partner_vat_id', 'sinvoice_id.partner_id', 'sinvoice_id.currency_id',
                  'sinvoice_id.company_id', 'sinvoice_id.date_invoice', 'sinvoice_id.date')
     def _compute_price(self):
@@ -31,7 +31,7 @@ class ViettelSinvoiceData(models.Model):
             currency = line.sinvoice_id and line.sinvoice_id.currency_id
             price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
             partner = line.sinvoice_id.partner_vat_id or line.sinvoice_id.partner_id
-            taxes = line.sinvoice_line_tax_id.compute_all(price, currency, line.quantity, product=line.product_id, partner=partner)
+            taxes = line.tax_id.compute_all(price, currency, line.quantity, product=line.product_id, partner=partner)
             # Set Unit Price after discount
             line.update({
                 'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
@@ -78,7 +78,7 @@ class ViettelSinvoiceData(models.Model):
     price_discount = fields.Monetary(string='Price Discount', compute='_compute_price', store=True)
     quantity = fields.Float(string='Quantity', digits='Product Unit of Measure', default=1.0)
     discount = fields.Float(string='Discount (%)', digits='Discount', default=0.0)
-    sinvoice_line_tax_id = fields.Many2one('account.tax', string='Taxes',
+    tax_id = fields.Many2one('account.tax', string='Taxes',
                                            domain=[('type_tax_use', '!=', 'none'), '|', ('active', '=', False),
                                                    ('active', '=', True)])
 
@@ -172,9 +172,9 @@ class ViettelSinvoiceData(models.Model):
                     or self.account_id.tax_ids or self.sinvoice_id.company_id.account_sale_tax_id
             tax = self.sinvoice_id.fiscal_position_id.map_tax(taxes)
             if tax:
-                self.sinvoice_line_tax_id = tax[0] or False
+                self.tax_id = tax[0] or False
             if self.sinvoice_id.invoiceType.code == '03XKNB':
-                self.sinvoice_line_tax_id = False
+                self.tax_id = False
             product = self_lang.product_id
             if product:
                 self.name = product.name

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_country_form_view_inherit" model="ir.ui.view">
+        <field name="name">res.country.form</field>
+        <field name="model">res.country</field>
+        <field name="inherit_id" ref="base.view_country_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="sync_address_base_from_api" type="object" class="oe_stat_button" string="Sync Address"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>

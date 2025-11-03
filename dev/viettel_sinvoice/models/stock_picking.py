@@ -20,6 +20,9 @@ class Picking(models.Model):
         for picking in self:
             picking.sinvoice_ref = ' - '.join(sorted(picking.sinvoice_ids.filtered(lambda s: s.state not in ('draft', 'confirm')).mapped('name')))
             picking.sinvoice_count = len(picking.sinvoice_ids)
+    
+    def _get_meta_data(self):
+        return {}
 
     def _prepare_sinvoice_line_values(self):
         line_vals = []
@@ -34,12 +37,12 @@ class Picking(models.Model):
                 'quantity': line.product_uom_qty,
                 'discount': 0,
                 'uom_id': line.product_uom.id,
-                'sinvoice_line_tax_id': False,
+                'tax_id': False,
                 'selection': '1',
             })
             line_vals.append(val)
         return line_vals
-
+    
     def create_data_sinvoice(self):
         if not self.viettel_sinvoice_template_id:
             raise UserError("You must select a template for invoicing !")
@@ -52,23 +55,13 @@ class Picking(models.Model):
             # S-Invoice Data Information
             'invoiceIssuedDate': fields.Datetime.now(),
             'adjustmentType': '1',
-            # Internal Transfer Information
-            'commandOf': self.viettel_sinvoice_template_id.branch_id.partner_id.name or '',
-            'commandNo': '',
-            'contractNo': '',
-            'commandDes': self.origin or '',
-            'commandDate': fields.Datetime.now(),
-            'exportAt': self.location_id.vat_description or '',
-            'importAt': self.location_dest_id.vat_description or '',
-            'vehicle': self.vehicle,
+            'sinvoice_line': self._prepare_sinvoice_line_values(),
+            **self._get_meta_data()
         }
-        sinvoice_line_vals = self._prepare_sinvoice_line_values()
-        sinvoice_val['sinvoice_line'] = sinvoice_line_vals
         sinvoice_id = self.env['viettel.sinvoice'].create(sinvoice_val)
         return sinvoice_id
 
     def action_create_data_sinvoice(self):
-
         sinvoice_id = self.create_data_sinvoice()
         view = self.env.ref('viettel_sinvoice.view_viettel_sinvoice_form')
         return {
@@ -77,8 +70,8 @@ class Picking(models.Model):
             'view_mode': 'form',
             'res_model': 'viettel.sinvoice',
             'views': [(view.id, 'form')],
-            'view_id': view.id,
             'target': 'current',
             'res_id': sinvoice_id.id,
             'context': dict(self.env.context, create=False)
         }
+ 

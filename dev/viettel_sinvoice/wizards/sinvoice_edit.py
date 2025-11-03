@@ -125,7 +125,7 @@ class ViettelSinvoiceEdit(models.TransientModel):
                 'uom_id': line.uom_id.id,
                 'quantity': line.quantity,
                 'price_unit': line.price_unit,
-                'sinvoice_line_tax_id': line.sinvoice_line_tax_id and line.sinvoice_line_tax_id.id or False,
+                'tax_id': line.tax_id and line.tax_id.id or False,
                 'price_total': line.price_subtotal,
                 'account_id': line.account_id.id,
             }))
@@ -160,18 +160,18 @@ class ViettelSinvoiceEdit(models.TransientModel):
             if s.partner_vat_id:
                 s.new_customer_code = s.partner_vat_id.ref or False
                 s.new_customer_vat = s.partner_vat_id.vat or False
-                s.new_customer_address = s.partner_vat_id.partner_address or False
+                s.new_customer_address = s.partner_vat_id.vi_full_address or False
             elif s.partner_id:
                 s.new_customer_code = s.partner_id.ref or False
                 s.new_customer_vat = s.partner_id.vat or False
-                s.new_customer_address = s.partner_id.partner_address or False
+                s.new_customer_address = s.partner_id.vi_full_address or False
             else:
                 s.customer_code = False
                 s.customer_vat = False
                 s.customer_address = False
             customer_emails = [(s.partner_vat_id and s.partner_vat_id.email or False),
                                (s.partner_id and s.partner_id.email or False)]
-            s.new_customer_email = '; '.join([el for el in customer_emails if el])
+            s.new_customer_email = '; '.join([str(el) for el in customer_emails if el and isinstance(el, str)])
 
     def _prepare_sinvoice_line_values(self):
 
@@ -191,7 +191,7 @@ class ViettelSinvoiceEdit(models.TransientModel):
                 'quantity': line.quantity,
                 'discount': line.discount,
                 'uom_id': line.product_id.uom_id.id,
-                'sinvoice_line_tax_id': line.sinvoice_line_tax_id and line.sinvoice_line_tax_id.id or False,
+                'tax_id': line.tax_id and line.tax_id.id or False,
             }
             if sinvoice_edit_type == 'amount':
                 val['edit_type'] = line.edit_type
@@ -266,14 +266,14 @@ class ViettelSInvoiceLineEdit(models.TransientModel):
     _name = 'viettel.sinvoice.line.edit'
     _description = 'Viettel S-Invoice Line Edit'
 
-    @api.depends('price_unit', 'discount', 'sinvoice_line_tax_id', 'quantity',
+    @api.depends('price_unit', 'discount', 'tax_id', 'quantity',
                  'product_id', 'sinvoice_id.partner_vat_id', 'sinvoice_id.currency_id', 'sinvoice_id.company_id',
                  'sinvoice_id.date_invoice', 'sinvoice_id.date')
     def _compute_price(self):
         for line in self:
             currency = line.sinvoice_id and line.sinvoice_id.currency_id
             price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.sinvoice_line_tax_id.compute_all(price, currency, line.quantity, product=line.product_id,
+            taxes = line.tax_id.compute_all(price, currency, line.quantity, product=line.product_id,
                                                           partner=line.sinvoice_id.partner_vat_id)
             line.update({
                 'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
@@ -304,7 +304,7 @@ class ViettelSInvoiceLineEdit(models.TransientModel):
                              ondelete='set null', index=True)
     quantity = fields.Float(string='Quantity', default=1)
     price_unit = fields.Float(string='Unit Price')
-    sinvoice_line_tax_id = fields.Many2one('account.tax', string='Taxes',
+    tax_id = fields.Many2one('account.tax', string='Taxes',
                                            domain=[('type_tax_use', '!=', 'none'), '|', ('active', '=', False),
                                                    ('active', '=', True)])
     discount = fields.Float(string='Discount (%)', default=0.0)
@@ -383,7 +383,7 @@ class ViettelSInvoiceLineEdit(models.TransientModel):
                     or self.account_id.tax_ids or self.sinvoice_id.company_id.account_sale_tax_id
             tax = self.sinvoice_id.fiscal_position_id.map_tax(taxes)
             if tax:
-                self.sinvoice_line_tax_id = tax[0] or False
+                self.tax_id = tax[0] or False
             product = self_lang.product_id
             self.name = product.name
 

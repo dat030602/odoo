@@ -138,7 +138,7 @@
                                             <td class="text-right"><span t-field="line.quantity"/></td>
                                             <td class="text-right"><span t-esc="abs(line.price)"/></td>
                                             <td class="text-right"><span t-esc="abs(line.price_subtotal)"/></td>
-                                            <td class="text-right"><span t-esc="'{:,.0f}'.format(line.sinvoice_line_tax_id.amount)"/></td>
+                                            <td class="text-right"><span t-esc="'{:,.0f}'.format(line.tax_id.amount)"/></td>
                                             <td class="text-right"><span t-esc="abs(line.price_tax)"/></td>
                                             <td class="text-right"><span t-esc="abs(line.price_total)"/></td>
                                         </tr>

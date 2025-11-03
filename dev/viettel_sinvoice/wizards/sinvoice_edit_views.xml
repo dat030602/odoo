@@ -65,7 +65,7 @@
 										<field name="org_line_id" invisible="1"/>
 										<field name="product_id"/>
 										<field name="name"/>
-										<field name="sinvoice_line_tax_id"/>
+										<field name="tax_id"/>
 										<field name="uom_id" groups="uom.group_uom"/>
 										<field name="quantity"/>
 										<field name="price_unit"/>
@@ -85,7 +85,7 @@
 											<group>
 												<field name="quantity"/>
 												<field name="price_unit" string="Unit Price"/>
-												<field name="sinvoice_line_tax_id" options="{'no_create': True}" context="{'tree_view_ref': 'account.account_tax_view_tree', 'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id', '=', parent.company_id)]"/>
+												<field name="tax_id" options="{'no_create': True}" context="{'tree_view_ref': 'account.account_tax_view_tree', 'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id', '=', parent.company_id)]"/>
 												<field name="price_subtotal" string="Subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
 												<field name="price_total" string="Total" groups="account.group_show_line_subtotals_tax_included"/>
 											</group>

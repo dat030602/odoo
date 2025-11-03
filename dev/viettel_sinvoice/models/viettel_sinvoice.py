@@ -88,18 +88,15 @@ class ViettelSInvoice(models.Model):
         # ('in_receipt', 'Purchase Receipt'),
     ], readonly=True, string='Internal Invoice Type')
 
-    company_id = fields.Many2one('res.company', string='Company', readonly=True,
-                                 default=lambda self: self.env['res.company']._company_default_get('account.move'))
+    company_id = fields.Many2one('res.company', string='Company', readonly=True, default=lambda self: self.env['res.company']._company_default_get('account.move'))
     user_id = fields.Many2one('res.users', string='User', readonly=True, default=lambda self: self.env.user, copy=False)
     journal_id = fields.Many2one('account.journal', string='Journal', readonly=True, default=_default_journal)
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position', readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True, default=_default_currency, tracking=True)
-    company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id',
-                                          string="Company Currency", readonly=True)
+    company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', string="Company Currency", readonly=True)
 
     partner_id = fields.Many2one('res.partner', 'S-Invoice Contact', tracking=True)
-    partner_vat_id = fields.Many2one('res.partner', 'Legal S-invoice Customer',
-                                     tracking=True, domain="[('is_company','=',True)]")
+    partner_vat_id = fields.Many2one('res.partner', 'Legal S-invoice Customer', tracking=True, domain="[('is_company','=',True)]")
     # Customer Information
     customer_name = fields.Char('Contact Name', compute='_compute_customer_info', store=True)
     legal_customer_name = fields.Char('S-Invoice Customer Name', compute='_compute_customer_info', store=True)
@@ -140,10 +137,8 @@ class ViettelSInvoice(models.Model):
     invoiceSeries = fields.Char('Invoice Series', related='viettel_sinvoice_template_id.series', store=True)
     invoiceIssuedDate = fields.Datetime('Invoice Issued Date', copy=False, readonly=True)
     currencyCode = fields.Char("Currency Code", related='currency_id.name')
-    adjustmentType = fields.Selection(ADJUSTMENT_TYPE, string='Adjustment Type', default='1', required=True,
-                                      tracking=True, copy=False)
-    adjustmentInvoiceType = fields.Selection(ADJUSTMENT_INVOICE_TYPE, string='Adjustment Invoice Type',
-                                             copy=False, default=False)
+    adjustmentType = fields.Selection(ADJUSTMENT_TYPE, string='Adjustment Type', default='1', required=True, tracking=True, copy=False)
+    adjustmentInvoiceType = fields.Selection(ADJUSTMENT_INVOICE_TYPE, string='Adjustment Invoice Type', copy=False, default=False)
     invoiceNo = fields.Char('Invoice No', readonly=True)
     code_of_tax = fields.Char('Code of Tax', readonly=True)
     originalInvoiceIssueDate = fields.Datetime('Original Invoice Issue Date', copy=False)  # Thời gian phát hành hóa đơn gốc
@@ -165,25 +160,13 @@ class ViettelSInvoice(models.Model):
     reservationCode = fields.Char('Reservation Code', readonly=True, copy=False)
     userName = fields.Char(related='user_id.name', string='User Name')
     cancel_desc = fields.Char('Cancel Note', copy=False)
-    attachment_ids = fields.Many2many('ir.attachment', 'sinvoice_ir_attachments_rel', 'sinvoice_id', 'attachment_id',
-                                      string='Attachments', copy=False)
+    attachment_ids = fields.Many2many('ir.attachment', 'sinvoice_ir_attachments_rel', 'sinvoice_id', 'attachment_id', string='Attachments', copy=False)
     downloaded = fields.Boolean("Downloaded", default=False, compute='_compute_download_pdf')
     note = fields.Text('Note', readonly=True, copy=False)
     refund_note = fields.Text('Refund Note', tracking=True, copy=False)
     # Thông tin Hoá đơn xuất kho kiêm vận chuyển nội bộ
     picking_id = fields.Many2one('stock.picking', 'Stock Picking', readonly=True, copy=False)
     invoice_type_code = fields.Char(related='invoiceType.code', readonly=True)
-    privateNo = fields.Char('Private No', readonly=True)  # Số nội bộ
-    orderNo = fields.Char('Order No', readonly=True)  # Số đơn hàng
-    commandNo = fields.Char('Command No', readonly=True)  # Lệnh điều động số
-    contractNo = fields.Char('Contract No', readonly=True) # Hợp đồng số
-
-    commandOf = fields.Char('Command Of', readonly=True, default=get_command_of)  #  Lệnh điều động của)
-    commandDes = fields.Char('Command Description', readonly=True)  # Về việc
-    commandDate = fields.Datetime('Command Date', readonly=True)  # Lệnh điêu động ngày
-    exportAt = fields.Char('Export At', readonly=True)  #  Xuất tại kho
-    importAt = fields.Char('Import At', readonly=True)  # Nhập tại kho
-    vehicle = fields.Char('Vehicle', readonly=True)  # Phương tiện vận chuyển
 
     invoices_total = fields.Monetary('Invoices Total', compute='_compute_invoices_total', store=True)
     invoice_sinvoice_diff = fields.Float('Sinvoice Diff', compute='_compute_invoices_total', store=True)
@@ -197,7 +180,7 @@ class ViettelSInvoice(models.Model):
             #     raise UserError('Khách hàng là Đơn vị doanh nghiệp phải có thông tin Mã số thuế !')
             if not s.customer_address:
                 raise UserError('Khách hàng là phải có thông tin Địa chỉ !')
-            taxes = s.sinvoice_line.filtered(lambda x: x.selection in ('1', '3')).mapped('sinvoice_line_tax_id')
+            taxes = s.sinvoice_line.filtered(lambda x: x.selection in ('1', '3')).mapped('tax_id')
             if len(set(taxes)) > 1:
                 raise UserError('Phải sử dụng một loại thuế duy nhất trên cùng một hóa đơn điện tử!')
 
@@ -226,36 +209,37 @@ class ViettelSInvoice(models.Model):
     @api.depends('partner_id', 'partner_vat_id')
     def _compute_customer_info(self):
         for s in self:
-            s.customer_name = s.partner_id.name or False
-            s.legal_customer_name = s.partner_vat_id.name or False
+            s.customer_name = s.partner_id.name
+            s.legal_customer_name = s.partner_vat_id.name
             if s.partner_vat_id:
                 s.is_individual_customer = False
                 s.customer_code = s.partner_vat_id.ref
-                s.customer_vat = s.partner_vat_id.vat or False
-                s.customer_address = s.partner_vat_id.full_address or False
-                s.customer_budget_code = s.partner_vat_id.budget_code or False
-                s.customer_id_no = s.partner_vat_id.identification_no or False
+                s.customer_vat = s.partner_vat_id.vat
+                s.customer_address = s.partner_vat_id.vi_full_address
+                s.customer_budget_code = s.partner_vat_id.budget_code
+                s.customer_id_no = s.partner_vat_id.identification_no
             elif s.partner_id:
                 s.is_individual_customer = True
-                s.customer_code = s.partner_id.ref or False
-                s.customer_vat = s.partner_id.vat or False
-                s.customer_address = s.partner_id.full_address or False
-                s.customer_budget_code = s.partner_id.budget_code or False
-                s.customer_id_no = s.partner_id.identification_no or False
+                s.customer_code = s.partner_id.ref
+                s.customer_vat = s.partner_id.vat
+                s.customer_address = s.partner_id.vi_full_address
+                s.customer_budget_code = s.partner_id.budget_code
+                s.customer_id_no = s.partner_id.identification_no
             else:
                 s.customer_code = False
                 s.customer_vat = False
                 s.customer_address = False
                 s.customer_budget_code = False
                 s.customer_id_no = False
-            customer_emails = [(s.partner_vat_id and s.partner_vat_id.email or False),
-                               (s.partner_id and s.partner_id.email or False)]
-            s.customer_email = '; '.join([el for el in customer_emails if el])
+            customer_emails = []
+            if s.partner_vat_id and s.partner_vat_id.email:
+                customer_emails.append(s.partner_vat_id.email)
+            if s.partner_id and s.partner_id.email:
+                customer_emails.append(s.partner_id.email)
+            s.customer_email = '; '.join(customer_emails)
             if not s.fiscal_position_id:
-                s.fiscal_position_id = (
-                                               s.partner_vat_id.property_account_position_id and self.partner_vat_id.property_account_position_id.id) \
-                                       or (
-                                               s.partner_id.property_account_position_id and self.partner_id.property_account_position_id.id) or False
+                s.fiscal_position_id = (s.partner_vat_id.property_account_position_id and self.partner_vat_id.property_account_position_id.id) \
+                                        or (s.partner_id.property_account_position_id and self.partner_id.property_account_position_id.id)
 
     def get_children_sinv(self, obj):
         def _parent(obj, lst):
@@ -378,8 +362,8 @@ class ViettelSInvoice(models.Model):
                 'discount': 0.0,  # TODO: default not use discount field in template line.discount,
                 'itemDiscount': round(line.price_discount, 0)
             }
-            if line.sinvoice_line_tax_id:
-                item['taxPercentage'] = line.sinvoice_line_tax_id.amount
+            if line.tax_id:
+                item['taxPercentage'] = line.tax_id.amount
             # Hoá đơn xuất kho kiêm vận chuyển nội bộ
             elif line.sinvoice_id.invoiceType.code == '03XKNB':
                 item['taxPercentage'] = -1
@@ -537,9 +521,9 @@ class ViettelSInvoice(models.Model):
 
     def _get_tax_breakdown(self):
         tax_breakdown = {}
-        for line in self.sinvoice_line.filtered(lambda l: l.selection in ('1', '3') ):
-            if line.sinvoice_line_tax_id:
-                tax_id = line.sinvoice_line_tax_id
+        for line in self.sinvoice_line.filtered(lambda l: l.selection in ('1', '3')):
+            if line.tax_id:
+                tax_id = line.tax_id
                 if tax_id.id not in tax_breakdown:
                     tax_breakdown[tax_id.id] = {
                         'taxPercentage': tax_id.amount,
@@ -588,97 +572,27 @@ class ViettelSInvoice(models.Model):
         }]
 
     def _get_meta_data(self):
-        # For internal transfer
-        values = []
-        if self.commandNo:
-            values.append({
-                "keyTag": "commandNo",
-                "keyLabel": "Lệnh điều động số",
-                "dateValue": None,
-                "stringValue": self.commandNo,
-                "numberValue": None,
-                "valueType": "text",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        if self.contractNo:
-            values.append({
-                "keyTag": "contractNo",
-                "keyLabel": "Hợp đồng số",
-                "dateValue": None,
-                "stringValue": self.contractNo,
-                "numberValue": None,
-                "valueType": "text",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        if self.commandOf and self.invoiceType.code == '03XKNB':
-            values.append({
-                "keyTag": "commandOf",
-                "keyLabel": "Lệnh điều động của",
-                "dateValue": None,
-                "stringValue": self.commandOf,
-                "numberValue": None,
-                "valueType": "text",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        if self.commandDes:
-            values.append({
-                "keyTag": "commandDes",
-                "keyLabel": "Về việc",
-                "dateValue": None,
-                "stringValue": self.commandDes,
-                "numberValue": None,
-                "valueType": "text",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        if self.commandDate:
-            values.append({
-                "keyTag": "commandDate",
-                "keyLabel": "của",
-                "dateValue": int(self.commandDate.timestamp()) * 1000,
-                "stringValue": None,
-                "numberValue": None,
-                "valueType": "date",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        if self.exportAt:
-            values.append({
-                "keyTag": "exportAt",
-                "keyLabel": "Xuất tại kho",
-                "dateValue": None,
-                "stringValue": self.exportAt,
-                "numberValue": None,
-                "valueType": "text",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        if self.importAt:
-            values.append({
-                "keyTag": "importAt",
-                "keyLabel": "Nhập tại kho",
-                "dateValue": None,
-                "stringValue": self.importAt,
-                "numberValue": None,
-                "valueType": "text",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        if self.vehicle:
-            values.append({
-                "keyTag": "vehicle",
-                "keyLabel": "Phương tiện vận chuyển",
-                "dateValue": None,
-                "stringValue": self.vehicle,
-                "numberValue": None,
-                "valueType": "text",
-                "isRequired": False,
-                "isSeller": False,
-            })
-        return values
+        """
+        Override this method to customize metadata.
+        Returns a list of metadata dictionaries for the API.
+        First checks if there's a picking_id or invoice_ids, and calls their _get_meta_data methods.
+        """
+        # Check if created from picking
+        if self.picking_id:
+            meta = self.picking_id._get_meta_data()
+            # If meta is a dict (for initialization), convert to list format for API
+            if isinstance(meta, dict):
+                return []
+            return meta if isinstance(meta, list) else []
+        # Check if created from account move
+        if self.invoice_ids:
+            # Use the first invoice's _get_meta_data
+            meta = self.invoice_ids[0]._get_meta_data()
+            # If meta is a dict (for initialization), convert to list format for API
+            if isinstance(meta, dict):
+                return []
+            return meta if isinstance(meta, list) else []
+        return []
 
     def _prepare_data_to_send_sinvoice(self):
 
@@ -686,34 +600,25 @@ class ViettelSInvoice(models.Model):
         invoice_items = self._get_sinvoice_item_data()
         if not invoice_items:
             raise UserError('Không có thông tin sản phẩm để Xuất hoá đơn !')
-        buyer_info = self._get_buyer_info()
-        tax_breakdown = self._get_tax_breakdown()
-        summarize_sinvoice_info = self._get_summarize_sinvoice_info()
-        metadata = self._get_meta_data()
 
         rslt = {
             'generalInvoiceInfo': general_invoice_info,
-            'buyerInfo': buyer_info,
-            'summarizeInfo': summarize_sinvoice_info,
-            'taxBreakdowns': tax_breakdown,
+            'buyerInfo': self._get_buyer_info(),
+            'summarizeInfo': self._get_summarize_sinvoice_info(),
+            'taxBreakdowns': self._get_tax_breakdown(),
             'itemInfo': invoice_items,
             'payments': self._get_payments(),
-            'metadata': metadata,
+            'metadata': self._get_meta_data(),
         }
         return rslt
 
     def _prepare_data_to_send_sinvoice_edit(self):
-        general_invoice_info = self._get_general_invoice_info()
-        buyer_info = self._get_buyer_info()
-        invoice_items = self._get_sinvoice_item_data()
-        summarize_sinvoice_info = self._get_summarize_sinvoice_info()
-        tax_breakdown = self._get_tax_breakdown()
         rslt = {
-            'generalInvoiceInfo': general_invoice_info,
-            'buyerInfo': buyer_info,
-            'summarizeInfo': summarize_sinvoice_info,
-            'taxBreakdowns': tax_breakdown,
-            'itemInfo': invoice_items,
+            'generalInvoiceInfo': self._get_general_invoice_info(),
+            'buyerInfo': self._get_buyer_info(),
+            'summarizeInfo': self._get_summarize_sinvoice_info(),
+            'taxBreakdowns': self._get_tax_breakdown(),
+            'itemInfo': self._get_sinvoice_item_data(),
             'payments': self._get_payments()
         }
         return rslt
@@ -886,7 +791,7 @@ class ViettelSInvoice(models.Model):
         return True
 
     # Cancel Invoice
-    def action_cancel_sinvoice(self, data=None):
+    def action_cancel_sinvoice(self, data={}):
 
         url = self.company_id.vsi_domain + '/InvoiceAPI/InvoiceWS/cancelTransactionInvoice'
 
@@ -895,9 +800,9 @@ class ViettelSInvoice(models.Model):
             'templateCode': self.templateCode,
             'invoiceNo': self.name,
             'strIssueDate': int(self.invoiceIssuedDate.timestamp()) * 1000,
-            'additionalReferenceDesc': data.get('additionalReferenceDesc'),
-            'additionalReferenceDate': data.get('str_additionalReferenceDate'),
-            'reasonDelete': data.get('reason')
+            'additionalReferenceDesc': data.get('additionalReferenceDesc', ''),
+            'additionalReferenceDate': data.get('str_additionalReferenceDate', ''),
+            'reasonDelete': data.get('reason', ''),
         }
         access_token = self.company_id.get_access_token()
         headers = {'Content-type': 'application/x-www-form-urlencoded'}
@@ -910,9 +815,9 @@ class ViettelSInvoice(models.Model):
                 self.write({
                     'state': 'canceled',
                     'cancel_desc': resp_data['description'],
-                    'additionalReferenceDesc': data.get('additionalReferenceDesc'),
-                    'additionalReferenceDate': data.get('additionalReferenceDate'),
-                    'reason': data.get('reason'),
+                    'additionalReferenceDesc': data.get('additionalReferenceDesc', ''),
+                    'additionalReferenceDate': data.get('additionalReferenceDate', ''),
+                    'reason': data.get('reason', ''),
                     'adjustmentType': '7',
                 })
                 self.action_get_sinvoice_pdf_file()

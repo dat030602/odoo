@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_viettel_viettel_sinvoice_template_tree" model="ir.ui.view">
+    <record id="view_viettel_sinvoice_template_tree" model="ir.ui.view">
         <field name="name">viettel.sinvoice.template.tree</field>
         <field name="model">viettel.sinvoice.template</field>
         <field name="arch" type="xml">
@@ -13,7 +13,7 @@
             </tree>
         </field>
     </record>
-    <record id="view_viettel_viettel_sinvoice_template_form" model="ir.ui.view">
+    <record id="view_viettel_sinvoice_template_form" model="ir.ui.view">
         <field name="name">viettel.sinvoice.template.form</field>
         <field name="model">viettel.sinvoice.template</field>
         <field name="arch" type="xml">
@@ -42,14 +42,14 @@
             </form>
         </field>
     </record>
-    <record id="action_open_viettel_viettel_sinvoice_template" model="ir.actions.act_window">
+    <record id="action_open_viettel_sinvoice_template" model="ir.actions.act_window">
         <field name="name">S-Invoice Templates</field>
         <field name="res_model">viettel.sinvoice.template</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_viettel_viettel_sinvoice_template_tree"/>
+        <field name="view_id" ref="view_viettel_sinvoice_template_tree"/>
     </record>
-    <menuitem id="menu_viettel_viettel_sinvoice_template"
-              action="action_open_viettel_viettel_sinvoice_template"
+    <menuitem id="menu_viettel_sinvoice_template"
+              action="action_open_viettel_sinvoice_template"
               parent="viettel_sinvoice.menu_viettel_sinvoice_conf"
               groups="account.group_account_manager"
               sequence="107"/>

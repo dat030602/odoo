@@ -10,7 +10,7 @@
     'category': '',
     'website': 'https://www.nostech.vn/',
     'images' : [],
-    'depends' : ['account', 'sale', 'stock'],
+    'depends' : ['account', 'sale', 'stock', 'vn_address_base'],
     'data': [
         # Data
         'data/data.xml',
@@ -26,11 +26,9 @@
         'views/viettel_sinvoice_views.xml',
         'views/viettel_sinvoice_line_views.xml',
         'views/viettel_sinvoice_type_views.xml',
-        'views/viettel_viettel_sinvoice_template_views.xml',
+        'views/viettel_sinvoice_template_views.xml',
         'views/branch_views.xml',
         'views/stock_picking_views.xml',
-        'views/stock_location_views.xml',
-        'views/crm_team_views.xml',
         'views/res_partner_views.xml',
         # Reports
         'report/paper_format.xml',

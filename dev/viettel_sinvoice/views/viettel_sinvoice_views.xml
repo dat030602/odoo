@@ -108,14 +108,6 @@
                             <field name="attachment_ids" widget="many2many_binary" string="Bản in PDF"/>
                         </group>
                         <group invisible="invoice_type_code != '03XKNB'">
-                            <field name="commandNo" readonly="state != 'draft'"/>
-                            <field name="commandOf" readonly="state != 'draft'"/>
-                            <field name="commandDes" readonly="state != 'draft'"/>
-                            <field name="contractNo" readonly="state != 'draft'"/>
-                            <field name="commandDate" readonly="state != 'draft'"/>
-                            <field name="exportAt" readonly="state != 'draft'"/>
-                            <field name="importAt" readonly="state != 'draft'"/>
-                            <field name="vehicle" readonly="state != 'draft'"/>
                         </group>
                         <group>
                             <field name="additionalReferenceDesc" invisible="additionalReferenceDesc == False"/>
@@ -144,7 +136,7 @@
                                     <field name="name" widget="section_and_note_text" required="1" force_save="1"/>
                                     <field name="company_id" invisible="1"/>
                                     <field name="account_id" optional="hide" groups="account.group_account_user" domain="[('company_id', '=', parent.company_id), ('deprecated', '=', False)]"/>
-                                    <field name="sinvoice_line_tax_id"/>
+                                    <field name="tax_id"/>
                                     <field name="quantity"/>
                                     <field name="uom_id" required="selection != '2'" groups="uom.group_uom"/>
 
@@ -163,7 +155,7 @@
                                             <field name="product_id" options="{'always_reload': True}"/>
                                             <field name="name"/>
                                             <field name="account_id"/>
-                                            <field name="sinvoice_line_tax_id"/>
+                                            <field name="tax_id"/>
                                             <field name="org_line_id" invisible="child_line_id == False"/>
                                             <field name="child_line_id" widget="many2many_tags" invisible="child_line_id == False"/>
                                         </group>
@@ -171,9 +163,9 @@
                                             <field name="quantity"/>
                                             <field name="uom_id" groups="uom.group_uom"/>
                                             <field name="price_unit" string="Unit Price"/>
-                                            <field name="price_subtotal" string="Subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <field name="price_subtotal" string="Subtotal"/>
                                             <field name="price_tax"/>
-                                            <field name="price_total" string="Total" groups="account.group_show_line_subtotals_tax_included"/>
+                                            <field name="price_total" string="Total"/>
                                             <field name="price_discount"/>
                                             <field name="discount"/>
                                         </group>

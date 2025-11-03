@@ -186,8 +186,8 @@
                                         <td class="text_right"><span t-field='doc.amount_untaxed'></span></td>
                                     </tr>
                                     <tr>
-                                        <t t-if="doc.sinvoice_line.sinvoice_line_tax_id">
-                                            <t t-set="Tax" t-value="doc.sinvoice_line.mapped('sinvoice_line_tax_id')[0].amount"/>
+                                        <t t-if="doc.sinvoice_line.tax_id">
+                                            <t t-set="Tax" t-value="doc.sinvoice_line.mapped('tax_id')[0].amount"/>
                                         </t>
                                         <t t-else="">
                                             <t t-set="Tax" t-value=""/>

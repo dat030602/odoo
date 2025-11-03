@@ -1,0 +1,285 @@
+/* Part of Odoo. See LICENSE file for full copyright and licensing details. */
+
+.payment_vnpay_token_form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.payment_vnpay_token_form_header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payment_vnpay_token_form_header h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.payment_vnpay_token_form_header p {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.payment_vnpay_token_form_content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.payment_vnpay_token_form_amount,
+.payment_vnpay_token_form_currency,
+.payment_vnpay_token_form_tokens {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.payment_vnpay_token_form_amount label,
+.payment_vnpay_token_form_currency label,
+.payment_vnpay_token_form_tokens label {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.payment_vnpay_token_form_amount input,
+.payment_vnpay_token_form_currency select,
+.payment_vnpay_token_form_tokens select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.payment_vnpay_token_form_amount input:focus,
+.payment_vnpay_token_form_currency select:focus,
+.payment_vnpay_token_form_tokens select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.payment_vnpay_token_form_actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.payment_vnpay_token_form_actions button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.payment_vnpay_token_form_actions .btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.payment_vnpay_token_form_actions .btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.payment_vnpay_token_form_actions .btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.payment_vnpay_token_form_actions .btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+.payment_vnpay_token_form_actions .btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.payment_vnpay_token_form_actions .btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.payment_vnpay_token_form_actions .btn-danger:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+.payment_vnpay_token_create_form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.payment_vnpay_token_create_form_header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payment_vnpay_token_create_form_header h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.payment_vnpay_token_create_form_header p {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.payment_vnpay_token_create_form_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.payment_vnpay_token_create_form_info {
+    background-color: #ecf0f1;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #3498db;
+}
+
+.payment_vnpay_token_create_form_info p {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+}
+
+.payment_vnpay_token_create_form_info p:last-child {
+    margin-bottom: 0;
+}
+
+.payment_vnpay_token_create_form_actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.payment_vnpay_token_create_form_actions button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.payment_vnpay_token_create_form_actions .btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.payment_vnpay_token_create_form_actions .btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.payment_vnpay_token_create_form_actions .btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.payment_vnpay_token_create_form_actions .btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+.payment_vnpay_token_status {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.payment_vnpay_token_status_header h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.payment_vnpay_token_status_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.payment_vnpay_token_status_info p {
+    font-size: 16px;
+    margin: 0;
+}
+
+.payment_vnpay_token_status_actions {
+    margin-top: 20px;
+}
+
+.payment_vnpay_token_status_actions .btn-primary {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.payment_vnpay_token_status_actions .btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.payment_vnpay_token_loading {
+    text-align: center;
+    padding: 10px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.payment_vnpay_token_message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.payment_vnpay_token_message_success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.payment_vnpay_token_message_error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .payment_vnpay_token_form,
+    .payment_vnpay_token_create_form,
+    .payment_vnpay_token_status {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .payment_vnpay_token_form_actions,
+    .payment_vnpay_token_create_form_actions {
+        flex-direction: column;
+    }
+    
+    .payment_vnpay_token_form_actions button,
+    .payment_vnpay_token_create_form_actions button {
+        width: 100%;
+    }
+}

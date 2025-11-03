@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_token_form_vnpay_token" model="ir.ui.view">
+        <field name="name">payment.token.form.vnpay.token</field>
+        <field name="model">payment.token</field>
+        <field name="inherit_id" ref="payment.payment_token_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='provider_ref']" position="after">
+                <field name="vnpay_token" string="VNPay Token" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+                <field name="vnpay_card_number" string="Card Number (Masked)" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+                <field name="vnpay_bank_code" string="Bank Code" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+                <field name="vnpay_card_type" string="Card Type" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+                <field name="vnpay_token_status" string="Token Status" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="payment_token_tree_vnpay_token" model="ir.ui.view">
+        <field name="name">payment.token.tree.vnpay.token</field>
+        <field name="model">payment.token</field>
+        <field name="inherit_id" ref="payment.payment_token_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='provider_ref']" position="after">
+                <field name="vnpay_card_number" string="Card Number" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+                <field name="vnpay_bank_code" string="Bank" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+                <field name="vnpay_token_status" string="Status" 
+                       invisible="provider_id.code != 'vnpay_token'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

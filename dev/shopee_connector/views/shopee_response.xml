@@ -1,0 +1,65 @@
+<odoo>
+    <record id="view_shopee_response_form" model="ir.ui.view">
+        <field name="name">shopee.response.form</field>
+        <field name="model">shopee.response</field>
+        <field name="arch" type="xml">
+            <form string="Shopee Response" create="0" edit="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="type"/>
+                        <field name="shopee_connector_id"/>
+                    </group>
+                    <notebook>  
+                        <page string="Response">
+                            <field name="response_json" widget="code"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_shopee_response_tree" model="ir.ui.view">
+        <field name="name">shopee.response.tree</field>
+        <field name="model">shopee.response</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0">
+                <field name="name" />
+                <field name="type" />
+                <field name="shopee_connector_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_shopee_response_search" model="ir.ui.view">
+        <field name="name">shopee.response.search</field>
+        <field name="model">shopee.response</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="response_json" />
+                <group expand="0">
+                    <filter string="Shopee Connector" name="shopee_connector" context="{'group_by': 'shopee_connector_id'}"/>
+                    <filter string="Type" name="type" context="{'group_by': 'type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_shopee_response" model="ir.actions.act_window">
+        <field name="name">Shopee Response</field>
+        <field name="res_model">shopee.response</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create first Shopee Response
+            </p>
+            <p>
+                Manage Shopee Response data.
+            </p>
+        </field>
+    </record>
+</odoo> 
