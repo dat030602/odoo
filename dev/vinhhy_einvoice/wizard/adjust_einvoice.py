@@ -22,7 +22,7 @@ class AdjustEInvoice(models.TransientModel):
     vh_einv_id = fields.Many2one('vinhhy.einvoice', string='Vinh Hy E-Invoice')
 
     @api.model
-    def default_get(self, fields):
+    def default_get(self, fields_list):
         res = super(AdjustEInvoice, self).default_get(fields)
         active_id = self._context.get('active_id')
         res.update({'vh_einv_id': active_id})
@@ -39,7 +39,6 @@ class AdjustEInvoice(models.TransientModel):
                 'discount': 0,
                 'uom_id': line.uom_id.id,
                 'product_id': line.product_id.id,
-                'vat_product_id': line.vat_product_id.id,
                 'vh_inv_line_tax_id': line.vh_inv_line_tax_id.id,
                 'base_einv_line_id': line.id,
             })
@@ -47,8 +46,8 @@ class AdjustEInvoice(models.TransientModel):
         return line_vals
 
     def action_create_adjust_inv(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("vinhhy_einvoice_service.action_vinhhy_einvoice")
-        action['views'] = [(self.env.ref('vinhhy_einvoice_service.vinhhy_einvoice_form').id, 'form')]
+        action = self.env["ir.actions.actions"]._for_xml_id("vinhhy_einvoice.action_vinhhy_einvoice")
+        action['views'] = [(self.env.ref('vinhhy_einvoice.vinhhy_einvoice_form').id, 'form')]
         action['target'] = 'current'
         vh_einv_line_vals = self._prepare_vh_einv_line_values()
         action['context'] = {
@@ -62,7 +61,7 @@ class AdjustEInvoice(models.TransientModel):
             'default_customer_email': self.vh_einv_id.customer_email,
             'default_is_individual_customer': self.vh_einv_id.is_individual_customer,
             'default_payment_method': self.vh_einv_id.payment_method,
-            'default_vh_inv_tax_id': self.vh_einv_id.vh_inv_tax_id.id,
+            'default_tax_id': self.vh_einv_id.tax_id.id,
             'default_date_invoice': self.vh_einv_id.date_invoice,
             'default_line_ids': vh_einv_line_vals,
             'default_vh_inv_template_id': self.vh_einv_id.vh_inv_template_id.id,

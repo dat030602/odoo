@@ -9,8 +9,7 @@ from datetime import datetime
 import base64
 
 import random
-import hashlib
-import pprint
+import string
 import json
 import requests
 import logging
@@ -75,16 +74,12 @@ class VinhHyEInvoice(models.Model):
     def _get_default_team(self):
         return self.env['crm.team']._get_default_team_id()
 
-    def generateFkey(self):
-        strsequence = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-        idrand = ''
-        for x in range(13):
-            idrand += random.choice(strsequence)
-        exist_fkey = self.search([('vh_einv_fkey','=',idrand)])
-        if len(exist_fkey) > 1:
-            return self.generateFkey()
-        else:
-            return idrand
+    def generateFkey(self, length=13):
+        chars = string.ascii_letters + string.digits
+        while True:
+            fkey = ''.join(random.choices(chars, k=length))
+            if not self.search_count([('vh_einv_fkey', '=', fkey)]):
+                return fkey
 
     name = fields.Char(default='New', tracking=True, related='invoice_no', store=True, copy=False)
     invoice_no = fields.Char('Invoice No', default='/', copy=False)
@@ -99,17 +94,15 @@ class VinhHyEInvoice(models.Model):
     journal_id = fields.Many2one('account.journal', string='Journal', required=True, readonly=True,
         default=_default_journal, domain="[('company_id', '=', company_id)]")
     company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', string="Company Currency", readonly=True)
-    partner_id = fields.Many2one('partner.vat', 'VH E-Invoice Contact', tracking=True)
-    partner_vat_id = fields.Many2one('partner.vat', 'Legal VH E-Invoice Company', tracking=True, domain="[('company_type','=','company')]")
+    partner_id = fields.Many2one('res.partner', 'VH E-Invoice Contact', tracking=True)
     # Customer Information
-    customer_name = fields.Char('Contact Name', compute='_compute_customer_info', store=True)
-    legal_customer_name = fields.Char('VH E-Invoice Customer Name', compute='_compute_customer_info', store=True)
-    customer_code = fields.Char('Customer Code', compute='_compute_customer_info', store=True)
-    customer_vat = fields.Char('VAT', compute='_compute_customer_info', store=True, tracking=True)
-    customer_address = fields.Char('VAT Address', compute='_compute_customer_info', store=True, readonly=False)
-    customer_email = fields.Char('Customer Emails', tracking=True)
-    is_individual_customer = fields.Boolean()
-    vh_inv_tax_id = fields.Many2one('einvoice.tax', string='VAT', compute='_compute_vat', store=True, tracking=True)
+    customer_name = fields.Char('Contact Name', related='partner_id.name', store=True)
+    customer_code = fields.Char('Customer Code', related='partner_id.ref', store=True)
+    customer_vat = fields.Char('VAT', related='partner_id.vat', store=True, tracking=True)
+    customer_address = fields.Char('VAT Address', related='partner_id.street', store=True)
+    customer_email = fields.Char('Customer Emails', related='partner_id.email', tracking=True)
+    is_individual_customer = fields.Boolean(related='partner_id.is_company', store=True)
+    tax_id = fields.Many2one('account.tax', string='VAT', compute='_compute_vat', store=True, tracking=True)
     date_invoice = fields.Date(string='Invoice Date', index=True, copy=False)
     vh_inv_template_id  = fields.Many2one('vinhhy.einvoice.template', 'Config Template')
     template_code = fields.Char('Template Code', related='vh_inv_template_id.template_code', store=True)
@@ -156,7 +149,7 @@ class VinhHyEInvoice(models.Model):
     seller_responsible = fields.Many2one('res.users', string='Seller Responsible')
     seller_position = fields.Char(string='Seller Position')
     seller_address = fields.Char(string='Seller Address')
-    buyer_responsible = fields.Many2one('partner.vat', string='Buyer Responsible')
+    buyer_responsible = fields.Many2one('res.partner', string='Buyer Responsible')
     buyer_position = fields.Char(string='Buyer Position')
     buyer_address = fields.Char(string='Buyer Address')
     line_ids = fields.One2many('vinhhy.einvoice.line', 'vh_inv_id', copy=True)
@@ -171,61 +164,41 @@ class VinhHyEInvoice(models.Model):
         })
     
     def unlink(self):
-        for invoice in self:
-            if invoice.state != 'N' and not self.env.user.has_group('base.group_system'):
+        for rec in self:
+            if rec.state != 'N' and not self.env.user.has_group('base.group_system'):
                 raise UserError(_('You can not delete the invoice not in draft state!'))
-            # if invoice.state not in ['N','XN']:
+            # if rec.state not in ['N','XN']:
             #     raise UserError(_('Invoice status is not allowed to delete!'))
         return super(VinhHyEInvoice, self).unlink()
 
     @api.onchange('user_id')
     def onchange_user_id(self):
-        if self.user_id:
-            self.team_id = self.env['crm.team'].with_context(
-                default_team_id=self.team_id.id
-            )._get_default_team_id(user_id=self.user_id.id)
+        for rec in self:
+            if rec.user_id:
+                rec.team_id = self.env['crm.team'].with_context(default_team_id=rec.team_id.id)._get_default_team_id(user_id=rec.user_id.id)
 
     @api.depends('line_ids', 'line_ids.price_subtotal', 'line_ids.price_tax', 'line_ids.price_discount' )
     def _compute_amount(self):
-        for s in self:
-            s.amount_untaxed = round(sum(line.price_subtotal for line in s.line_ids), 0)
-            s.amount_tax = round(sum(line.price_tax for line in s.line_ids), 0)
-            s.amount_total = s.amount_untaxed + s.amount_tax
-            s.amount_discount = round(sum(line.price_discount for line in s.line_ids), 0)
+        for rec in self:
+            rec.amount_untaxed = round(sum(line.price_subtotal for line in rec.line_ids), 0)
+            rec.amount_tax = round(sum(line.price_tax for line in rec.line_ids), 0)
+            rec.amount_total = rec.amount_untaxed + rec.amount_tax
+            rec.amount_discount = round(sum(line.price_discount for line in rec.line_ids), 0)
 
-    @api.depends('line_ids.vh_inv_line_tax_id')
+    @api.depends('line_ids.tax_id')
     def _compute_vat(self):
-        if self.line_ids:
-            self.vh_inv_tax_id = self.line_ids[0].vh_inv_line_tax_id
-        else:
-            self.vh_inv_tax_id = False
-
-    @api.depends('partner_id', 'partner_vat_id')
-    def _compute_customer_info(self):
-        for s in self:
-            s.customer_name = s.partner_id.name or False
-            s.legal_customer_name = s.partner_vat_id.name or False
-            if s.partner_vat_id:
-                s.is_individual_customer = False
-                s.customer_vat = s.partner_vat_id.vat or False
-                s.customer_code = s.partner_vat_id.ref or False
-                s.customer_address = s.partner_vat_id.partner_address or ''
-            elif s.partner_id:
-                s.is_individual_customer = True
-                s.customer_vat = s.partner_id.vat or ''
-                s.customer_code = s.partner_id.ref or ''
-                s.customer_address = s.partner_id.partner_address or ''
+        for rec in self:
+            if rec.line_ids:
+                rec.tax_id = rec.line_ids[0].tax_id
             else:
-                s.customer_vat = ''
-                s.customer_address = ''
-            if not s.fiscal_position_id:
-                if s.partner_vat_id and s.partner_vat_id.partner_id:
-                    s.fiscal_position_id = s.partner_vat_id.partner_id.property_account_position_id
-                elif s.partner_id and s.partner_id.partner_id:
-                    s.fiscal_position_id = s.partner_id.partner_id.property_account_position_id
-                else:
-                    False
+                rec.tax_id = False
 
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        for rec in self:
+            if not rec.fiscal_position_id:
+                if rec.partner_id:
+                    rec.fiscal_position_id = rec.partner_id.property_account_position_id
     
     def vh_einv_send_request(self, endpoint, method, params, timeout=TIMEOUT):
         try:
@@ -253,13 +226,13 @@ class VinhHyEInvoice(models.Model):
         val = []
         for line in self.line_ids:
             val.append({
-                'Ma_hang': line.vat_product_id.vat_code,
-                'Ten_hang': line.vat_product_id.name,
+                'Ma_hang': line.product_id.default_code,
+                'Ten_hang': line.product_id.name,
                 'Dvt': line.uom_id.name,
                 'So_luong': line.quantity,
                 'Gia': line.price_unit,
                 'Tien': line.price_subtotal_signed,
-                'Thue_suat': int(line.vh_inv_line_tax_id.amount),
+                'Thue_suat': int(line.tax_id.amount),
                 'Thue': line.price_tax,
                 'Ty_le_chiet_khau': line.discount,
                 'chiet_khau': line.price_discount,
@@ -268,24 +241,35 @@ class VinhHyEInvoice(models.Model):
                 'han_dung':''
             })
         return val
-        # TEST VALUE
-        # return [
-        #     {
-        #         'Ma_hang':'A001',
-        #         'Ten_hang':'Xe dưới 12 ghế, xe tải có tải trọng dưới 2 tấn',
-        #         'Dvt':'lượt',
-        #         'So_luong':1,
-        #         'Gia':31818,
-        #         'Tien':31818,
-        #         'Thue_suat':10,
-        #         'Thue':3182,
-        #         'Ty_le_chiet_khau':0,
-        #         'chiet_khau':0,
-        #         'km':'',
-        #         'so_lo':'',
-        #         'han_dung':''
-        #     }
-        # ]
+    
+    def _prepare_company_info(self):
+        company = self.partner_id
+        return {
+            'Mst': company.vat or '',
+            'Ten_cty': company.name or '',
+            'Dia_chi': company.street or '',
+            'Email': company.email or '',
+            'Tel': company.phone or company.mobile or '',
+        }
+    
+    def _prepare_customer_info(self):
+        return {
+            'Nguoi_mua_hang': self.customer_name or '',
+        }
+    
+    def _prepare_value(self):
+        return {
+            'Ngay_hd': self.date_invoice.strftime("%Y-%m-%d") if self.date_invoice else fields.Date.today().strftime("%Y-%m-%d"),
+            'Ky_hieu_mau': self.template_code,
+            'So_seri': self.invoice_series,
+            'So_hd': str(self.invoice_no),
+            **self._prepare_company_info(),
+            'so_tk':'',
+            **self._prepare_customer_info(),
+            'hinh_thuc_thanh_toan': PAYMENT_METHOD.get(self.payment_method, ''),
+            'Ma_tte': self.currency_id.name or '',
+            'Ty_gia': self.currency_id.inverse_rate or 0,
+        }
 
     def _prepare_einv_data(self):
         val ={}
@@ -297,110 +281,27 @@ class VinhHyEInvoice(models.Model):
             fkey = self.generateFkey()
             self.update({'vh_einv_fkey': fkey})
             val.update({"fkey": self.vh_einv_fkey})
-        val.update({
-            'Ngay_hd': self.date_invoice.strftime("%Y-%m-%d") if self.date_invoice else fields.Date.today().strftime("%Y-%m-%d"),
-            'Ky_hieu_mau': self.template_code,
-            'So_seri': self.invoice_series,
-            'So_hd': str(self.invoice_no),
-            # customer info
-            'Mst': self.customer_vat or '',
-            'Ten_cty': self.legal_customer_name or '',
-            'Dia_chi': self.customer_address or '',
-            'Email': self.customer_email or '',
-            'Tel': self.partner_vat_id.phone or '' if self.partner_vat_id else self.partner_id.phone or '',
-            'so_tk':'',
-            'Nguoi_mua_hang': self.customer_name or '',
-            'hinh_thuc_thanh_toan': PAYMENT_METHOD.get(self.payment_method, ''),
-            'Ma_tte': self.currency_id.name or '',
-            'Ty_gia': self.currency_id.inverse_rate or 0,
-        })
+        val.update(**self._prepare_value())
         return val
 
     # send origin inv
     def action_send_to_issue_vh_einv(self):
         if self.einv_type == 'origin':
             return self.action_send_orgin_vh_einv()
-        # elif self.einv_type in ['replacement_invoice','adjustment_invoice']:
-        #     return self.action_send_adjust_replace_vh_einv()
-    
-    # def action_send_adjust_replace_vh_einv(self):
-    #     if not self.company_id or not self.company_id.vinhhy_einv_username or not self.company_id.vinhhy_einv_password:
-    #         raise UserError(_("Please input Vinh Hy E-Invoice account!"))
-    #     data = {
-    #         'user': self.company_id.vinhhy_einv_username,
-    #         'pwd': self.company_id.vinhhy_einv_password,
-    #         'thongtin': {
-    #             'Fkey': self.base_einv_id.vh_einv_key or '',
-    #             'nguoidaidien_benban': self.seller_responsible.name or '',
-    #             'chucvu_nguoidaidien_benban': self.seller_position or '',
-    #             'diachi_nguoidaidien_benban': self.seller_address or '',
-    #             'nguoidaidien_benmua': self.buyer_responsible.name or '',
-    #             'chucvu_nguoidaidien_benmua': self.buyer_position or '',
-    #             'diachi_nguoidaidien_benmua': self.buyer_address or '',
-    #             'ly_do': self.reason_adjust_einv or '',
-    #             'email': self.customer_email or '',
-    #             'Loai': self.adjustmentInvoiceType or ''
-    #         },
-    #     }
-    #     einv_data = self._prepare_einv_data()
-    #     lines_val = self._prepare_inv_line_val()
-    #     data['data'] = {**einv_data, **{'Chitiet': lines_val}}
-    #     result = self.vh_einv_send_request('/adjustReplaceInvoice', 'post', urlencode(data))
-    #     if result[0] == 200: #gửi request thành công
-    #         self.message_post(body='Gửi hóa đơn tùy chỉnh thành công. <br/> Kết quả: %s' %result[1])
-    #         res_data = result[1].split('-')
-    #         inv_no = res_data[2] if res_data[2] else ''
-    #         einv_state = res_data[3] if res_data[3] else ''
-    #         lookup_code = res_data[4] if res_data[4] else ''
-    #         vh_einv_key = res_data[5] if res_data[5] else ''
-    #         data_update = {}
-    #         if inv_no:
-    #             data_update.update({
-    #                 'name': inv_no,
-    #                 'state': 'CM'
-    #             })
-    #         if einv_state:
-    #             data_update.update({
-    #                 'state': einv_state
-    #             })
-    #         if lookup_code:
-    #             data_update.update({
-    #                 'lookup_code': lookup_code,
-    #             })
-    #         if vh_einv_key:
-    #             data_update.update({
-    #                 'vh_einv_key': vh_einv_key,
-    #             })
-    #         if data_update:
-    #             self.write(data_update)
-    #         # cập nhật lại loại hóa đơn gốc
-    #         if self.einv_type == 'replacement_invoice':
-    #             self.base_einv_id.write({'einv_type': 'is_replaced'})
-    #         if self.einv_type == 'adjustment_invoice':
-    #             self.base_einv_id.write({'einv_type': 'is_adjusted'})
-    #     else:
-    #         self.message_post(body=result[1])
-    #         raise UserError('Xảy ra lỗi khi phát hành hóa đơn!')
-
-    def action_update_vat_product_quantity(self):
-        if self.is_update_vat_prod_qty: #hóa đơn đã cập nhật số lượng tồn kho cho sản phẩm rồi không cập nhật lại
-            return True
-        for line in self.line_ids:
-            line.vat_product_id.write({
-                'qty_available': line.vat_product_id.qty_available - line.quantity
-            })
-        self.is_update_vat_prod_qty = True
 
     def action_send_orgin_vh_einv(self):
         if not self.company_id or not self.company_id.vinhhy_einv_username or not self.company_id.vinhhy_einv_password:
             raise UserError(_("Please input Vinh Hy E-Invoice account!"))
+        einv_data = self._prepare_einv_data()
+        lines_val = self._prepare_inv_line_val()
         data = {
             'user': self.company_id.vinhhy_einv_username,
             'pwd': self.company_id.vinhhy_einv_password,
+            'data': {
+                'Chitiet': lines_val,
+                **einv_data
+            }
         }
-        einv_data = self._prepare_einv_data()
-        lines_val = self._prepare_inv_line_val()
-        data['data'] = {**einv_data, **{'Chitiet': lines_val}}
         _logger.info(data)
         result = self.vh_einv_send_request('/importInvoice', 'post', urlencode(data))
         if result[0] == 200: #gửi request thành công
@@ -420,11 +321,6 @@ class VinhHyEInvoice(models.Model):
                         self.write({"lookup_code": lookup_code})
                     if vh_einv_key:
                         self.write({"vh_einv_key": vh_einv_key})
-                    # # nếu trả về mã tra cứu và khóa và KHÔNG CÓ shđ -> trạng thái chưa cấp mã
-                    # if lookup_code and vh_einv_key and not inv_no:
-                    #     self.write({'state': 'M'})
-                    #     self.message_post(body="Gửi hóa đơn đơn thành công! <br/> Hóa đơn chưa được cấp mã.")
-                    # lấy trạng thái hóa đơn
                     self.action_vh_einv_get_number()
                 else:
                     body_msg= "Xảy ra lỗi khi gửi hóa đơn."
@@ -458,9 +354,6 @@ class VinhHyEInvoice(models.Model):
                     'invoice_no': res_data[2],
                     'state': res_data[3]
                 })
-            # cập nhật số lượng tồn kho cho sản phẩm
-            if self.state == 'CM':
-                self.action_update_vat_product_quantity()
         else:
             self.message_post(body='Xảy ra lỗi khi lấy số hóa đơn.<br/> %s' %result[1])
 
@@ -540,7 +433,7 @@ class VinhHyEInvoice(models.Model):
 
     def action_open_invoice(self):
         self.ensure_one()
-        view = self.env.ref('vinhhy_einvoice_service.vinhhy_einvoice_form')
+        view = self.env.ref('vinhhy_einvoice.vinhhy_einvoice_form')
         return {
             'name': _('Vinh Hy E-Invoice'),
             'type': 'ir.actions.act_window',
@@ -564,7 +457,5 @@ class VinhHyEInvoice(models.Model):
             state_selection = dict(self._fields['state'].selection)
             if res_json.get('ma','') and res_json.get('ma','') in state_selection:
                 self.write({'state': res_json.get('ma','')})
-                if res_json.get('ma','') == 'CM':
-                    self.action_update_vat_product_quantity()
         else:
             self.message_post(body='Xảy ra lỗi khi cập nhật trạng thái hóa đơn.<br/> %s' %result[1])

@@ -6,14 +6,14 @@ class VinhHyEInvoiceLine(models.Model):
     _name = 'vinhhy.einvoice.line'
     _description = 'Vinh Hy E-Invoice Line'
 
-    @api.depends('price_unit', 'discount', 'vh_inv_line_tax_id', 'quantity',
+    @api.depends('price_unit', 'discount', 'tax_id', 'quantity',
                  'product_id', 'vh_inv_id.currency_id',
                  'vh_inv_id.company_id')
     def _compute_price(self):
         for line in self:
             currency = line.vh_inv_id and line.vh_inv_id.currency_id
             price = (line.price_unit) * (1 - (line.discount or 0.0) / 100.0)
-            tax = line.vh_inv_line_tax_id.compute_amount_all(price, line.quantity, currency)
+            tax = line.tax_id.compute_all(price, currency, line.quantity, line.product_id, line.vh_inv_id.partner_id)
             # Set Unit Price after discount
             line.update({
                 'price_reduce': price,
@@ -40,10 +40,8 @@ class VinhHyEInvoiceLine(models.Model):
     vh_inv_id = fields.Many2one('vinhhy.einvoice', string='Vinh Hy E-Invoice', ondelete='cascade', required=True, index=True, copy=False, readonly=True)
     name = fields.Text(string='Description', store=True)
     product_id = fields.Many2one('product.product', string='Product', ondelete='restrict', index=True)
-    vat_product_id = fields.Many2one('vat.product.template',string='VAT Product')
-    vat_product_code = fields.Char('VAT Code', related='vat_product_id.vat_code', store=True)
     uom_id = fields.Many2one('uom.uom', string='Unit of Measure', ondelete='set null', index=True)
-    vh_inv_line_tax_id = fields.Many2one('einvoice.tax', string='Taxes')
+    tax_id = fields.Many2one('account.tax', string='Taxes')
     price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price')
     price_reduce = fields.Float(string='Price Reduce', required=True, digits='Price Reduce', compute='_compute_price')
     price_tax = fields.Monetary(string='Tax Amount', compute='_compute_price', store=True, currency_field='company_currency_id')
@@ -62,9 +60,4 @@ class VinhHyEInvoiceLine(models.Model):
     base_einv_line_id = fields.Many2one('vinhhy.einvoice.line', string='Base Vinh Hy E-Invoice Line')
     # inv_line_source_id = fields.Many2one('account.move.line', string='Odoo Invoice Line')
     sale_line_source_id = fields.Many2one('sale.order.line', string='Sale Order Line')
-
-    @api.onchange('vat_product_id')
-    def _onchange_vat_product_id(self):
-        for line in self:
-            line.price_unit = line.vat_product_id.price
-            line.vh_inv_line_tax_id = line.vat_product_id.taxes_ids[0] if line.vat_product_id.taxes_ids else False
+    company_id = fields.Many2one('res.company', related='vh_inv_id.company_id', default=lambda self: self.env.company)

@@ -9,22 +9,22 @@ class CancelEInvoice(models.TransientModel):
     reason_adjust_einv = fields.Char(string='Reason Cancel')
     seller_responsible = fields.Many2one('res.users')
     seller_position = fields.Char(string='Seller Position')
-    buyer_responsible = fields.Many2one('partner.vat')
+    buyer_responsible = fields.Many2one('res.partner')
     buyer_position = fields.Char(string='Buyer Position')
     vh_inv_id = fields.Many2one('vinhhy.einvoice', string='Vinh Hy E-Invoice')
 
     @api.model
-    def default_get(self, fields):
-        res = super(CancelEInvoice, self).default_get(fields)
+    def default_get(self, fields_list):
+        res = super(CancelEInvoice, self).default_get(fields_list)
         active_id = self._context.get('active_id')
-        vh_inv = self.env['vinhhy.einvoice'].browse([active_id])
+        vh_inv = self.env['vinhhy.einvoice'].browse(active_id)
         if vh_inv:
             res.update({
                 'vh_inv_id': active_id,
                 'seller_responsible': vh_inv.user_id.id if vh_inv.user_id else False,
                 'seller_position': vh_inv.user_id.partner_id.function if vh_inv.user_id else '',
-                'buyer_responsible': vh_inv.partner_vat_id.id if vh_inv.partner_vat_id else vh_inv.partner_id.id,
-                'buyer_position': vh_inv.partner_vat_id.partner_id.function if vh_inv.partner_vat_id and vh_inv.partner_vat_id.partner_id else vh_inv.partner_id.partner_id.function
+                'buyer_responsible': vh_inv.partner_id.id if vh_inv.partner_id else False,
+                'buyer_position': vh_inv.partner_id.function if vh_inv.partner_id else ''
             })
         return res
 

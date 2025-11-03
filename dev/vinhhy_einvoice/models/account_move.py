@@ -7,8 +7,6 @@ from odoo.exceptions import UserError
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    partner_vat_id = fields.Many2one('partner.vat', 'Legal VH E-Invoice Company', tracking=True, domain="[('company_type','=','company')]")
-    partner_contact_id = fields.Many2one('partner.vat', 'VH E-Invoice Contact', tracking=True)
     vh_einv_ids = fields.Many2many('vinhhy.einvoice', 'vh_einv_account_move_rel', 'move_id','vh_einv_id', string='Vinh Hy E-Invoice', copy=False)
     vh_einv_ref = fields.Char('VH E-Invoice Reference', compute='_compute_vh_einv_ref', store=True, tracking=True)
     vh_einv_count = fields.Integer('VH E-Invoices Count', compute='_compute_vh_einv_ref')
@@ -35,12 +33,11 @@ class AccountMove(models.Model):
             move.vh_einv_count = len(issued_ei.ids)
 
     def action_create_einvoice(self):
-        if not self.partner_vat_id and not self.partner_contact_id:
+        if not self.partner_id:
             raise UserError(_("You must have partner to invoice!"))
         vinhhy_einv_val = {
             'invoice_ids': [(4, self.id)],
-            'partner_id': self.partner_contact_id and self.partner_contact_id.id or False,
-            'partner_vat_id': self.partner_vat_id and self.partner_vat_id.id or False,
+            'partner_id': self.partner_id and self.partner_id.id or False,
             'date_invoice': self.invoice_date,
             'company_id': self.company_id.id,
             'journal_id': self.journal_id.id,
@@ -50,7 +47,7 @@ class AccountMove(models.Model):
             # VH E-Invoice Data Information
             'user_id': self.invoice_user_id.id if self.invoice_user_id else False,
             'team_id': self.team_id.id if self.team_id else False,
-            'customer_email': self.partner_vat_id and self.partner_vat_id.email or False,
+            'customer_email': self.partner_id and self.partner_id.email or False,
         }
         einv_line_vals = self._prepare_einv_line_values()
         vinhhy_einv_val['line_ids'] = einv_line_vals
@@ -61,24 +58,16 @@ class AccountMove(models.Model):
         line_vals = []
         for line in self.invoice_line_ids:
             name = line.product_id.name or ''
-            vat_product = line.product_id._get_vat_product_template()
-            vat_product_tax = vat_product.taxes_ids[0].id if vat_product.taxes_ids else False
-            invoice_tax_id = line.tax_ids[0] if line.tax_ids else False
-            if invoice_tax_id:
-                tax = self.env['einvoice.tax'].search([]).filtered(lambda x: x.amount == invoice_tax_id.amount)
-            else:
-                tax = False
             val = (0, 0, {
                 'name': name,
                 # 'origin': name,
                 'account_id': line.account_id.id,
-                'price_unit': vat_product.price if vat_product else line.price_unit,
+                'price_unit': line.product_id.lst_price if line.product_id else line.price_unit,
                 'quantity': line.quantity,
                 'discount': line.discount,
                 'uom_id': line.product_id.uom_id.id,
                 'product_id': line.product_id.id or False,
-                'vat_product_id': vat_product.id if vat_product else False,
-                'vh_inv_line_tax_id': tax and tax.id or vat_product_tax,
+                'tax_id': line.tax_ids[0] if line.tax_ids else False,
                 'inv_line_source_id': line.id
             })
             line_vals.append(val)
@@ -86,7 +75,7 @@ class AccountMove(models.Model):
 
     def action_create_view_vh_einv(self):
         vinhhy_einv_obj = self.action_create_einvoice()
-        view = self.env.ref('vinhhy_einvoice_service.vinhhy_einvoice_form')
+        view = self.env.ref('vinhhy_einvoice.vinhhy_einvoice_form')
         return {
             'name': _('Vinh Hy E-Invoice'),
             'type': 'ir.actions.act_window',

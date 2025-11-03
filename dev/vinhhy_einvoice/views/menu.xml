@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <menuitem id="menu_account_partner_vat"
-            action="action_partner_vat"
-            parent="account.menu_finance_receivables"
-            groups="account.group_account_user,account.group_account_invoice"
-            sequence="80"/>
-
-        <menuitem id="menu_account_vat_product_template"
-            action="vat_product_template_action_view"
-            parent="account.menu_finance_receivables"
-            groups="account.group_account_user,account.group_account_invoice"
-            sequence="90"/>
-
         <menuitem id="menu_vinhhy_e_invoice"
             action="action_vinhhy_einvoice"
             parent="account.menu_finance_receivables"
@@ -26,21 +14,15 @@
             sequence="105"/>
 
             <menuitem id="menu_vinhhy_einvoice_type"
-                action="vinhhy_einvoice_service.action_open_vinhhy_einvoice_type"
+                action="vinhhy_einvoice.action_open_vinhhy_einvoice_type"
                 parent="menu_vinhhy_einvoice_conf"
                 groups="account.group_account_manager"
                 sequence="106"/>
 
             <menuitem id="menu_vinhhy_einvoice_template"
-                action="vinhhy_einvoice_service.action_open_vinhhy_einvoice_template"
+                action="vinhhy_einvoice.action_open_vinhhy_einvoice_template"
                 parent="menu_vinhhy_einvoice_conf"
                 groups="account.group_account_manager"
                 sequence="108"/>
-            
-            <menuitem id="menu_einvoice_tax"
-                action="vinhhy_einvoice_service.action_open_einvoice_tax"
-                parent="menu_vinhhy_einvoice_conf"
-                groups="account.group_account_manager"
-                sequence="109"/>
     </data>
 </odoo>
