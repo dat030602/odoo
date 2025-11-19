@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem id="menu_misa_invoice_data_root" 
+                  name="Misa EInvoice" 
+                  web_icon="crawl_automation_invoice,static/description/icon.png"
+                  sequence="50"/>
+ 
+        <!-- Sub Menus -->
+        <menuitem id="menu_misa_invoice_data_list" 
+                  name="Invoice List" 
+                  parent="menu_misa_invoice_data_root" 
+                  action="action_misa_invoice_data" 
+                  sequence="10"/>
+
+        <menuitem id="menu_misa_invoice_data_config" 
+                  name="Configuration" 
+                  parent="menu_misa_invoice_data_root" 
+                  sequence="30"/>
+
+        <menuitem id="menu_misa_invoice_data_mapping" 
+                  name="Product Mapping" 
+                  parent="menu_misa_invoice_data_config" 
+                  action="action_misa_map_product" 
+                  sequence="10"/>
+
+        <menuitem id="menu_misa_invoice_data_misa_config" 
+                  name="MISA Configuration" 
+                  parent="menu_misa_invoice_data_config" 
+                  action="action_misa_config" 
+                  sequence="20"/>
+    </data>
+</odoo>
