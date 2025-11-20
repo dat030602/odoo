@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
-class MisaMapProduct(models.Model):
-    _name = 'misa.map.product'
+class GdtMapProduct(models.Model):
+    _name = 'gdt.map.product'
     _description = 'Product Mapping from Invoice Data'
 
     # ========== Basic Fields ==========

@@ -4,8 +4,8 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class MisaInvoiceData(models.Model):
-    _name = 'misa.invoice.data'
+class GdtEinvoice(models.Model):
+    _name = 'gdt.einvoice'
     _description = 'Invoice Data'
     _rec_name = 'invoice_date'
     _order = 'invoice_date desc'
@@ -18,15 +18,20 @@ class MisaInvoiceData(models.Model):
     invoice_date = fields.Date(string='Invoice Date', required=True, index=True, tracking=True)
     move_type = fields.Selection([
         ('out_invoice', 'Customer Invoice'),
-        ('out_refund', 'Customer Credit Note'),
         ('in_invoice', 'Vendor Bill'),
-        ('in_refund', 'Vendor Credit Note'),
     ], string='Invoice Type', default='in_invoice', required=True, tracking=True)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('processing', 'Processing'),
         ('done', 'Done'),
     ], string='Status', compute='_compute_state', store=True, tracking=True)
+    invoice_status = fields.Selection([
+        ('0', 'New'),
+        ('1', 'Posted'),
+        ('2', 'Replacement'),
+        ('3', 'Adjustment'),
+        ('4', 'Canceled'),
+    ], string='Invoice Status', default='new', tracking=True)
 
     # ========== Seller Information ==========
     seller_name = fields.Char(string='Seller Name', tracking=True)
@@ -50,7 +55,7 @@ class MisaInvoiceData(models.Model):
     purchase_order_id = fields.Many2one('purchase.order', string='Purchase Order', tracking=True)
 
     # ========== Relations ==========
-    invoice_line_ids = fields.One2many('misa.invoice.data.line', 'parent_id', string='Invoice Lines')
+    invoice_line_ids = fields.One2many('gdt.einvoice.line', 'parent_id', string='Invoice Lines')
     invoice_ids = fields.Many2many('account.move', string='Invoices', compute='_compute_invoice_ids', store=True)
 
     # ========== Tax Totals ==========
@@ -179,7 +184,7 @@ class MisaInvoiceData(models.Model):
             for line in record.invoice_line_ids:
                 product_name_lower = line.name.lower()
                 selected_product = False
-                mapping_products = self.env['misa.map.product'].search([('active', '=', True)])
+                mapping_products = self.env['gdt.map.product'].search([('active', '=', True)])
                 for mapping in mapping_products:
                     if mapping.keyword:
                         keywords = [kw.strip().lower() for kw in mapping.keyword.split(',')]
@@ -194,15 +199,15 @@ class MisaInvoiceData(models.Model):
                 if not selected_product:
                     selected_product = line.fuzzy_find_product(line.name)
                 if not selected_product:
-                    selected_product = self.env['misa.map.product'].search([], limit=1).mapped('product_id')
+                    selected_product = self.env['gdt.map.product'].search([], limit=1).mapped('product_id')
                 line.product_id = selected_product
 
     def action_create_invoice(self):
         """Create invoice from current data"""
         self.ensure_one()
-        if self.move_type in ['out_invoice', 'out_refund'] and self.partner_buyer_id:
+        if self.move_type in ['out_invoice'] and self.partner_buyer_id:
             return self.create_invoice_out()
-        elif self.move_type in ['in_invoice', 'in_refund'] and self.partner_seller_id:
+        elif self.move_type in ['in_invoice'] and self.partner_seller_id:
             return self.create_invoice_in()
         else:
             raise ValidationError(_("Cannot create invoice: Missing seller or buyer or invalid invoice type"))
@@ -211,12 +216,8 @@ class MisaInvoiceData(models.Model):
         """Open list of created invoices"""
         self.ensure_one()
         action = self.env.ref('account.action_move_out_invoice_type').sudo().read()[0]
-        if self.move_type == 'out_refund':
-            action = self.env.ref('account.action_move_out_refund_type').sudo().read()[0]
-        elif self.move_type == 'in_invoice':
+        if self.move_type == 'in_invoice':
             action = self.env.ref('account.action_move_in_invoice_type').sudo().read()[0]
-        elif self.move_type == 'in_refund':
-            action = self.env.ref('account.action_move_in_refund_type').sudo().read()[0]
         action['domain'] = [('ref', '=', self.name)]
         return action
 

@@ -18,13 +18,13 @@ def normalize_name(name):
     return name
 
 
-class MisaInvoiceDataLine(models.Model):
-    _name = 'misa.invoice.data.line'
+class GdtEinvoiceLine(models.Model):
+    _name = 'gdt.einvoice.line'
     _description = 'Invoice Line'
     _order = 'id'
 
     # ========== Basic Fields ==========
-    parent_id = fields.Many2one('misa.invoice.data', string='Invoice', ondelete='cascade', required=True)
+    parent_id = fields.Many2one('gdt.einvoice', string='Invoice', ondelete='cascade', required=True)
     name = fields.Char(string='Label')
     unit = fields.Char(string='Unit of Measure')
 
@@ -56,7 +56,7 @@ class MisaInvoiceDataLine(models.Model):
         for record in self:
             selected_product = False
             name_to_check = (record.name or "").lower()
-            mapping_products = self.env['misa.map.product'].search([])
+            mapping_products = self.env['gdt.map.product'].search([])
 
             for mapping in mapping_products:
                 if not mapping.keyword:
@@ -71,7 +71,7 @@ class MisaInvoiceDataLine(models.Model):
                 selected_product = record.fuzzy_find_product(name_to_check)
 
             if not selected_product:
-                selected_product = self.env['misa.map.product'].search([], limit=1).mapped('product_id')
+                selected_product = self.env['gdt.map.product'].search([], limit=1).mapped('product_id')
 
             record.product_id = selected_product
 
@@ -179,9 +179,9 @@ class MisaInvoiceDataLine(models.Model):
     def create_data_mapping_product(self):
         """Create product mapping if not exists"""
         for record in self:
-            if self.env['misa.map.product'].search_count([('keyword', '=', record.name)]):
+            if self.env['gdt.map.product'].search_count([('keyword', '=', record.name)]):
                 continue
-            self.env['misa.map.product'].create({
+            self.env['gdt.map.product'].create({
                 'keyword': record.name,
                 'product_id': record.product_id.id,
                 'create_auto': True,

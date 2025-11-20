@@ -1,4 +1,3 @@
-from . import misa_invoice_data
-from . import misa_invoice_data_line
-from . import misa_map_product
-from . import misa_config
+from . import gdt_einvoice
+from . import gdt_einvoice_line
+from . import gdt_map_product
