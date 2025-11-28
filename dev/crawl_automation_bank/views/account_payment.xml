@@ -8,7 +8,10 @@
             <field name="inherit_id" ref="account.view_account_payment_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
-                    <field name="transaction_code"/>
+                    <field name="transaction_code" optional="hide"/>
+                    <field name="acc_counterpart_no" optional="hide"/>
+                    <field name="acc_counterpart_name" optional="hide"/>
+                    <field name="ref_src" optional="hide"/>
                 </xpath>
             </field>
         </record>
@@ -41,4 +44,3 @@
         </record>
     </data>
 </odoo>
-
