@@ -89,9 +89,9 @@ class GdtEinvoice(models.Model):
     @api.depends('invoice_line_ids.product_id', 'invoice_ids.state')
     def _compute_state(self):
         for record in self:
-            if all(invoice.state == 'posted' for invoice in record.invoice_ids):
+            if record.invoice_ids.exists() and all([1 for invoice in record.invoice_ids if invoice.state == 'posted']):
                 record.state = 'done'
-            elif record.invoice_line_ids.mapped('product_id'):
+            elif record.invoice_line_ids.mapped('product_id').exists():
                 record.state = 'processing'
             else:
                 record.state = 'draft'
