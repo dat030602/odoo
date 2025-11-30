@@ -121,20 +121,38 @@ class GdtEinvoice(models.Model):
         """Compute tax totals from invoice lines"""
         for record in self:
             record = record.with_company(record.env.company)
-            invoice_lines = record.invoice_line_ids.filtered(lambda l: l.product_id)
+            # Include all invoice lines, not just those with products
+            invoice_lines = record.invoice_line_ids
             currency = record.currency_id or record.env.company.currency_id
             
             # Get partner based on move_type
             partner = record.partner_buyer_id if record.move_type in ['out_invoice', 'out_refund'] else record.partner_seller_id
             
             # Convert invoice lines to tax base line dicts
-            tax_base_lines = [
-                line._convert_to_tax_base_line_dict(partner=partner)
-                for line in invoice_lines
-            ]
+            tax_base_lines = []
+            for line in invoice_lines:
+                try:
+                    tax_base_line = line._convert_to_tax_base_line_dict(partner=partner)
+                    tax_base_lines.append(tax_base_line)
+                except Exception as e:
+                    _logger.warning(f"Error converting line to tax base line: {e}")
+                    # Fallback: create a simple tax base line dict
+                    tax_base_lines.append(
+                        record.env['account.tax']._convert_to_tax_base_line_dict(
+                            line,
+                            partner=partner or record.env['res.partner'],
+                            currency=currency,
+                            product=line.product_id or record.env['product.product'],
+                            taxes=line.tax_id or record.env['account.tax'],
+                            price_unit=line.unit_price or 0.0,
+                            quantity=line.quantity or 0.0,
+                            discount=0.0,
+                            price_subtotal=line.price_subtotal or (line.unit_price * line.quantity if line.unit_price and line.quantity else 0.0),
+                        )
+                    )
             
             # Always call _prepare_tax_totals, even with empty list, to get valid structure
-            record.tax_totals = self.env['account.tax']._prepare_tax_totals(
+            record.tax_totals = record.env['account.tax']._prepare_tax_totals(
                 tax_base_lines,
                 currency,
             )
@@ -201,6 +219,7 @@ class GdtEinvoice(models.Model):
                 if not selected_product:
                     selected_product = self.env['gdt.map.product'].search([], limit=1).mapped('product_id')
                 line.product_id = selected_product
+        return True
 
     def action_create_invoice(self):
         """Create invoice from current data"""

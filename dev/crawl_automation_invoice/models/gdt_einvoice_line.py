@@ -163,16 +163,21 @@ class GdtEinvoiceLine(models.Model):
         if not partner:
             partner = self.parent_id.partner_buyer_id if self.parent_id.move_type in ['out_invoice', 'out_refund'] else self.parent_id.partner_seller_id
         
+        # Ensure price_subtotal is computed, fallback to unit_price * quantity if not
+        price_subtotal = self.price_subtotal
+        if not price_subtotal and self.unit_price and self.quantity:
+            price_subtotal = self.unit_price * self.quantity
+        
         return self.env['account.tax']._convert_to_tax_base_line_dict(
             self,
-            partner=partner,
-            currency=self.currency_id or self.parent_id.currency_id,
-            product=self.product_id,
-            taxes=self.tax_id,
-            price_unit=self.unit_price,
-            quantity=self.quantity,
+            partner=partner or self.env['res.partner'],
+            currency=self.currency_id or self.parent_id.currency_id or self.env.company.currency_id,
+            product=self.product_id or self.env['product.product'],
+            taxes=self.tax_id or self.env['account.tax'],
+            price_unit=self.unit_price or 0.0,
+            quantity=self.quantity or 0.0,
             discount=0.0,
-            price_subtotal=self.price_subtotal,
+            price_subtotal=price_subtotal or 0.0,
             **kwargs,
         )
 
