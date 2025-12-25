@@ -21,6 +21,7 @@ class AccountPayment(models.Model):
             self.partner_bank_id = self.env['res.partner.bank'].search([('acc_number', '=', self.acc_counterpart_no)], limit=1)
 
     def action_create_payment_from_automation_bank(self, journal_id, data=[]):
+        result = []
         try:
             _logger.info("Start action_create_payment_from_automation_bank with journal_id: %s, data count: %s", journal_id, len(data))
             for line in data:
@@ -72,9 +73,10 @@ class AccountPayment(models.Model):
                     if move_line and invoice_ids:
                         _logger.info("Assigning outstanding line: move_line id %s, invoice_ids: %s", move_line.id, invoice_ids.ids)
                         invoice_ids.js_assign_outstanding_line(move_line.id)
+                result.append(payment.transaction_code)
         except Exception as e:
             _logger.error("Error in action_create_payment_from_automation_bank: %s", traceback.format_exc())
-        return True
+        return result
 
     def _check_transaction_exists(self, transaction_number):
         existing_payments = self.env['account.payment'].search([("transaction_code", "=", transaction_number)], limit=1)
