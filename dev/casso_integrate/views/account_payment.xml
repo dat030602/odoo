@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.payment.form.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="ref_src" invisible="transaction_code == False"/>
+                    <field name="transaction_code" invisible="transaction_code == False"/>
+                </xpath>
+                <xpath expr="//group[@name='group2']" position="inside">
+                    <field name="acc_counterpart_no" invisible="transaction_code == False"/>
+                    <field name="acc_counterpart_name" invisible="transaction_code == False"/>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Casso Information" name="casso_info" invisible="not casso_id">
+                            <group>
+                                <group string="Transaction Details">
+                                    <field name="casso_id"/>
+                                    <field name="casso_reference"/>
+                                    <field name="casso_description"/>
+                                    <field name="casso_amount"/>
+                                    <field name="casso_transactionDateTime"/>
+                                </group>
+                                <group string="Account Information">
+                                    <field name="casso_accountNumber"/>
+                                    <field name="casso_bankName"/>
+                                    <field name="casso_bankAbbreviation"/>
+                                    <field name="casso_virtualAccountNumber"/>
+                                    <field name="casso_virtualAccountName"/>
+                                </group>
+                                <group string="Counterpart Information">
+                                    <field name="casso_counterAccountName"/>
+                                    <field name="casso_counterAccountNumber"/>
+                                    <field name="casso_counterAccountBankId"/>
+                                    <field name="casso_counterAccountBankName"/>
+                                </group>
+                            </group>
+                            <group>
+                                <button name="action_view_detail_casso_transaction" string="View Detail from Casso" type="object" class="btn-primary" invisible="not casso_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_account_payment_search_inherit" model="ir.ui.view">
+            <field name="name">account.payment.search.inherit</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="acc_counterpart_name" string="Transaction Information" filter_domain="['|', '|', ('acc_counterpart_name', 'ilike', self), ('acc_counterpart_no', 'ilike', self), ('transaction_code', 'ilike', self)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

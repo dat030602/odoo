@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Casso Transaction Wizard Form View -->
+        <record id="view_casso_transaction_wizard_form" model="ir.ui.view">
+            <field name="name">casso.transaction.wizard.form</field>
+            <field name="model">casso.transaction.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Casso Transaction Detail" edit="0">
+                    <sheet>
+                        <group>
+                            <group string="Transaction Information">
+                                <field name="transaction_id"/>
+                                <field name="tid"/>
+                                <field name="description"/>
+                                <field name="amount"/>
+                            </group>
+                            <group string="Additional Information">
+                                <field name="cusum_balance"/>
+                                <field name="when"/>
+                                <field name="bank_sub_acc_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Close" class="btn-primary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Casso Transaction Wizard Action -->
+        <record id="action_casso_transaction_wizard" model="ir.actions.act_window">
+            <field name="name">Casso Transaction Detail</field>
+            <field name="res_model">casso.transaction.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

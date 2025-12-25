@@ -1,0 +1,69 @@
+from odoo import models, fields, api
+import requests
+import base64
+from odoo.tools import image_process
+
+def get_image_from_url(url):
+    if url:
+        response = requests.get(url)
+        if response.status_code == 200:
+            image_base64 = base64.b64encode(response.content).decode('utf-8')
+            return image_base64
+    return False
+
+class VietQRBank(models.Model):
+    _name = 'vietqr.bank'
+    _description = 'VietQR Bank Information'
+
+    name = fields.Char('Bank Name')
+    code = fields.Char('Bank Code')
+    swift_code = fields.Char('Swift Code')
+    bin = fields.Char('Bank BIN')
+    transfer_supported = fields.Boolean('Supports Transfer')
+    lookup_supported = fields.Boolean('Supports Lookup')
+    is_transfer = fields.Boolean('Is Transfer Enabled')
+    logo_url = fields.Char(string="Logo")
+    logo_image = fields.Binary(string="Logo", max_width=200, max_height=200, attachment=False, stored=True, compute="_compute_logo")
+    
+    def name_get(self):
+        result = []
+        for record in self:
+            name_display = f"{record.code} - {record.name}" if record.code else record.name
+            result.append((record.id, name_display))
+        return result
+        
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = list(args or [])
+        if name :
+            args += [
+                '|',
+                ('code', operator, name),
+                ('name', operator, name)
+            ]
+        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+    
+    @api.depends('logo_url')
+    def _compute_logo(self):
+        for rec in self:
+            logo_image = get_image_from_url(rec.logo_url)
+            rec.logo_image = image_process(logo_image) if logo_image else logo_image
+
+    @api.model
+    def fetch_banks(self):
+        url = "https://api.vietqr.io/v2/banks"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json().get('data', [])
+            for bank in data:
+                self.create({
+                    'name': bank.get('name',False),
+                    'code': bank.get('code',False),
+                    'swift_code': bank.get('swift_code',False),
+                    'logo_url': bank.get('logo',False),
+                    'bin': bank.get('bin',False),
+                    'transfer_supported': bank.get('transferSupported',0) == 1,
+                    'lookup_supported': bank.get('lookupSupported',0) == 1,
+                    'is_transfer': bank.get('isTransfer',0) == 1,
+                })
+
