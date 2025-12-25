@@ -32,27 +32,26 @@
                         <field name="status" widget="statusbar" statusbar_visible="draft,connected"/>
                     </header>
                     <sheet>
-                        <group>
-                            <group>
-                                <field name="name"/>
-                                <field name="active"/>
-                            </group>
-                        </group>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="status == 'connected'"/>
+                            </h1>
+                        </div>
                         <notebook>
                             <page string="OAuth Configuration" name="oauth_config">
                                 <group>
                                     <group string="Client Information">
-                                        <field name="token_type"/>
-                                        <field name="client_id" password="True" invisible="token_type == 'Apikey'"/>
-                                        <field name="client_secret" password="True" invisible="token_type == 'Apikey'"/>
+                                        <field name="token_type" readonly="status == 'connected'"/>
+                                        <field name="client_id" password="True" invisible="token_type == 'Apikey'" readonly="status == 'connected'"/>
+                                        <field name="client_secret" password="True" invisible="token_type == 'Apikey'" readonly="status == 'connected'"/>
                                         <field name="api_key" password="True" invisible="token_type == 'Bearer'"/>
-                                        <field name="secure_token" password="True"/>
+                                        <field name="secure_token" password="True" readonly="status == 'connected'"/>
                                     </group>
                                     <group string="URL Configuration">
-                                        <field name="webhook_url"/>
-                                        <field name="api_url"/>
-                                        <field name="redirect_authorize_uri"/>
-                                        <field name="oauth_url" invisible="token_type == 'Apikey'"/>
+                                        <field name="webhook_url" readonly="status == 'connected'"/>
+                                        <field name="api_url" readonly="status == 'connected'"/>
+                                        <field name="redirect_authorize_uri" readonly="status == 'connected'"/>
+                                        <field name="oauth_url" invisible="token_type == 'Apikey'" readonly="status == 'connected'"/>
                                     </group>
                                 </group>
                             </page>
@@ -151,10 +150,14 @@
         </record>
 
         <!-- Menu Item -->
-        <menuitem id="menu_casso_config"
+         <menuitem id="menu_casso_config"
+                  name="Casso Config"
+                  parent="account.menu_finance_configuration"
+                  sequence="100"/>
+        <menuitem id="menu_sale_order_casso"
                   name="Casso Config"
                   action="action_casso_config"
-                  parent="account.menu_finance_configuration"
+                  parent="menu_casso_config"
                   sequence="100"/>
     </data>
 </odoo>

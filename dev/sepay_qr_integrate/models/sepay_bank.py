@@ -34,22 +34,22 @@ class SepayBank(models.Model):
         return result
         
     @api.model
-    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
-        args = list(args or [])
+    def _name_search(self, name='', domain=None, operator='ilike', limit=100, order=None):
+        domain = domain or []
         if name:
-            args += [
+            domain += [
                 '|', '|',
                 ('code', operator, name),
                 ('name', operator, name),
-                ('short_name', operator, name)
+                ('short_name', operator, name),
             ]
-        return self._search(args, limit=limit, access_rights_uid=name_get_uid)
+        return self._search(domain, limit=limit, order=order)
     
     @api.depends('logo_url')
     def _compute_logo(self):
         for rec in self:
             logo_image = get_image_from_url(rec.logo_url)
-            rec.logo_image = image_process(logo_image) if logo_image else logo_image
+            rec.logo_image = image_process(logo_image.encode('utf-8')) if logo_image else None
 
     @api.model
     def fetch_banks(self):

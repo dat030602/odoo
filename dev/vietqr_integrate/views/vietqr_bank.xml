@@ -6,7 +6,7 @@
             <form>
                 <sheet>
                     <field name="logo_url" invisible="1"/>
-                    <field name="logo_image" widget="image" class="oe_avatar" attrs="{'invisible': [('logo_url', '=', False)]}"/>
+                    <field name="logo_image" widget="image" class="oe_avatar" invisible="logo_url == False"/>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>

@@ -16,14 +16,14 @@ class CassoConfig(models.Model):
     name = fields.Char(string='Configuration Name', default='Casso Integration', required=True)
     client_id = fields.Char(string='Client ID')
     client_secret = fields.Char(string='Client Secret')
-    redirect_authorize_uri = fields.Char(string='Redirect Authorize URI', default='/webhook/casso/authorize', help="Example: /webhook/casso/authorize")
-    webhook_url = fields.Char(string='Webhook URL', default='/webhook/casso', help="Example: /webhook/casso")
+    redirect_authorize_uri = fields.Char(string='Redirect Authorize URI', default='/webhook/casso/authorize',)
+    webhook_url = fields.Char(string='Webhook URL', default='/webhook/casso',)
     api_url = fields.Char(string='API URL', default='https://api.casso.vn/v2')
     oauth_url = fields.Char(string='OAuth URL', default='https://oauth.casso.vn')
     secure_token = fields.Char(string='Secure Token')
 
     # Token Storage
-    token_type = fields.Selection([('Bearer', 'OAuth2'), ('Apikey', 'API Key')], string='Token Type', default='oauth2')
+    token_type = fields.Selection([('Bearer', 'OAuth2'), ('Apikey', 'API Key')], string='Token Type', default='Bearer')
     api_key = fields.Char(string='API Key')
     access_token = fields.Char(string='Access Token')
     refresh_token = fields.Char(string='Refresh Token')
@@ -57,7 +57,7 @@ class CassoConfig(models.Model):
     def _get_valid_token(self):
         """Check and automatically refresh token if expired"""
         self.ensure_one()
-        current_time = time.time()
+        current_time = datetime.datetime.now()
         # If token is about to expire in the next 5 minutes, perform refresh
         if not self.access_token or (self.token_expires_at and current_time > (self.token_expires_at - datetime.timedelta(minutes=5))):
             self.action_refresh_token()
@@ -69,7 +69,7 @@ class CassoConfig(models.Model):
         Call this function when you receive code from Redirect URI
         """
         self.ensure_one()
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.get_base_url()
         url = f"{self.oauth_url}/auth/authorize" \
             f"?client_id={urllib.parse.quote(self.client_id)}" \
             f"&scope=webhook" \
@@ -90,7 +90,7 @@ class CassoConfig(models.Model):
             raise UserError(_("Refresh Token not found. Please login again."))
 
         url = f"{self.oauth_url}/auth/token"
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.get_base_url()
         headers = {
             'Content-Type': 'application/json',
             'Authorization': f'Basic {urllib.parse.quote(self.client_id+":"+self.client_secret)}'
@@ -125,7 +125,7 @@ class CassoConfig(models.Model):
 
     def action_create_webhook(self):
         self.ensure_one()
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.get_base_url()
         url = f"{self.api_url}/webhooks"
         headers = self._get_casso_headers()
         payload = {
@@ -146,13 +146,14 @@ class CassoConfig(models.Model):
         response = requests.get(url, headers=headers)
         if response.status_code != 200:
             raise UserError(_("Error when getting user information from Casso: %s", response.text))
+        response_data = response.json()
         self.write({
-            'user_user_id': response.get('user', {}).get('id', False),
-            'user_user_email': response.get('user', {}).get('email', False),
-            'user_business_id': response.get('business', {}).get('id', False),
-            'user_business_name': response.get('business', {}).get('name', False)
+            'user_user_id': response_data.get('user', {}).get('id', False),
+            'user_user_email': response_data.get('user', {}).get('email', False),
+            'user_business_id': response_data.get('business', {}).get('id', False),
+            'user_business_name': response_data.get('business', {}).get('name', False)
         })
-        bank_acc_ids = response.get('bankAccs', [])
+        bank_acc_ids = response_data.get('bankAccs', [])
         for bank_acc_id in bank_acc_ids:
             bank_acc_id = bank_acc_id.get('id', False)
 

@@ -12,6 +12,7 @@
     'author': 'Dat Nguyen',
     'depends': ['sale_management', 'account'],
     'data': [
+        'data/sever.xml',
         'security/ir.model.access.csv',
         'views/vietqr_bank.xml',
         'views/vietqr_bank_config.xml',
