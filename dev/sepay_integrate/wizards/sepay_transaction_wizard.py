@@ -5,16 +5,18 @@ class SePayTransactionWizard(models.TransientModel):
     _name = 'sepay.transaction.wizard'
     _description = 'SePay Transaction Detail Wizard'
 
-    transaction_id = fields.Char(string='Transaction ID', readonly=True)
-    account_number = fields.Char(string='Account Number', readonly=True)
-    transaction_content = fields.Text(string='Transaction Content', readonly=True)
-    amount_in = fields.Float(string='Amount In', readonly=True)
-    amount_out = fields.Float(string='Amount Out', readonly=True)
-    accumulated = fields.Float(string='Accumulated Balance', readonly=True)
-    transaction_date = fields.Datetime(string='Transaction Date', readonly=True)
-    bank_brand_name = fields.Char(string='Bank Brand Name', readonly=True)
-    reference_number = fields.Char(string='Reference Number', readonly=True)
-    code = fields.Char(string='Code', readonly=True)
-    sub_account = fields.Char(string='Sub Account', readonly=True)
-    bank_account_id = fields.Char(string='Bank Account ID', readonly=True)
+    sepay_id = fields.Integer(string='SePay ID', readonly=True, tracking=True)
+    sepay_gateway = fields.Char(string='SePay Gateway', readonly=True, tracking=True)
+    sepay_transaction_date = fields.Datetime(string='SePay Transaction Date', readonly=True, tracking=True)
+    sepay_account_number = fields.Char(string='SePay Account Number', readonly=True, tracking=True)
+    sepay_code = fields.Char(string='SePay Code', readonly=True, tracking=True)
+    sepay_content = fields.Text(string='SePay Content', readonly=True, tracking=True)
+    sepay_transfer_type = fields.Selection([
+        ('in', 'In'),
+        ('out', 'Out')
+    ], string='SePay Transfer Type', readonly=True, tracking=True)
+    sepay_transfer_amount = fields.Float(string='SePay Transfer Amount', readonly=True, tracking=True)
+    sepay_sub_account = fields.Char(string='SePay Sub Account', readonly=True, tracking=True)
+    sepay_reference_code = fields.Char(string='SePay Reference Code', readonly=True, tracking=True)
+    sepay_description = fields.Text(string='SePay Description', readonly=True, tracking=True)
 

@@ -1,0 +1,278 @@
+# Translation of Odoo module.
+# This file contains the translation of the following modules:
+# 	* sepay_qr_integrate
+#
+# Translators:
+# Thi Huong Nguyen, 2025
+#. module: sepay_qr_integrate
+msgid ""
+msgstr ""
+"Project-Id-Version: sepay_qr_integrate 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-27 08:00+0000\n"
+"PO-Revision-Date: 2025-12-27 08:00+0000\n"
+"Last-Translator: Thi Huong Nguyen, 2025\n"
+"Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/models/sale_order.py:0
+#, python-format
+msgid "Create Sepay QR Code"
+msgstr "Tạo mã QR SePay"
+
+#. module: sepay_qr_integrate
+#: model:ir.actions.act_window,name:sepay_qr_integrate.action_generate_sepay_qr
+msgid "Create Sepay QR Code"
+msgstr "Tạo mã QR SePay"
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/models/sepay_bank_config.py:0
+#, python-format
+msgid "Success"
+msgstr "Thành công"
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/models/sepay_bank_config.py:0
+#, python-format
+msgid "Banks have been fetched successfully."
+msgstr "Danh sách ngân hàng đã được cập nhật thành công."
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/models/sepay_bank_config.py:0
+#, python-format
+msgid "Error"
+msgstr "Lỗi"
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/models/sepay_bank_config.py:0
+#, python-format
+msgid "Failed to fetch banks from Sepay API."
+msgstr "Không thể lấy dữ liệu ngân hàng từ API SePay."
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/models/sepay_bank_config.py:0
+#, python-format
+msgid "Error fetching banks: %s"
+msgstr "Lỗi khi cập nhật ngân hàng: %s"
+
+#. module: sepay_qr_integrate
+#: model:ir.model,name:sepay_qr_integrate.model_sepay_bank_config
+msgid "Sepay Bank Config"
+msgstr "Cấu hình ngân hàng SePay"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank_config__name
+msgid "Bank Name"
+msgstr "Tên ngân hàng"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank_config__code
+msgid "Bank Code"
+msgstr "Mã ngân hàng"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank_config__bin
+msgid "Bank BIN"
+msgstr "Mã BIN"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank_config__short_name
+msgid "Short Name"
+msgstr "Tên viết tắt"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank_config__supported
+msgid "Supported"
+msgstr "Được hỗ trợ"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank_config__logo_url
+msgid "Logo URL"
+msgstr "Đường dẫn Logo"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank_config__logo_image
+msgid "Logo"
+msgstr "Ảnh Logo"
+
+#. module: sepay_qr_integrate
+#: model:ir.model,name:sepay_qr_integrate.model_sepay_bank
+msgid "Sepay Bank"
+msgstr "Ngân hàng SePay"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank__name
+msgid "Name"
+msgstr "Tên cấu hình"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank__sepay_bank_id
+msgid "Bank"
+msgstr "Ngân hàng"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank__template
+msgid "Template"
+msgstr "Mẫu QR"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,selection:sepay_qr_integrate.field_sepay_bank__template__compact
+msgid "Compact"
+msgstr "Rút gọn"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,selection:sepay_qr_integrate.field_sepay_bank__template__qronly
+msgid "QR Only"
+msgstr "Chỉ mã QR"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank__is_default
+msgid "Default"
+msgstr "Mặc định"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_sepay_bank__partner_bank_id
+msgid "Bank Account"
+msgstr "Tài khoản ngân hàng"
+
+#. module: sepay_qr_integrate
+#: model_terms:ir.ui.view,arch_db:sepay_qr_integrate.view_sale_order_form_inherit
+msgid "Generate Sepay QR"
+msgstr "Tạo QR SePay"
+
+#. module: sepay_qr_integrate
+#: model:ir.actions.act_window,name:sepay_qr_integrate.action_sepay_bank_config
+#: model:ir.ui.menu,name:sepay_qr_integrate.menu_sale_order_sepay
+msgid "Sepay Bank Config"
+msgstr "Cấu hình Ngân hàng SePay"
+
+#. module: sepay_qr_integrate
+#: model_terms:ir.ui.view,arch_db:sepay_qr_integrate.view_sepay_bank_config_form
+msgid "Fetch Banks from Sepay"
+msgstr "Lấy danh sách Ngân hàng từ SePay"
+
+#. module: sepay_qr_integrate
+#: model_terms:ir.ui.view,arch_db:sepay_qr_integrate.view_sepay_bank_config_form
+msgid "e.g. My Bank"
+msgstr "vd: Ngân hàng của tôi"
+
+#. module: sepay_qr_integrate
+#: model:ir.ui.menu,name:sepay_qr_integrate.menu_sale_order_sepay
+msgid "Config"
+msgstr "Cấu hình"
+
+#. module: sepay_qr_integrate
+#: model:ir.actions.act_window,name:sepay_qr_integrate.action_sepay_bank
+#: model:ir.ui.menu,name:sepay_qr_integrate.menu_sepay_bank
+#: model:ir.ui.menu,name:sepay_qr_integrate.menu_sepay_bank_account
+msgid "Sepay Bank"
+msgstr "Ngân hàng SePay"
+
+#. module: sepay_qr_integrate
+#: model_terms:ir.ui.view,arch_db:sepay_qr_integrate.view_sepay_bank_form
+msgid "Test QR"
+msgstr "Kiểm tra mã QR"
+
+#. module: sepay_qr_integrate
+#: model:ir.ui.menu,name:sepay_qr_integrate.menu_sepay_bank_account
+msgid "Account Bank"
+msgstr "Tài khoản nhận tiền"
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/wizards/create_sepay_qr_wizard.py:0
+#, python-format
+msgid "Please select a Sepay Bank Config."
+msgstr "Vui lòng chọn một cấu hình Ngân hàng SePay."
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/wizards/create_sepay_qr_wizard.py:0
+#, python-format
+msgid "QR code has been created with information:"
+msgstr "Mã QR đã được tạo với thông tin sau:"
+
+#. module: sepay_qr_integrate
+#: model:ir.model,name:sepay_qr_integrate.model_create_sepay_qr_wizard
+msgid "Wizard to Create Sepay QR Code"
+msgstr "Cửa sổ tạo mã QR SePay"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__sale_order_id
+msgid "Sale Order"
+msgstr "Đơn bán hàng"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__amount
+msgid "Amount"
+msgstr "Số tiền"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__bank_id
+msgid "Bank"
+msgstr "Ngân hàng"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__description
+msgid "Description"
+msgstr "Nội dung thanh toán"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__currency_id
+msgid "Currency"
+msgstr "Tiền tệ"
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/wizards/create_sepay_qr_wizard.py:0
+#, python-format
+msgid "Please select a Sepay Bank Config."
+msgstr "Vui lòng chọn một cấu hình Ngân hàng SePay."
+
+#. module: sepay_qr_integrate
+#. odoo-python
+#: code:dev/sepay_qr_integrate/wizards/create_sepay_qr_wizard.py:0
+#, python-format
+msgid "QR code has been created with information:"
+msgstr "Mã QR đã được tạo với thông tin sau:"
+
+#. module: sepay_qr_integrate
+#: model:ir.model,name:sepay_qr_integrate.model_create_sepay_qr_wizard
+msgid "Wizard to Create Sepay QR Code"
+msgstr "Cửa sổ tạo mã QR SePay"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__sale_order_id
+msgid "Sale Order"
+msgstr "Đơn bán hàng"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__amount
+msgid "Amount"
+msgstr "Số tiền"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__bank_id
+msgid "Bank"
+msgstr "Ngân hàng"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__description
+msgid "Description"
+msgstr "Nội dung thanh toán"
+
+#. module: sepay_qr_integrate
+#: model:ir.model.fields,field_description:sepay_qr_integrate.field_create_sepay_qr_wizard__currency_id
+msgid "Currency"
+msgstr "Tiền tệ"

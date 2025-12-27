@@ -27,12 +27,11 @@ class CassoBankAccount(models.Model):
     last_sync = fields.Datetime(string='Last Sync')
     journal_id = fields.Many2one('account.journal', string='Journal')
 
-    bank_id = fields.Many2one('vietqr.bank', string='Bank', compute='_compute_bank_id', store=True)
+    bank_id = fields.Many2one('vietqr.bank.config', string='Bank', compute='_compute_bank_id', store=True)
     @api.depends('bank_bin')
     def _compute_bank_id(self):
         for record in self:
-            record.bank_id = self.env['vietqr.bank'].search([('bin', '=', record.bank_bin)], limit=1)
-
+            record.bank_id = self.env['vietqr.bank.config'].search([('bin', '=', record.bank_bin)], limit=1)
     # def action_sync_transaction(self, date=None):
     #     """
     #     Get transaction list from Casso API

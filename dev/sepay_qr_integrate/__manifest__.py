@@ -13,8 +13,10 @@
     'depends': ['sale_management', 'account'],
     'data': [
         'security/ir.model.access.csv',
+        'wizards/create_sepay_qr_wizard.xml',
         'views/sepay_bank.xml',
         'views/sepay_bank_config.xml',
+        'views/sale_order.xml',
     ],
     'installable': True,
     'auto_install': False,

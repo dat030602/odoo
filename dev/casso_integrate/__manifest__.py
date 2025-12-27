@@ -12,10 +12,10 @@
     'depends': ['sale_management', 'account', 'vietqr_integrate'],
     'data': [
         'security/ir.model.access.csv',
-        'views/account_payment.xml',
         'wizards/casso_transaction_wizard.xml',
-        'views/casso_webhook.xml',
         'views/casso_config.xml',
+        'views/account_payment.xml',
+        'views/casso_webhook.xml',
     ],
     'installable': True,
     'auto_install': False,

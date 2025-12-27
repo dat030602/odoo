@@ -43,13 +43,13 @@
                                         <field name="token_type" readonly="status == 'connected'"/>
                                         <field name="client_id" password="True" invisible="token_type != 'Bearer'" readonly="status == 'connected'"/>
                                         <field name="client_secret" password="True" invisible="token_type != 'Bearer'" readonly="status == 'connected'"/>
-                                        <field name="api_key" password="True" invisible="token_type != 'Apikey'" readonly="status == 'connected'"/>
+                                        <field name="api_key" password="True" invisible="token_type != 'Apikey'" readonly="status == 'connected'"  required="token_type == 'Apikey'"/>
                                         <field name="secure_token" password="True" readonly="status == 'connected'"/>
                                     </group>
                                     <group string="URL Configuration">
-                                        <field name="webhook_url" invisible="webhook_id != False" readonly="status == 'connected'"/>
+                                        <field name="webhook_url" invisible="webhook_id != False" readonly="status == 'connected'" required="True"/>
                                         <field name="webhook_id" readonly="1"/>
-                                        <field name="api_url" readonly="status == 'connected'"/>
+                                        <field name="api_url" readonly="status == 'connected'" required="True"/>
                                         <field name="redirect_authorize_uri" readonly="status == 'connected'" invisible="token_type != 'Bearer'"/>
                                         <field name="oauth_url" invisible="token_type == 'Apikey'" readonly="status == 'connected'"/>
                                     </group>
@@ -161,7 +161,7 @@
                   parent="account.menu_finance_configuration"
                   sequence="100"/>
         <menuitem id="menu_sale_order_casso"
-                  name="Casso Config"
+                  name="Config"
                   action="action_casso_config"
                   parent="menu_casso_config"
                   sequence="100"/>

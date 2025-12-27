@@ -22,10 +22,6 @@ class SePayConfig(models.Model):
                              string='Status', default='draft')
     active = fields.Boolean(string='Active', default=True)
     
-    # User Info
-    user_email = fields.Char(string='User Email', readonly=True)
-    user_name = fields.Char(string='User Name', readonly=True)
-    
     # Bank Accounts
     bank_acc_ids = fields.One2many('sepay.bank.account', 'parent_id', string='Bank Accounts')
 
@@ -71,9 +67,7 @@ class SePayConfig(models.Model):
             _logger.error(f"SePay API connection error: {str(e)}")
             raise UserError(_("Error connecting to SePay API: %s", str(e)))
 
-    def action_get_transactions(self, account_number=None, transaction_date_min=None, 
-                                transaction_date_max=None, since_id=None, limit=5000,
-                                reference_number=None, amount_in=None, amount_out=None):
+    def action_get_transactions(self, **kwargs):
         """
         Get transaction list from SePay API
         According to documentation: https://sepay.vn/blog/api-mbbank-api-ngan-hang-mbbank-moi-nhat/
@@ -96,23 +90,25 @@ class SePayConfig(models.Model):
         headers = self._get_sepay_headers()
         
         params = {}
-        if account_number:
-            params['account_number'] = account_number
-        if transaction_date_min:
-            params['transaction_date_min'] = transaction_date_min
-        if transaction_date_max:
-            params['transaction_date_max'] = transaction_date_max
-        if since_id:
-            params['since_id'] = since_id
-        if limit:
-            params['limit'] = min(limit, 5000)  # Max 5000
-        if reference_number:
-            params['reference_number'] = reference_number
-        if amount_in:
-            params['amount_in'] = amount_in
-        if amount_out:
-            params['amount_out'] = amount_out
-        
+        if kwargs.get('account_number', False):
+            params['account_number'] = kwargs.get('account_number')
+        if kwargs.get('transaction_date_min', False):
+            params['transaction_date_min'] = kwargs.get('transaction_date_min')
+        if kwargs.get('transaction_date_max', False):
+            params['transaction_date_max'] = kwargs.get('transaction_date_max')
+        if kwargs.get('since_id', False):
+            params['since_id'] = kwargs.get('since_id')
+        if kwargs.get('limit', False):
+            params['limit'] = min(kwargs.get('limit'), 5000)
+        else:
+            params['limit'] = 500
+        if kwargs.get('reference_number', False):
+            params['reference_number'] = kwargs.get('reference_number')
+        if kwargs.get('amount_in', False):
+            params['amount_in'] = kwargs.get('amount_in')
+        if kwargs.get('amount_out', False):
+            params['amount_out'] = kwargs.get('amount_out')
+
         try:
             response = requests.get(url, headers=headers, params=params, timeout=30)
             response.raise_for_status()
@@ -122,103 +118,100 @@ class SePayConfig(models.Model):
                 error_msg = data.get('error') or 'Unknown error'
                 raise UserError(_("SePay API Error: %s", error_msg))
             
-            return data
+            return data.get('transactions', {})
         except requests.exceptions.RequestException as e:
             _logger.error(f"SePay API error: {str(e)}")
             raise UserError(_("Error calling SePay API: %s", str(e)))
 
-    def action_sync_transactions(self, account_number=None, days_back=7):
-        """
-        Sync transactions from SePay API
-        
-        Args:
-            account_number: Specific account number to sync (None for all)
-            days_back: Number of days to look back (default 7)
-        """
+    def action_get_transaction(self, transaction_id):
         self.ensure_one()
-        transaction_date_min = (datetime.datetime.now() - datetime.timedelta(days=days_back)).strftime('%Y-%m-%d')
-        
-        # Get transactions
-        data = self.action_get_transactions(
-            account_number=account_number,
-            transaction_date_min=transaction_date_min,
-            limit=5000
-        )
-        
-        transactions = data.get('transactions', [])
-        payment_model = self.env['account.payment'].sudo()
-        created_count = 0
-        updated_count = 0
-        
-        for transaction in transactions:
-            try:
-                # Check if transaction already exists
-                existing = payment_model.search([
-                    ('sepay_transaction_id', '=', transaction.get('id'))
-                ], limit=1)
-                
-                if existing:
-                    # Update existing transaction
-                    existing._update_sepay_payment(transaction)
-                    updated_count += 1
-                else:
-                    # Create new transaction
-                    payment_model._create_sepay_payment(transaction)
-                    created_count += 1
-            except Exception as e:
-                _logger.error(f"Error processing SePay transaction {transaction.get('id')}: {str(e)}")
-                continue
-        
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _('Sync Complete'),
-                'message': _('Created: %d, Updated: %d transactions') % (created_count, updated_count),
-                'type': 'success',
-                'sticky': False,
-            }
-        }
+        data = requests.get(f"{self.api_url}/transactions/details/{transaction_id}", headers=self._get_sepay_headers())
+        data.raise_for_status()
+        return data.json().get('transaction', {})
 
-    def action_get_transaction_detail(self, transaction_id):
+    def action_sync_transactions(self):
+        """Sync bank accounts from SePay"""
+        self.ensure_one()
+        Payment = self.env['account.payment'].sudo()
+        try:
+            data = self.action_get_transactions(limit=5000)
+            transactions = data.get('data', [])
+            for tx in transactions:
+                Payment._create_sepay_payment(tx)
+        except requests.exceptions.RequestException as e:
+            _logger.error(f"SePay API connection error: {str(e)}")
+            raise UserError(_("Error connecting to SePay API: %s", str(e)))
+
+    def action_get_bank(self, bank_id):
+        """Get bank details from SePay API"""
+        self.ensure_one()
+        url = f"{self.api_url}/bankaccounts/details/{bank_id}"
+        headers = self._get_sepay_headers()
+        
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            
+            if data.get('status') != 200:
+                error_msg = data.get('error') or 'Unknown error'
+                raise UserError(_("SePay API Error: %s", error_msg))
+            
+            return data.get('bankaccount', {})
+        except requests.exceptions.RequestException as e:
+            _logger.error(f"SePay API connection error: {str(e)}")
+            raise UserError(_("Error connecting to SePay API: %s", str(e)))
+
+    def action_get_banks(self, **kwargs):
         """
-        Get detailed information about a specific transaction
+        Get transaction list from SePay API
+        According to documentation: https://sepay.vn/blog/api-mbbank-api-ngan-hang-mbbank-moi-nhat/
         
         Args:
-            transaction_id: SePay transaction ID
+            account_number: Filter by account number
+            transaction_date_min: Start date (format: YYYY-MM-DD)
+            transaction_date_max: End date (format: YYYY-MM-DD)
+            since_id: Get transactions from this ID onwards (>=)
+            limit: Maximum number of transactions (max 5000, default 5000)
+            reference_number: Filter by reference number
+            amount_in: Filter by incoming amount
+            amount_out: Filter by outgoing amount
         
         Returns:
-            dict: Transaction details
+            dict: JSON data from SePay API
         """
         self.ensure_one()
-        # SePay API doesn't have a direct endpoint for single transaction
-        # So we search by ID in the list
-        data = self.action_get_transactions(since_id=transaction_id, limit=1)
+        url = f"{self.api_url}/bankaccounts/list"
+        headers = self._get_sepay_headers()
         
-        transactions = data.get('transactions', [])
-        for transaction in transactions:
-            if str(transaction.get('id')) == str(transaction_id):
-                return transaction
-        
-        raise UserError(_("Transaction with ID %s not found") % transaction_id)
+        params = {}
+        if kwargs.get('short_name', False):
+            params['short_name'] = kwargs.get('short_name')
+        if kwargs.get('last_transaction_date_min', False):
+            params['last_transaction_date_min'] = kwargs.get('last_transaction_date_min')
+        if kwargs.get('last_transaction_date_max', False):
+            params['last_transaction_date_max'] = kwargs.get('last_transaction_date_max')
+        if kwargs.get('since_id', False):
+            params['since_id'] = kwargs.get('since_id')
+        if kwargs.get('limit', False):
+            params['limit'] = min(kwargs.get('limit'), 5000)
+        else:
+            params['limit'] = 500
+        if kwargs.get('accumulated_min', False):
+            params['accumulated_min'] = kwargs.get('accumulated_min')
+        if kwargs.get('accumulated_max', False):
+            params['accumulated_max'] = kwargs.get('accumulated_max')
 
-    def action_create_webhook(self):
-        """
-        Note: SePay webhook configuration is done on my.sepay.vn
-        This method provides instructions
-        """
-        self.ensure_one()
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        webhook_full_url = base_url + self.webhook_url
-        
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _('Webhook Configuration'),
-                'message': _('Configure webhook at my.sepay.vn with URL: %s') % webhook_full_url,
-                'type': 'info',
-                'sticky': True,
-            }
-        }
-
+        try:
+            response = requests.get(url, headers=headers, params=params, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            
+            if data.get('status') != 200:
+                error_msg = data.get('error') or 'Unknown error'
+                raise UserError(_("SePay API Error: %s", error_msg))
+            
+            return data.get('bankaccounts', [])
+        except requests.exceptions.RequestException as e:
+            _logger.error(f"SePay API error: {str(e)}")
+            raise UserError(_("Error calling SePay API: %s", str(e)))
