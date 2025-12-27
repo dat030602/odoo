@@ -3,7 +3,10 @@
         <field name="name">vietqr.bank.form</field>
         <field name="model">vietqr.bank</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="false" edit="false" delete="false">
+                <header>
+                    <button name="fetch_banks" string="Fetch Banks from VietQR" type="object" class="btn-primary"/>
+                </header>
                 <sheet>
                     <field name="logo_url" invisible="1"/>
                     <field name="logo_image" widget="image" class="oe_avatar" invisible="logo_url == False"/>

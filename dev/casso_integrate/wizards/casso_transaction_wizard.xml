@@ -9,17 +9,26 @@
                 <form string="Casso Transaction Detail" edit="0">
                     <sheet>
                         <group>
-                            <group string="Transaction Information">
-                                <field name="transaction_id"/>
-                                <field name="tid"/>
-                                <field name="description"/>
-                                <field name="amount"/>
+                            <group string="Transaction Details">
+                                <field name="casso_id"/>
+                                <field name="casso_reference"/>
+                                <field name="casso_description"/>
+                                <field name="casso_amount"/>
+                                <field name="casso_transactionDateTime"/>
                             </group>
-                            <group string="Additional Information">
-                                <field name="cusum_balance"/>
-                                <field name="when"/>
-                                <field name="bank_sub_acc_id"/>
+                            <group string="Account Information">
+                                <field name="casso_accountNumber"/>
+                                <field name="casso_bankName"/>
+                                <field name="casso_bankAbbreviation"/>
+                                <field name="casso_virtualAccountNumber"/>
+                                <field name="casso_virtualAccountName"/>
                             </group>
+                        </group>
+                        <group string="Counterpart Information">
+                            <field name="casso_counterAccountName"/>
+                            <field name="casso_counterAccountNumber"/>
+                            <field name="casso_counterAccountBankId"/>
+                            <field name="casso_counterAccountBankName"/>
                         </group>
                     </sheet>
                     <footer>

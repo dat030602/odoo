@@ -14,28 +14,29 @@ class CassoConfig(models.Model):
     _description = 'Casso Config'
 
     name = fields.Char(string='Configuration Name', default='Casso Integration', required=True)
-    client_id = fields.Char(string='Client ID')
-    client_secret = fields.Char(string='Client Secret')
+    client_id = fields.Char(string='Client ID', copy=False)
+    client_secret = fields.Char(string='Client Secret', copy=False)
     redirect_authorize_uri = fields.Char(string='Redirect Authorize URI', default='/webhook/casso/authorize',)
     webhook_url = fields.Char(string='Webhook URL', default='/webhook/casso',)
-    api_url = fields.Char(string='API URL', default='https://api.casso.vn/v2')
+    webhook_id = fields.Many2one('casso.webhook', string='Webhook', readonly=True)
+    api_url = fields.Char(string='API URL', default='https://oauth.casso.vn/v2')
     oauth_url = fields.Char(string='OAuth URL', default='https://oauth.casso.vn')
-    secure_token = fields.Char(string='Secure Token')
+    secure_token = fields.Char(string='Secure Token', copy=False)
 
     # Token Storage
     token_type = fields.Selection([('Bearer', 'OAuth2'), ('Apikey', 'API Key')], string='Token Type', default='Bearer')
-    api_key = fields.Char(string='API Key')
-    access_token = fields.Char(string='Access Token')
-    refresh_token = fields.Char(string='Refresh Token')
-    token_expires_at = fields.Datetime(string='Token Expires At')
-    status = fields.Selection([('draft', 'Draft'), ('connected', 'Connected')], string='Status', default='draft')
+    api_key = fields.Char(string='API Key', copy=False)
+    access_token = fields.Char(string='Access Token', copy=False)
+    refresh_token = fields.Char(string='Refresh Token', copy=False)
+    token_expires_at = fields.Datetime(string='Token Expires At', copy=False)
+    status = fields.Selection([('draft', 'Draft'), ('connected', 'Connected')], string='Status', default='draft', copy=False)
 
     # User Info
-    user_user_id = fields.Char(string='User ID')
-    user_user_email = fields.Char(string='User Email')
-    user_business_id = fields.Char(string='User Email')
-    user_business_name = fields.Char(string='User Business Name')
-    bank_acc_ids = fields.One2many('casso.bank.account', 'parent_id', string='Bank Accounts')
+    user_user_id = fields.Char(string='User ID', copy=False)
+    user_user_email = fields.Char(string='User Email', copy=False)
+    user_business_id = fields.Char(string='Bussiness ID', copy=False)
+    user_business_name = fields.Char(string='Business Name', copy=False)
+    bank_acc_ids = fields.One2many('casso.bank.account', 'parent_id', string='Bank Accounts', copy=False)
 
     active = fields.Boolean(string='Active', default=True)
 
@@ -115,26 +116,41 @@ class CassoConfig(models.Model):
         })
         return True
 
-    def test_api_call(self):
-        """2. Use OAuth2 token: Example get transaction list"""
-        url = f"{self.api_url}/transactions"
-        headers = self._get_casso_headers()
-        
-        response = requests.get(url, headers=headers)
-        return response.json()
-
     def action_create_webhook(self):
         self.ensure_one()
-        base_url = self.get_base_url()
-        url = f"{self.api_url}/webhooks"
-        headers = self._get_casso_headers()
-        payload = {
-            'income_only': True,
-            "secure_token": self.secure_token,
-            "webhook": base_url + self.webhook_url
-        }
-        response = requests.post(url, headers=headers, json=payload)
-        return response.json()
+        webhook = self.env['casso.webhook'].search([('config_id', '=', self.id), ('url', '=', self.webhook_url)], limit=1)
+        if not webhook:
+            webhook = self.env['casso.webhook'].create({
+                'config_id': self.id,
+                'url': self.webhook_url,
+                'name': 'Casso Webhook'
+            })
+            self.webhook_id = webhook.id
+            webhook.action_create_webhook()
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Success'),
+                    'message': _('Webhook has been created successfully.'),
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        else:
+            if not self.webhook_id or self.webhook_id.id != webhook.id:
+                self.webhook_id = webhook.id
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Info'),
+                    'message': _('Webhook already exists.'),
+                    'type': 'info',
+                    'sticky': False,
+                }
+            }
+        
 
     def action_get_info_user(self):
         """
@@ -144,9 +160,8 @@ class CassoConfig(models.Model):
         url = f"{self.api_url}/userInfo"
         headers = self._get_casso_headers()
         response = requests.get(url, headers=headers)
-        if response.status_code != 200:
-            raise UserError(_("Error when getting user information from Casso: %s", response.text))
-        response_data = response.json()
+        response.raise_for_status()
+        response_data = response.json().get('data', {})
         self.write({
             'user_user_id': response_data.get('user', {}).get('id', False),
             'user_user_email': response_data.get('user', {}).get('email', False),
@@ -187,18 +202,22 @@ class CassoConfig(models.Model):
                     'connect_status': bank_acc_connect_status,
                     'plan_status': bank_acc_plan_status
                 })
+        self.write({'status': 'connected'})
         return response.json()
 
-    
     def action_sync_new_transaction(self):
         self.ensure_one()
         url = f"{self.api_url}/sync"
         headers = self._get_casso_headers()
+        now = datetime.datetime.now()
         for bank_acc_id in self.bank_acc_ids:
+            if now - (bank_acc_id.last_sync or now) < datetime.timedelta(minutes=bank_acc_id.min_sync_interval):
+                continue
             body = {
                 'bank_acc_id': bank_acc_id.bank_id,
             }
             response = requests.post(url, headers=headers, json=body)
             if response.status_code != 200:
                 _logger.error(f"Error when syncing transaction from Casso: {response.text}")
-        return True    
+            bank_acc_id.last_sync = now
+        return True

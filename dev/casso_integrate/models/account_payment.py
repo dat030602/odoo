@@ -28,29 +28,57 @@ class AccountPayment(models.Model):
     casso_counterAccountBankName = fields.Char(string='Counterpart Account Bank Name', readonly=True, tracking=True)
 
     def _create_casso_payment(self, data):
-        try:
-            _logger.info("Start _create_casso_payment with data: %s", data)
-            vals = {}
-            vals['casso_id'] = data.get('id', False)
-            vals['casso_reference'] = data.get('reference', False)
-            vals['casso_description'] = data.get('description', False)
-            vals['casso_amount'] = data.get('amount', 0)
-            vals['casso_transactionDateTime'] = data.get('transactionDateTime', False)
-            vals['casso_accountNumber'] = data.get('accountNumber', False)
-            vals['casso_bankName'] = data.get('bankName', False)
-            vals['casso_bankAbbreviation'] = data.get('bankAbbreviation', False)
-            vals['casso_virtualAccountNumber'] = data.get('virtualAccountNumber', False)
-            vals['casso_virtualAccountName'] = data.get('virtualAccountName', False)
-            vals['casso_counterAccountName'] = data.get('counterAccountName', False)
-            vals['casso_counterAccountNumber'] = data.get('counterAccountNumber', False)
-            vals['casso_counterAccountBankId'] = data.get('counterAccountBankId', False)
-            vals['casso_counterAccountBankName'] = data.get('counterAccountBankName', False)
-            is_exists = self.env['account.payment'].search([('casso_reference', '=', vals['casso_reference'])]).exists()
-            if is_exists:
-                return is_exists
-            return self.env['account.payment'].create(vals)
-        except Exception as e:
-            return False
+        vals = self._prepare_casso_json(data)
+        is_exists = self.env['account.payment'].search([('casso_reference', '=', vals['casso_reference'])]).exists()
+        if is_exists:
+            return is_exists
+        if data.get('amount', 0) < 0:
+            vals.update({
+                'payment_type': 'outbound',
+                'partner_type': 'supplier',
+            })
+        else:
+            vals.update({
+                'payment_type': 'inbound',
+                'partner_type': 'customer',
+            })
+        vals.update({'amount': abs(vals.get('casso_amount', 0))})
+        payment = self.env['account.payment'].create(vals)
+        if payment.casso_counterAccountNumber:
+            payment._match_casso_partner_by_account_number(payment.casso_counterAccountNumber)
+        if payment.casso_accountNumber:
+            payment._match_casso_journal_by_account_id(payment.casso_accountNumber)
+        return payment
+
+    def _match_casso_partner_by_account_number(self, account_number):
+        self.ensure_one()
+        partner_bank = self.env['res.partner.bank'].search([('acc_number', '=', account_number)], limit=1)
+        if partner_bank and partner_bank.partner_id:
+            self.partner_id = partner_bank.partner_id
+
+    def _match_casso_journal_by_account_id(self, account_id):
+        self.ensure_one()
+        bank_account_id = self.env['casso.bank.account'].search([('bank_sub_acc_id', '=', account_id)], limit=1)
+        if bank_account_id and bank_account_id.journal_id:
+            self.journal_id = bank_account_id.journal_id
+
+    def _prepare_casso_json(self, data):
+        return {
+            'casso_id': data.get('id', False),
+            'casso_reference': data.get('tid', False),
+            'casso_description': data.get('description', False),
+            'casso_amount': abs(data.get('amount', 0)),
+            'casso_transactionDateTime': data.get('when', False),
+            'casso_accountNumber': data.get('subAccId', False),
+            'casso_bankName': data.get('bankName', False),
+            'casso_bankAbbreviation': data.get('bankAbbreviation', False),
+            'casso_virtualAccountNumber': data.get('virtualAccount', False),
+            'casso_virtualAccountName': data.get('virtualAccountName', False),
+            'casso_counterAccountName': data.get('corresponsiveName', False),
+            'casso_counterAccountNumber': data.get('corresponsiveAccount', False),
+            'casso_counterAccountBankId': data.get('corresponsiveBankId', False),
+            'casso_counterAccountBankName': data.get('corresponsiveBankName', False)
+        }
 
     def action_view_detail_casso_transaction(self):
         self.ensure_one()
@@ -75,7 +103,12 @@ class AccountPayment(models.Model):
             transaction_data = data.get('data', {})
             if not transaction_data:
                 raise UserError(_("Transaction data not found."))
-            
+
+            transaction_data = {}
+
+            for key, value in data.get('data', {}).items():
+                transaction_data['default_%s' % key] = value
+
             return {
                 'type': 'ir.actions.act_window',
                 'name': _('Casso Transaction Detail'),
@@ -83,13 +116,8 @@ class AccountPayment(models.Model):
                 'view_mode': 'form',
                 'target': 'new',
                 'context': {
-                    'default_transaction_id': self.casso_id,
-                    'default_tid': transaction_data.get('tid', ''),
-                    'default_description': transaction_data.get('description', ''),
-                    'default_amount': transaction_data.get('amount', 0),
-                    'default_cusum_balance': transaction_data.get('cusumBalance', 0),
-                    'default_when': transaction_data.get('when', False),
-                    'default_bank_sub_acc_id': transaction_data.get('bankSubAccId', ''),
+                    **self.env.context,
+                    **transaction_data,
                 },
             }
         except requests.exceptions.RequestException as e:

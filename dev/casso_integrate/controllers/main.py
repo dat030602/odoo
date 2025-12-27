@@ -3,39 +3,42 @@ import datetime
 from odoo import http
 from odoo.http import request
 import logging
+import json
 
 _logger = logging.getLogger(__name__)
 
 class CassoWebhook(http.Controller):
 
-    @http.route('/webhook/casso', type='json', auth='none', methods=['POST'], csrf=False)
+    @http.route('/webhook/casso', type='json', auth='public', methods=['POST'], csrf=False)
     def receive_casso_payment(self, **post):
-        # 1. Get data from Casso (Odoo automatically parses JSON body)
-        body = request.jsonrequest
-        
-        # Check basic data validity
-        if not body or body.get('error') != 0:
-            return {"error": 1, "message": "Invalid data format"}
+        # Parse raw JSON body (works for http & json routes)
+        try:
+            body = json.loads(request.httprequest.data.decode('utf-8'))
+        except Exception:
+            return {
+                "error": 1,
+                "message": "Invalid JSON body"
+            }
 
-        # Casso v2 returns a list of transactions in the 'data' field
-        
+        if body.get('error') != 0:
+            return {
+                "error": 1,
+                "message": "Invalid data format"
+            }
+
         transactions = body.get('data', [])
-        # 2. Get account.payment model with sudo rights
+
         payment_model = request.env['account.payment'].sudo()
 
-        # 3. Iterate through each transaction and push to your processing function
         for transaction_data in transactions:
-            try:
-                # Call your existing processing function
-                payment_model._create_casso_payment(transaction_data)
-                _logger.info(f"Casso: Transaction {transaction_data.get('reference')} has been pushed to processing.")
-            except Exception as e:
-                _logger.error(f"Casso: Error when processing transaction via _create_casso_payment function: {str(e)}")
+            payment_model._create_casso_payment(transaction_data)
+        return {
+            "error": 0,
+            "message": "Ok"
+        }
 
-        # 4. Return response to Casso
-        return {"error": 0, "message": "Ok"}
 
-    @http.route('/webhook/casso/authorize', type='json', auth='none', methods=['GET'], csrf=False)
+    @http.route('/webhook/casso/authorize', type='json', auth='public', methods=['GET'], csrf=False)
     def authorize_casso(self):
         casso_config = request.env['casso.config'].sudo().search([], limit=1)
         body = request.jsonrequest

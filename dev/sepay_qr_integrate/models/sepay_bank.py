@@ -26,13 +26,12 @@ class SepayBank(models.Model):
     logo_url = fields.Char(string="Logo URL")
     logo_image = fields.Binary(string="Logo", max_width=200, max_height=200, attachment=False, stored=True, compute="_compute_logo")
     
-    def name_get(self):
-        result = []
+    @api.depends('code', 'name')
+    def _compute_display_name(self):
         for record in self:
             name_display = f"{record.code} - {record.name}" if record.code else record.name
-            result.append((record.id, name_display))
-        return result
-        
+            record.display_name = name_display
+
     @api.model
     def _name_search(self, name='', domain=None, operator='ilike', limit=100, order=None):
         domain = domain or []
@@ -52,7 +51,7 @@ class SepayBank(models.Model):
             rec.logo_image = image_process(logo_image.encode('utf-8')) if logo_image else None
 
     @api.model
-    def fetch_banks(self):
+    def fetch_banks(self, *args, **kwargs):
         """Fetch banks from Sepay API"""
         url = "https://qr.sepay.vn/banks.json"
         try:
@@ -62,21 +61,18 @@ class SepayBank(models.Model):
                 for bank_data in data:
                     # Check if bank already exists
                     existing_bank = self.search([('code', '=', bank_data.get('code'))], limit=1)
+                    vals = {
+                        'name': bank_data.get('name', ''),
+                        'bin': bank_data.get('bin', ''),
+                        'short_name': bank_data.get('short_name', ''),
+                        'supported': bank_data.get('supported', False),
+                    }
                     if existing_bank:
-                        existing_bank.write({
-                            'name': bank_data.get('name', ''),
-                            'bin': bank_data.get('bin', ''),
-                            'short_name': bank_data.get('short_name', ''),
-                            'supported': bank_data.get('supported', False),
-                        })
+                        existing_bank.write(vals)
                     else:
-                        self.create({
-                            'name': bank_data.get('name', ''),
-                            'code': bank_data.get('code', ''),
-                            'bin': bank_data.get('bin', ''),
-                            'short_name': bank_data.get('short_name', ''),
-                            'supported': bank_data.get('supported', False),
-                        })
+                        vals.update({'code': bank_data.get('code', '')})
+                        self.create(vals)
+                # Notify success after processing all banks
                 return {
                     'type': 'ir.actions.client',
                     'tag': 'display_notification',

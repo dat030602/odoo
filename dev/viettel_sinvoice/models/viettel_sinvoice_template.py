@@ -32,10 +32,11 @@ class ViettelSInvoiceTemplate(models.Model):
         ('branch_template_series_uniq', 'unique (branch_id, template_code, series)',
          'The combination of Branch, Template and Series must be unique!'),
     ]
-
-    def name_get(self):
-        return [(tmpl.id, "%s / %s / %s / %s" % (tmpl.vat, tmpl.invoice_type_code, tmpl.template_code, tmpl.series))
-                for tmpl in self]
+    @api.depends('vat', 'invoice_type_code', 'template_code', 'series')
+    def _compute_display_name(self):
+        for record in self:
+            name_display = "%s / %s / %s / %s" % (record.vat, record.invoice_type_code, record.template_code, record.series)
+            record.display_name = name_display
 
     def get_info_dynamic_fields(self):
         data = {

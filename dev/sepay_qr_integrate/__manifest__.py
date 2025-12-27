@@ -12,7 +12,6 @@
     'author': 'Dat Nguyen',
     'depends': ['sale_management', 'account'],
     'data': [
-        'data/sever.xml',
         'security/ir.model.access.csv',
         'views/sepay_bank.xml',
         'views/sepay_bank_config.xml',

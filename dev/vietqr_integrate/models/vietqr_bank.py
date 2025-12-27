@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 import requests
 import base64
 from odoo.tools import image_process
@@ -25,13 +25,11 @@ class VietQRBank(models.Model):
     logo_url = fields.Char(string="Logo")
     logo_image = fields.Binary(string="Logo", max_width=200, max_height=200, attachment=False, stored=True, compute="_compute_logo")
     
-    def name_get(self):
-        result = []
+    @api.depends('code', 'name')
+    def _compute_display_name(self):
         for record in self:
             name_display = f"{record.code} - {record.name}" if record.code else record.name
-            result.append((record.id, name_display))
-        return result
-        
+            record.display_name = name_display
     @api.model
     def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
         args = list(args or [])
@@ -47,23 +45,50 @@ class VietQRBank(models.Model):
     def _compute_logo(self):
         for rec in self:
             logo_image = get_image_from_url(rec.logo_url)
-            rec.logo_image = image_process(logo_image) if logo_image else logo_image
+            rec.logo_image = image_process(logo_image.encode('utf-8')) if logo_image else None
 
     @api.model
-    def fetch_banks(self):
+    def fetch_banks(self, *args, **kwargs):
         url = "https://api.vietqr.io/v2/banks"
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json().get('data', [])
-            for bank in data:
-                self.create({
-                    'name': bank.get('name',False),
-                    'code': bank.get('code',False),
-                    'swift_code': bank.get('swift_code',False),
-                    'logo_url': bank.get('logo',False),
-                    'bin': bank.get('bin',False),
-                    'transfer_supported': bank.get('transferSupported',0) == 1,
-                    'lookup_supported': bank.get('lookupSupported',0) == 1,
-                    'is_transfer': bank.get('isTransfer',0) == 1,
-                })
+            try:
+                for bank in data:
+                    existing_bank = self.search([('code','=',bank.get('code',False))], limit=1)
+                    vals = {
+                        'name': bank.get('name',False),
+                        'swift_code': bank.get('swift_code',False),
+                        'logo_url': bank.get('logo',False),
+                        'bin': bank.get('bin',False),
+                        'transfer_supported': bank.get('transferSupported',0) == 1,
+                        'lookup_supported': bank.get('lookupSupported',0) == 1,
+                        'is_transfer': bank.get('isTransfer',0) == 1,
+                    }
+                    if existing_bank:
+                        existing_bank.write(vals)
+                    else:
+                        vals.update({'code': bank.get('code',False)})
+                        self.create(vals)
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': _('Success'),
+                        'message': _('Banks have been fetched successfully.'),
+                        'type': 'success',
+                        'sticky': False,
+                    }
+                }
+            except Exception as e:
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': _('Error'),
+                        'message': _('An error occurred while processing bank data: %s' % str(e)),
+                        'type': 'danger',
+                        'sticky': False,
+                    }
+                }
 

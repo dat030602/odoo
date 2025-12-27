@@ -34,6 +34,7 @@ class VHEInvoiceTemplate(models.Model):
             tmpl.name = names.get(tmpl.id)
 
     @api.depends('invoice_type_code', 'template_code', 'series')
-    def name_get(self):
-        return [(tmpl.id, "%s / %s" % (tmpl.invoice_type_code, tmpl.series))
-                for tmpl in self]
+    def _compute_display_name(self):
+        for record in self:
+            name_display = "%s / %s" % (record.invoice_type_code, record.series)
+            record.name = name_display

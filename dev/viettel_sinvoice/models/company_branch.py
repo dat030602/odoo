@@ -46,8 +46,11 @@ class CompanyBranch(models.Model):
         for br in self:
             br.templates_count = len(br.template_ids)
 
-    def name_get(self):
-        return [(branch.id, "%s / %s" % (branch.name, branch.vat)) for branch in self]
+    @api.depends('name', 'vat')
+    def _compute_display_name(self):
+        for record in self:
+            name_display = f"{record.name} / {record.vat}" if record.vat else record.name
+            record.display_name = name_display
 
     def action_view_templates(self):
         self.ensure_one()

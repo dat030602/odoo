@@ -184,16 +184,15 @@ class ViettelSInvoice(models.Model):
             if len(set(taxes)) > 1:
                 raise UserError('Phải sử dụng một loại thuế duy nhất trên cùng một hóa đơn điện tử!')
 
-    def name_get(self):
-        res = []
+    @api.depends('name', 'invoice_ids.name')
+    def _compute_display_name(self):
         for sinv in self:
             ref = ' '.join(sinv.mapped('invoice_ids.name')) if sinv.invoice_ids else sinv.ref or ''
             if ref:
                 display_name = sinv.name or '' + ' - %s' % ref
             else:
                 display_name = sinv.name
-            res.append((sinv.id, display_name))
-        return res
+            sinv.display_name = display_name
 
     @api.depends('invoice_ids', 'invoice_ids.amount_total_signed')
     def _compute_invoices_total(self):
