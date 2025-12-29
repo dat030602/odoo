@@ -6,7 +6,8 @@
         <field name="arch" type="xml">
             <form string="Create VietQR Code">
                 <group>
-                    <field name="sale_order_id" invisible="0"/>
+                    <field name="resource_id" invisible="1"/>
+                    <field name="resource_model" invisible="1"/>
                     <field name="amount"/>
                     <field name="bank_id"/>
                     <field name="description"/>
@@ -18,5 +19,11 @@
                 </footer>
             </form>
         </field>
+    </record>
+    <record id="action_create_vietqr_wizard" model="ir.actions.act_window">
+        <field name="name">Create VietQR Code</field>
+        <field name="res_model">create.vietqr.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
     </record>
 </odoo>

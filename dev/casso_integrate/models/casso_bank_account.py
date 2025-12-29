@@ -15,10 +15,11 @@ class CassoBankAccount(models.Model):
 
     parent_id = fields.Many2one('casso.config', string='Parent Config')
 
-    bank_id = fields.Char(string='Bank ID')
+    bank_account_id = fields.Char(string='Bank ID')
     bank_bin = fields.Char(string='Bank BIN')
     bank_code_name = fields.Char(string='Bank Code Name')
-    bank_account_name = fields.Char(string='Bank Account Name')
+    name = fields.Char(string='Bank Account Name')
+    bank_account_number = fields.Char(string='Bank Account Number')
     bank_sub_acc_id = fields.Char(string='Bank Sub Account ID')
     connect_status = fields.Selection([('active', 'Active'), ('inactive', 'Inactive')], string='Connect Status')
     plan_status = fields.Selection([('active', 'Active'), ('inactive', 'Inactive')], string='Plan Status')
@@ -27,11 +28,39 @@ class CassoBankAccount(models.Model):
     last_sync = fields.Datetime(string='Last Sync')
     journal_id = fields.Many2one('account.journal', string='Journal')
 
-    bank_id = fields.Many2one('vietqr.bank.config', string='Bank', compute='_compute_bank_id', store=True)
+    bank_id = fields.Many2one('vietqr.bank.config', string='Bank config', compute='_compute_bank_id', store=True)
+    bank_vietqr_id = fields.Many2one('vietqr.bank', string='VietQR Bank Account')
+
     @api.depends('bank_bin')
     def _compute_bank_id(self):
         for record in self:
             record.bank_id = self.env['vietqr.bank.config'].search([('bin', '=', record.bank_bin)], limit=1)
+            
+    def action_create_account_bank_vietqr(self):
+        self.ensure_one()
+        if not self.bank_id:
+            raise UserError(_('No matching VietQR Bank found for BIN: %s') % self.bank_bin)
+        existing_bank_account = self.env['vietqr.bank'].search([('casso_bank_id', '=', self.id)], limit=1)
+        if existing_bank_account:
+            raise UserError(_('Bank account with number %s and bank %s already exists.') % (self.bank_sub_acc_id, self.bank_id.name))
+        partner_bank_id = self.env['res.partner.bank'].search([('acc_number', '=', self.bank_account_number)], limit=1)
+        bank_id = self.env['res.bank'].search([('bic', '=', self.bank_id.code)], limit=1)
+        if not partner_bank_id:
+            partner_bank_id = self.env['res.partner.bank'].create({
+                'acc_number': self.bank_account_number,
+                'bank_id': bank_id.id,
+                'partner_id': self.env.company.partner_id.id,
+            })
+        bank_account = self.env['vietqr.bank'].create({
+            'name': self.name,
+            'vietqr_bank_id': self.bank_id.id,
+            'template_type': 'compact',
+            'partner_bank_id': partner_bank_id.id,
+            'casso_bank_id': self.id,
+        })
+        self.bank_vietqr_id = bank_account
+        return bank_account
+
     # def action_sync_transaction(self, date=None):
     #     """
     #     Get transaction list from Casso API

@@ -9,12 +9,14 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="is_default"/>
-                        <field name="vietqr_bank_id"/>
-                        <field name="template_type"/>
-                        <field name="template_code" invisible="template_type != 'custom'" required="template_type == 'custom'"/>
-                        <field name="partner_bank_id"/>
+                        <group string="VietQR Bank Information" name="group_vietqr_bank_info">
+                            <field name="name"/>
+                            <field name="is_default"/>
+                            <field name="vietqr_bank_id"/>
+                            <field name="template_type"/>
+                            <field name="template_code" invisible="template_type != 'custom'" required="template_type == 'custom'"/>
+                            <field name="partner_bank_id"/>
+                        </group>
                     </group>
                 </sheet>
             </form>

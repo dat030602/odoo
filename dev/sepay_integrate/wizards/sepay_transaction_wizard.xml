@@ -9,29 +9,24 @@
                 <form string="SePay Transaction Detail" edit="0">
                     <sheet>
                         <group>
-                            <group string="Transaction Information">
-                                <field name="transaction_id"/>
-                                <field name="account_number"/>
-                                <field name="transaction_date"/>
-                                <field name="reference_number"/>
-                                <field name="code"/>
+                                <group string="Transaction Details">
+                                    <field name="sepay_id"/>
+                                    <field name="sepay_gateway"/>
+                                    <field name="sepay_reference_code"/>
+                                    <field name="sepay_code"/>
+                                    <field name="sepay_description"/>
+                                </group>
+                                <group string="Account Information">
+                                    <field name="sepay_transaction_date"/>
+                                    <field name="sepay_account_number"/>
+                                    <field name="sepay_transfer_type"/>
+                                    <field name="sepay_transfer_amount"/>
+                                    <field name="sepay_sub_account"/>
+                                </group>
                             </group>
-                            <group string="Amount Information">
-                                <field name="amount_in"/>
-                                <field name="amount_out"/>
-                                <field name="accumulated"/>
+                            <group>
+                                <field name="sepay_content" nolabel="1" widget="text"/>
                             </group>
-                        </group>
-                        <group>
-                            <group string="Bank Information">
-                                <field name="bank_brand_name"/>
-                                <field name="bank_account_id"/>
-                                <field name="sub_account"/>
-                            </group>
-                        </group>
-                        <group>
-                            <field name="transaction_content" nolabel="1" widget="text"/>
-                        </group>
                     </sheet>
                     <footer>
                         <button string="Close" class="btn-primary" special="cancel"/>

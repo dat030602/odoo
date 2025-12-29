@@ -9,7 +9,6 @@
                 <tree string="Casso Config" decoration-success="status == 'connected'" decoration-muted="status == 'draft'">
                     <field name="name"/>
                     <field name="status"/>
-                    <field name="active"/>
                 </tree>
             </field>
         </record>
@@ -81,30 +80,40 @@
                             <page string="Bank Accounts" name="bank_accounts" invisible="status != 'connected'">
                                 <field name="bank_acc_ids" nolabel="1">
                                     <tree string="Bank Accounts">
-                                        <field name="bank_id" widget="many2one"/>
+                                        <field name="bank_account_id"/>
                                         <field name="bank_bin"/>
                                         <field name="bank_code_name"/>
-                                        <field name="bank_account_name"/>
+                                        <field name="name"/>
+                                        <field name="bank_account_number"/>
                                         <field name="bank_sub_acc_id"/>
                                         <field name="journal_id"/>
                                         <field name="connect_status"/>
                                         <field name="plan_status"/>
                                         <field name="min_sync_interval"/>
                                         <field name="last_sync"/>
+                                        <field name="bank_id" invisible="1"/>
+                                        <field name="bank_vietqr_id" invisible="1"/>
+                                        <button name="action_create_account_bank_vietqr" string="Create VietQR" type="object" invisible="bank_vietqr_id"/>
                                     </tree>
                                     <form string="Bank Account">
+                                        <header>
+                                            <button name="action_create_account_bank_vietqr" string="Create VietQR" type="object" class="btn-primary" invisible="bank_vietqr_id"/>
+                                        </header>
                                         <sheet create="false" edit="false" delete="false">
                                             <group>
                                                 <group string="Bank Information">
-                                                    <field name="bank_id" widget="many2one"/>
+                                                    <field name="bank_account_id"/>
                                                     <field name="bank_bin"/>
                                                     <field name="bank_code_name"/>
+                                                    <field name="bank_account_number"/>
                                                     <field name="journal_id"/>
+                                                    <field name="bank_id"/>
+                                                    <field name="bank_vietqr_id"/>
                                                     <field name="min_sync_interval"/>
                                                     <field name="last_sync"/>
                                                 </group>
                                                 <group string="Account Information">
-                                                    <field name="bank_account_name"/>
+                                                    <field name="name"/>
                                                     <field name="bank_sub_acc_id"/>
                                                     <field name="connect_status"/>
                                                     <field name="plan_status"/>

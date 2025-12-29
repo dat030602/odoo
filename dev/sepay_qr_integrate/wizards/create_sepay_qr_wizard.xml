@@ -6,10 +6,11 @@
         <field name="arch" type="xml">
             <form string="Create Sepay QR Code">
                 <group>
-                    <field name="sale_order_id" invisible="0"/>
+                    <field name="resource_id" invisible="1"/>
+                    <field name="resource_model" invisible="1"/>
                     <field name="amount"/>
-                    <field name="bank_id"/>
-                    <field name="description"/>
+                    <field name="bank_id" required="1"/>
+                    <field name="description" required="1"/>
                     <field name="currency_id" invisible="1"/>
                 </group>
                 <footer>
@@ -18,5 +19,11 @@
                 </footer>
             </form>
         </field>
+    </record>
+    <record id="action_create_sepay_qr_wizard" model="ir.actions.act_window">
+        <field name="name">Create Sepay QR Code</field>
+        <field name="res_model">create.sepay.qr.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
     </record>
 </odoo>

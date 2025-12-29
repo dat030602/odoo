@@ -2,6 +2,7 @@
 import logging
 from odoo import http
 from odoo.http import request
+import json
 
 _logger = logging.getLogger(__name__)
 
@@ -10,13 +11,21 @@ class SePayWebhook(http.Controller):
     @http.route('/webhook/sepay', type='json', auth='public', methods=['POST'], csrf=False)
     def receive_sepay_payment(self, **post):
         try:
-            data = request.jsonrequest
-            
-            if not data:
-                _logger.error("SePay Webhook: Request body rỗng")
-                return {"success": False, "error": "No data received"}
+            try:
+                body = json.loads(request.httprequest.data.decode('utf-8'))
+            except Exception:
+                return {
+                    "error": 1,
+                    "message": "Invalid JSON body"
+                }
 
-            _logger.info("SePay Webhook nhận dữ liệu: %s", data)
+            if body.get('error') != 0:
+                return {
+                    "error": 1,
+                    "message": "Invalid data format"
+                }
+            
+            _logger.info("SePay Webhook nhận dữ liệu: %s", json.dumps(body, indent=2, ensure_ascii=False))
 
             # 1. Xác thực API Key (Bảo mật)
             auth_header = request.httprequest.headers.get('Authorization')
@@ -28,13 +37,15 @@ class SePayWebhook(http.Controller):
 
             # 2. Chuẩn hóa dữ liệu về danh sách transactions
             transactions = []
-            if isinstance(data, list):
-                transactions = data
-            elif isinstance(data, dict):
-                if 'transactions' in data:
-                    transactions = data.get('transactions', [])
-                elif 'id' in data:
-                    transactions = [data]
+            if isinstance(body, list):
+                transactions = body
+            elif isinstance(body, dict):
+                if 'transactions' in body:
+                    transactions = body.get('transactions', [])
+                elif 'transaction' in body:
+                    transactions = [body.get('transaction', {})]
+                elif 'id' in body:
+                    transactions = [body]
 
             if not transactions:
                 return {"success": True, "message": "Không có giao dịch để xử lý"}
@@ -51,5 +62,5 @@ class SePayWebhook(http.Controller):
             return {
                 "success": True,
             }
-        except Exception:
-            return {"success": False, "error": "Internal Server Error"}
+        except Exception as e:
+            return {"success": False, "error": str(e)}

@@ -12,9 +12,10 @@
         - Integrate with Odoo
     """,
     'author': 'Dat Nguyen',
-    'depends': ['sale_management', 'account', 'vietqr_integrate'],
+    'depends': ['sale_management', 'account', 'sepay_qr_integrate'],
     'data': [
         'security/ir.model.access.csv',
+        'views/sepay_bank.xml',
         'views/sepay_config.xml',
         'views/account_payment.xml',
         'wizards/sepay_transaction_wizard.xml',

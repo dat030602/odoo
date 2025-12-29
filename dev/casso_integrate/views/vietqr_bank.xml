@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_vietqr_bank_form_inherit" model="ir.ui.view">
+            <field name="name">vietqr.bank.form.inherit</field>
+            <field name="model">vietqr.bank</field>
+            <field name="inherit_id" ref="vietqr_integrate.view_vietqr_bank_form"/>
+            <field name="arch" type="xml">
+                <group name="group_vietqr_bank_info" position="after">
+                    <group string="Casso Bank Information" name="group_casso_bank_info">
+                        <field name="casso_bank_id"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+    </data>
+</odoo>

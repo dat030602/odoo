@@ -14,6 +14,8 @@
     'data': [
         'security/ir.model.access.csv',
         'wizards/create_vietqr_wizard.xml',
+        'views/account_invoice.xml',
+        'views/account_payment.xml',
         'views/vietqr_bank.xml',
         'views/vietqr_bank_config.xml',
         'views/sale_order.xml',

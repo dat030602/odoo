@@ -8,8 +8,7 @@
             <field name="arch" type="xml">
                 <tree string="SePay Config" decoration-success="status == 'connected'" decoration-muted="status == 'draft'">
                     <field name="name"/>
-                    <field name="status"/>
-                    <field name="active"/>
+                    <field name="status" widget="badge" decoration-success="status == 'connected'" decoration-muted="status == 'draft'"/>
                 </tree>
             </field>
         </record>
@@ -21,84 +20,79 @@
             <field name="arch" type="xml">
                 <form string="SePay Config">
                     <header>
-                        <button name="action_test_connection" string="Test Connection" type="object" 
-                                class="btn-primary" invisible="status == 'connected'"/>
-                        <button name="action_sync_transactions" string="Sync Transactions" type="object" 
-                                class="btn-secondary" invisible="status != 'connected'"/>
-                        <button name="action_create_webhook" string="Webhook Info" type="object" 
-                                class="btn-secondary" invisible="status != 'connected'"/>
+                        <button name="action_get_transactions" string="Sync Transactions" type="object" 
+                                class="btn-secondary"/>
+                        <button name="action_get_banks" string="Get Banks" type="object" 
+                                class="btn-secondary"/>
                         <field name="status" widget="statusbar" statusbar_visible="draft,connected"/>
                     </header>
                     <sheet>
-                        <group>
-                            <group>
-                                <field name="name"/>
-                                <field name="active"/>
-                            </group>
-                        </group>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_edit_only" readonly="status == 'connected'"/>
+                                <span class="oe_read_only"/>
+                            </h1>
+                        </div>
                         <notebook>
                             <page string="API Configuration" name="api_config">
-                                <group>
-                                    <group string="API Settings">
-                                        <field name="api_token" password="True" required="1"/>
-                                        <field name="api_url"/>
-                                        <field name="webhook_url"/>
-                                    </group>
-                                    <group string="Instructions">
-                                        <div class="alert alert-info" role="alert">
-                                            <p><strong>Setup Instructions:</strong></p>
-                                            <ol>
-                                                <li>Register at <a href="https://my.sepay.vn/register" target="_blank">my.sepay.vn/register</a></li>
-                                                <li>Add your MBBank account</li>
-                                                <li>Go to API Access and create an API Token</li>
-                                                <li>Enter the API Token above</li>
-                                                <li>Click "Test Connection" to verify</li>
-                                            </ol>
-                                        </div>
-                                    </group>
+                                <group string="API Settings">
+                                    <field name="api_token" password="True" required="1" readonly="status == 'connected'"/>
+                                    <field name="api_url" readonly="status == 'connected'"/>
+                                    <field name="webhook_url" readonly="status == 'connected'"/>
                                 </group>
-                            </page>
-                            <page string="User Information" name="user_info" invisible="status != 'connected'">
-                                <group>
-                                    <group string="User Details">
-                                        <field name="user_email" readonly="1"/>
-                                        <field name="user_name" readonly="1"/>
-                                    </group>
-                                </group>
+                                <div class="alert alert-info" role="alert">
+                                    <p><strong>Setup Instructions:</strong></p>
+                                    <ol>
+                                        <li>Register at <a href="https://my.sepay.vn/register" target="_blank">my.sepay.vn/register</a></li>
+                                        <li>Add your Bank account</li>
+                                        <li>Go to API Access and create an API Token</li>
+                                        <li>Enter the API Token above</li>
+                                        <li>Click "Test Connection" to verify</li>
+                                    </ol>
+                                </div>
                             </page>
                             <page string="Bank Accounts" name="bank_accounts" invisible="status != 'connected'">
                                 <field name="bank_acc_ids" nolabel="1">
-                                    <tree string="Bank Accounts" create="1" edit="1" delete="1">
+                                    <tree string="Bank Accounts" create="0" edit="0" delete="1">
+                                        <field name="account_id" optional="hide"/>
                                         <field name="account_number"/>
-                                        <field name="bank_brand_name"/>
-                                        <field name="bank_id" widget="many2one"/>
-                                        <field name="is_active"/>
-                                        <field name="last_sync_date"/>
-                                        <button name="action_sync_transactions" string="Sync" type="object" 
-                                                class="btn-sm btn-primary" title="Sync transactions for this account"/>
-                                        <button name="action_get_transactions" string="Get Transactions" type="object" 
-                                                class="btn-sm btn-secondary" title="Get transactions"/>
+                                        <field name="account_holder_name"/>
+                                        <field name="label"/>
+                                        <field name="bank_short_name"/>
+                                        <field name="bank_full_name" optional="hide"/>
+                                        <field name="bank_bin"/>
+                                        <field name="bank_code"/>
+                                        <field name="journal_id"/>
+                                        <field name="active" optional="hide"/>
+                                        <field name="last_transaction" optional="hide"/>
+                                        <field name="created_at" optional="hide"/>
                                     </tree>
-                                    <form string="Bank Account">
+                                    <form string="Bank Account" create="0" edit="1" delete="0">
+                                        <header>
+                                            <button name="action_create_account_bank" string="Create Bank Account" type="object" class="btn-secondary"/>
+                                        </header>
                                         <sheet>
                                             <group>
                                                 <group string="Account Information">
-                                                    <field name="account_number"/>
-                                                    <field name="bank_brand_name"/>
-                                                    <field name="bank_id" widget="many2one"/>
-                                                    <field name="bank_account_id"/>
-                                                    <field name="sub_account"/>
+                                                    <field name="account_id" readonly="1"/>
+                                                    <field name="account_holder_name" readonly="1"/>
+                                                    <field name="account_number" readonly="1"/>
+                                                    <field name="label" readonly="1"/>
+                                                    <field name="bank_short_name" readonly="1"/>
+                                                    <field name="bank_full_name" readonly="1"/>
+                                                    <field name="bank_bin" readonly="1"/>
+                                                    <field name="bank_code" readonly="1"/>
+                                                    <field name="journal_id"/>
+                                                    <field name="bank_sepay_id" invisible="1"/>
                                                 </group>
                                                 <group string="Status">
-                                                    <field name="is_active"/>
-                                                    <field name="last_sync_date"/>
+                                                    <field name="last_transaction" readonly="1"/>
+                                                    <field name="created_at" readonly="1"/>
+                                                    <field name="active" readonly="1"/>
                                                 </group>
                                             </group>
                                         </sheet>
-                                        <footer>
-                                            <button name="action_sync_transactions" string="Sync Transactions" type="object" class="btn-primary"/>
-                                            <button name="action_discover_accounts" string="Discover Accounts" type="object" class="btn-secondary"/>
-                                        </footer>
                                     </form>
                                 </field>
                             </page>

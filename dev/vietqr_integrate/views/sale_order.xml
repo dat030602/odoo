@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <header position="inside">
-                <button name="action_generate_vietqr" string="Generate VietQR" type="object" class="btn-primary"/>
+                <button name="%(action_create_vietqr_wizard)d" string="Generate VietQR" type="action" class="btn-primary" invisible="state in ('cancel', 'done')"/>
             </header>
         </field>
     </record>

@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <header position="inside">
-                <button name="action_generate_sepay_qr" string="Generate Sepay QR" type="object" class="btn-primary"/>
+                <button name="%(action_create_sepay_qr_wizard)d" string="Generate Sepay QR" type="action" class="btn-primary" invisible="state in ('cancel', 'done')"/>
             </header>
         </field>
     </record>
