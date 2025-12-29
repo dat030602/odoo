@@ -14,6 +14,7 @@ class SePayOrder(models.Model):
 
     name = fields.Char(string='Order Name', compute='_compute_name', store=True)
     bank_id = fields.Many2one('sepay.bank.account', string='Bank Account', required=True)
+    bank_config_id = fields.Many2one('sepay.config', string='Bank Configuration', related='bank_id.parent_id', store=True)
     va_holder_name = fields.Char(string='VA Holder Name', related='bank_id.account_holder_name', store=True)
     sepay_order_id = fields.Char(string='SePay Order ID')
 
@@ -189,27 +190,6 @@ class SePayOrder(models.Model):
             'Paid': 'paid',
             'Unpaid': 'created',
             'Partial': 'partial',
-        }
-        data = {
-            "id": "b64247d3-c343-11ef-9c27-52c7e9b4f41b",
-            "order_code": "ORD123456789",
-            "amount": 2000,
-            "paid_amount": 2000,
-            "status": "Paid",
-            "created_at": "2024-12-26 11:41:46",
-            "bank_name": "BIDV",
-            "account_number": "1234567890",
-            "account_holder_name": "NGO QUOC DAT",
-            "va": [
-                {
-                    "va_number": "963NQDORDRSIKYXYPTZ",
-                    "va_holder_name": "NGO QUOC DAT",
-                    "amount": 2000,
-                    "status": "Paid",
-                    "expired_at": "2024-12-26 11:51:45",
-                    "paid_at": "2024-12-26 11:42:12"
-                }
-            ]
         }
         self.va_holder_name = data.get('account_holder_name', '')
         self.sepay_order_id = data.get('id', '')

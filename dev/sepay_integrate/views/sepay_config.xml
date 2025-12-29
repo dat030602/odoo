@@ -141,8 +141,12 @@
         <!-- Menu Item -->
         <menuitem id="menu_sepay_config"
                   name="SePay Config"
-                  action="action_sepay_config"
                   parent="account.menu_finance_configuration"
+                  sequence="101"/>
+        <menuitem id="menu_sepay_config_config"
+                  name="SePay Config"
+                  action="action_sepay_config"
+                  parent="menu_sepay_config"
                   sequence="101"/>
     </data>
 </odoo>

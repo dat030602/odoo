@@ -25,17 +25,17 @@ class SePayOrderVA(models.Model):
         self.ensure_one()
         if not self.parent_id.sepay_order_id:
             raise UserError(_("Parent SePay Order must be created before creating VA Order."))
-        url = f"{self.parent_id.bank_id.parent_id.api_url}/bidv/{self.parent_id.bank_id.account_id}/orders/{self.parent_id.sepay_order_id}/va"
-        headers = self._get_sepay_headers()
-
+        url = f"{self.parent_id.bank_config_id.api_url}/bidv/{self.parent_id.bank_id.account_id}/orders/{self.parent_id.sepay_order_id}/va"
+        headers = self.parent_id.bank_config_id._get_sepay_headers()
+  
         headers = {
-            'Authorization': f'Bearer {self.parent_id.bank_id.parent_id.api_token}',
+            'Authorization': f'Bearer {self.parent_id.bank_config_id.api_token}',
             'Content-Type': 'application/json',
         }
 
         payload = {
             "amount": self.amount,
-            "duration": self.duration,
+            "duration": self.parent_id.duration,
         }
 
         try:
@@ -57,11 +57,11 @@ class SePayOrderVA(models.Model):
         self.ensure_one()
         if not self.parent_id.sepay_order_id:
             raise UserError(_("Parent SePay Order ID is not set."))
-        url = f"{self.parent_id.bank_id.parent_id.api_url}/bidv/{self.parent_id.bank_id.account_id}/orders/{self.parent_id.sepay_order_id}/va/{self.va_number}"
-        headers = self.parent_id.bank_id.parent_id._get_sepay_headers()
+        url = f"{self.parent_id.bank_config_id.api_url}/bidv/{self.parent_id.bank_id.account_id}/orders/{self.parent_id.sepay_order_id}/va/{self.va_number}"
+        headers = self.parent_id.bank_config_id._get_sepay_headers()
 
         headers = {
-            'Authorization': f'Bearer {self.parent_id.bank_id.parent_id.api_token}',
+            'Authorization': f'Bearer {self.parent_id.bank_config_id.api_token}',
             'Content-Type': 'application/json',
         }
         response = requests.delete(url, headers=headers)
