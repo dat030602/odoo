@@ -14,6 +14,7 @@
     'author': 'Dat Nguyen',
     'depends': ['sale_management', 'account', 'sepay_qr_integrate'],
     'data': [
+        'data/sequence.xml',
         'security/ir.model.access.csv',
         'views/sepay_bank.xml',
         'views/sepay_config.xml',

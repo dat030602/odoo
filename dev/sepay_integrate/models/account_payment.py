@@ -43,11 +43,13 @@ class AccountPayment(models.Model):
         amount_out = data.get('amount_out', '0')
         amount = abs(float(amount_in)) if float(amount_in) > 0 else (-1 * abs(float(amount_out)))
 
+        code = data.get('code', '')
+
         data = {
             'sepay_id': data.get('id', ''),
             'sepay_transaction_date': transaction_date,
             'sepay_account_number': data.get('account_number', ''),
-            'sepay_code': data.get('code', ''),
+            'sepay_code': code,
             'sepay_content': data.get('transaction_content', ''),
             'sepay_transfer_type': 'in' if float(amount_in) > 0 else 'out',
             'sepay_transfer_amount': abs(amount),
@@ -61,6 +63,11 @@ class AccountPayment(models.Model):
         }
         if bank_id:
             data['sepay_config_id'] = bank_id.parent_id.id
+        if code:
+            sp_order = self.env['sepay.order'].search([('name', '=', code)], limit=1)
+            order_id = sp_order.order_id
+            if order_id:
+                data['partner_id'] = order_id.partner_id.id
         return data
 
     @api.model

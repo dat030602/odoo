@@ -174,7 +174,6 @@ class SePayConfig(models.Model):
         """Wrapper method to call _get_transactions"""
         self.status = 'connected'
         res = self._get_transactions(**kwargs)
-        raise UserError(str(res))
         for tx in res:
             self.env['account.payment'].sudo()._create_sepay_payment(tx)
         return res
