@@ -12,17 +12,18 @@
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2020
 # Pekko Tuomisto <pekko.tuomisto@web-veistamo.fi>, 2020
 # Mikko Salmela <salmemik@gmail.com>, 2021
-# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2021
 # Miika Nissi <miika.nissi@tawasta.fi>, 2021
+# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2021
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-27 15:41+0000\n"
+"POT-Creation-Date: 2023-01-26 16:27+0000\n"
 "PO-Revision-Date: 2020-09-07 08:20+0000\n"
-"Last-Translator: Miika Nissi <miika.nissi@tawasta.fi>, 2021\n"
-"Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -32,7 +33,7 @@ msgstr ""
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_website_visitor__event_registration_count
 msgid "# Registrations"
-msgstr "# Rekisteröinnit"
+msgstr "# Ilmoittautumiset"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_template
@@ -47,7 +48,7 @@ msgstr "(viite:"
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.snippet_options
 msgid ", .oe_country_events, .s_speaker_bio"
-msgstr ""
+msgstr ", .oe_country_events, .s_speaker_bio"
 
 #. module: website_event
 #. openerp-web
@@ -103,7 +104,7 @@ msgstr "<i class=\"fa fa-ban mr-2\"/>Julkaisematon"
 #: model_terms:ir.ui.view,arch_db:website_event.event_details
 #: model_terms:ir.ui.view,arch_db:website_event.events_list
 msgid "<i class=\"fa fa-check mr-2\"/>Registered"
-msgstr "<i class=\"fa fa-check mr-2\"/>Rekisteröity"
+msgstr "<i class=\"fa fa-check mr-2\"/>Ilmoittauduttu"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.index_sidebar_follow_us
@@ -173,8 +174,9 @@ msgid ""
 "<i class=\"fa fa-pencil mr-2\" role=\"img\" aria-label=\"Edit\" title=\"Edit"
 " event registration in backend\"/><em>Configure Event Tickets</em>"
 msgstr ""
-"<i class=\"fa fa-pencil mr-2\" role=\"img\" aria-label=\"Edit\" title=\"Edit"
-" event registration in backend\"/><em>Konfiguroi tapahtumalippuja</em>"
+"<i class=\"fa fa-pencil mr-2\" role=\"img\" aria-label=\"Edit\" "
+"title=\"Muokkaa tapahtuman ilmoittautumisia hallintapuolella\"/><em>Hallitse"
+" tapahtumalippuja</em>"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.index_sidebar_follow_us
@@ -250,7 +252,7 @@ msgid ""
 "                        </span>"
 msgstr ""
 "<span class=\"o_wevent_badge badge badge-success ml-3\">\n"
-"                            <i class=\"fa fa-check mr-2\"/>Rekisteröitynyt\n"
+"                            <i class=\"fa fa-check mr-2\"/>Ilmoittautunut\n"
 "                        </span>"
 
 #. module: website_event
@@ -303,7 +305,7 @@ msgstr "Tietoa meistä"
 #: model:ir.model.fields,field_description:website_event.field_event_event__menu_register_cta
 #: model:ir.model.fields,field_description:website_event.field_event_type__menu_register_cta
 msgid "Add Register Button"
-msgstr "Lisää rekisteröinti -painike"
+msgstr "Lisää ilmoittautumispainike"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_description_full
@@ -324,7 +326,7 @@ msgstr "Kaikki maat"
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.res_config_settings_view_form
 msgid "Ask questions to attendees when registering online"
-msgstr "Esitä kysymyksiä osallistujille verkossa rekisteröinnin yhteydessä"
+msgstr "Esitä kysymyksiä osallistujille verkossa ilmoittautumisen yhteydessä"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.s_speaker_bio
@@ -367,7 +369,7 @@ msgid ""
 "                                website: registrations, schedule, map, ..."
 msgstr ""
 "Valitse tämä vaihtoehto, jos haluat tapahtumallesi alivalikot\n"
-"verkkosivustolla: rekisteröinnit, aikataulu, sijainti, ..."
+"verkkosivustolla: ilmoittautumiset, aikataulu, sijainti, ..."
 
 #. module: website_event
 #. openerp-web
@@ -464,7 +466,7 @@ msgid ""
 "Creates menus Introduction, Location and Register on the page of the event "
 "on the website."
 msgstr ""
-"Luo esittely-, sijainti- ja rekisteröintivalikot verkkosivuston "
+"Luo esittely-, sijainti- ja ilmoittautumisvalikot verkkosivuston "
 "tapahtumasivulle."
 
 #. module: website_event
@@ -549,12 +551,12 @@ msgstr "Tapahtuman nimi"
 #. module: website_event
 #: model:ir.model,name:website_event.model_event_registration
 msgid "Event Registration"
-msgstr "Tapahtuman rekisteröinti"
+msgstr "Tapahtuman ilmoittautuminen"
 
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_website_visitor__event_registration_ids
 msgid "Event Registrations"
-msgstr "Tapahtuman rekisteröinnit"
+msgstr "Tapahtuman ilmoittautumiset"
 
 #. module: website_event
 #. openerp-web
@@ -664,7 +666,7 @@ msgstr "Esittely"
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_event_event__is_done
 msgid "Is Done"
-msgstr "On tehty"
+msgstr "On valmis"
 
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_event_event__is_ongoing
@@ -776,7 +778,7 @@ msgstr "Tapahtumia ei löytynyt."
 #. module: website_event
 #: model_terms:ir.actions.act_window,help:website_event.event_registration_action_from_visitor
 msgid "No registration linked to this visitor"
-msgstr "Tähän kävijään ei ole liitetty rekisteröintiä"
+msgstr "Tähän kävijään ei ole liitetty ilmoittautumista"
 
 #. module: website_event
 #. openerp-web
@@ -841,42 +843,42 @@ msgstr "Kysymykset"
 #: model_terms:ir.ui.view,arch_db:website_event.registration_template
 #, python-format
 msgid "Register"
-msgstr "Rekisteröidy"
+msgstr "Ilmoittaudu"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_event_view_form
 msgid "Register Button"
-msgstr "Rekisteröintinappi"
+msgstr "Ilmoittautumispainike"
 
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_website_visitor__event_registered_ids
 msgid "Registered Events"
-msgstr "Rekisteröidyt tapahtumat"
+msgstr "Ilmoittaudutut tapahtumat"
 
 #. module: website_event
 #: code:addons/website_event/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:website_event.registration_template
 #, python-format
 msgid "Registration"
-msgstr "Rekisteröinti"
+msgstr "Ilmoittautuminen"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_complete
 msgid "Registration confirmed!"
-msgstr "Rekisteröityminen vahvistettu!"
+msgstr "Ilmoittautuminen vahvistettu!"
 
 #. module: website_event
 #: model:ir.actions.act_window,name:website_event.event_registration_action_from_visitor
 #: model_terms:ir.ui.view,arch_db:website_event.website_visitor_view_form
 #: model_terms:ir.ui.view,arch_db:website_event.website_visitor_view_kanban
 msgid "Registrations"
-msgstr "Rekisteröinnit"
+msgstr "Ilmoittautumiset"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.events_list
 #: model_terms:ir.ui.view,arch_db:website_event.registration_template
 msgid "Registrations Closed"
-msgstr "Rekisteröitymiset suljettu"
+msgstr "Ilmoittautumiset suljettu"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_template
@@ -887,7 +889,7 @@ msgstr "Rekisteröitymiset ovat <b>suljettu</b>"
 #: model_terms:ir.ui.view,arch_db:website_event.events_list
 #: model_terms:ir.ui.view,arch_db:website_event.registration_template
 msgid "Registrations not yet open"
-msgstr "Rekisteröitymiset eivät ole vielä avoinna"
+msgstr "Ilmoittautumiset eivät ole vielä avoinna"
 
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_event_event__start_remaining
@@ -947,7 +949,7 @@ msgstr "Näytä kaikki tapahtumat"
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_event_event__seo_name
 msgid "Seo name"
-msgstr "Seo-nimi"
+msgstr "SEO-nimi"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.events_list
@@ -987,6 +989,12 @@ msgstr "Tässä kuussa"
 #, python-format
 msgid "This shortcut will bring you right back to the event form."
 msgstr "Tämä pikanäppäin tuo sinut takaisin tapahtumalomakkeeseen."
+
+#. module: website_event
+#: code:addons/website_event/controllers/main.py:0
+#, python-format
+msgid "This ticket is not available for sale for this event"
+msgstr "Tähän tapahtumaan ei ole enää saatavilla lippuja."
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_attendee_details
@@ -1139,12 +1147,12 @@ msgstr "Verkkosivun opengraph kuva"
 #. module: website_event
 #: model:ir.model.fields,help:website_event.field_event_event__is_ongoing
 msgid "Whether event has begun"
-msgstr "Joko tapahtuma on alkanut"
+msgstr "Onko tapahtuma jo alkanut"
 
 #. module: website_event
 #: model:ir.model.fields,help:website_event.field_event_event__is_done
 msgid "Whether event is finished"
-msgstr "Joko tapahtuma on loppunut"
+msgstr "Onko tapahtuma jo päättynyt"
 
 #. module: website_event
 #: model:ir.model.fields,help:website_event.field_event_event__start_today
@@ -1157,10 +1165,10 @@ msgstr "Joko tapahtuma alkaa tänään, jos se ei vielä ole käynnissä"
 #, python-format
 msgid ""
 "With the Edit button, you can <b>customize</b> the web page visitors will "
-"see when registrating."
+"see when registering."
 msgstr ""
-"Muokkaa -painikkeella voit <b>mukauttaa</b>verkkosivua, jonka kävijät "
-"näkevät rekisteröityessään."
+"Muokkaa-painikkeella voit <b>muokata</b> verkkosivuja, jotka vierailijat "
+"näkevät ilmoittautuessaan."
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_template

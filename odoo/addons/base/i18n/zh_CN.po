@@ -10,7 +10,7 @@
 # Gang LIU <liu9ang@hotmail.com>, 2020
 # bf2549c5415a9287249cba2b8a5823c7, 2020
 # 海飞 Lu <330472962@qq.com>, 2020
-# Felix Yang - Elico Corp <felixyangsh@aliyun.com>, 2020
+# Felix Yang <felixyangsh@aliyun.com>, 2020
 # as co02 <asco02@163.com>, 2020
 # 朱仁杰 <johnson19960308@gmail.com>, 2020
 # Summer Xia <sxi@odoo.com>, 2020
@@ -43,12 +43,10 @@
 # Gary Wei <Gary.wei@elico-corp.com>, 2020
 # fausthuang, 2020
 # xiaobin wu <bd5dml@gmail.com>, 2020
-# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2020
 # Eddie Lim <bhweelim@yahoo.com>, 2020
 # 老窦 北京 <2662059195@qq.com>, 2020
 # keecome <7017511@qq.com>, 2020
 # 卫安琪 <weianqi1991@gmail.com>, 2020
-# Emily Jia <eji@odoo.com>, 2020
 # snow wang <147156565@qq.com>, 2020
 # Jeanphy <hzh0292@qq.com>, 2020
 # F4NNIU <sparkamax+fanniu@gmail.com>, 2020
@@ -61,8 +59,14 @@
 # Daniel Yang <daniel.yang.zhenyu@gmail.com>, 2021
 # Titan Li <lghbeta@gmail.com>, 2021
 # 卓忆科技 <zhanghao@jointd.com>, 2021
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2021
 # liAnGjiA <liangjia@qq.com>, 2021
+# Chris H, 2021
+# Jeffery CHEN <jeffery9@gmail.com>, 2021
+# Benson <Benson.Dr@Gmail.com>, 2022
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
+# Emily Jia <eji@odoo.com>, 2023
+# Chloe Wang, 2024
 # 
 msgid ""
 msgstr ""
@@ -70,8 +74,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-11-27 13:50+0000\n"
 "PO-Revision-Date: 2020-09-07 08:09+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2021\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"Last-Translator: Chloe Wang, 2024\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -3602,7 +3606,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"通过帮助台创建退款单 "
+"从帮助台创建退款通知 "
 
 #. module: base
 #: model:ir.module.module,description:base.module_website_slides
@@ -4842,10 +4846,10 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"在许多国家/地区，借方票据用作现有结算单金额的增加\n"
-"或在某些情况下取消贷方通知单。\n"
+"在许多国家/地区，借记单用作现有结算单金额的增加\n"
+"或在某些情况下取消退款通知。\n"
 "它就像普通结算单，但我们需要跟踪与原始结算单的链接。 \n"
-"使用的向导与贷方通知单的向导类似。\n"
+"使用的向导与退款通知的向导类似。\n"
 "    "
 
 #. module: base
@@ -9170,7 +9174,7 @@ msgid ""
 msgstr ""
 " 用于将多个公司之间的文档同步的模块。例如，该模块可以实现您在验证一个采购单时候自动生成一个销售订单（需为系统内用户），反之亦然。\n"
 "\n"
-"支持的文档为销售订单、采购单以及结算单/信用凭证。\n"
+"支持的文档为销售订单、采购单以及结算单/退款通知。\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_approvals_purchase_stock
@@ -9685,22 +9689,22 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 msgid ""
 "<span class=\"o_form_label o_td_label\" name=\"address_name\">\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'contact')]}\">Company Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'invoice')]}\">Invoice Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'delivery')]}\">Delivery Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'other')]}\">Other Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'private')]}\">Private Address</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', False)]}\">Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}\">Company Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'invoice')]}\">Invoice Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'delivery')]}\">Delivery Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'other')]}\">Other Address</b>\n"
+"                                <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'private')]}\">Private Address</b>\n"
+"                                <b attrs=\"{'invisible': ['&amp;', ('parent_id', '!=', False), ('type', '!=', False)]}\">Address</b>\n"
 "                            </span>"
 msgstr ""
 "<span class=\"o_form_label o_td_label\" name=\"address_name\">\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'contact')]}\">公司地址</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'invoice')]}\">结算单地址</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'delivery')]}\">交货地址</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'other')]}\">其他地址</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', 'private')]}\">个人地址</b>\n"
-"                                <b attrs=\"{'invisible': [('type', '!=', False)]}\">地址</b>\n"
-"                            </span>"
+"                                 <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}\">公司地址</b>\n"
+"                                 <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'invoice')]}\">发票地址</b>\n"
+"                                 <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'delivery')]}\">派送地址</b>\n"
+"                                 <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'other')]}\">其他地址</b>\n"
+"                                 <b attrs=\"{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'private')]}\">私人地址</b>\n"
+"                                 <b attrs=\"{'invisible': ['&amp;', ('parent_id', '!=', False), ('type', '!=', False)]}\">地址</b>\n"
+"                             </span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_module_update
@@ -13441,6 +13445,12 @@ msgid "Compute"
 msgstr "计算"
 
 #. module: base
+#: code:addons/base/models/ir_model.py:0
+#, python-format
+msgid "Compute method cannot depend on field 'id'"
+msgstr "计算方法不能依赖于字段 \"id\""
+
+#. module: base
 #: model:ir.module.module,summary:base.module_website_crm_score
 msgid "Compute scores and assign leads automatically"
 msgstr "计算分数并且自动分配线索"
@@ -15798,6 +15808,18 @@ msgstr "错误"
 #: model:ir.model.fields,help:base.field_ir_model_constraint__message
 msgid "Error message returned when the constraint is violated."
 msgstr "违反约束时返回的错误信息。"
+
+#. module: base
+#: code:addons/translate.py:0
+#, python-format
+msgid ""
+"Error while parsing view:\n"
+"\n"
+"%s"
+msgstr ""
+"解析视图时出错：\n"
+"\n"
+"%s"
 
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:0
@@ -18773,6 +18795,18 @@ msgid "Invalid 'group by' parameter"
 msgstr "无效的“分组”参数"
 
 #. module: base
+#: code:addons/template_inheritance.py:0
+#, python-format
+msgid "Invalid Expression while parsing xpath %r"
+msgstr "解析 xpath %r 时出现无效表达式"
+
+#. module: base
+#: code:addons/base/models/ir_default.py:0
+#, python-format
+msgid "Invalid JSON format in Default Value field."
+msgstr "默认值字段中的 JSON 格式无效。"
+
+#. module: base
 #: code:addons/models.py:0
 #, python-format
 msgid "Invalid aggregation function %r."
@@ -18840,6 +18874,12 @@ msgstr "无效密钥: QWeb 视图应该有一个密钥"
 #, python-format
 msgid "Invalid model name %r in action definition."
 msgstr "动作定义中使用了无效的模型名称 %r。"
+
+#. module: base
+#: code:addons/base/models/ir_actions.py:611
+#, python-format
+msgid "many2many fields cannot be evaluated by reference"
+msgstr "many2许多字段不能通过引用进行评估"
 
 #. module: base
 #: code:addons/template_inheritance.py:0
@@ -19217,8 +19257,8 @@ msgstr "LGPL 第3版"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_lt_reports
-msgid "LT - Accounting Reports"
-msgstr "LT - 会计报表"
+msgid "Lithuania - Accounting Reports"
+msgstr "Lithuania - Accounting Reports"
 
 #. module: base
 #: code:addons/base/models/ir_ui_view.py:0
@@ -24942,7 +24982,7 @@ msgstr "工资单本地化"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_hr_payroll_edit_lines
 msgid "Payroll: Edit lines - Recompute work entries"
-msgstr ""
+msgstr "工资单: 编辑行-计算机工作条目"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_payment_payulatam
@@ -25020,7 +25060,7 @@ msgstr "计划"
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_pt
 msgid "Plano de contas SNC para Portugal"
-msgstr "SNC葡萄牙的方案，决算方案（为什么会有葡萄牙语？翻译者不懂葡萄牙语，用Google翻译的）"
+msgstr "Plano de contas SNC para Portugal"
 
 #. module: base
 #: code:addons/base/models/ir_mail_server.py:0
@@ -25136,7 +25176,7 @@ msgstr "葡萄牙 - 会计"
 #. module: base
 #: model:ir.module.module,summary:base.module_l10n_be_hr_payroll_posted_employee
 msgid "Posted Employee"
-msgstr ""
+msgstr "派驻员工"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_ir_model_constraint__definition
@@ -26165,7 +26205,7 @@ msgstr "从'打印'菜单中移走"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.act_report_xml_view
 msgid "Remove the contextual action related to this report"
-msgstr ""
+msgstr "删除与此报告相关的操作"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_renting
@@ -27143,6 +27183,14 @@ msgstr "通过 Fedex 运输货物并在线跟踪物流信息"
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_ups
+msgid ""
+"This is the legacy integration with UPS that is no longer supported. Please "
+"install the new \"UPS Shipping\" module and uninstall this one as soon as "
+"possible. This integration will stop working in 2024."
+msgstr ""
+
+#. module: base
+#: model:ir.module.module,summary:base.module_delivery_ups_rest
 msgid "Send your shippings through UPS and track them online"
 msgstr "通过UPS运输货物并在线跟踪物流信息"
 
@@ -27850,7 +27898,7 @@ msgstr "在文档模块中存储员工合同"
 #. module: base
 #: model:ir.module.module,summary:base.module_documents_hr_holidays
 msgid "Store employee's time off documents in the Document app"
-msgstr ""
+msgstr "将雇员休假记录保存至“文档”应用"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_model_fields__store
@@ -27953,7 +28001,7 @@ msgstr "订阅中使用借记卡付款"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_subscription_timesheet
 msgid "Subscription and Timesheet"
-msgstr ""
+msgstr "订阅和工时"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_sales_subscriptions
@@ -28091,7 +28139,7 @@ msgstr "与外部的计工单应用同步"
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_subscription_timesheet
 msgid "Synchronize data between timesheet and subscriptions"
-msgstr ""
+msgstr "在排班表和订阅之间同步数据"
 
 #. module: base
 #: model:res.country,name:base.sy
@@ -28487,8 +28535,8 @@ msgstr "模块`%s`现在可能不能使用，请稍后再试。"
 #. module: base
 #: code:addons/base/models/ir_module.py:0
 #, python-format
-msgid "The `base` module cannot be uninstalled"
-msgstr "`base` 模块不能卸载"
+msgid "Those modules cannot be uninstalled: %s"
+msgstr "无法卸载以下模块：%s"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_res_partner_category__active
@@ -29096,6 +29144,9 @@ msgid ""
 "present in a separate module as it contains models used only to perform\n"
 "tests independently to functional aspects of other models."
 msgstr ""
+"此模块包含与基本自动化相关的测试. 这些是\n"
+"存在于单独的模块中，因为它包含仅用于执行的模型\n"
+"独立测试其它模型的功能方面."
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_mail
@@ -29104,6 +29155,9 @@ msgid ""
 "present in a separate module as it contains models used only to perform\n"
 "tests independently to functional aspects of other models. "
 msgstr ""
+"该模块包含与邮件相关的测试. 这些是\n"
+"存在于单独的模块中，因为它包含仅用于执行的模型\n"
+"独立测试其它模型的功能方面. "
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_mail_enterprise
@@ -29114,6 +29168,11 @@ msgid ""
 "modules build on mail (sms, snailmail, mail_enterprise) are set as dependencies\n"
 "in order to test the whole mail codebase. "
 msgstr ""
+"该模块包含与邮件相关的测试. 这些是\n"
+"存在于单独的模块中，因为它包含仅用于执行的模型\n"
+"独立测试其它模型的功能方面. 此外，大多数\n"
+"基于邮件构建的模块(sms、snailmail、mail_enterprise）被设置为依赖项目\n"
+"为了测试整个邮件代码库. "
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_mass_mailing
@@ -29122,6 +29181,9 @@ msgid ""
 "are present in a separate module to use specific test models defined in\n"
 "test_mail. "
 msgstr ""
+"该模块包含与群发邮件相关的测试. 那些\n"
+"存在于单独的模块中以使用\n"
+"中定义的特定测试模型测试邮件. "
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_web_grid
@@ -29130,6 +29192,9 @@ msgid ""
 "present in a separate module as it contains models used only to perform\n"
 "tests independently to functional aspects of other models. "
 msgstr ""
+"此模块包含与 Web 网格查看相关的测试.  那些是\n"
+"存在于一个单独的模块中，因为它包含仅用于执行的模型\n"
+"独立于其它模型的功能方面进行测试. "
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_timer
@@ -29138,6 +29203,9 @@ msgid ""
 "present in a separate module as it contains models used only to perform\n"
 "tests independently to functional aspects of other models. "
 msgstr ""
+"该模块包含与计时器相关的测试. 那些是\n"
+"存在于一个单独的模块中，因为它包含仅用于执行的模型\n"
+"独立于其它模型的功能方面进行测试. "
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_mail_full
@@ -29147,6 +29215,10 @@ msgid ""
 "contains models used only to perform tests independently to functional aspects of\n"
 "real applications. "
 msgstr ""
+"该模块包含与各种邮件功能相关的测试\n"
+"和邮件相关的子模块. 这些测试存在于一个单独的模块中，因为它\n"
+"包含仅用于独立于功能方面执行测试的模型\n"
+"实际应用. "
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_web_cohort
@@ -29155,6 +29227,9 @@ msgid ""
 "present in a separate module as it contains models used only to perform\n"
 "tests independently to functional aspects of other models. "
 msgstr ""
+"该模块包含与网络队列相关的测试. 那些是\n"
+"存在于一个单独的模块中，因为它包含仅用于执行的模型\n"
+"独立于其它模型的功能方面进行测试. "
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_website
@@ -29165,13 +29240,18 @@ msgid ""
 "dependencies. Neither we want to add in website module some routes, views and\n"
 "models which only purpose is to run tests."
 msgstr ""
+"该模块包含与网站相关的测试. 那些是\n"
+"在我们测试模块安装/卸载/升级时出现在一个单独的模块中\n"
+"而且我们不想每次都重新装入网站模块，包括它是可能的\n"
+"依赖关系。 我们也不想在网站模块中增加一些路线、查看和\n"
+"唯一目的是执行测试的模型."
 
 #. module: base
 #: model:ir.module.module,description:base.module_sale_subscription_timesheet
 msgid ""
 "This module ensure that data (such as analytic accounts) defined on the sale"
 " order via timesheet app are correctly set also on subscriptions"
-msgstr ""
+msgstr "此模块确保通过时间表应用程序在销售订单上定义的数据(例如分析帐户)也在订阅上正确设置"
 
 #. module: base
 #: model:ir.module.module,description:base.module_sale_subscription_taxcloud
@@ -29197,6 +29277,8 @@ msgid ""
 "This module helps analyzing and organizing event tracks.\n"
 "For that purpose it adds a gantt view on event tracks."
 msgstr ""
+"该模块有助于分析和组织事件轨迹.\n"
+"为此，它在事件轨道上增加了甘特图."
 
 #. module: base
 #: model:ir.module.module,description:base.module_event_enterprise
@@ -29784,6 +29866,11 @@ msgstr "UNSPSC 产品代码"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_delivery_ups
+msgid "UPS Shipping (Legacy)"
+msgstr "UPS 货运（旧）"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_delivery_ups_rest
 msgid "UPS Shipping"
 msgstr "UPS 发货"
 
@@ -31262,8 +31349,8 @@ msgstr "你不能激活超级用户。"
 #. module: base
 #: code:addons/base/models/res_partner.py:0
 #, python-format
-msgid "You cannot archive a contact linked to an internal user."
-msgstr "无法存档链接到内部用户的联系人。"
+msgid "You cannot archive a contact linked to a portal or internal user."
+msgstr "不能删除已与门户或其它内部用户绑定的联系人"
 
 #. module: base
 #: code:addons/base/models/res_partner.py:0
@@ -31290,6 +31377,12 @@ msgid "You cannot deactivate the user you're currently logged in as."
 msgstr "不能禁用你当前正在使用的用户。"
 
 #. module: base
+#: code:addons/base/models/ir_config_parameter.py:0
+#, python-format
+msgid "You cannot delete the %s record."
+msgstr "您不能删除 %s 记录。"
+
+#. module: base
 #: code:addons/base/models/res_lang.py:0
 #, python-format
 msgid ""
@@ -31310,6 +31403,12 @@ msgstr "不能删除用户的默认语言。"
 #, python-format
 msgid "You cannot merge a contact with one of his parent."
 msgstr "您不能把联系人和其父项合并。"
+
+#. module: base
+#: code:addons/base/models/ir_config_parameter.py:0
+#, python-format
+msgid "You cannot rename config parameters with keys %s"
+msgstr "不能重命名键值为%s的配置参数"
 
 #. module: base
 #: code:addons/models.py:0
@@ -31375,7 +31474,7 @@ msgstr "通过编辑在设置/用户菜单下的新建用户，你将能够定�
 msgid ""
 "You won't be able to reduce the number of decimal places of a currency which"
 " has already been used to make accounting entries."
-msgstr ""
+msgstr "不能减少已用于记帐记录的货币的小数位数"
 
 #. module: base
 #: code:addons/base/models/ir_mail_server.py:0
@@ -31985,3 +32084,9 @@ msgstr "是"
 #: model:res.country,name:base.ax
 msgid "Åland Islands"
 msgstr "阿兰群岛"
+
+#. module: base
+#: code:addons/base/models/res_currency.py:0
+#, python-format
+msgid "This currency is set on a company and therefore must be active."
+msgstr ""

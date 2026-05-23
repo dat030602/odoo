@@ -180,7 +180,12 @@ class HolidaysAllocation(models.Model):
             if holiday.interval_unit == 'years':
                 delta = relativedelta(years=holiday.interval_number)
 
-            values['nextcall'] = (holiday.nextcall if holiday.nextcall else today) + delta
+            if holiday.nextcall:
+                values['nextcall'] = holiday.nextcall + delta
+            else:
+                values['nextcall'] = holiday.date_from
+                while values['nextcall'] <= datetime.combine(today, time(0, 0, 0)):
+                    values['nextcall'] += delta
 
             period_start = datetime.combine(today, time(0, 0, 0)) - delta
             period_end = datetime.combine(today, time(0, 0, 0))
@@ -295,7 +300,7 @@ class HolidaysAllocation(models.Model):
     def _compute_can_approve(self):
         for allocation in self:
             try:
-                if allocation.state == 'confirm' and allocation.validation_type == 'both':
+                if allocation.state == 'confirm' and allocation.holiday_status_id.allocation_type == "fixed_allocation" and allocation.validation_type == 'both':
                     allocation._check_approval_update('validate1')
                 else:
                     allocation._check_approval_update('validate')
@@ -619,6 +624,8 @@ class HolidaysAllocation(models.Model):
         if self.validation_type == 'manager' or (self.validation_type == 'both' and self.state == 'confirm'):
             if self.employee_id.leave_manager_id:
                 responsible = self.employee_id.leave_manager_id
+            elif self.employee_id.parent_id.user_id:
+                responsible = self.employee_id.parent_id.user_id
         elif self.validation_type == 'hr' or (self.validation_type == 'both' and self.state == 'validate1'):
             if self.holiday_status_id.responsible_id:
                 responsible = self.holiday_status_id.responsible_id

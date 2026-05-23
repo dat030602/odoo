@@ -98,8 +98,6 @@ class ResPartnerBank(models.Model):
         :param free_communication: Free communication to add to the payment when generating one with the QR-code
         :param structured_communication: Structured communication to add to the payment when generating one with the QR-code
         """
-        # pylint: disable=E1137
-        # (PyLint doesn't get that we are not assigning to None here)
         params = self._get_qr_code_generation_params(qr_method, amount, currency, debtor_partner, free_communication, structured_communication)
         if params:
             params['type'] = params.pop('barcode_type')
@@ -118,9 +116,6 @@ class ResPartnerBank(models.Model):
         :param free_communication: Free communication to add to the payment when generating one with the QR-code
         :param structured_communication: Structured communication to add to the payment when generating one with the QR-code
         """
-        # pylint: disable=E1137
-        # pylint: disable=E1134
-        # (PyLint doesn't get that we are not assigning to None here)
         params = self._get_qr_code_generation_params(qr_method, amount, currency, debtor_partner, free_communication, structured_communication)
         if params:
             try:

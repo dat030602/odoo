@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from lxml import etree
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
@@ -39,35 +40,39 @@ class AccountPayment(models.Model):
         check_company=True)
 
     is_reconciled = fields.Boolean(string="Is Reconciled", store=True,
-                                   compute='_compute_reconciliation_status',
-                                   help="Technical field indicating if the payment is already reconciled.")
+        compute='_compute_reconciliation_status',
+        help="Technical field indicating if the payment is already reconciled.")
     is_matched = fields.Boolean(string="Is Matched With a Bank Statement", store=True,
-                                compute='_compute_reconciliation_status',
-                                help="Technical field indicating if the payment has been matched with a statement line.")
+        compute='_compute_reconciliation_status',
+        help="Technical field indicating if the payment has been matched with a statement line.")
+    available_partner_bank_ids = fields.Many2many(
+        comodel_name='res.partner.bank',
+        compute='_compute_available_partner_bank_ids',
+    )
     partner_bank_id = fields.Many2one('res.partner.bank', string="Recipient Bank Account",
-                                      readonly=False, store=True,
-                                      compute='_compute_partner_bank_id',
-                                      domain="[('partner_id', '=', partner_id)]",
-                                      check_company=True)
+        readonly=False, store=True,
+        compute='_compute_partner_bank_id',
+        domain="[('id', 'in', available_partner_bank_ids)]",
+        check_company=True)
     is_internal_transfer = fields.Boolean(string="Is Internal Transfer",
-                                          readonly=False, store=True,
-                                          compute="_compute_is_internal_transfer")
+        readonly=False, store=True,
+        compute="_compute_is_internal_transfer")
     qr_code = fields.Char(string="QR Code",
-                          compute="_compute_qr_code",
-                          help="QR-code report URL to use to generate the QR-code to scan with a banking app to perform this payment.")
+        compute="_compute_qr_code",
+        help="QR-code report URL to use to generate the QR-code to scan with a banking app to perform this payment.")
 
     # == Payment methods fields ==
     payment_method_id = fields.Many2one('account.payment.method', string='Payment Method',
-                                        readonly=False, store=True,
-                                        compute='_compute_payment_method_id',
-                                        domain="[('id', 'in', available_payment_method_ids)]",
-                                        help="Manual: Get paid by cash, check or any other method outside of Odoo.\n" \
-                                             "Electronic: Get paid automatically through a payment acquirer by requesting a transaction on a card saved by the customer when buying or subscribing online (payment token).\n" \
-                                             "Check: Pay bill by check and print it from Odoo.\n" \
-                                             "Batch Deposit: Encase several customer checks at once by generating a batch deposit to submit to your bank. When encoding the bank statement in Odoo, you are suggested to reconcile the transaction with the batch deposit.To enable batch deposit, module account_batch_payment must be installed.\n" \
-                                             "SEPA Credit Transfer: Pay bill from a SEPA Credit Transfer file you submit to your bank. To enable sepa credit transfer, module account_sepa must be installed ")
+        readonly=False, store=True,
+        compute='_compute_payment_method_id',
+        domain="[('id', 'in', available_payment_method_ids)]",
+        help="Manual: Get paid by cash, check or any other method outside of Odoo.\n"\
+        "Electronic: Get paid automatically through a payment acquirer by requesting a transaction on a card saved by the customer when buying or subscribing online (payment token).\n"\
+        "Check: Pay bill by check and print it from Odoo.\n"\
+        "Batch Deposit: Encase several customer checks at once by generating a batch deposit to submit to your bank. When encoding the bank statement in Odoo, you are suggested to reconcile the transaction with the batch deposit.To enable batch deposit, module account_batch_payment must be installed.\n"\
+        "SEPA Credit Transfer: Pay bill from a SEPA Credit Transfer file you submit to your bank. To enable sepa credit transfer, module account_sepa must be installed ")
     available_payment_method_ids = fields.Many2many('account.payment.method',
-                                                    compute='_compute_payment_method_fields')
+        compute='_compute_payment_method_fields')
     hide_payment_method = fields.Boolean(
         compute='_compute_payment_method_fields',
         help="Technical field used to hide the payment method if the selected journal has only one available which is 'manual'")
@@ -83,10 +88,10 @@ class AccountPayment(models.Model):
         ('supplier', 'Vendor'),
     ], default='customer', tracking=True, required=True)
     payment_reference = fields.Char(string="Payment Reference", copy=False,
-                                    help="Reference of the document used to issue this payment. Eg. check number, file name, etc.")
+        help="Reference of the document used to issue this payment. Eg. check number, file name, etc.")
     currency_id = fields.Many2one('res.currency', string='Currency', store=True, readonly=False,
-                                  compute='_compute_currency_id',
-                                  help="The payment's currency.")
+        compute='_compute_currency_id',
+        help="The payment's currency.")
     partner_id = fields.Many2one(
         comodel_name='res.partner',
         string="Customer/Vendor",
@@ -104,20 +109,20 @@ class AccountPayment(models.Model):
 
     # == Stat buttons ==
     reconciled_invoice_ids = fields.Many2many('account.move', string="Reconciled Invoices",
-                                              compute='_compute_stat_buttons_from_reconciliation',
-                                              help="Invoices whose journal items have been reconciled with these payments.")
+        compute='_compute_stat_buttons_from_reconciliation',
+        help="Invoices whose journal items have been reconciled with these payments.")
     reconciled_invoices_count = fields.Integer(string="# Reconciled Invoices",
-                                               compute="_compute_stat_buttons_from_reconciliation")
+        compute="_compute_stat_buttons_from_reconciliation")
     reconciled_bill_ids = fields.Many2many('account.move', string="Reconciled Bills",
-                                           compute='_compute_stat_buttons_from_reconciliation',
-                                           help="Invoices whose journal items have been reconciled with these payments.")
+        compute='_compute_stat_buttons_from_reconciliation',
+        help="Invoices whose journal items have been reconciled with these payments.")
     reconciled_bills_count = fields.Integer(string="# Reconciled Bills",
-                                            compute="_compute_stat_buttons_from_reconciliation")
+        compute="_compute_stat_buttons_from_reconciliation")
     reconciled_statement_ids = fields.Many2many('account.bank.statement', string="Reconciled Statements",
-                                                compute='_compute_stat_buttons_from_reconciliation',
-                                                help="Statements matched to this payment")
+        compute='_compute_stat_buttons_from_reconciliation',
+        help="Statements matched to this payment")
     reconciled_statements_count = fields.Integer(string="# Reconciled Statements",
-                                                 compute="_compute_stat_buttons_from_reconciliation")
+        compute="_compute_stat_buttons_from_reconciliation")
 
     # == Display purpose fields ==
     payment_method_code = fields.Char(
@@ -163,8 +168,7 @@ class AccountPayment(models.Model):
                     self.journal_id.payment_credit_account_id,
             ):
                 liquidity_lines += line
-            elif line.account_id.internal_type in (
-            'receivable', 'payable') or line.partner_id == line.company_id.partner_id:
+            elif line.account_id.internal_type in ('receivable', 'payable') or line.account_id == line.company_id.transfer_account_id:
                 counterpart_lines += line
             else:
                 writeoff_lines += line
@@ -231,7 +235,7 @@ class AccountPayment(models.Model):
         if self.is_internal_transfer:
             if self.payment_type == 'inbound':
                 liquidity_line_name = _('Transfer to %s', self.journal_id.name)
-            else:  # payment.payment_type == 'outbound':
+            else: # payment.payment_type == 'outbound':
                 liquidity_line_name = _('Transfer from %s', self.journal_id.name)
         else:
             liquidity_line_name = self.payment_reference
@@ -241,8 +245,7 @@ class AccountPayment(models.Model):
         payment_display_name = self._prepare_payment_display_name()
 
         default_line_name = self.env['account.move.line']._get_default_line_name(
-            _("Internal Transfer") if self.is_internal_transfer else payment_display_name[
-                '%s-%s' % (self.payment_type, self.partner_type)],
+            _("Internal Transfer") if self.is_internal_transfer else payment_display_name['%s-%s' % (self.payment_type, self.partner_type)],
             self.amount,
             self.currency_id,
             self.date,
@@ -290,8 +293,7 @@ class AccountPayment(models.Model):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
-    @api.depends('move_id.line_ids.amount_residual', 'move_id.line_ids.amount_residual_currency',
-                 'move_id.line_ids.account_id')
+    @api.depends('move_id.line_ids.amount_residual', 'move_id.line_ids.amount_residual_currency', 'move_id.line_ids.account_id')
     def _compute_reconciliation_status(self):
         ''' Compute the field indicating if the payments are already reconciled with something.
         This field is used for display purpose (e.g. display the 'reconcile' button redirecting to the reconciliation
@@ -335,21 +337,20 @@ class AccountPayment(models.Model):
             payment.require_partner_bank_account = payment.state == 'draft' and payment.payment_method_code in self._get_method_codes_needing_bank_account()
 
     @api.depends('partner_id', 'company_id', 'payment_type')
+    def _compute_available_partner_bank_ids(self):
+        for pay in self:
+            if pay.payment_type == 'inbound':
+                pay.available_partner_bank_ids = pay.journal_id.bank_account_id
+            else:
+                pay.available_partner_bank_ids = pay.partner_id.bank_ids\
+                        .filtered(lambda x: x.company_id.id in (False, pay.company_id.id))._origin
+
+    @api.depends('available_partner_bank_ids', 'journal_id')
     def _compute_partner_bank_id(self):
         ''' The default partner_bank_id will be the first available on the partner. '''
         for pay in self:
-            if pay.payment_type == 'inbound':
-                bank_partner = pay.company_id.partner_id
-            else:
-                bank_partner = pay.partner_id
-
-            available_partner_bank_accounts = bank_partner.bank_ids.filtered(
-                lambda x: x.company_id in (False, pay.company_id))
-            if available_partner_bank_accounts:
-                if pay.partner_bank_id not in available_partner_bank_accounts:
-                    pay.partner_bank_id = available_partner_bank_accounts[0]._origin
-            else:
-                pay.partner_bank_id = False
+            if pay.partner_bank_id not in pay.available_partner_bank_ids._origin:
+                pay.partner_bank_id = pay.available_partner_bank_ids[:1]._origin
 
     @api.depends('partner_id', 'destination_account_id', 'journal_id')
     def _compute_is_internal_transfer(self):
@@ -387,8 +388,7 @@ class AccountPayment(models.Model):
             else:
                 pay.available_payment_method_ids = pay.journal_id.outbound_payment_method_ids
 
-            pay.hide_payment_method = len(
-                pay.available_payment_method_ids) == 1 and pay.available_payment_method_ids.code == 'manual'
+            pay.hide_payment_method = len(pay.available_payment_method_ids) == 1 and pay.available_payment_method_ids.code == 'manual'
 
     @api.depends('journal_id')
     def _compute_currency_id(self):
@@ -414,8 +414,7 @@ class AccountPayment(models.Model):
             elif pay.partner_type == 'customer':
                 # Receive money from invoice or send money to refund it.
                 if pay.partner_id:
-                    pay.destination_account_id = pay.partner_id.with_company(
-                        pay.company_id).property_account_receivable_id
+                    pay.destination_account_id = pay.partner_id.with_company(pay.company_id).property_account_receivable_id
                 else:
                     pay.destination_account_id = self.env['account.account'].search([
                         ('company_id', '=', pay.company_id.id),
@@ -438,14 +437,13 @@ class AccountPayment(models.Model):
     def _compute_qr_code(self):
         for pay in self:
             if pay.state in ('draft', 'posted') \
-                    and pay.partner_bank_id \
-                    and pay.payment_method_id.code == 'manual' \
-                    and pay.payment_type == 'outbound' \
-                    and pay.currency_id:
+                and pay.partner_bank_id \
+                and pay.payment_method_id.code == 'manual' \
+                and pay.payment_type == 'outbound' \
+                and pay.currency_id:
 
                 if pay.partner_bank_id:
-                    qr_code = pay.partner_bank_id.build_qr_code_base64(pay.amount, pay.ref, pay.ref, pay.currency_id,
-                                                                       pay.partner_id)
+                    qr_code = pay.partner_bank_id.build_qr_code_base64(pay.amount, pay.ref, pay.ref, pay.currency_id, pay.partner_id)
                 else:
                     qr_code = None
 
@@ -455,8 +453,8 @@ class AccountPayment(models.Model):
                         <img class="border border-dark rounded" src="{qr_code}"/>
                         <br/>
                         <strong class="text-center">{txt}</strong>
-                        '''.format(txt=_('Scan me with your banking app.'),
-                                   qr_code=qr_code)
+                        '''.format(txt = _('Scan me with your banking app.'),
+                                   qr_code = qr_code)
                     continue
 
             pay.qr_code = None
@@ -474,9 +472,11 @@ class AccountPayment(models.Model):
             self.reconciled_statements_count = 0
             return
 
-        self.env['account.move'].flush()
-        self.env['account.move.line'].flush()
-        self.env['account.partial.reconcile'].flush()
+        self.env['account.journal'].flush(fnames=['payment_debit_account_id', 'payment_credit_account_id'])
+        self.env['account.payment'].flush(fnames=['move_id'])
+        self.env['account.move'].flush(fnames=['move_type', 'payment_id', 'statement_line_id', 'journal_id'])
+        self.env['account.move.line'].flush(fnames=['move_id', 'account_id', 'statement_line_id'])
+        self.env['account.partial.reconcile'].flush(fnames=['debit_move_id', 'credit_move_id'])
 
         self._cr.execute('''
             SELECT
@@ -580,6 +580,29 @@ class AccountPayment(models.Model):
     # LOW-LEVEL METHODS
     # -------------------------------------------------------------------------
 
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+        # OVERRIDE to add the 'available_partner_bank_ids' field dynamically inside the view.
+        # TO BE REMOVED IN MASTER
+        res = super().fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
+        if view_type == 'form':
+            form_view_id = self.env['ir.model.data'].xmlid_to_res_id('account.view_account_payment_form')
+            if res.get('view_id') == form_view_id:
+                tree = etree.fromstring(res['arch'])
+                if len(tree.xpath("//field[@name='available_partner_bank_ids']")) == 0:
+                    # Don't force people to update the account module.
+                    form_view = self.env.ref('account.view_account_payment_form')
+                    arch_tree = etree.fromstring(form_view.arch)
+                    if arch_tree.tag == 'form':
+                        arch_tree.insert(0, etree.Element('field', attrib={
+                            'name': 'available_partner_bank_ids',
+                            'invisible': '1',
+                        }))
+                        form_view.sudo().write({'arch': etree.tostring(arch_tree, encoding='unicode')})
+                        return super().fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
+
+        return res
+
     @api.model_create_multi
     def create(self, vals_list):
         # OVERRIDE
@@ -617,13 +640,11 @@ class AccountPayment(models.Model):
             # account.move.
             to_write = {'payment_id': pay.id}
             for k, v in vals_list[i].items():
-                if k in self._fields and self._fields[k].store and k in pay.move_id._fields and pay.move_id._fields[
-                    k].store:
+                if k in self._fields and self._fields[k].store and k in pay.move_id._fields and pay.move_id._fields[k].store:
                     to_write[k] = v
 
             if 'line_ids' not in vals_list[i]:
-                to_write['line_ids'] = [(0, 0, line_vals) for line_vals in
-                                        pay._prepare_move_line_default_vals(write_off_line_vals=write_off_line_vals)]
+                to_write['line_ids'] = [(0, 0, line_vals) for line_vals in pay._prepare_move_line_default_vals(write_off_line_vals=write_off_line_vals)]
 
             pay.move_id.write(to_write)
 
@@ -704,10 +725,11 @@ class AccountPayment(models.Model):
                         "To be consistent, the journal items must share the same partner."
                     ) % move.display_name)
 
-                if counterpart_lines.account_id.user_type_id.type == 'receivable':
-                    partner_type = 'customer'
-                else:
-                    partner_type = 'supplier'
+                if not pay.is_internal_transfer:
+                    if counterpart_lines.account_id.user_type_id.type == 'receivable':
+                        payment_vals_to_write['partner_type'] = 'customer'
+                    else:
+                        payment_vals_to_write['partner_type'] = 'supplier'
 
                 liquidity_amount = liquidity_lines.amount_currency
 
@@ -717,7 +739,6 @@ class AccountPayment(models.Model):
                 })
                 payment_vals_to_write.update({
                     'amount': abs(liquidity_amount),
-                    'partner_type': partner_type,
                     'currency_id': liquidity_lines.currency_id.id,
                     'destination_account_id': counterpart_lines.account_id.id,
                     'partner_id': liquidity_lines.partner_id.id,
@@ -738,8 +759,8 @@ class AccountPayment(models.Model):
             return
 
         if not any(field_name in changed_fields for field_name in (
-                'date', 'amount', 'payment_type', 'partner_type', 'payment_reference', 'is_internal_transfer',
-                'currency_id', 'partner_id', 'destination_account_id', 'partner_bank_id', 'journal_id',
+            'date', 'amount', 'payment_type', 'partner_type', 'payment_reference', 'is_internal_transfer',
+            'currency_id', 'partner_id', 'destination_account_id', 'partner_bank_id', 'journal_id',
         )):
             return
 
@@ -774,13 +795,18 @@ class AccountPayment(models.Model):
             line_vals_list = pay._prepare_move_line_default_vals(write_off_line_vals=write_off_line_vals)
 
             line_ids_commands = []
-            if liquidity_lines:
+            if len(liquidity_lines) == 1:
                 line_ids_commands.append((1, liquidity_lines.id, line_vals_list[0]))
             else:
+                for line in liquidity_lines:
+                    line_ids_commands.append((2, line.id, 0))
                 line_ids_commands.append((0, 0, line_vals_list[0]))
-            if counterpart_lines:
+
+            if len(counterpart_lines) == 1:
                 line_ids_commands.append((1, counterpart_lines.id, line_vals_list[1]))
             else:
+                for line in counterpart_lines:
+                    line_ids_commands.append((2, line.id, 0))
                 line_ids_commands.append((0, 0, line_vals_list[1]))
 
             for line in writeoff_lines:

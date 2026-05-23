@@ -14,9 +14,10 @@
 # Helen Sulaoja <helen@avalah.ee>, 2020
 # Algo Kärp <algokarp@gmail.com>, 2020
 # Andre Roomet <andreroomet@gmail.com>, 2021
-# Eneli Õigus <enelioigus@gmail.com>, 2021
 # Piia Paurson <piia@avalah.ee>, 2021
 # Triine Aavik <triine@avalah.ee>, 2021
+# Eneli Õigus <enelioigus@gmail.com>, 2022
+# JanaAvalah, 2023
 # 
 msgid ""
 msgstr ""
@@ -24,8 +25,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-29 15:48+0000\n"
 "PO-Revision-Date: 2020-09-07 08:14+0000\n"
-"Last-Translator: Triine Aavik <triine@avalah.ee>, 2021\n"
-"Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
+"Last-Translator: JanaAvalah, 2023\n"
+"Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -42,8 +43,8 @@ msgid ""
 " * Done: The MO is closed, the stock moves are posted. \n"
 " * Cancelled: The MO has been cancelled, can't be confirmed anymore."
 msgstr ""
-" * Planeerimata: Tootmistellimus ei ole veel kinnitatud.\n"
-" * Planeeritud: Tootmistellimus on kinnitatud, laoreeglid ja kauba tellimise automaatreeglid käivitatud.\n"
+" * Mustand: Tootmistellimus ei ole veel kinnitatud.\n"
+" * Kinnitatud: Tootmistellimus on kinnitatud, laoreeglid ja kauba tellimise automaatreeglid käivitatud.\n"
 " * Töös: Tootmine on alustatud (tootmistellimusel või töökäsul)\n"
 " * Lõpetamata: Tootmine on lõpetatud, tootmistellimus tuleb sulgeda\n"
 " * Tehtud: Tootmistellimus on suletud, laoliikumised on postitatud. \n"
@@ -1074,7 +1075,7 @@ msgstr "Komponendi saadavus"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Component Available"
-msgstr "Komponent on saadaval"
+msgstr "Koostisosad on saadaval"
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_report_product_product_replenishment
@@ -1137,7 +1138,7 @@ msgstr "Kinnita tühistamine"
 #: model:ir.model.fields.selection,name:mrp.selection__mrp_production__state__confirmed
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Confirmed"
-msgstr "Planeeritud"
+msgstr "Kinnitatud"
 
 #. module: mrp
 #: model_terms:ir.actions.act_window,help:mrp.mrp_production_action
@@ -1550,7 +1551,7 @@ msgstr "Laadige alla"
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_unbuild_search_view
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Draft"
-msgstr "Planeerimata"
+msgstr "Mustand"
 
 #. module: mrp
 #: model:product.product,name:mrp.product_product_drawer_drawer
@@ -2144,6 +2145,16 @@ msgid "It has already been unblocked."
 msgstr "See on juba blokeeringust vabastatud."
 
 #. module: mrp
+#: code:addons/mrp/models/mrp_workorder.py:0
+#, python-format
+msgid ""
+"It is not possible to unplan one single Work Order. You should unplan the "
+"Manufacturing Order instead in order to unplan all the linked operations."
+msgstr ""
+"Ühte töökäsku ei ole võimalik planeerimata jätta. Selle asemel peaksite "
+"Tootmistellimuse planeerimisest loobuma."
+
+#. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__is_planned
 msgid "Its Operations are Planned"
 msgstr "Töökäsud on planeeritud"
@@ -2564,7 +2575,7 @@ msgstr "Tootmistellimused"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Manufacturing Orders which are in confirmed state."
-msgstr "Tootmistellimused, mis on hetkel planeeritud staatuses."
+msgstr "Tootmistellimused, mis on hetkel kinnitatud staatuses."
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom__ready_to_produce
@@ -2612,7 +2623,7 @@ msgstr "Tootmisplaan"
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__reservation_state
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Material Availability"
-msgstr "Materjalide laoseis"
+msgstr "Koostisosade laoseis"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom__message_has_error
@@ -2803,6 +2814,29 @@ msgid "Not to restrict or prefer quants, but informative."
 msgstr "Informatiivne, ei piira ega eelista."
 
 #. module: mrp
+#: code:addons/mrp/models/mrp_workcenter.py:0
+#, python-format
+msgid ""
+"Note that archived work center(s): '%s' is/are still linked to active Bill "
+"of Materials, which means that operations can still be planned on it/them. "
+"To prevent this, deletion of the work center is recommended instead."
+msgstr ""
+"Pange tähele, et arhiveeritud töökeskus(ed): '%s' on endiselt lingitud "
+"aktiivse materjaliloaga, mis tähendab, et sellega/nendega saab toiminguid "
+"siiski planeerida. Selle vältimiseks soovitatakse hoopis töökeskus "
+"kustutada."
+
+#. module: mrp
+#: code:addons/mrp/models/product.py:0 code:addons/mrp/models/product.py:0
+#, python-format
+msgid ""
+"Note that product(s): '%s' is/are still linked to active Bill of Materials, "
+"which means that the product can still be used on it/them."
+msgstr ""
+"Pange tähele, et toode(d): '%s' on endiselt lingitud aktiivse "
+"materjaliloaga, mis tähendab, et toodet saab sellel/nendel siiski kasutada."
+
+#. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp.field_mrp_unbuild__message_needaction_counter
@@ -2934,12 +2968,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp.workcenter_line_pivot
 #, python-format
 msgid "Operations"
-msgstr "Tegevused"
+msgstr "Operatsioonid"
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrporder
 msgid "Operations Done"
-msgstr "Tehtud tegevused"
+msgstr "Tehtud operatsioonid"
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrporder
@@ -3478,7 +3512,7 @@ msgstr "Koguseosa"
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrp_bom
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrporder
 msgid "Quantity"
-msgstr "Kogus"
+msgstr "Tehtud kogused"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__qty_produced
@@ -3796,6 +3830,12 @@ msgstr "Tootmisjärjestus"
 #, python-format
 msgid "Sequence stock after manufacturing"
 msgstr "Järjesta ladu peale tootmist"
+
+#. module: mrp
+#: code:addons/mrp/models/mrp_production.py:0
+#, python-format
+msgid "Serial number (%s) has already been produced."
+msgstr ""
 
 #. module: mrp
 #: model:ir.model.fields.selection,name:mrp.selection__mrp_routing_workcenter__time_mode__manual
@@ -4170,6 +4210,12 @@ msgid ""
 msgstr "Valitud toote mõõtühikul on teine kategooria kui toote vormis."
 
 #. module: mrp
+#: code:addons/mrp/models/mrp_workcenter.py:0
+#, python-format
+msgid "The Workorder (%s) cannot be started twice!"
+msgstr "Tööd (%s) ei saa kaks korda käivitada!"
+
+#. module: mrp
 #: code:addons/mrp/models/mrp_bom.py:0
 #, python-format
 msgid ""
@@ -4221,6 +4267,18 @@ msgstr ""
 "palun parandage see, et salvestada töökäsk."
 
 #. module: mrp
+#: code:addons/mrp/models/mrp_bom.py:0
+#, python-format
+msgid ""
+"The product has already been used at least once, editing its structure may "
+"lead to undesirable behaviours. You should rather archive the product and "
+"create a new one with a new bill of materials."
+msgstr ""
+"Toodet on juba vähemalt korra kasutatud, selle struktuuri muutmine võib "
+"kaasa tuua ebakõla. Pigem tuleks toode arhiveerida ja luua uus toode koos "
+"uue retseptiga."
+
+#. module: mrp
 #: code:addons/mrp/models/mrp_production.py:0
 #: model:ir.model.constraint,message:mrp.constraint_mrp_bom_qty_positive
 #: model:ir.model.constraint,message:mrp.constraint_mrp_production_qty_positive
@@ -4251,6 +4309,14 @@ msgid ""
 "been consumed"
 msgstr ""
 "Komponendil %(component)s kasutatud seerianumber %(number)s on juba tabitud"
+
+#. module: mrp
+#: code:addons/mrp/models/mrp_unbuild.py:0
+#, python-format
+msgid ""
+"The selected serial number does not correspond to the one used in the "
+"manufacturing order, please select another one."
+msgstr ""
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_bom.py:0
@@ -4661,7 +4727,7 @@ msgstr ""
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
 msgid "Unplan"
-msgstr "Tühista plaan"
+msgstr "Eemalda plaanist"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom__message_unread
@@ -4774,7 +4840,7 @@ msgstr "Ootel materjalid"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Waiting for Component"
-msgstr "Komponendi oodel"
+msgstr "Koostisosade ootel"
 
 #. module: mrp
 #: model:ir.model.fields.selection,name:mrp.selection__mrp_workorder__state__pending
@@ -5259,6 +5325,15 @@ msgstr ""
 "toodab Odoo kõik valmistooted ja tarbib komponendid."
 
 #. module: mrp
+#: code:addons/mrp/models/mrp_production.py:0
+#, python-format
+msgid ""
+"You must indicate a non-zero amount consumed for at least one of your "
+"components"
+msgstr ""
+"Peate märkima vähemalt ühe komponendi kasutatud koguse, mis ei ole null"
+
+#. module: mrp
 #: code:addons/mrp/models/mrp_workorder.py:0
 #, python-format
 msgid ""
@@ -5309,7 +5384,7 @@ msgstr "Palun määra partii/seerianumber järgmistele toodetele:"
 #. module: mrp
 #: model:ir.actions.act_window,name:mrp.action_mrp_production_backorder
 msgid "You produced less than initial demand"
-msgstr "Teil on toodetud algsest nõutud kogusest vähem."
+msgstr "Teil on toodetud algsest nõutud kogustest vähem."
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_unbuild.py:0

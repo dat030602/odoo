@@ -10,7 +10,13 @@ odoo.define('point_of_sale.ClientDetailsEdit', function(require) {
         constructor() {
             super(...arguments);
             this.intFields = ['country_id', 'state_id', 'property_product_pricelist'];
-            this.changes = {};
+            const partner = this.props.partner;
+            this.changes = {
+                'country_id': partner.country_id && partner.country_id[0],
+                'state_id': partner.state_id && partner.state_id[0],
+            };
+            if (!partner.property_product_pricelist)
+                this.changes['property_product_pricelist'] = this.env.pos.default_pricelist.id;
         }
         mounted() {
             this.env.bus.on('save-customer', this, this.saveChanges);
