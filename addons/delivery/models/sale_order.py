@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
     def _compute_amount_total_without_delivery(self):
         self.ensure_one()
         delivery_cost = sum([l.price_total for l in self.order_line if l.is_delivery])
-        return self.amount_total - delivery_cost
+        return super()._compute_amount_total_without_delivery() - delivery_cost
 
     @api.depends('order_line')
     def _compute_delivery_state(self):
@@ -53,6 +53,7 @@ class SaleOrder(models.Model):
                 + '\n'.join(['- %s: %s x %s' % (line.product_id.with_context(display_default_code=False).display_name, line.qty_invoiced, line.price_unit) for line in delivery_lines])
             )
         to_delete.unlink()
+        self.carrier_id = self.env['delivery.carrier']  # reset carrier
 
     def set_delivery_line(self, carrier, amount):
 
@@ -61,6 +62,10 @@ class SaleOrder(models.Model):
 
         for order in self:
             order.carrier_id = carrier.id
+            if order.state in ('sale', 'done'):
+                pending_deliveries = order.picking_ids.filtered(
+                    lambda p: p.state not in ('done', 'cancel') and not any(m.origin_returned_move_id for m in p.move_lines))
+                pending_deliveries.carrier_id = carrier.id
             order._create_delivery_line(carrier, amount)
         return True
 
@@ -146,14 +151,14 @@ class SaleOrder(models.Model):
         for order in self:
             if order.invoice_status in ['no', 'invoiced']:
                 continue
-            order_lines = order.order_line.filtered(lambda x: not x.is_delivery and not x.is_downpayment and not x.display_type)
+            order_lines = order.order_line.filtered(lambda x: not x.is_delivery and not x.is_downpayment and not x.display_type and x.invoice_status != 'invoiced')
             if all(line.product_id.invoice_policy == 'delivery' and line.invoice_status == 'no' for line in order_lines):
                 order.invoice_status = 'no'
 
     def _get_estimated_weight(self):
         self.ensure_one()
         weight = 0.0
-        for order_line in self.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu'] and not l.is_delivery and not l.display_type):
+        for order_line in self.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu'] and not l.is_delivery and not l.display_type and l.product_uom_qty > 0):
             weight += order_line.product_qty * order_line.product_id.weight
         return weight
 

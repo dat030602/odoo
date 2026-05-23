@@ -79,6 +79,7 @@ function factory(dependencies) {
             }
             if ('message_type' in data) {
                 data2.message_type = data.message_type;
+                data2.is_automated_message = data.message_type === 'auto_message';
             }
             if ('model' in data && 'res_id' in data && data.model && data.res_id) {
                 const originThreadData = {
@@ -294,13 +295,16 @@ function factory(dependencies) {
          *
          * @param {Object} param0
          * @param {string} param0.body the new body of the message
+         * @param {number[]} param0.attachment_ids
+         * @param {string[]} param0.attachment_tokens
          */
-        async updateContent({ body, attachment_ids }) {
+        async updateContent({ body, attachment_ids, attachment_tokens }) {
             const messageData = await this.env.services.rpc({
                 route: '/mail/message/update_content',
                 params: {
                     body,
                     attachment_ids,
+                    attachment_tokens,
                     message_id: this.id,
                 },
             });
@@ -538,6 +542,23 @@ function factory(dependencies) {
         }
 
         /**
+         * @private
+         * @returns {string}
+         */
+        _computeMessageTypeText() {
+            if (this.message_type === 'notification') {
+                return this.env._t("System notification");
+            }
+            if (this.message_type === "auto_comment") {
+                return this.env._t("Automated Targeted Notification");
+            }
+            if (!this.is_discussion && !this.is_notification) {
+                return this.env._t("Note");
+            }
+            return this.env._t("Message");
+        }
+
+        /**
          * This value is meant to be based on field body which is
          * returned by the server (and has been sanitized before stored into db).
          * Do not use this value in a 't-raw' if the message has been created
@@ -731,6 +752,9 @@ function factory(dependencies) {
         isTransient: attr({
             default: false,
         }),
+        is_automated_message: attr({
+            default: false,
+        }),
         is_discussion: attr({
             default: false,
         }),
@@ -773,6 +797,9 @@ function factory(dependencies) {
          */
         isStarred: attr({
             default: false,
+        }),
+        messageTypeText: attr({
+            compute: '_computeMessageTypeText',
         }),
         /**
          * Groups of reactions per content allowing to know the number of

@@ -7,18 +7,18 @@
 # Minj P <pminj322@gmail.com>, 2021
 # Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2021
 # Cheemee Bumtsend <cheemeesun@gmail.com>, 2021
-# Батмөнх Ганбат <batmunkh2522@gmail.com>, 2022
+# Batmunkh Ganbat <batmunkh2522@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2022
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 10:55+0000\n"
+"POT-Creation-Date: 2024-08-14 15:44+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2022\n"
-"Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
+"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2024\n"
+"Language-Team: Mongolian (https://app.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -41,7 +41,7 @@ msgstr "%s бол тайлангийн холбогдол биш"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_back_in_edit_mode
 msgid "<i class=\"fa fa-arrow-right mr-1\"/>Back to edit mode"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right mr-1\"/>Засах горим руу буцах"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.record_pager
@@ -60,7 +60,7 @@ msgstr "<i class=\"fa fa-chevron-right\" role=\"img\" aria-label=\"Next\" title=
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_layout
 msgid "<i class=\"fa fa-pencil mx-1\"/>Edit Security Settings"
-msgstr ""
+msgstr "<i class=\"fa fa-pencil mx-1\"/>Нууцлалын тохиргоог өөрчлөх"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_layout
@@ -74,10 +74,32 @@ msgstr ""
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid "<option value=\"\">Country...</option>"
+msgstr "<option value=\"\">Улс...</option>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid "<option value=\"\">select...</option>"
+msgstr ""
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
 msgid ""
 "<small class=\"form-text text-muted\">Changing company name or VAT number is"
 " not allowed once document(s) have been issued for your account. <br/>Please"
 " contact us directly for this operation.</small>"
+msgstr ""
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.pager
+msgid ""
+"<span class=\"fa fa-chevron-left\" role=\"img\" aria-label=\"Previous\" "
+"title=\"Previous\"/>"
+msgstr ""
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.pager
+msgid "<span class=\"fa fa-chevron-right\" role=\"img\" aria-label=\"Next\" title=\"Next\"/>"
 msgstr ""
 
 #. module: portal
@@ -206,7 +228,7 @@ msgstr "Хандалтын анхааруулга"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_layout
 msgid "Account Security"
-msgstr ""
+msgstr "Нууцлалын тохиргоо"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
@@ -218,7 +240,7 @@ msgstr "Тэмдэглэл нэмэх"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "Add attachment"
-msgstr ""
+msgstr "Хавсралт нэмэх"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
@@ -233,12 +255,6 @@ msgstr "Имэйлд харуулах нэмэлт агуулга нэмнэ ү�
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Added On"
-msgstr ""
-
-#. module: portal
-#: code:addons/portal/controllers/mail.py:0
-#, python-format
-msgid "An access token must be provided for each attachment."
 msgstr ""
 
 #. module: portal
@@ -288,7 +304,7 @@ msgstr ""
 #: code:addons/portal/static/src/js/portal.js:0
 #, python-format
 msgid "Check failed"
-msgstr ""
+msgstr "Шалгалт амжилтгүй"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
@@ -365,17 +381,12 @@ msgstr "Харилцах хаяг"
 #: code:addons/portal/static/src/js/portal_composer.js:0
 #, python-format
 msgid "Could not save file <strong>%s</strong>"
-msgstr ""
+msgstr "Файл <strong>%s</strong>-г хадгалж чадсангүй"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
 msgid "Country"
 msgstr "Улс"
-
-#. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
-msgid "Country..."
-msgstr "Улс..."
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__create_uid
@@ -399,6 +410,8 @@ msgid ""
 "Currently available to everyone viewing this document, click to restrict to "
 "internal employees."
 msgstr ""
+"Одоогийн байдлаар уг баримтыг бүгд харах боломжтой байна, дотоод ажилтанд "
+"харуулах сонголтыг сонгож бүгдэд харагдах боломжыг хязгаарлана уу."
 
 #. module: portal
 #. openerp-web
@@ -408,6 +421,8 @@ msgid ""
 "Currently restricted to internal employees, click to make it available to "
 "everyone viewing this document."
 msgstr ""
+"Одоогоор зөвхөн дотоод ажилчид уг баримтыг харах боломжтой байна, бүгдэд "
+"харуулах сонголтыг сонгосноор бүх хүмүүст харуулах боломжтой."
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_res_config_settings__portal_allow_api_keys
@@ -496,7 +511,7 @@ msgstr "Имэйл-ын мод"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "Employees Only"
-msgstr ""
+msgstr "Зөвхөн ажилчид"
 
 #. module: portal
 #. openerp-web
@@ -510,7 +525,7 @@ msgstr ""
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Forgot password?"
-msgstr ""
+msgstr "Нууц үгээ мартсан уу?"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
@@ -526,7 +541,7 @@ msgstr "Портал хандалт олгох"
 #: model:ir.actions.act_window,name:portal.partner_wizard_action
 #: model:ir.actions.server,name:portal.partner_wizard_action_create_and_open
 msgid "Grant portal access"
-msgstr ""
+msgstr "Портал хандах эрх нээх"
 
 #. module: portal
 #: model:ir.model,name:portal.model_ir_http
@@ -562,8 +577,22 @@ msgid "Important:"
 msgstr ""
 
 #. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+#, python-format
+msgid "Internal Note"
+msgstr "Дотоод тэмдэглэл"
+
+#. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Internal User"
+msgstr ""
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+#, python-format
+msgid "Internal notes are only displayed to internal users."
 msgstr ""
 
 #. module: portal
@@ -600,6 +629,13 @@ msgstr ""
 msgid ""
 "It is very important that this description be clear\n"
 "                and complete,"
+msgstr ""
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_security.xml:0
+#, python-format
+msgid "Key Description"
 msgstr ""
 
 #. module: portal
@@ -662,6 +698,8 @@ msgid ""
 "Model %(model_name)s does not support token signature, as it does not have "
 "%(field_name)s field."
 msgstr ""
+"Model %(model_name)s does not support token signature, as it does not have "
+"%(field_name)s field."
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.my_account_link
@@ -691,13 +729,12 @@ msgstr ""
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "New Password:"
-msgstr ""
+msgstr "Шинэ нууц үг:"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
-#: model_terms:ir.ui.view,arch_db:portal.pager
 #, python-format
 msgid "Next"
 msgstr "Дараах"
@@ -735,12 +772,12 @@ msgstr "Харилцагч"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Password Updated!"
-msgstr ""
+msgstr "Нууц үг шинэчлэгдлээ!"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Password:"
-msgstr ""
+msgstr "Нууц үг:"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
@@ -790,11 +827,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:portal.portal_record_sidebar
 msgid "Powered by"
 msgstr "Дэмжсэн"
-
-#. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.pager
-msgid "Prev"
-msgstr "Өмнөх"
 
 #. module: portal
 #. openerp-web
@@ -859,9 +891,10 @@ msgstr "Хамгаалалт"
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/js/portal.js:0
+#: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Security Control"
-msgstr ""
+msgstr "Аюулгүй байдлын хяналт"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_mixin__access_token
@@ -933,13 +966,14 @@ msgstr "Гудамж"
 #: code:addons/portal/static/src/xml/portal_signature.xml:0
 #, python-format
 msgid "Thank You!"
-msgstr ""
+msgstr "Баярлалаа!"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
 #, python-format
 msgid "The attachment %s cannot be removed because it is linked to a message."
 msgstr ""
+"Хавсралт %s -г устгах боломжгүй учир нь ямар нэг зурвастай холбоотой байна."
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -947,13 +981,8 @@ msgstr ""
 msgid ""
 "The attachment %s cannot be removed because it is not in a pending state."
 msgstr ""
-
-#. module: portal
-#: code:addons/portal/controllers/mail.py:0
-#, python-format
-msgid ""
-"The attachment %s does not exist or you do not have the rights to access it."
-msgstr ""
+"Хавсралт %s-г устгах боломжгүй учир нь хүлээгдэж буй төлвөөс өөр төлөвтэй "
+"байна."
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -961,6 +990,7 @@ msgstr ""
 msgid ""
 "The attachment does not exist or you do not have the rights to access it."
 msgstr ""
+"Хавсралт нь алба болсон байна эсвэл танд уг хавсралтанд хандах эрх алга."
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
@@ -979,7 +1009,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The document does not exist or you do not have the rights to access it."
-msgstr ""
+msgstr "Баримт алга болсон байна эсвэл танд үүн рүү хандах эрх алга."
 
 #. module: portal
 #. openerp-web
@@ -1083,7 +1113,7 @@ msgstr "Татвар төлөгчийн дугаар"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Verify New Password:"
-msgstr ""
+msgstr "Шинэ нууц үг дахин оруулах"
 
 #. module: portal
 #: model:ir.model,name:portal.model_ir_ui_view
@@ -1291,17 +1321,12 @@ msgstr "odoo"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "password"
-msgstr ""
+msgstr "нууц үг"
 
 #. module: portal
 #: model:ir.model,name:portal.model_res_users_apikeys_description
 msgid "res.users.apikeys.description"
 msgstr ""
-
-#. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
-msgid "select..."
-msgstr "сонгоно уу..."
 
 #. module: portal
 #. openerp-web

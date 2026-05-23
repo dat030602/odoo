@@ -30,7 +30,11 @@ class PrintResultGenerator {
             successful: false,
             message: {
                 title: _t('Connection to the printer failed'),
-                body: _t('Please check if the printer is still connected.'),
+                body: _t('Please check if the printer is still connected. \n' +
+                    'Some browsers don\'t allow HTTP calls from websites to devices in the network (for security reasons). ' +
+                    'If it is the case, you will need to follow Odoo\'s documentation for ' +
+                    '\'Self-signed certificate for ePOS printers\' and \'Secure connection (HTTPS)\' to solve the issue'
+                ),
             },
         });
     }
@@ -73,7 +77,7 @@ var PrinterMixin = {
             // IoT box can't find a printer.
             if (!sendPrintResult || sendPrintResult.result === false) {
                 this.receipt_queue.length = 0;
-                return this.printResultGenerator.IoTResultError();
+                return this.printResultGenerator.IoTResultError(sendPrintResult.printerErrorCode);
             }
         }
         return this.printResultGenerator.Successful();

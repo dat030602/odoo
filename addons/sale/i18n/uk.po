@@ -3,18 +3,20 @@
 # 	* sale
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Bohdan Lisnenko, 2022
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2022
+# Desausoi Laurent, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
+# Wil Odoo, 2024
+# Martin Trigaux, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:20+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:26+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2022\n"
-"Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
+"Last-Translator: Martin Trigaux, 2024\n"
+"Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -468,7 +470,7 @@ msgid ""
 msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"        <t t-set=\"doc_name\" t-value=\"'quotation' if object.state in ('draft', 'sent') else 'order'\"/>\n"
+"        <t t-set=\"doc_name\" t-value=\"'комерційна пропозиція' if object.state in ('draft', 'sent') else 'замовлення'\"/>\n"
 "        Вітаємо,\n"
 "        <br/><br/>\n"
 "        Your\n"
@@ -526,6 +528,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid "<i class=\"fa fa-fw fa-check\"/> <b>Paid</b>"
 msgstr "<i class=\"fa fa-fw fa-check\"/> <b>Оплачено</b>"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
+msgid "<i class=\"fa fa-fw fa-check\"/> <b>Reversed</b>"
+msgstr ""
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
@@ -643,10 +650,10 @@ msgstr "<span class=\"oe_read_only\">/ місяць</span>"
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_portal_content
 msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
-"                                <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
+"                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Сума</span>\n"
-"                                <span groups=\"account.group_show_line_subtotals_tax_included\">Разом</span>"
+"                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Разом</span>"
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.report_saleorder_document
@@ -1719,6 +1726,12 @@ msgid "Down Payments"
 msgstr "Попередня оплата"
 
 #. module: sale
+#: code:addons/sale/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid "Down payment"
+msgstr "Аванс"
+
+#. module: sale
 #: model:ir.model.fields.selection,name:sale.selection__sale_advance_payment_inv__advance_payment_method__fixed
 msgid "Down payment (fixed amount)"
 msgstr "Попередня оплата (фіксована сума)"
@@ -2751,7 +2764,6 @@ msgstr "Підрахунок замовлень"
 
 #. module: sale
 #: code:addons/sale/controllers/portal.py:0
-#: code:addons/sale/controllers/portal.py:0
 #: model:ir.model.fields,field_description:sale.field_sale_order__date_order
 #: model:ir.model.fields,field_description:sale.field_sale_report__date
 #: model_terms:ir.ui.view,arch_db:sale.portal_my_orders
@@ -2763,6 +2775,11 @@ msgstr "Підрахунок замовлень"
 #, python-format
 msgid "Order Date"
 msgstr "Дата замовлення"
+
+#. module: sale
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Order Date: Last 365 Days"
+msgstr "Дата замовлення: Останні 365 днів"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order__order_line
@@ -3287,7 +3304,6 @@ msgid "Recompute all prices based on this pricelist"
 msgstr "Переобчислити всі ціни на основі цього прайс-листа"
 
 #. module: sale
-#: code:addons/sale/controllers/portal.py:0
 #: code:addons/sale/controllers/portal.py:0
 #, python-format
 msgid "Reference"
@@ -3870,7 +3886,6 @@ msgstr "Конкретний Email"
 
 #. module: sale
 #: code:addons/sale/controllers/portal.py:0
-#: code:addons/sale/controllers/portal.py:0
 #, python-format
 msgid "Stage"
 msgstr "Етап"
@@ -4243,14 +4258,14 @@ msgid ""
 "There is nothing to invoice!\n"
 "\n"
 "Reason(s) of this behavior could be:\n"
-"- You should deliver your products before invoicing them: Click on the \"truck\" icon (top-right of your screen) and follow instructions.\n"
+"- You should deliver your products before invoicing them.\n"
 "- You should modify the invoicing policy of your product: Open the product, go to the \"Sales\" tab and modify invoicing policy from \"delivered quantities\" to \"ordered quantities\". For Services, you should modify the Service Invoicing Policy to 'Prepaid'."
 msgstr ""
-"Немає нічого для виставлення у рахунку!\n"
+"Намає нічого для виставлення у рахунку!\n"
 "\n"
-"Причиною такої поведінки може бути:\n"
-"- Ви повинні доставити свої товари, перш ніж виставляти рахунок: натисніть значок «вантажівка» (у верхньому правому куті екрана) і дотримуйтесь інструкцій.\n"
-"- Вам слід змінити політику виставлення рахунків для вашого товару: відкрийте товар, перейдіть на вкладку «Продаж» і змініть політику виставлення рахунків з «по доставленій кількості» на «по замовленій кількості». Для Послуг вам слід змінити Політику виставлення рахунків-фактур на «Передоплату»."
+"Можливі причини такої поведінки:\n"
+"- Ви повинні доставити товари до виставлення їх у рахунку.\n"
+"- Ви повинні змінити політику виставлення рахункі на товарі: Відкрийте товар, перейдіть до вкладки \"Продажі\" та змініть політику виставлення рахунків з \"по доставленій кількості\" на \"по замовленій кількості\". Для Послуг політику виставлення рахунків слід змінити на Передоплата."
 
 #. module: sale
 #: model_terms:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -4608,6 +4623,8 @@ msgid "Volume"
 msgstr "Об'єм"
 
 #. module: sale
+#: code:addons/sale/models/product_product.py:0
+#: code:addons/sale/models/product_template.py:0
 #: code:addons/sale/models/sale_order_line.py:0
 #: model:ir.model.fields.selection,name:sale.selection__product_template__sale_line_warn__warning
 #: model:ir.model.fields.selection,name:sale.selection__res_partner__sale_warn__warning
@@ -4702,6 +4719,17 @@ msgid ""
 msgstr ""
 "Тут можна встановити тип зв'язку, який буде відображатися в замовленнях на "
 "продаж. Зв'язок буде наданий клієнту, коли він вибере спосіб оплати."
+
+#. module: sale
+#: code:addons/sale/models/product_product.py:0
+#: code:addons/sale/models/product_template.py:0
+#, python-format
+msgid ""
+"You cannot change the product's type because it is already used in sales "
+"orders."
+msgstr ""
+"Ви не можете змінити тип товару, оскільки він уже використовується в "
+"замовленнях на продаж."
 
 #. module: sale
 #: code:addons/sale/models/sale_order_line.py:0

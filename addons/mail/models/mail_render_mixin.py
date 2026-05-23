@@ -127,6 +127,23 @@ class MailRenderMixin(models.AbstractModel):
         # allow specifying rendering options directly from field when using the render mixin
         return name in ['render_engine', 'render_options'] or super()._valid_field_parameter(field, name)
 
+    @api.model_create_multi
+    def create(self, values_list):
+        record = super().create(values_list)
+        if self._unrestricted_rendering:
+            # If the rendering is unrestricted (e.g. mail.template),
+            # check the user is part of the mail editor group to create a new template if the template is dynamic
+            record._check_access_right_dynamic_template()
+        return record
+
+    def write(self, vals):
+        super().write(vals)
+        if self._unrestricted_rendering:
+            # If the rendering is unrestricted (e.g. mail.template),
+            # check the user is part of the mail editor group to modify a template if the template is dynamic
+            self._check_access_right_dynamic_template()
+        return True
+
     # ------------------------------------------------------------
     # TOOLS
     # ------------------------------------------------------------
@@ -219,6 +236,46 @@ class MailRenderMixin(models.AbstractModel):
             """).format(preview_markup)
             return tools.prepend_html_content(html, html_preview)
         return html
+
+    # ------------------------------------------------------------
+    # SECURITY
+    # ------------------------------------------------------------
+
+    def _is_dynamic(self):
+        for template in self.sudo():
+            for fname, field in template._fields.items():
+                engine = getattr(field, 'render_engine', 'inline_template')
+                if engine in ('qweb', 'qweb_view'):
+                    if self._is_dynamic_template_qweb(template[fname]):
+                        return True
+                else:
+                    if self._is_dynamic_template_inline_template(template[fname]):
+                        return True
+        return False
+
+    @api.model
+    def _is_dynamic_template_qweb(self, template_src):
+        if template_src:
+            try:
+                node = html.fragment_fromstring(template_src, create_parent='div')
+                self.env["ir.qweb"]._compile(node, options={'raise_on_code': True})
+            except QWebCodeFound:
+                return True
+        return False
+
+    @api.model
+    def _is_dynamic_template_inline_template(self, template_txt):
+        if template_txt:
+            template_instructions = parse_inline_template(str(template_txt))
+            if len(template_instructions) > 1 or template_instructions[0][1]:
+                return True
+        return False
+
+    def _check_access_right_dynamic_template(self):
+        if not self.env.su and not self.env.user.has_group('mail.group_mail_template_editor') and self._is_dynamic():
+            group = self.env.ref('mail.group_mail_template_editor')
+            raise AccessError(_('Only users belonging to the "%s" group can modify dynamic templates.', group.name))
+
     # ------------------------------------------------------------
     # RENDERING
     # ------------------------------------------------------------
@@ -413,8 +470,14 @@ class MailRenderMixin(models.AbstractModel):
 
         :return dict: updated version of rendered per record ID;
         """
+        # TODO make this a parameter
+        model = self.env.context.get('mail_render_postprocess_model')
+        res_ids = list(rendered.keys())
         for res_id, rendered_html in rendered.items():
-            rendered[res_id] = self._replace_local_links(rendered_html)
+            base_url = None
+            if model:
+                base_url = self.env[model].browse(res_id).with_prefetch(res_ids).get_base_url()
+            rendered[res_id] = self._replace_local_links(rendered_html, base_url)
         return rendered
 
     @api.model
@@ -455,7 +518,7 @@ class MailRenderMixin(models.AbstractModel):
             rendered = self._render_template_inline_template(template_src, model, res_ids,
                                                              add_context=add_context, options=options)
         if post_process:
-            rendered = self._render_template_postprocess(rendered)
+            rendered = self.with_context(mail_render_postprocess_model=model)._render_template_postprocess(rendered)
 
         return rendered
 

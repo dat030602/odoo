@@ -4,16 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2021
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
+# Bohdan Lisnenko, 2022
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 10:53+0000\n"
+"POT-Creation-Date: 2024-08-14 15:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:21+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2022\n"
-"Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -54,7 +56,7 @@ msgstr "К-сть непризначених лідів"
 #: code:addons/crm/models/crm_team.py:0
 #, python-format
 msgid "%(assigned)s leads allocated among %(team_count)s teams."
-msgstr "%(assigned)s ліди розподвлені між командами %(team_count)s."
+msgstr "%(assigned)s ліди розподілені між командами %(team_count)s."
 
 #. module: crm
 #: code:addons/crm/models/crm_team.py:0
@@ -79,7 +81,7 @@ msgstr "%(duplicates)s задвоєні ліди об'єднано."
 #, python-format
 msgid ""
 "%(members_assigned)s leads assigned among %(member_count)s salespersons."
-msgstr "%(members_assigned)s ліди розпоідлені між продавцями%(member_count)s."
+msgstr "%(members_assigned)s ліди розподілені між продавцями%(member_count)s."
 
 #. module: crm
 #: code:addons/crm/models/res_config_settings.py:0
@@ -1201,10 +1203,8 @@ msgstr "Опис"
 
 #. module: crm
 #: model_terms:digest.tip,tip_description:crm.digest_tip_crm_0
-msgid ""
-"Did you know emails sent to  generate opportunities in your pipeline?<br>"
-msgstr ""
-"Чи знали ви, що листи надіслані, щоби створити нагоди у вашому конвеєрі?<br>"
+msgid "Did you know emails sent to"
+msgstr "Ви знаєте електронні листи, відправлені до"
 
 #. module: crm
 #: model_terms:digest.tip,tip_description:crm.digest_tip_crm_0
@@ -2206,7 +2206,7 @@ msgstr "Маркетинг"
 #: model_terms:ir.ui.view,arch_db:crm.view_crm_case_leads_filter
 #: model_terms:ir.ui.view,arch_db:crm.view_crm_case_opportunities_filter
 msgid "Medium"
-msgstr "Середній"
+msgstr "Канал"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:0
@@ -3614,7 +3614,7 @@ msgstr "Відстеження"
 #. module: crm
 #: model_terms:ir.ui.view,arch_db:crm.crm_activity_report_view_search
 msgid "Trailing 12 months"
-msgstr "Щакінчуються 12 місяців"
+msgstr " Останні 12 місяців"
 
 #. module: crm
 #: model_terms:digest.tip,tip_description:crm.digest_tip_crm_0
@@ -3947,6 +3947,11 @@ msgstr "наприклад, https://www.odoo.com"
 #: model_terms:ir.ui.view,arch_db:crm.res_config_settings_view_form
 msgid "for the leads created as of the"
 msgstr "для лідів, створених з"
+
+#. module: crm
+#: model_terms:digest.tip,tip_description:crm.digest_tip_crm_0
+msgid "generate opportunities in your pipeline?<br>"
+msgstr "створити нагоди у вашому конвеєрі?<br>"
 
 #. module: crm
 #: model:ir.model.fields,field_description:crm.field_crm_stage__team_count

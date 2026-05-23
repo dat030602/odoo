@@ -7,15 +7,18 @@
 # 黎伟杰 <674416404@qq.com>, 2021
 # 深圳市耀影科技有限公司_QQ1006399173, 2021
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Chloe Wang, 2023
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:19+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:20+0000\n"
-"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -302,6 +305,22 @@ msgid "Error Parsing Date [%s:L%d]: %s"
 msgstr "日期语法错误 [%s:L%d]: %s"
 
 #. module: base_import
+#: code:addons/base_import/models/base_import.py:0
+#, python-format
+msgid ""
+"Error while importing records: Text Delimiter should be a single character."
+msgstr "导入记录时出错： 文本分隔符应为单字符。"
+
+#. module: base_import
+#: code:addons/base_import/models/base_import.py:0
+#, python-format
+msgid ""
+"Error while importing records: all rows should be of the same size, but the "
+"title row has %d entries while the first row has %d. You may need to change "
+"the separator character."
+msgstr "导入记录时出错：所有行应大小相同，但标题行有%d条目，而第一行有%d。您可能需要更改分隔符。"
+
+#. module: base_import
 #. openerp-web
 #: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #, python-format
@@ -364,7 +383,7 @@ msgstr "文件类型"
 #: code:addons/base_import/models/base_import.py:0
 #, python-format
 msgid "File size exceeds configured maximum (%s bytes)"
-msgstr "文件大小超出设定的最大值 (%s bytes)"
+msgstr "文件大小超出配置的最大值 (%s bytes)"
 
 #. module: base_import
 #: model:ir.model.fields,help:base_import.field_base_import_import__file
@@ -471,7 +490,7 @@ msgstr "如果模型使用openchatter，则历史跟踪将在导入期间设置�
 #, python-format
 msgid ""
 "Image size excessive, imported images must be smaller than 42 million pixel"
-msgstr "图片尺寸过大，导入的图片必须小于4200万像素"
+msgstr "图像尺寸过大，导入的图像必须小于4200万像素"
 
 #. module: base_import
 #. openerp-web
@@ -516,16 +535,6 @@ msgstr "导入记录"
 
 #. module: base_import
 #. openerp-web
-#: code:addons/base_import/static/src/legacy/js/import_action.js:0
-#, python-format
-msgid ""
-"Import timed out. Please retry. If you still encounter this issue, the file "
-"may be too big for the system's configuration, try to split it (import less "
-"records per file)."
-msgstr "导入超时。请重试。如果仍然遇到此问题，则该文件针对系统配置来说可能太大，请尝试对其进行分割（每个文件导入更少的记录）。"
-
-#. module: base_import
-#. openerp-web
 #: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #, python-format
 msgid "Imported file"
@@ -539,6 +548,7 @@ msgid "Importing"
 msgstr "导入中"
 
 #. module: base_import
+#: code:addons/base_import/models/base_import.py:0
 #: code:addons/base_import/models/base_import.py:0
 #, python-format
 msgid "Invalid cell value at row %(row)s, column %(col)s: %(cell_value)s"
@@ -1118,7 +1128,7 @@ msgstr "不能通过URL导入图像，请与管理员进行联系。"
 #: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #, python-format
 msgid "You can test or reload your file before resuming the import."
-msgstr "在继续导入前你可以测试或重新载入你的文件。"
+msgstr "在继续导入前您可以测试或重新载入您的文件。"
 
 #. module: base_import
 #: code:addons/base_import/models/base_import.py:0
@@ -1150,6 +1160,20 @@ msgstr "批量"
 #. module: base_import
 #. openerp-web
 #: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
+#, python-format
+msgid "create"
+msgstr "创建"
+
+#. module: base_import
+#. openerp-web
+#: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
+#, python-format
+msgid "false"
+msgstr "错误"
+
+#. module: base_import
+#. openerp-web
+#: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
 #, python-format
 msgid "in field"
@@ -1175,6 +1199,34 @@ msgstr "更多)"
 #, python-format
 msgid "out of"
 msgstr "之外"
+
+#. module: base_import
+#. openerp-web
+#: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
+#, python-format
+msgid "prevent"
+msgstr ""
+
+#. module: base_import
+#. openerp-web
+#: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
+#, python-format
+msgid "set_empty"
+msgstr ""
+
+#. module: base_import
+#. openerp-web
+#: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
+#, python-format
+msgid "skip_record"
+msgstr ""
+
+#. module: base_import
+#. openerp-web
+#: code:addons/base_import/static/src/legacy/xml/base_import.xml:0
+#, python-format
+msgid "true"
+msgstr "真"
 
 #. module: base_import
 #: code:addons/base_import/models/base_import.py:0

@@ -3,20 +3,21 @@
 # 	* payment
 # 
 # Translators:
-# Jeffery CHEN <jeffery9@gmail.com>, 2021
 # 黎伟杰 <674416404@qq.com>, 2021
 # Benson <Benson.Dr@Gmail.com>, 2022
 # Martin Trigaux, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:20+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
-"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -26,7 +27,7 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer_onboarding_wizard___data_fetched
 msgid " Data Fetched"
-msgstr "数据已获取"
+msgstr " 数据已获取"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
@@ -85,14 +86,7 @@ msgstr "<span><i class=\"fa fa-arrow-right\"/> 获取我的Stripe密钥</span>"
 msgid ""
 "<span><i class=\"fa fa-arrow-right\"/> How to configure your PayPal "
 "account</span>"
-msgstr "<span><i class=\"fa fa-arrow-right\"/> 如何配置你的PayPal账户</span>"
-
-#. module: payment
-#: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_onboarding_wizard_form
-msgid ""
-"<span>Start selling directly without an account; an email will be sent by "
-"Paypal to create your new account and collect your payments.</span>"
-msgstr "<span>无需账户即可直接开始销售; Paypal将发送一封电子邮件来创建您的新账户并收取您的付款。</span>"
+msgstr "<span><i class=\"fa fa-arrow-right\"/> 如何配置您的PayPal账户</span>"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_methods
@@ -143,7 +137,7 @@ msgstr "<strong>警告</strong>货币缺失或者不正确。"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
 msgid "<strong>Warning</strong> You must be logged in to pay."
-msgstr "<strong>警告</strong>你必须登录后才能付款。"
+msgstr "<strong>警告</strong>您必须登录后才能付款。"
 
 #. module: payment
 #: code:addons/payment/models/account_payment.py:0
@@ -287,6 +281,13 @@ msgid "Amount Max"
 msgstr "金额最大值"
 
 #. module: payment
+#: model:ir.model.fields,field_description:payment.field_account_bank_statement_line__amount_paid
+#: model:ir.model.fields,field_description:payment.field_account_move__amount_paid
+#: model:ir.model.fields,field_description:payment.field_account_payment__amount_paid
+msgid "Amount paid"
+msgstr "已支金额"
+
+#. module: payment
 #. openerp-web
 #: code:addons/payment/controllers/portal.py:0
 #: code:addons/payment/static/src/xml/payment_post_processing.xml:0
@@ -333,7 +334,7 @@ msgstr "授权信息"
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_authorize
 msgid "Authorize.net"
-msgstr "Authorize.net "
+msgstr "Authorize.net"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__authorized
@@ -442,8 +443,8 @@ msgid ""
 "you are sure you can ship the goods to them."
 msgstr ""
 "当交货完成时，从Odoo获取金额。\n"
-"如果你想在确定你可以向客户发货时才从客户的卡上扣款，就可以使用这个方法。\n"
-"你确定你能把货物运给他们时才使用。"
+"如果您想在确定您可以向客户发货时才从客户的卡上扣款，就可以使用这个方法。\n"
+"您确定您能把货物运给他们时才使用。"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_onboarding_wizard_form
@@ -509,12 +510,12 @@ msgstr "公司"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_form
 msgid "Configuration"
-msgstr "基础配置"
+msgstr "配置"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_kanban
 msgid "Configure"
-msgstr "设置"
+msgstr "配置"
 
 #. module: payment
 #. openerp-web
@@ -602,6 +603,11 @@ msgid "Credit & Debit Card"
 msgstr "信用卡/借记卡"
 
 #. module: payment
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__stripe
+msgid "Credit & Debit card (via Stripe)"
+msgstr "信用卡和借记卡（通过Stripe）"
+
+#. module: payment
 #: model:payment.acquirer,display_as:payment.payment_acquirer_adyen
 msgid "Credit Card (powered by Adyen)"
 msgstr "信用卡（由Adyen提供）"
@@ -614,7 +620,7 @@ msgstr "信用卡（由支付宝提供）"
 #. module: payment
 #: model:payment.acquirer,display_as:payment.payment_acquirer_authorize
 msgid "Credit Card (powered by Authorize)"
-msgstr "信用卡（由授权提供）"
+msgstr "信用卡（由Authorize提供）"
 
 #. module: payment
 #: model:payment.acquirer,display_as:payment.payment_acquirer_buckaroo
@@ -643,6 +649,7 @@ msgstr "信用卡（由Sips提供）"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__stripe
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__stripe
 msgid "Credit card (via Stripe)"
 msgstr "信用卡（通过 Stripe)"
 
@@ -655,6 +662,8 @@ msgstr "币种"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__manual
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__manual
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__manual
 msgid "Custom payment instructions"
 msgstr "自定义付款说明"
 
@@ -774,7 +783,9 @@ msgid "Fixed international fees"
 msgstr "固定国际费用"
 
 #. module: payment
+#: code:addons/payment/wizards/payment_link_wizard.py:0
 #: model:ir.model.fields,field_description:payment.field_payment_link_wizard__acquirer_id
+#, python-format
 msgid "Force Payment Acquirer"
 msgstr "强制支付收单机构"
 
@@ -844,11 +855,15 @@ msgstr "帮助信息"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__paypal_user_type__new_user
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__paypal_user_type__new_user
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__paypal_user_type__new_user
 msgid "I don't have a Paypal account"
 msgstr "我没有Paypal账户"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__paypal_user_type__existing_user
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__paypal_user_type__existing_user
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__paypal_user_type__existing_user
 msgid "I have a Paypal account"
 msgstr "我有Paypal账户"
 
@@ -880,7 +895,7 @@ msgstr "如果付款尚未确认，您可以与我们联系。"
 msgid ""
 "If you believe that it is an error, please contact the website "
 "administrator."
-msgstr "如果你认为这是一个错误，请联系网站管理员。"
+msgstr "如果您认为这是一个错误，请联系网站管理员。"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__image_128
@@ -946,7 +961,7 @@ msgstr "结算单"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__invoices_count
 msgid "Invoices Count"
-msgstr "发票数量"
+msgstr "结算单数量"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__is_post_processed
@@ -958,7 +973,7 @@ msgstr "是经过后期处理的"
 #: code:addons/payment/static/src/js/manage_form.js:0
 #, python-format
 msgid "It is currently linked to the following documents:"
-msgstr "目前，它与以下文件相关联。"
+msgstr "目前，它与以下文件相关联:"
 
 #. module: payment
 #: model:ir.model,name:payment.model_account_journal
@@ -968,7 +983,7 @@ msgstr "日记账"
 #. module: payment
 #: model:ir.model,name:payment.model_account_move
 msgid "Journal Entry"
-msgstr "日记账分录"
+msgstr "会计凭证"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__res_company__payment_acquirer_onboarding_state__just_done
@@ -1162,27 +1177,27 @@ msgstr "确定"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.onboarding_payment_acquirer_step
 msgid "Online Payments"
-msgstr "在线支付"
+msgstr "线上支付"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__online_direct
 msgid "Online direct payment"
-msgstr "在线直接支付"
+msgstr "线上直接支付"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__online_token
 msgid "Online payment by token"
-msgstr "网上令牌支付"
+msgstr "线上令牌支付"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__online_redirect
 msgid "Online payment with redirection"
-msgstr "带重定向功能的在线支付"
+msgstr "带重定向功能的线上支付"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.onboarding_payment_acquirer_step
 msgid "Online payments enabled"
-msgstr "启用在线支付"
+msgstr "启用线上支付"
 
 #. module: payment
 #: code:addons/payment/wizards/payment_acquirer_onboarding_wizard.py:0
@@ -1220,6 +1235,8 @@ msgstr "其他"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__other
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__other
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__other
 msgid "Other payment acquirer"
 msgstr "其他支付收购方"
 
@@ -1254,6 +1271,8 @@ msgstr "支付"
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__paypal
 #: model:ir.model.fields.selection,name:payment.selection__res_company__payment_onboarding_payment_method__paypal
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__paypal
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__paypal
 #: model:payment.acquirer,name:payment.payment_acquirer_paypal
 msgid "PayPal"
 msgstr "PayPal"
@@ -1548,7 +1567,7 @@ msgstr "退款金额"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_refund_wizard__refunded_amount
 msgid "Refunded Amount"
-msgstr "退款金额： "
+msgstr "退款金额"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
@@ -1777,12 +1796,19 @@ msgstr "访问令牌无效。"
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_token__acquirer_ref
 msgid "The acquirer reference of the token of the transaction"
-msgstr "已经存在一个单号%s的支付交易。"
+msgstr "交易令牌的收收单放参考"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__acquirer_reference
 msgid "The acquirer reference of the transaction"
 msgstr "交易的收购方参考"
+
+#. module: payment
+#: model:ir.model.fields,help:payment.field_account_bank_statement_line__amount_paid
+#: model:ir.model.fields,help:payment.field_account_move__amount_paid
+#: model:ir.model.fields,help:payment.field_account_payment__amount_paid
+msgid "The amount already paid for this invoice."
+msgstr ""
 
 #. module: payment
 #: code:addons/payment/wizards/payment_refund_wizard.py:0
@@ -1818,12 +1844,12 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__description
 msgid "The description shown in the card in kanban view "
-msgstr "在看板视图中显示在卡片上的描述"
+msgstr "在看板视图中显示在卡片上的描述 "
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__fees
 msgid "The fees amount; set by the system as it depends on the acquirer"
-msgstr "费用金额；由系统设定，因为它取决于收单方。"
+msgstr "费用金额；由系统设定，因为它取决于收单方"
 
 #. module: payment
 #: code:addons/payment/models/payment_acquirer.py:0
@@ -1867,7 +1893,7 @@ msgstr "如果订单在支付过程中被成功完成，所显示的信息"
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__pending_msg
 msgid "The message displayed if the order pending after the payment process"
-msgstr "如果订单在付款过程中被搁置，所显示的信息。"
+msgstr "如果订单在付款过程中被搁置，所显示的信息"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__pre_msg
@@ -1907,7 +1933,7 @@ msgstr "相关退款交易的源交易"
 msgid ""
 "The template rendering a form submitted to redirect the user when making a "
 "payment"
-msgstr "模板渲染一个提交的表单，以便在付款时重定向用户。"
+msgstr "模板渲染一个提交的表单，以便在付款时重定向用户"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__inline_form_view_id
@@ -1987,7 +2013,7 @@ msgstr ""
 #: model:ir.model.fields,help:payment.field_payment_icon__image_payment_form
 msgid ""
 "This field holds the image used for this payment icon, limited to 64x64 px"
-msgstr "这个字段持有用于该支付图标的图像，限制在64x64 px以内。"
+msgstr "这个字段持有用于该支付图标的图像，限制在64x64 px以内"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_link_wizard_view_form
@@ -2093,7 +2119,7 @@ msgstr "已验证"
 #. module: payment
 #: model:ir.model,name:payment.model_ir_ui_view
 msgid "View"
-msgstr "查看"
+msgstr "视图"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.account_invoice_view_form_inherit_payment
@@ -2183,20 +2209,42 @@ msgid "You can click here to be redirected to the confirmation page."
 msgstr "您可以点击这里然后被重定向到确认页面。"
 
 #. module: payment
-#: code:addons/payment/models/account_journal.py:0
+#: code:addons/payment/models/account_payment_method.py:0
 #, python-format
 msgid ""
-"You can't delete a payment method that is linked to an acquirer in the enabled or test state.\n"
-"Linked acquirer(s): %s"
+"You can't delete a payment method that is linked to a provider in the enabled or test state.\n"
+"Linked providers(s): %s"
 msgstr ""
-"你不能删除与处于启用或测试状态的收单机构链接的支付方式。\n"
-"链接的收单机构：%s。"
+"若付款方式连结至已启用或在测试状态的服务商，便不可删除。\n"
+"已连结服务商： %s"
 
 #. module: payment
 #: code:addons/payment/models/ir_ui_view.py:0
 #, python-format
 msgid "You cannot delete a view that is used by a payment acquirer."
-msgstr "你不能删除一个由支付收单机构使用的视图。"
+msgstr "您不能删除一个由支付收单机构使用的视图。"
+
+#. module: payment
+#: code:addons/payment/models/payment_acquirer.py:0
+#, python-format
+msgid ""
+"You cannot delete the payment acquirer %s; disable it or uninstall it "
+"instead."
+msgstr ""
+
+#. module: payment
+#: code:addons/payment/controllers/portal.py:0
+#, python-format
+msgid "You do not have access to this payment token."
+msgstr "您无权访问此付款令牌。"
+
+#. module: payment
+#: code:addons/payment/models/account_journal.py:0
+#, python-format
+msgid ""
+"You must first deactivate a payment acquirer before deleting its journal.\n"
+"Linked acquirer(s): %s"
+msgstr ""
 
 #. module: payment
 #. openerp-web
@@ -2318,7 +2366,7 @@ msgstr "您的付款已经成功处理，但正在等待批准。"
 #: model_terms:payment.acquirer,done_msg:payment.payment_acquirer_transfer
 #, python-format
 msgid "Your payment has been successfully processed. Thank you!"
-msgstr "您的付款已经成功处理。谢谢你！"
+msgstr "您的付款已经成功处理。谢谢您！"
 
 #. module: payment
 #. openerp-web

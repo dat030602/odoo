@@ -16,6 +16,7 @@ class TestStockValuationLayerRevaluation(TestStockValuationCommon):
             'property_account_expense_id': cls.expense_account.id,
         })
         cls.product1.categ_id.write({
+            'property_valuation': 'real_time',
             'property_stock_account_input_categ_id': cls.stock_input_account.id,
             'property_stock_account_output_categ_id': cls.stock_output_account.id,
             'property_stock_valuation_account_id': cls.stock_valuation_account.id,
@@ -158,6 +159,38 @@ class TestStockValuationLayerRevaluation(TestStockValuationCommon):
         self.assertEqual(layers[0].value, 200)
         self.assertEqual(layers[1].value, 300)
 
+    def test_stock_valuation_layer_revaluation_avco_rounding_5_digits(self):
+        """
+        Check that the rounding of the new price (cost) is equivalent to the rounding of the standard price (cost)
+        The check is done indirectly via the layers valuations.
+        If correct => rounding method is correct too
+        """
+        self.product1.categ_id.property_cost_method = 'average'
+
+        self.env['decimal.precision'].search([
+            ('name', '=', 'Product Price'),
+        ]).digits = 5
+
+        # First Move
+        self.product1.write({'standard_price': 0.00875})
+        self._make_in_move(self.product1, 10000)
+
+        self.assertEqual(self.product1.standard_price, 0.00875)
+        self.assertEqual(self.product1.quantity_svl, 10000)
+
+        layer = self.product1.stock_valuation_layer_ids
+        self.assertEqual(layer.value, 87.5)
+
+        # Second Move
+        self.product1.write({'standard_price': 0.00975})
+
+        self.assertEqual(self.product1.standard_price, 0.00975)
+        self.assertEqual(self.product1.quantity_svl, 10000)
+
+        layers = self.product1.stock_valuation_layer_ids
+        self.assertEqual(layers[0].value, 87.5)
+        self.assertEqual(layers[1].value, 10)
+
     def test_stock_valuation_layer_revaluation_fifo(self):
         self.product1.categ_id.property_cost_method = 'fifo'
         context = {
@@ -185,7 +218,7 @@ class TestStockValuationLayerRevaluation(TestStockValuationCommon):
         revaluation_wizard.account_id = self.stock_valuation_account
         revaluation_wizard.save().action_validate_revaluation()
 
-        self.assertEqual(self.product1.standard_price, 2)
+        self.assertEqual(self.product1.standard_price, 3)
 
         # Check the creation of stock.valuation.layer
         new_layer = self.env['stock.valuation.layer'].search([('product_id', '=', self.product1.id)], order="create_date desc, id desc", limit=1)

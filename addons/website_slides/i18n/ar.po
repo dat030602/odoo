@@ -7,16 +7,17 @@
 # Talal Albahra <talal.albahra@outlook.com>, 2021
 # Paul Andrawes, 2021
 # Cécile Collart <cco@odoo.com>, 2022
-# Malaz Abuidris <msea@odoo.com>, 2022
+# Malaz Abuidris <msea@odoo.com>, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 10:53+0000\n"
+"POT-Creation-Date: 2024-08-14 15:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:29+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -251,7 +252,7 @@ msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                        مرحباً<br/><br/>\n"
-"                        لقد تمت إضافة محتوى جديد في دورة <strong t-out=\"object.channel_id.name or ''\">الأشجا، الخشب، والحدائق</strong> التي تتبعها:<br/><br/>\n"
+"                        لقد تمت إضافة محتوى جديد في دورة <strong t-out=\"object.channel_id.name or ''\">الأشجار، الخشب، والحدائق</strong> التي تتبعها:<br/><br/>\n"
 "                        <center><strong t-out=\"object.name or ''\">التفرعات</strong></center>\n"
 "                        <t t-if=\"object.image_1024\">\n"
 "                            <div style=\"padding: 16px 8px 16px 8px; text-align: center;\">\n"
@@ -266,7 +267,7 @@ msgstr ""
 "                        استمتع بهذا المحتوى الحصري!\n"
 "                        <t t-if=\"user.signature\">\n"
 "                            <br/>\n"
-"                            <t t-out=\"user.signature or ''\">--<br/>Mitchell Admin</t>\n"
+"                            <t t-out=\"user.signature or ''\">--<br/>ميتشل آدمن</t>\n"
 "                        </t>\n"
 "                    </p>\n"
 "                </div>\n"
@@ -994,7 +995,7 @@ msgstr "ملخص المعرفة: فئات الأشجار الرئيسية وكي
 #. module: website_slides
 #: model:slide.answer,text_value:website_slides.slide_slide_demo_0_4_question_0_2
 msgid "A table"
-msgstr ""
+msgstr "طاولة "
 
 #. module: website_slides
 #: model:ir.model.constraint,message:website_slides.constraint_slide_tag_slide_tag_unique
@@ -1305,7 +1306,7 @@ msgstr ""
 #: code:addons/website_slides/static/src/js/slides_slide_archive.js:0
 #, python-format
 msgid "Archive"
-msgstr "أرشفة"
+msgstr "الأرشيف "
 
 #. module: website_slides
 #. openerp-web
@@ -1982,7 +1983,7 @@ msgstr "صحيح! الفراولة هي فاكهة لأنها تأتي من شج
 #. module: website_slides
 #: model:slide.answer,comment:website_slides.slide_slide_demo_1_4_question_1_0
 msgid "Correct ! Congratulations you have time to loose"
-msgstr ""
+msgstr "هذا صحيح! تهانينا، لديك وقت لإمضائه "
 
 #. module: website_slides
 #: model:slide.answer,comment:website_slides.slide_slide_demo_5_3_question_0_0
@@ -2429,7 +2430,7 @@ msgstr "انتهيت! "
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_question__done_count
 msgid "Done Count"
-msgstr ""
+msgstr "عدد الأسئلة المنجزة "
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.embed_slide
@@ -2697,7 +2698,7 @@ msgstr "قم برفع مقاطع الفيديو الخاصة بك إلى الي�
 #: model_terms:ir.ui.view,arch_db:website_slides.user_profile_content
 #, python-format
 msgid "Followed Courses"
-msgstr "الدورات المتبعة "
+msgstr "الدورات المتابعة "
 
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_channel__message_follower_ids
@@ -2714,7 +2715,7 @@ msgstr "المتابعين (الشركاء) "
 #. module: website_slides
 #: model:ir.model.fields,help:website_slides.field_slide_channel__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Font awesome icon e.g. fa-tasks"
+msgstr "أيقونة Font awesome مثال fa-tasks "
 
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_slide_demo_4_0
@@ -2866,7 +2867,7 @@ msgstr "مسار HTTP"
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_category_demo_5_1
 msgid "Hand on !"
-msgstr ""
+msgstr "بنفسك! "
 
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_channel__has_message
@@ -3909,6 +3910,12 @@ msgid "Only JPG, PNG, PDF, files types are supported"
 msgstr "صيغ الملفات المدعومة هي JPG، PNG، وPDF فقط "
 
 #. module: website_slides
+#: code:addons/website_slides/controllers/mail.py:0
+#, python-format
+msgid "Only a single review can be posted per course."
+msgstr "يمكن نشر مراجعة واحدة فقط لكل دورة. "
+
+#. module: website_slides
 #: model:ir.model.fields,help:website_slides.field_slide_channel_invite__lang
 msgid ""
 "Optional translation language (ISO code) to select when sending out an "
@@ -4536,7 +4543,7 @@ msgstr "رمز الحماية"
 #: code:addons/website_slides/models/res_users.py:0
 #, python-format
 msgid "See our eLearning"
-msgstr ""
+msgstr "ألقِ نظرة على التعلم الإلكتروني "
 
 #. module: website_slides
 #. openerp-web
@@ -4734,7 +4741,7 @@ msgstr "الشريحة"
 #. module: website_slides
 #: model:ir.model,name:website_slides.model_slide_slide_partner
 msgid "Slide / Partner decorated m2m"
-msgstr ""
+msgstr "الشريحة / m2m المزين للشريك "
 
 #. module: website_slides
 #: model:mail.template,name:website_slides.slide_template_published
@@ -5345,6 +5352,11 @@ msgid "Uploading document ..."
 msgstr "جارٍ رفع المستند ..."
 
 #. module: website_slides
+#: model_terms:ir.ui.view,arch_db:website_slides.slide_channel_invite_view_form
+msgid "Use template"
+msgstr "استخدم القالب "
+
+#. module: website_slides
 #: model:ir.model.fields,help:website_slides.field_slide_channel__tag_ids
 msgid "Used to categorize and filter displayed channels/courses"
 msgstr "مُستخدَم لتصنيف وتصفية القنوات/الدورات المعروضة "
@@ -5676,6 +5688,16 @@ msgid "Yes"
 msgstr "نعم"
 
 #. module: website_slides
+#: code:addons/website_slides/wizard/slide_channel_invite.py:0
+#, python-format
+msgid ""
+"You are not allowed to add members to this course. Please contact the course"
+" responsible or an administrator."
+msgstr ""
+"لا يُسمح لك بإضافة الأعضاء إلى هذه الدورة. يرجى التواصل مع مسؤول الدورة أو "
+"مع أحد المدراء. "
+
+#. module: website_slides
 #. openerp-web
 #: code:addons/website_slides/static/src/js/tours/slides_tour.js:0
 #, python-format
@@ -5834,7 +5856,7 @@ msgid ""
 "Click on <b>Add Content</b> to upload a document, create a web page or link "
 "a video."
 msgstr ""
-"تم إنشاء أول جزئية، حان الوقت الآن لإضافة دروس لدروسك. اضغط على <b>إضافة "
+"تم إنشاء أول جزئية، حان الوقت الآن لإضافة دروس لدوراتك. اضغط على <b>إضافة "
 "محتوى</b> لرفع مستند أو إنشاء صفحة ويب أو ربط مقطع فيديو. "
 
 #. module: website_slides
@@ -5878,6 +5900,13 @@ msgstr "التعقب "
 #, python-format
 msgid "by email."
 msgstr "عن طريق البريد الإلكتروني. "
+
+#. module: website_slides
+#. openerp-web
+#: code:addons/website_slides/static/src/xml/website_slides_channel.xml:0
+#, python-format
+msgid "documentation"
+msgstr "التوثيق"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.view_slide_channel_form
@@ -6003,6 +6032,13 @@ msgstr "للتسجيل."
 #, python-format
 msgid "to share this"
 msgstr "لمشاركة هذا"
+
+#. module: website_slides
+#. openerp-web
+#: code:addons/website_slides/static/src/xml/website_slides_channel.xml:0
+#, python-format
+msgid "training"
+msgstr ""
 
 #. module: website_slides
 #. openerp-web

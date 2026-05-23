@@ -4,21 +4,21 @@
 # 
 # Translators:
 # Carles Antoli <carlesantoli@hotmail.com>, 2022
-# Quim - eccit <quim@eccit.com>, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
 # Martin Trigaux, 2022
 # marcescu, 2022
+# Arnau Ros, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-01 12:13+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2022-03-03 13:11+0000\n"
-"Last-Translator: marcescu, 2022\n"
-"Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
+"Last-Translator: Arnau Ros, 2024\n"
+"Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -73,6 +73,41 @@ msgid ""
 "</div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"    Estimat <t t-out=\"object.partner_id.name or ''\"/><br/><br/>\n"
+"    <p>Algú està intentant iniciar sessió al teu compte amb un dispositiu nou.</p>\n"
+"    <ul>\n"
+"        <t t-set=\"not_available\">N/A</t>\n"
+"        <li>Ubicació: <t t-out=\"ctx.get('location') or not_available\"/></li>\n"
+"        <li>Dispositiu: <t t-out=\"ctx.get('device') or not_available\"/></li>\n"
+"        <li>Navegador:<t t-out=\"ctx.get('browser') or not_available\"/></li>\n"
+"        <li>Adreça IP:<t t-out=\"ctx.get('ip') or not_available\"/></li>\n"
+"    </ul>\n"
+"    <p>Si ets tu, si us plau introduïu el codi següent per completar l'inici de sessió:</p>\n"
+"    <t t-set=\"code_expiration\" t-value=\"object._get_totp_mail_code()\"/>\n"
+"    <t t-set=\"code\" t-value=\"code_expiration[0]\"/>\n"
+"    <t t-set=\"expiration\" t-value=\"code_expiration[1]\"/>\n"
+"    <div style=\"margin: 16px 0px 16px 0px; text-align: center;\">\n"
+"        <span t-out=\"code\" style=\"background-color:#faf9fa; border: 1px solid #dad8de; padding: 8px 16px 8px 16px; font-size: 24px; color: #875A7B; border-radius: 5px;\"/>\n"
+"    </div>\n"
+"    <small>Tingueu en compte que aquest codi caduca en <t t-out=\"expiration\"/>.</small>\n"
+"\n"
+"    <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"       Si no heu iniciat aquesta sessió,\n"
+"       hauríeu de canviar immediatament la contrasenya per assegurar la seguretat del compte.\n"
+"    </p>\n"
+"\n"
+"    <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"        També recomanem que s'activi l'autenticació de doble factor mitjançant una aplicació d'autenticador per ajudar a assegurar el vostre compte.\n"
+"    </p>\n"
+"\n"
+"    <p style=\"margin: 16px 0px 16px 0px; text-align: center;\">\n"
+"        <a t-att-href=\"object.get_totp_invite_url()\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"            Activa la meva autenticació de doble factor\n"
+"        </a>\n"
+"    </p>\n"
+"</div>\n"
+"            "
 
 #. module: auth_totp_mail_enforce
 #: model_terms:ir.ui.view,arch_db:auth_totp_mail_enforce.auth_totp_mail_form
@@ -80,6 +115,8 @@ msgid ""
 "<i class=\"fa fa-envelope-o\"/>\n"
 "                To login, enter below the six-digit authentication code just sent via email to"
 msgstr ""
+"<i class=\"fa fa-envelope-o\"/>\n"
+"                Per a iniciar sessió, introdueixi a continuació el codi d'autenticació de sis dígits que acaba d'enviar per correu electrònic"
 
 #. module: auth_totp_mail_enforce
 #: model:ir.model.fields.selection,name:auth_totp_mail_enforce.selection__res_config_settings__auth_totp_policy__all_required
@@ -131,6 +168,9 @@ msgid ""
 "                                (including portal users) if they didn't enable any other two-factor authentication\n"
 "                                method."
 msgstr ""
+"Imposar l'autenticació de dos factors per correu electrònic per als empleats o per a tots els usuaris\n"
+"                                (inclosos els usuaris del portal) si no han de habilitar cap altre autenticació de doble factor\n"
+"                                mètode."
 
 #. module: auth_totp_mail_enforce
 #: model:ir.model.fields,field_description:auth_totp_mail_enforce.field_res_config_settings__auth_totp_enforce
@@ -175,7 +215,12 @@ msgstr "Tipus de límit"
 #. module: auth_totp_mail_enforce
 #: model_terms:ir.ui.view,arch_db:auth_totp_mail_enforce.auth_totp_mail_form
 msgid "Re-send email"
-msgstr ""
+msgstr "Torna a enviar el correu"
+
+#. module: auth_totp_mail_enforce
+#: model:ir.model.fields,field_description:auth_totp_mail_enforce.field_auth_totp_rate_limit_log__scope
+msgid "Scope"
+msgstr "Àmbit"
 
 #. module: auth_totp_mail_enforce
 #: model:ir.model.fields.selection,name:auth_totp_mail_enforce.selection__auth_totp_rate_limit_log__limit_type__send_email
@@ -183,14 +228,9 @@ msgid "Send Email"
 msgstr "Enviar correu"
 
 #. module: auth_totp_mail_enforce
-#: model:ir.model.fields,field_description:auth_totp_mail_enforce.field_auth_totp_rate_limit_log__source
-msgid "Source"
-msgstr "Text original"
-
-#. module: auth_totp_mail_enforce
 #: model:mail.template,name:auth_totp_mail_enforce.mail_template_totp_mail_code
 msgid "TOTP for users: Authentication by email"
-msgstr ""
+msgstr "TOTP per als usuaris: Autenticació per correu electrònic"
 
 #. module: auth_totp_mail_enforce
 #: model:ir.model,name:auth_totp_mail_enforce.model_auth_totp_rate_limit_log

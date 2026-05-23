@@ -4,7 +4,7 @@
 # 
 # Translators:
 # manas yapeng <manas@torheng.com>, 2021
-# Amin Cheloh <nineamin@hotmail.com>, 2021
+# Amin Cheloh <amincheloh@gmail.com>, 2021
 # Seksan Poltree <seksan.poltree@gmail.com>, 2021
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2021
 # Pornvibool Tippayawat <pornvibool.t@gmail.com>, 2021
@@ -12,15 +12,17 @@
 # Martin Trigaux, 2021
 # Krisa C, 2021
 # Wichanon Jamwutthipreecha, 2022
+# Rasareeyar Lappiam, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:19+0000\n"
+"POT-Creation-Date: 2024-08-14 15:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
-"Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -95,12 +97,6 @@ msgid "%s %s unbuilt in"
 msgstr "%s %s ยกเลิกการสร้างใน"
 
 #. module: mrp
-#: code:addons/mrp/models/mrp_routing.py:0
-#, python-format
-msgid "%s (copy)"
-msgstr "%s (สำเนา)"
-
-#. module: mrp
 #: code:addons/mrp/models/mrp_bom.py:0
 #, python-format
 msgid "%s (new) %s"
@@ -122,11 +118,6 @@ msgstr "%s ไม่สามารถลบได้ ลองยกเลิ�
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrp_bom
 msgid "&amp; Cost"
 msgstr "และต้นทุน"
-
-#. module: mrp
-#: model_terms:ir.ui.view,arch_db:mrp.view_immediate_production
-msgid "&gt;"
-msgstr "&gt;"
 
 #. module: mrp
 #: model:ir.actions.report,print_report_name:mrp.action_report_bom_structure
@@ -922,12 +913,6 @@ msgid "BoM Type"
 msgstr "ประเภท BoM"
 
 #. module: mrp
-#: code:addons/mrp/models/mrp_bom.py:0
-#, python-format
-msgid "BoM line product %s should not be the same as BoM product."
-msgstr "ไลน์สินค้า BoM %sไม่ควรเป็นสินค้า BoM เดียวกัน"
-
-#. module: mrp
 #: model:product.product,name:mrp.product_product_computer_desk_bolt
 #: model:product.template,name:mrp.product_product_computer_desk_bolt_product_template
 msgid "Bolt"
@@ -1104,11 +1089,9 @@ msgstr "ส่วนประกอบ"
 #: code:addons/mrp/models/mrp_production.py:0
 #, python-format
 msgid ""
-"Component Lots must be unique for mass production. Please review consumption"
+"Component Lots must be unique for mass production. Please review reservation"
 " for:\n"
 msgstr ""
-"ล็อตส่วนประกอบต้องไม่ซ้ำกันสำหรับการผลิตจำนวนมาก "
-"โปรดตรวจสอบปริมาณการใช้คสำหรับ:\n"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__components_availability
@@ -2269,6 +2252,8 @@ msgid ""
 "It is not possible to unplan one single Work Order. You should unplan the "
 "Manufacturing Order instead in order to unplan all the linked operations."
 msgstr ""
+"ไม่สามารถยกเลิกการวางแผนใบสั่งงานเดียวได้ คุณควรยกเลิกการวางแผนใบสั่งผลิตแทน"
+" เพื่อยกเลิกการวางแผนการดำเนินงานที่เชื่อมโยงทั้งหมด"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__is_planned
@@ -2417,14 +2402,6 @@ msgstr "ลา"
 #: model:ir.model,name:mrp.model_mrp_consumption_warning_line
 msgid "Line of issue consumption"
 msgstr "ไลน์ปัญหาการบริโภค"
-
-#. module: mrp
-#: code:addons/mrp/models/mrp_production.py:0
-#, python-format
-msgid ""
-"Lines need to be deleted, but can not as you still have some quantities to "
-"consume in them. "
-msgstr "จำเป็นต้องลบไลน์ แต่ทำไม่ได้เนื่องจากคุณยังมีจำนวนที่จะบริโภค"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_stock_warn_insufficient_qty_unbuild__location_id
@@ -2847,6 +2824,7 @@ msgstr "ชื่อ"
 #: code:addons/mrp/models/mrp_unbuild.py:0
 #: code:addons/mrp/models/mrp_unbuild.py:0
 #: code:addons/mrp/models/mrp_unbuild.py:0
+#: code:addons/mrp/models/stock_rule.py:0
 #, python-format
 msgid "New"
 msgstr "ใหม่"
@@ -2976,6 +2954,16 @@ msgstr ""
 "ขอแนะนำให้ลบศูนย์งานแทน"
 
 #. module: mrp
+#: code:addons/mrp/models/product.py:0 code:addons/mrp/models/product.py:0
+#, python-format
+msgid ""
+"Note that product(s): '%s' is/are still linked to active Bill of Materials, "
+"which means that the product can still be used on it/them."
+msgstr ""
+"โปรดทราบว่าสินค้า: '%s' ยังคงเชื่อมโยงกับรายการวัสดุที่ใช้งานอยู่ "
+"ซึ่งหมายความว่าสินค้ายังคงสามารถใช้กับสินค้านั้นได้"
+
+#. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_bom__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp.field_mrp_unbuild__message_needaction_counter
@@ -3026,12 +3014,12 @@ msgstr "จํานวนข้อความที่มีข้อผิด
 #. module: mrp
 #: model:ir.model.fields,help:mrp.field_mrp_workcenter__capacity
 msgid ""
-"Number of pieces that can be produced in parallel. In case the work center "
-"has a capacity of 5 and you have to produce 10 units on your work order, the"
-" usual operation time will be multiplied by 2."
+"Number of pieces (in product UoM) that can be produced in parallel (at the "
+"same time) at this work center. For example: the capacity is 5 and you need "
+"to produce 10 units, then the operation time listed on the BOM will be "
+"multiplied by two. However, note that both time before and after production "
+"will only be counted once."
 msgstr ""
-"จำนวนชิ้นที่ผลิตได้แบบคู่ขนาน ในกรณีที่ศูนย์งานมีความจุ 5 หน่วย "
-"และคุณต้องผลิต 10 หน่วยตามคำสั่งงานของคุณ เวลาดำเนินการปกติจะถูกคูณด้วย 2"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__mrp_production_source_count
@@ -3738,6 +3726,11 @@ msgid "Quantity:"
 msgstr "จำนวน:"
 
 #. module: mrp
+#: model:ir.model,name:mrp.model_stock_quant
+msgid "Quants"
+msgstr "วิเคราะห์เชิงปริมาณ"
+
+#. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder__move_raw_ids
 msgid "Raw Moves"
 msgstr "การเคลื่อนย้ายวัตถุดิบ"
@@ -3861,6 +3854,12 @@ msgid "Responsible User"
 msgstr "ผู้ใช้ที่รับผิดชอบ"
 
 #. module: mrp
+#: code:addons/mrp/models/stock_quant.py:0
+#, python-format
+msgid "Return to Inventory"
+msgstr "กลับไปที่สินค้าคงคลัง"
+
+#. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_workcenter__routing_line_ids
 msgid "Routing Lines"
 msgstr "ไลน์เส้นทาง"
@@ -3899,6 +3898,11 @@ msgstr "วันที่ตามกำหนดการ"
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Scheduled Date by Month"
 msgstr "วันที่กำหนดเป็นเดือน"
+
+#. module: mrp
+#: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
+msgid "Scheduled Date: Last 365 Days"
+msgstr ""
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__date_planned_finished
@@ -4449,6 +4453,12 @@ msgid ""
 msgstr "หน่วยวัดสินค้าที่คุณเลือกอยู่คนละหมวดหมู่กับที่อยู่ในแบบฟอร์มสินค้า"
 
 #. module: mrp
+#: code:addons/mrp/models/mrp_workcenter.py:0
+#, python-format
+msgid "The Workorder (%s) cannot be started twice!"
+msgstr "ลำดับงาน (%s) ไม่สามารถเริ่มได้สองครั้ง!"
+
+#. module: mrp
 #: code:addons/mrp/models/mrp_bom.py:0
 #, python-format
 msgid ""
@@ -4463,6 +4473,22 @@ msgstr ""
 #, python-format
 msgid "The capacity must be strictly positive."
 msgstr "ความจุจำเป็นต้องเป็นบวก"
+
+#. module: mrp
+#: code:addons/mrp/models/mrp_production.py:0
+#, python-format
+msgid "The component %s should not be the same as the product to produce."
+msgstr "ส่วนประกอบ %s ไม่ควรเหมือนกับสินค้าที่ผลิต"
+
+#. module: mrp
+#: code:addons/mrp/models/mrp_bom.py:0
+#, python-format
+msgid ""
+"The current configuration is incorrect because it would create a cycle "
+"between these products: %s."
+msgstr ""
+"การกำหนดค่าปัจจุบันไม่ถูกต้อง "
+"เนื่องจากจะสร้างการหมุนเวียนระหว่างสินค้าเหล่านี้: %s"
 
 #. module: mrp
 #: model:ir.model.fields,help:mrp.field_mrp_document__res_model
@@ -4518,10 +4544,16 @@ msgstr ""
 "โปรดแก้ไขให้ถูกต้องเพื่อบันทึกคำสั่งงาน"
 
 #. module: mrp
-#: code:addons/mrp/models/mrp_production.py:0
+#: code:addons/mrp/models/mrp_bom.py:0
 #, python-format
-msgid "The quantity produced of by-products must be positive."
-msgstr "ปริมาณผลิตผลิตภัณฑ์พลอยได้ต้องเป็นบวก"
+msgid ""
+"The product has already been used at least once, editing its structure may "
+"lead to undesirable behaviours. You should rather archive the product and "
+"create a new one with a new bill of materials."
+msgstr ""
+"สินค้ามีการใช้งานมาแล้วอย่างน้อยหนึ่งครั้ง "
+"การแก้ไขโครงสร้างอาจทำให้เกิดพฤติกรรมที่ไม่พึงประสงค์ได้ "
+"คุณควรเก็บถาวรสินค้าและสร้างสินค้าใหม่โดยใช้รายการวัสดุใหม่"
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_production.py:0
@@ -4535,6 +4567,15 @@ msgstr "จำนวนที่จะผลิตต้องเป็นบว
 #: model:ir.model.fields,help:mrp.field_mrp_document__res_id
 msgid "The record id this is attached to."
 msgstr "ไอดีบันทึกนี้แนบมา"
+
+#. module: mrp
+#: code:addons/mrp/models/mrp_unbuild.py:0
+#: code:addons/mrp/models/mrp_unbuild.py:0
+#, python-format
+msgid ""
+"The selected serial number does not correspond to the one used in the "
+"manufacturing order, please select another one."
+msgstr ""
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_production.py:0
@@ -4659,10 +4700,20 @@ msgstr "ใบสั่งผลิตนี้ถูกสร้างขึ้
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_production.py:0
-#: code:addons/mrp/models/mrp_workorder.py:0
 #, python-format
 msgid "This serial number for product %s has already been produced"
 msgstr "มีการผลิตหมายเลขซีเรียลสำหรับสินค้า %s นี้แล้ว"
+
+#. module: mrp
+#: model:ir.model.fields,help:mrp.field_mrp_bom__product_qty
+msgid ""
+"This should be the smallest quantity that this product can be produced in. "
+"If the BOM contains operations, make sure the work center capacity is "
+"accurate."
+msgstr ""
+"นี่ควรเป็นปริมาณที่น้อยที่สุดที่สามารถผลิตสินค้านี้ได้ ถ้า BOM "
+"ประกอบด้วยการดำเนินงาน "
+"โปรดตรวจสอบให้แน่ใจว่ากำลังการผลิตของศูนย์งานนั้นถูกต้อง"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder__time_ids
@@ -5157,7 +5208,10 @@ msgstr "คำเตือนจำนวนการรื้อไม่เพ
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_bom.py:0 code:addons/mrp/models/mrp_bom.py:0
+#: code:addons/mrp/models/mrp_bom.py:0
 #: code:addons/mrp/models/mrp_production.py:0
+#: code:addons/mrp/models/mrp_unbuild.py:0
+#: code:addons/mrp/models/mrp_unbuild.py:0
 #: code:addons/mrp/models/stock_scrap.py:0
 #, python-format
 msgid "Warning"
@@ -5709,6 +5763,15 @@ msgstr "คุณผลิตได้น้อยกว่าจำนวนค
 #, python-format
 msgid "You should provide a lot number for the final product."
 msgstr "คุณควรระบุหมายเลขล็อตสำหรับสินค้าขั้นสุดท้าย"
+
+#. module: mrp
+#: code:addons/mrp/models/stock_quant.py:0
+#, python-format
+msgid ""
+"You should update the components quantity instead of directly updating the "
+"quantity of the kit product."
+msgstr ""
+"คุณควรอัปเดตปริมาณส่วนประกอบแทนที่จะอัปเดตปริมาณของผลิตภัณฑ์ชุดอุปกรณ์โดยตรง"
 
 #. module: mrp
 #: model_terms:ir.actions.act_window,help:mrp.mrp_production_action

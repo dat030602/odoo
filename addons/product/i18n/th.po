@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Seksan Poltree <seksan.poltree@gmail.com>, 2021
-# Amin Cheloh <nineamin@hotmail.com>, 2021
 # Martin Trigaux, 2021
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2021
 # monchai7 <montchye@gmail.com>, 2021
@@ -12,15 +11,17 @@
 # gsong <gsong2014@foxmail.com>, 2021
 # Odoo Thaidev <odoothaidev@gmail.com>, 2021
 # Wichanon Jamwutthipreecha, 2022
+# Amin Cheloh <amincheloh@gmail.com>, 2022
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:19+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:25+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
-"Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -31,12 +32,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:product.field_product_product__product_variant_count
 #: model:ir.model.fields,field_description:product.field_product_template__product_variant_count
 msgid "# Product Variants"
-msgstr ""
+msgstr "# ตัวเลือกสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_category__product_count
 msgid "# Products"
-msgstr ""
+msgstr "# สินค้า"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -45,12 +46,14 @@ msgid ""
 "%(base)s with a %(discount)s %% discount and %(surcharge)s extra fee\n"
 "Example: %(amount)s * %(discount_charge)s + %(price_surcharge)s → %(total_amount)s"
 msgstr ""
+"%(base)s พร้อมส่วนลด %(discount)s %% และค่าธรรมเนียมพิเศษ %(surcharge)s \n"
+"ตัวอย่าง: %(amount)s * %(discount_charge)s + %(price_surcharge)s → %(total_amount)s"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "%(percentage)s %% discount and %(price)s surcharge"
-msgstr ""
+msgstr "%(percentage)s %% ส่วนลดและ %(price)s ค่าธรรมเนียมเพิ่มเติม"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -74,12 +77,12 @@ msgstr ""
 #: model:ir.actions.report,print_report_name:product.report_product_template_label
 #: model:ir.actions.report,print_report_name:product.report_product_template_label_dymo
 msgid "'Products Labels - %s' % (object.name)"
-msgstr ""
+msgstr "'ฉลากสินค้า - %s' % (object.name)"
 
 #. module: product
 #: model:ir.actions.report,print_report_name:product.report_product_packaging
 msgid "'Products packaging - %s' % (object.name)"
-msgstr ""
+msgstr "'บรรจุภัณฑ์สินค้า - %s' % (object.name)"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_attribute__create_variant
@@ -89,6 +92,10 @@ msgid ""
 "        - Never: Variants are never created for the attribute.\n"
 "        Note: the variants creation mode cannot be changed once the attribute is used on at least one product."
 msgstr ""
+"- ทันที: ตัวเลือกสินค้าที่เป็นไปได้ทั้งหมดจะถูกสร้างขึ้นทันทีที่มีการเพิ่มคุณสมบัติและมูลค่าให้กับสินค้า\n"
+"- ไดนามิก: แต่ละตัวแปรจะถูกสร้างขึ้นเมื่อมีการเพิ่มคุณลักษณะและมูลค่าที่เกี่ยวข้องลงในใบสั่งขายเท่านั้น\n"
+"- ไม่เคย: ไม่มีการสร้างตัวแปรสำหรับคุณสมบัติ\n"
+"หมายเหตุ: ไม่สามารถเปลี่ยนโหมดการสร้างตัวเลือกสินค้าได้เมื่อใช้คุณสมบัติกับสินค้าอย่างน้อยหนึ่งรายการ"
 
 #. module: product
 #: model:product.attribute.value,name:product.product_attribute_value_5
@@ -99,7 +106,6 @@ msgstr "1 ปี"
 #: model:product.product,description_sale:product.product_product_4
 #: model:product.product,description_sale:product.product_product_4b
 #: model:product.product,description_sale:product.product_product_4c
-#: model:product.product,description_sale:product.product_product_4d
 #: model:product.template,description_sale:product.product_product_4_product_template
 msgid "160x80cm, with large legs."
 msgstr "160x80ซม ขาใหญ่"
@@ -107,7 +113,7 @@ msgstr "160x80ซม ขาใหญ่"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__2x7xprice
 msgid "2 x 7 with price"
-msgstr ""
+msgstr "2 x 7 พร้อมราคา"
 
 #. module: product
 #: model:product.attribute.value,name:product.product_attribute_value_6
@@ -117,17 +123,17 @@ msgstr "2 ปี"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__4x12
 msgid "4 x 12"
-msgstr ""
+msgstr "4 x 12"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__4x12xprice
 msgid "4 x 12 with price"
-msgstr ""
+msgstr "4 x 12 พร้อมราคา"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__4x7xprice
 msgid "4 x 7 with price"
-msgstr ""
+msgstr "4 x 7 พร้อมราคา"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
@@ -135,11 +141,13 @@ msgid ""
 "<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow "
 "icon\" title=\"Arrow\"/>"
 msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-"
+"label=\"ไอคอนลูกศร\" title=\"ลูกศร\"/>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view_kanban
 msgid "<i class=\"fa fa-money\" role=\"img\" aria-label=\"Currency\" title=\"Currency\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-money\" role=\"รูปภาพ\" aria-label=\"สกุลเงิน\" title=\"สกุลเงิน\"/>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -155,22 +163,22 @@ msgstr ""
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_category_form_view
 msgid "<span class=\"o_stat_text\"> Products</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\"> สินค้า</span>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_view_form
 msgid "<span class=\"o_stat_text\">Related Products</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">สินค้าที่เกี่ยวข้อง</span>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid "<span>%</span>"
-msgstr ""
+msgstr "<span>%</span>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "<span>All general settings about this product are managed on</span>"
-msgstr ""
+msgstr "<span>การตั้งค่าทั่วไปทั้งหมดเกี่ยวกับสินค้านี้ได้รับการจัดการ</span>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.report_packagingbarcode
@@ -196,6 +204,9 @@ msgid ""
 "                        will delete and recreate existing variants and lead\n"
 "                        to the loss of their possible customizations."
 msgstr ""
+"<strong>คำเตือน</strong>: การเพิ่มหรือลบคุณลักษณะ\n"
+"                        จะลบและสร้างตัวแปรที่มีอยู่ขึ้นใหม่\n"
+"                        และทำให้การปรับแต่งที่เป็นไปได้หายไป"
 
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_product_barcode_uniq
@@ -237,7 +248,7 @@ msgstr ""
 #: model:product.product,name:product.product_product_25
 #: model:product.template,name:product.product_product_25_product_template
 msgid "Acoustic Bloc Screens"
-msgstr ""
+msgstr "หน้าจอบล็อกเสียง"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__message_needaction
@@ -286,7 +297,7 @@ msgstr "ไอคอนประเภทกิจกรรม"
 #: code:addons/product/static/src/xml/pricelist_report.xml:0
 #, python-format
 msgid "Add a quantity"
-msgstr ""
+msgstr "เพิ่มปริมาณ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__group_sale_pricelist
@@ -297,7 +308,7 @@ msgstr "รายการราคาขั้นสูง"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__res_config_settings__product_pricelist_setting__advanced
 msgid "Advanced price rules (discounts, formulas)"
-msgstr ""
+msgstr "กฎราคาขั้นสูง (ส่วนลด สูตร)"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -310,7 +321,7 @@ msgstr "สินค้าทั้งหมด"
 #: model:ir.model.fields,help:product.field_product_attribute_value__is_custom
 #: model:ir.model.fields,help:product.field_product_template_attribute_value__is_custom
 msgid "Allow users to input custom values for this attribute value"
-msgstr ""
+msgstr "อนุญาตให้ผู้ใช้กรอกค่าที่กำหนดเองสำหรับค่าคุณลักษณะนี้"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_res_config_settings__group_sale_pricelist
@@ -318,13 +329,15 @@ msgid ""
 "Allows to manage different prices based on rules per category of customers.\n"
 "                Example: 10% for retailers, promotion of 5 EUR on this product, etc."
 msgstr ""
+"อนุญาตให้สามารถจัดการราคาที่แตกต่างกันตามกฎแต่ละประเภทของลูกค้า\n"
+"                ตัวอย่าง: 10% สำหรับผู้ค้าปลีก โปรโมชั่น 5 ยูโร สำหรับสินค้านี้ และอื่นๆ"
 
 #. module: product
 #: model:product.attribute.value,name:product.product_attribute_value_2
 #: model:product.template.attribute.value,name:product.product_11_attribute_1_value_2
 #: model:product.template.attribute.value,name:product.product_4_attribute_1_value_2
 msgid "Aluminium"
-msgstr ""
+msgstr "อลูมิเนียม"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view_inherit
@@ -335,7 +348,7 @@ msgstr "นำไปใช้ได้กับ"
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_tree_view
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_tree_view_from_product
 msgid "Applied On"
-msgstr ""
+msgstr "นำไปใช้เมื่อ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__applied_on
@@ -356,7 +369,7 @@ msgstr "เก็บถาวร"
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__sequence
 msgid "Assigns the priority to the list of product vendor."
-msgstr ""
+msgstr "กำหนดลำดับความสำคัญให้กับรายชื่อผู้จำหน่ายสินค้า"
 
 #. module: product
 #. openerp-web
@@ -379,18 +392,18 @@ msgstr "จํานวนสิ่งที่แนบมา"
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_line__attribute_id
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__attribute_id
 msgid "Attribute"
-msgstr ""
+msgstr "คุณลักษณะ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__attribute_line_id
 msgid "Attribute Line"
-msgstr ""
+msgstr "รายการคุณลักษณะ"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_view_form
 #: model_terms:ir.ui.view,arch_db:product.product_template_attribute_line_form
 msgid "Attribute Name"
-msgstr ""
+msgstr "ชื่อคุณลักษณะ"
 
 #. module: product
 #: model:ir.model,name:product.model_product_attribute_value
@@ -417,7 +430,7 @@ msgstr "คุณลักษณะ"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_only_form_view
 msgid "Attributes & Variants"
-msgstr ""
+msgstr "คุณสมบัติและตัวแปร"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view
@@ -437,6 +450,8 @@ msgid ""
 "Barcode used for packaging identification. Scan this packaging barcode from "
 "a transfer in the Barcode app to move all the contained units"
 msgstr ""
+"บาร์โค้ดที่ใช้ในการระบุบรรจุภัณฑ์ "
+"สแกนบาร์โค้ดบรรจุภัณฑ์นี้จากการถ่ายโอนในแอปบาร์โค้ดเพื่อย้ายหน่วยที่มีอยู่ทั้งหมด"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__base
@@ -455,7 +470,7 @@ msgstr "Based on"
 #. module: product
 #: model:res.groups,name:product.group_product_pricelist
 msgid "Basic Pricelists"
-msgstr ""
+msgstr "รายการราคาพื้นฐาน"
 
 #. module: product
 #: model:product.attribute.value,name:product.product_attribute_value_4
@@ -467,7 +482,7 @@ msgstr "สีดำ"
 #: model:product.product,name:product.product_product_10
 #: model:product.template,name:product.product_product_10_product_template
 msgid "Cabinet with Doors"
-msgstr ""
+msgstr "ตู้มีประตู"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__can_image_1024_be_zoomed
@@ -478,7 +493,7 @@ msgstr "สามารถซูมภาพ 1024 ได้"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__can_image_variant_1024_be_zoomed
 msgid "Can Variant Image 1024 be zoomed"
-msgstr ""
+msgstr "สามารถขยายภาพตัวแปร 1024 ได้"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__purchase_ok
@@ -513,17 +528,17 @@ msgstr "กลุ่มย่อย"
 #. module: product
 #: model:ir.actions.act_window,name:product.action_open_label_layout
 msgid "Choose Labels Layout"
-msgstr ""
+msgstr "เลือกเค้าโครงป้ายกำกับ"
 
 #. module: product
 #: model:ir.model,name:product.model_product_label_layout
 msgid "Choose the sheet layout to print the labels"
-msgstr ""
+msgstr "เลือกเค้าโครงแผ่นงานเพื่อพิมพ์ฉลาก"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "Codes"
-msgstr ""
+msgstr "โค้ด"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute_value__html_color
@@ -548,7 +563,7 @@ msgstr "คอลัมน์"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__combination_indices
 msgid "Combination Indices"
-msgstr ""
+msgstr "ดัชนีผสม"
 
 #. module: product
 #: model:ir.model,name:product.model_res_company
@@ -590,13 +605,13 @@ msgstr "เงื่อนไข"
 #: model:product.product,name:product.product_product_11b
 #: model:product.template,name:product.product_product_11_product_template
 msgid "Conference Chair"
-msgstr ""
+msgstr "เก้าอี้ประชุม"
 
 #. module: product
 #: model:product.product,description_sale:product.consu_delivery_02
 #: model:product.template,description_sale:product.consu_delivery_02_product_template
 msgid "Conference room table"
-msgstr ""
+msgstr "โต๊ะห้องประชุม"
 
 #. module: product
 #: model:ir.model,name:product.model_res_config_settings
@@ -631,6 +646,8 @@ msgid ""
 "Consumables are physical products for which you don't manage the inventory "
 "level: they are always available."
 msgstr ""
+"สินค้าอุปโภคบริโภคคือสินค้าที่จับต้องได้ซึ่งคุณไม่ต้องจัดการระดับสินค้าคงคลัง:"
+" สินค้าจะพร้อมจำหน่ายเสมอ"
 
 #. module: product
 #: model:ir.model,name:product.model_res_partner
@@ -641,7 +658,6 @@ msgstr "ติดต่อ"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid "Contact Us"
 msgstr "ติดต่อเรา"
@@ -649,29 +665,29 @@ msgstr "ติดต่อเรา"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_packaging__qty
 msgid "Contained Quantity"
-msgstr ""
+msgstr "ปริมาณที่บรรจุอยู่"
 
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_packaging_positive_qty
 msgid "Contained Quantity should be positive."
-msgstr ""
+msgstr "ปริมาณที่มีอยู่ควรมีค่าเป็นบวก"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_packaging_form_view
 msgid "Contained quantity"
-msgstr ""
+msgstr "ปริมาณที่บรรจุอยู่"
 
 #. module: product
 #: model:product.product,name:product.product_product_13
 #: model:product.template,name:product.product_product_13_product_template
 msgid "Corner Desk Left Sit"
-msgstr ""
+msgstr "โต๊ะเข้ามุมที่นั่งด้านซ้าย"
 
 #. module: product
 #: model:product.product,name:product.product_product_5
 #: model:product.template,name:product.product_product_5_product_template
 msgid "Corner Desk Right Sit"
-msgstr ""
+msgstr "โต๊ะเข้ามุมที่นั่งซ้าย"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__standard_price
@@ -699,7 +715,7 @@ msgstr "กลุ่มประเทศ"
 #. module: product
 #: model_terms:ir.actions.act_window,help:product.product_pricelist_action2
 msgid "Create a new pricelist"
-msgstr ""
+msgstr "สร้างรายการราคาใหม่"
 
 #. module: product
 #: model_terms:ir.actions.act_window,help:product.product_template_action
@@ -753,12 +769,12 @@ msgstr "สร้างเมื่อ"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__res_config_settings__product_volume_volume_in_cubic_feet__1
 msgid "Cubic Feet"
-msgstr ""
+msgstr "ลูกบาศก์ฟุต"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__res_config_settings__product_volume_volume_in_cubic_feet__0
 msgid "Cubic Meters"
-msgstr ""
+msgstr "ลูกบาศก์เมตร"
 
 #. module: product
 #: model:ir.model,name:product.model_res_currency
@@ -774,18 +790,17 @@ msgstr "สกุลเงิน"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute_custom_value__custom_value
 msgid "Custom Value"
-msgstr ""
+msgstr "ค่าที่กำหนดเอง"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__partner_ref
 msgid "Customer Ref"
-msgstr ""
+msgstr "ลูกค้าอ้างอิง"
 
 #. module: product
 #: model:product.product,name:product.product_product_4
 #: model:product.product,name:product.product_product_4b
 #: model:product.product,name:product.product_product_4c
-#: model:product.product,name:product.product_product_4d
 #: model:product.template,name:product.product_product_4_product_template
 msgid "Customizable Desk"
 msgstr "โต๊ะปรับแต่งได้"
@@ -822,6 +837,8 @@ msgid ""
 "Default unit of measure used for purchase orders. It must be in the same "
 "category as the default unit of measure."
 msgstr ""
+"หน่วยวัดเริ่มต้นที่ใช้สำหรับใบสั่งซื้อ "
+"ต้องอยู่ในหมวดหมู่เดียวกันกับหน่วยวัดเริ่มต้น"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__seller_ids
@@ -832,12 +849,12 @@ msgstr ""
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Define your volume unit of measure"
-msgstr ""
+msgstr "กำหนดหน่วยวัดปริมาตรของคุณ"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Define your weight unit of measure"
-msgstr ""
+msgstr "กำหนดหน่วยวัดน้ำหนักของคุณ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_supplierinfo__delay
@@ -854,19 +871,19 @@ msgstr "รายละเอียด"
 #: model:product.product,name:product.product_product_3
 #: model:product.template,name:product.product_product_3_product_template
 msgid "Desk Combination"
-msgstr ""
+msgstr "การรวมโต๊ะ"
 
 #. module: product
 #: model:product.product,name:product.product_product_22
 #: model:product.template,name:product.product_product_22_product_template
 msgid "Desk Stand with Screen"
-msgstr ""
+msgstr "ขาตั้งโต๊ะพร้อมฉากกั้น"
 
 #. module: product
 #: model:product.product,description_sale:product.product_product_3
 #: model:product.template,description_sale:product.product_product_3_product_template
 msgid "Desk combination, black-brown: chair + desk + drawer."
-msgstr ""
+msgstr "ชุดโต๊ะทำงาน, น้ำตาลดำ: เก้าอี้ + โต๊ะ + ลิ้นชัก"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_attribute__sequence
@@ -888,17 +905,17 @@ msgstr "ส่วนลด"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist__discount_policy
 msgid "Discount Policy"
-msgstr ""
+msgstr "นโยบายส่วนลด"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_pricelist__discount_policy__with_discount
 msgid "Discount included in the price"
-msgstr ""
+msgstr "ส่วนลดรวมอยู่ในราคาแล้ว"
 
 #. module: product
 #: model:res.groups,name:product.group_discount_per_so_line
 msgid "Discount on lines"
-msgstr ""
+msgstr "ส่วนลดทางรายการ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__group_discount_per_so_line
@@ -929,7 +946,7 @@ msgstr "ชื่อที่ใช้แสดง"
 #: code:addons/product/static/src/xml/pricelist_report.xml:0
 #, python-format
 msgid "Display Pricelist"
-msgstr ""
+msgstr "แสดงรายการราคา"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__display_type
@@ -959,7 +976,7 @@ msgstr "ลิ้นชัก สีดำ"
 #: model_terms:product.product,description:product.product_product_27
 #: model_terms:product.template,description:product.product_product_27_product_template
 msgid "Drawer with two routing possiblities."
-msgstr ""
+msgstr "ลิ้นชักที่มีความเป็นไปได้ในการกำหนดเส้นทางสองแบบ"
 
 #. module: product
 #: model:product.attribute,name:product.product_attribute_3
@@ -969,17 +986,17 @@ msgstr "ระยะเวลา"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__dymo
 msgid "Dymo"
-msgstr ""
+msgstr "Dymo"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__create_variant__dynamic
 msgid "Dynamically"
-msgstr ""
+msgstr "ไดนามิก"
 
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_template_attribute_value_attribute_value_unique
 msgid "Each value should be defined only once per attribute per product."
-msgstr ""
+msgstr "ควรกำหนดค่าแต่ละค่าเพียงครั้งเดียวต่อคุณลักษณะต่อสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__date_end
@@ -990,7 +1007,7 @@ msgstr "วันสิ้นสุด"
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__date_end
 msgid "End date for this vendor price"
-msgstr ""
+msgstr "วันที่สิ้นสุดสำหรับราคาของผู้ขายนี้"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__date_end
@@ -998,12 +1015,13 @@ msgid ""
 "Ending datetime for the pricelist item validation\n"
 "The displayed value depends on the timezone set in your preferences."
 msgstr ""
+"วันที่และเวลาสิ้นสุดสำหรับการตรวจสอบรายการของรายการราคา\n"
+"ค่าที่แสดงขึ้นอยู่กับเขตเวลาที่ตั้งค่าไว้ในการตั้งค่าของคุณ"
 
 #. module: product
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid "Ergonomic"
 msgstr "ตามหลักสรีรศาสตร์"
@@ -1011,23 +1029,23 @@ msgstr "ตามหลักสรีรศาสตร์"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__exclude_for
 msgid "Exclude for"
-msgstr ""
+msgstr "ยกเว้นสำหรับ"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__name
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price
 msgid "Explicit rule name for this pricelist line."
-msgstr ""
+msgstr "ชื่อกฎที่ชัดเจนสำหรับรายการของรายการราคานี้"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_label_layout__extra_html
 msgid "Extra Content"
-msgstr ""
+msgstr "เนื้อหาเพิ่มเติม"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid "Extra Fee"
-msgstr ""
+msgstr "ค่าธรรมเนียมเพิ่มเติม"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_template_attribute_value__price_extra
@@ -1035,6 +1053,8 @@ msgid ""
 "Extra price for the variant with this attribute value on sale price. eg. 200"
 " price extra, 1000 + 200 = 1200."
 msgstr ""
+"ราคาเพิ่มเติมสำหรับตัวเลือกสินค้าพร้อมค่าของคุณลักษณะนี้ในราคาขาย เช่น "
+"ราคาเพิ่มเติม 200 เป็น 1,000 + 200 = 1,200"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__priority
@@ -1058,7 +1078,7 @@ msgstr "ราคาคงที่"
 #: model:product.product,name:product.product_product_20
 #: model:product.template,name:product.product_product_20_product_template
 msgid "Flipover"
-msgstr ""
+msgstr "พลิก"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__message_follower_ids
@@ -1084,6 +1104,8 @@ msgid ""
 "For the rule to apply, bought/sold quantity must be greater than or equal to the minimum quantity specified in this field.\n"
 "Expressed in the default unit of measure of the product."
 msgstr ""
+"เพื่อให้กฎมีผล ปริมาณการซื้อ/ขายจะต้องมากกว่าหรือเท่ากับปริมาณขั้นต่ำที่ระบุในฟิลด์นี้\n"
+"แสดงเป็นหน่วยวัดเริ่มต้นของสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_label_layout__print_format
@@ -1099,13 +1121,13 @@ msgstr "สูตร"
 #: model:product.product,name:product.consu_delivery_03
 #: model:product.template,name:product.consu_delivery_03_product_template
 msgid "Four Person Desk"
-msgstr ""
+msgstr "โต๊ะสี่คน"
 
 #. module: product
 #: model:product.product,description_sale:product.consu_delivery_03
 #: model:product.template,description_sale:product.consu_delivery_03_product_template
 msgid "Four person modern office workstation"
-msgstr ""
+msgstr "เวิร์กสเตชันสำนักงานที่ทันสมัยสำหรับสี่คน"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_search_view
@@ -1125,18 +1147,18 @@ msgstr ""
 #. module: product
 #: model:ir.actions.server,name:product.action_product_template_price_list_report
 msgid "Generate Pricelist Report"
-msgstr ""
+msgstr "สร้างรายงานของรายการราคา"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Get product pictures using Barcode"
-msgstr ""
+msgstr "รับรูปภาพสินค้าโดยใช้บาร์โค้ด"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__packaging_ids
 #: model:ir.model.fields,help:product.field_product_template__packaging_ids
 msgid "Gives the different ways to package the same product."
-msgstr ""
+msgstr "นำเสนอวิธีบรรจุผลิตภัณฑ์เดียวกัน"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__sequence
@@ -1147,7 +1169,7 @@ msgstr "ให้ลำดับเมื่อแสดงรายการส
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Google Images"
-msgstr ""
+msgstr "Google Images"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_view_search
@@ -1159,7 +1181,7 @@ msgstr "จัดกลุ่มตาม"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__html_color
 msgid "HTML Color Index"
-msgstr ""
+msgstr "ดัชนีสี HTML"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__has_message
@@ -1174,12 +1196,14 @@ msgid ""
 "Here you can set a specific HTML color index (e.g. #ff0000) to display the "
 "color if the attribute type is 'Color'."
 msgstr ""
+"ที่นี่คุณสามารถตั้งค่าดัชนีสี HTML เฉพาะ (เช่น #ff0000) "
+"เพื่อแสดงสีหากประเภทคุณลักษณะเป็น 'สี' ได้"
 
 #. module: product
 #: model:product.product,name:product.expense_hotel
 #: model:product.template,name:product.expense_hotel_product_template
 msgid "Hotel Accommodation"
-msgstr ""
+msgstr "ที่พักโรงแรม"
 
 #. module: product
 #: model:product.product,uom_name:product.product_product_1
@@ -1238,6 +1262,7 @@ msgstr "ถ้าเลือก ข้อความบางข้อคว�
 msgid ""
 "If not set, the vendor price will apply to all variants of this product."
 msgstr ""
+"หากไม่ได้กำหนด ราคาของผู้ขายจะนำไปใช้กับตัวเลือกสินค้าทุกรายการของสินค้านี้"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist__active
@@ -1245,13 +1270,14 @@ msgstr ""
 msgid ""
 "If unchecked, it will allow you to hide the pricelist without removing it."
 msgstr ""
+"หากไม่ได้ทำเครื่องหมาย จะทำให้คุณสามารถซ่อนรายการราคาได้โดยไม่ต้องลบออก"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__active
 #: model:ir.model.fields,help:product.field_product_template__active
 msgid ""
 "If unchecked, it will allow you to hide the product without removing it."
-msgstr ""
+msgstr "หากไม่ได้ทำเครื่องหมาย จะทำให้คุณสามารถซ่อนสินค้าได้โดยไม่ต้องลบออก"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__image_1920
@@ -1287,7 +1313,7 @@ msgstr "รูปภาพ 512"
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "Import Template for Pricelists"
-msgstr ""
+msgstr "นำเข้าเทมเพลตสำหรับรายการราคา"
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
@@ -1299,7 +1325,7 @@ msgstr "นำเข้าเทมเพลตสำหรับสินค้
 #: code:addons/product/models/product.py:0
 #, python-format
 msgid "Import Template for Vendor Pricelists"
-msgstr ""
+msgstr "นำเข้าเทมเพลตสำหรับรายการราคาของผู้ขาย"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__standard_price
@@ -1320,12 +1346,12 @@ msgstr "ปิดใช้งาน"
 #: model:product.product,name:product.product_product_24
 #: model:product.template,name:product.product_product_24_product_template
 msgid "Individual Workplace"
-msgstr ""
+msgstr "สถานที่ทำงานส่วนบุคคล"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__create_variant__always
 msgid "Instantly"
-msgstr ""
+msgstr "ทันที"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -1341,7 +1367,7 @@ msgstr "อ้างอิงภายใน"
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__barcode
 msgid "International Article Number used for product identification."
-msgstr ""
+msgstr "หมายเลขบทความสากลที่ใช้เพื่อระบุสินค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -1357,24 +1383,24 @@ msgstr "เป็นผู้ติดตาม"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__is_product_variant
 msgid "Is Product Variant"
-msgstr ""
+msgstr "เป็นตัวเลือกสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__has_configurable_attributes
 #: model:ir.model.fields,field_description:product.field_product_template__has_configurable_attributes
 msgid "Is a configurable product"
-msgstr ""
+msgstr "เป็นสินค้าที่สามารถกำหนดค่าได้"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template__is_product_variant
 msgid "Is a product variant"
-msgstr ""
+msgstr "เป็นตัวเลือกสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute_value__is_custom
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__is_custom
 msgid "Is custom value"
-msgstr ""
+msgstr "เป็นค่าที่กำหนดเอง"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__res_config_settings__product_weight_in_lbs__0
@@ -1385,19 +1411,19 @@ msgstr "กิโลกรัม"
 #: model:product.product,name:product.product_product_6
 #: model:product.template,name:product.product_product_6_product_template
 msgid "Large Cabinet"
-msgstr ""
+msgstr "ตู้ใหญ่"
 
 #. module: product
 #: model:product.product,name:product.product_product_8
 #: model:product.template,name:product.product_product_8_product_template
 msgid "Large Desk"
-msgstr ""
+msgstr "โต๊ะใหญ่"
 
 #. module: product
 #: model:product.product,name:product.consu_delivery_02
 #: model:product.template,name:product.consu_delivery_02_product_template
 msgid "Large Meeting Table"
-msgstr ""
+msgstr "โต๊ะประชุมขนาดใหญ่"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute____last_update
@@ -1465,11 +1491,13 @@ msgid ""
 "receipt of the products in your warehouse. Used by the scheduler for "
 "automatic computation of the purchase order planning."
 msgstr ""
+"ระยะเวลาดำเนินการเป็นวันระหว่างการยืนยันคำสั่งซื้อและการรับสินค้าในคลังสินค้าของคุณ"
+" ใช้โดยตัวกำหนดตารางเวลาสำหรับการคำนวณอัตโนมัติของการวางแผนใบสั่งซื้อ"
 
 #. module: product
 #: model:product.attribute,name:product.product_attribute_1
 msgid "Legs"
-msgstr ""
+msgstr "ขาโต๊ะ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__attribute_line_ids
@@ -1481,7 +1509,6 @@ msgstr "เส้น"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid "Locally handmade"
 msgstr "งานฝีมือท้องถิ่น"
@@ -1496,7 +1523,6 @@ msgstr "โลจิสติกส์"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "Looking for a custom bamboo stain to match existing furniture? Contact us "
@@ -1517,16 +1543,17 @@ msgid ""
 "Make this attribute value not compatible with other values of the product or"
 " some attribute values of optional and accessory products."
 msgstr ""
+"ทำให้ค่าคุณลักษณะนี้เข้ากันไม่ได้กับค่าอื่นของสินค้าหรือค่าคุณลักษณะบางรายการของสินค้าเสริมและอุปกรณ์เสริม"
 
 #. module: product
 #: model:res.groups,name:product.group_stock_packaging
 msgid "Manage Product Packaging"
-msgstr ""
+msgstr "จัดการบรรจุภัณฑ์สินค้า"
 
 #. module: product
 #: model:res.groups,name:product.group_product_variant
 msgid "Manage Product Variants"
-msgstr ""
+msgstr "จัดการตัวเลือกสินค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
@@ -1536,12 +1563,12 @@ msgstr "ระยะขอบ"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid "Max. Margin"
-msgstr ""
+msgstr "ระยะขอบสูงสุด"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__price_max_margin
 msgid "Max. Price Margin"
-msgstr ""
+msgstr "ส่วนต่างราคาสูงสุด"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__message_has_error
@@ -1558,12 +1585,12 @@ msgstr "ข้อความ"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid "Min. Margin"
-msgstr ""
+msgstr "มาร์จิ้นขั้นต่ำ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__price_min_margin
 msgid "Min. Price Margin"
-msgstr ""
+msgstr "อัตรากำไรขั้นต้นขั้นต่ำ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__min_quantity
@@ -1573,7 +1600,7 @@ msgstr "จำนวนขั้นต่ำ"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__res_config_settings__product_pricelist_setting__basic
 msgid "Multiple prices per product"
-msgstr ""
+msgstr "หลายราคาต่อสินค้า"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_res_config_settings__product_pricelist_setting
@@ -1581,6 +1608,8 @@ msgid ""
 "Multiple prices: Pricelists with fixed price rules by product,\n"
 "Advanced rules: enables advanced price rules for pricelists."
 msgstr ""
+"หลายราคา: รายการราคาที่มีกฎราคาคงที่ตามสินค้า\n"
+"กฎขั้นสูง: เปิดใช้งานกฎราคาขั้นสูงสำหรับรายการราคา"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__my_activity_date_deadline
@@ -1600,7 +1629,7 @@ msgstr "ชื่อ"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__create_variant__no_variant
 msgid "Never (option)"
-msgstr ""
+msgstr "ไม่เคย (ตัวเลือก)"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__activity_calendar_event_id
@@ -1627,9 +1656,19 @@ msgid "Next Activity Type"
 msgstr "ประเภทกิจกรรมถัดไป"
 
 #. module: product
+#: code:addons/product/wizard/product_label_layout.py:0
+#, python-format
+msgid ""
+"No product to print, if the product is archived please unarchive it before "
+"printing its label."
+msgstr ""
+"ไม่มีสินค้าที่จะพิมพ์ หากสินค้าถูกเก็บถาวรแล้ว "
+"โปรดยกเลิกการเก็บถาวรก่อนพิมพ์ฉลาก"
+
+#. module: product
 #: model_terms:ir.actions.act_window,help:product.product_supplierinfo_type_action
 msgid "No vendor pricelist found"
-msgstr ""
+msgstr "ไม่พบรายการราคาของผู้ขาย"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_template__priority__0
@@ -1641,12 +1680,12 @@ msgstr "ปกติ"
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "Note:"
-msgstr ""
+msgstr "โน๊ต:"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__number_related_products
 msgid "Number Related Products"
-msgstr ""
+msgstr "จำนวนสินค้าที่เกี่ยวข้อง"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__message_needaction_counter
@@ -1676,7 +1715,7 @@ msgstr "จํานวนข้อความที่มีข้อผิด
 #: model:ir.model.fields,field_description:product.field_product_product__pricelist_item_count
 #: model:ir.model.fields,field_description:product.field_product_template__pricelist_item_count
 msgid "Number of price rules"
-msgstr ""
+msgstr "จำนวนกฎราคา"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__message_unread_counter
@@ -1694,19 +1733,19 @@ msgstr "เก้าอี้สำนักงาน"
 #: model:product.product,name:product.product_product_12
 #: model:product.template,name:product.product_product_12_product_template
 msgid "Office Chair Black"
-msgstr ""
+msgstr "เก้าอี้สำนักงาน สีดำ"
 
 #. module: product
 #: model:product.product,name:product.product_order_01
 #: model:product.template,name:product.product_order_01_product_template
 msgid "Office Design Software"
-msgstr ""
+msgstr "ซอฟต์แวร์การออกแบบสำนักงาน"
 
 #. module: product
 #: model:product.product,name:product.product_delivery_02
 #: model:product.template,name:product.product_delivery_02_product_template
 msgid "Office Lamp"
-msgstr ""
+msgstr "โคมไฟสำนักงาน"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
@@ -1728,7 +1767,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__base_pricelist_id
 #: model:ir.model.fields.selection,name:product.selection__product_pricelist_item__base__pricelist
 msgid "Other Pricelist"
-msgstr ""
+msgstr "รายการราคาอื่นๆ"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_packaging_form_view
@@ -1752,12 +1791,12 @@ msgstr "Path"
 #: model:product.product,name:product.product_product_9
 #: model:product.template,name:product.product_product_9_product_template
 msgid "Pedal Bin"
-msgstr ""
+msgstr "ถังเหยียบ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__percent_price
 msgid "Percentage Price"
-msgstr ""
+msgstr "ราคาร้อยละ"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__display_type__pills
@@ -1775,20 +1814,20 @@ msgstr ""
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "Please specify the category for which this rule should be applied"
-msgstr ""
+msgstr "โปรดระบุหมวดหมู่ที่ควรใช้กฎนี้"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "Please specify the product for which this rule should be applied"
-msgstr ""
+msgstr "โปรดระบุสินค้าที่ควรใช้กฎนี้"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid ""
 "Please specify the product variant for which this rule should be applied"
-msgstr ""
+msgstr "โปรดระบุตัวเลือกสินค้าที่ควรใช้กฎนี้"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__res_config_settings__product_weight_in_lbs__1
@@ -1799,7 +1838,6 @@ msgstr "ปอนด์"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "Press a button and watch your desk glide effortlessly from sitting to "
@@ -1832,7 +1870,7 @@ msgstr "ราคาลด"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__price_round
 msgid "Price Rounding"
-msgstr ""
+msgstr "การปัดเศษราคา"
 
 #. module: product
 #: code:addons/product/models/product.py:0
@@ -1847,13 +1885,13 @@ msgstr "กฎราคา"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__price_surcharge
 msgid "Price Surcharge"
-msgstr ""
+msgstr "ค่าธรรมเนียมราคาเพิ่มเติม"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__list_price
 #: model:ir.model.fields,help:product.field_product_template__list_price
 msgid "Price at which the product is sold to customers."
-msgstr ""
+msgstr "ราคาที่สินค้าถูกขายให้กับลูกค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_kanban_view
@@ -1878,12 +1916,12 @@ msgstr "รายการราคา"
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__applied_on
 msgid "Pricelist Item applicable on selected option"
-msgstr ""
+msgstr "รายการราคาใช้ได้กับตัวเลือกที่เลือก"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist__name
 msgid "Pricelist Name"
-msgstr ""
+msgstr "ชื่อรายการราคา"
 
 #. module: product
 #. openerp-web
@@ -1891,7 +1929,7 @@ msgstr ""
 #: model:ir.model,name:product.model_report_product_report_pricelist
 #, python-format
 msgid "Pricelist Report"
-msgstr ""
+msgstr "รายงานของรายการราคา"
 
 #. module: product
 #: model:ir.model,name:product.model_product_pricelist_item
@@ -1905,7 +1943,7 @@ msgstr "กฎรายการราคา"
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view_inherit
 msgid "Pricelist Rules"
-msgstr ""
+msgstr "กฎรายการราคา"
 
 #. module: product
 #. openerp-web
@@ -1913,7 +1951,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:product.report_pricelist_page
 #, python-format
 msgid "Pricelist:"
-msgstr ""
+msgstr "รายการราคา:"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.product_pricelist_action2
@@ -1925,12 +1963,12 @@ msgstr "รายการราคา"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__product_pricelist_setting
 msgid "Pricelists Method"
-msgstr ""
+msgstr "วิธีรายการราคา"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.view_partner_property_form
 msgid "Pricelists are managed on"
-msgstr ""
+msgstr "รายการราคาได้รับการจัดการบน"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
@@ -1988,18 +2026,18 @@ msgstr "คุณสมบัติของผลิตภัณฑ์ มู�
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_line__product_template_value_ids
 msgid "Product Attribute Values"
-msgstr ""
+msgstr "ค่าคุณลักษณะของสินค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_attribute_line_form
 msgid "Product Attribute and Values"
-msgstr ""
+msgstr "คุณลักษณะและมูลค่าของสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__attribute_line_ids
 #: model:ir.model.fields,field_description:product.field_product_template__attribute_line_ids
 msgid "Product Attributes"
-msgstr ""
+msgstr "คุณสมบัติของสินค้า"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.product_category_action_form
@@ -2029,13 +2067,13 @@ msgstr "การกำหนดค่าสินค้า"
 #: model:ir.actions.report,name:product.report_product_template_label
 #: model:ir.actions.report,name:product.report_product_template_label_dymo
 msgid "Product Label (PDF)"
-msgstr ""
+msgstr "ฉลากสินค้า (PDF)"
 
 #. module: product
 #: model:ir.model,name:product.model_report_product_report_producttemplatelabel
 #: model:ir.model,name:product.model_report_product_report_producttemplatelabel_dymo
 msgid "Product Label Report"
-msgstr ""
+msgstr "รายงานฉลากสินค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -2048,7 +2086,7 @@ msgstr "ชื่อสินค้า"
 #: model:ir.model.fields,field_description:product.field_product_product__packaging_ids
 #: model:ir.model.fields,field_description:product.field_product_template__packaging_ids
 msgid "Product Packages"
-msgstr ""
+msgstr "แพ็คเกจสินค้า"
 
 #. module: product
 #: model:ir.model,name:product.model_product_packaging
@@ -2060,7 +2098,7 @@ msgstr "บรรจุภัณฑ์ของสินค้า"
 #. module: product
 #: model:ir.actions.report,name:product.report_product_packaging
 msgid "Product Packaging (PDF)"
-msgstr ""
+msgstr "บรรจุภัณฑ์ของสินค้า (PDF)"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.action_packaging_view
@@ -2083,7 +2121,7 @@ msgstr "รูปแบบสินค้า"
 #. module: product
 #: model:ir.model,name:product.model_product_template_attribute_exclusion
 msgid "Product Template Attribute Exclusion"
-msgstr ""
+msgstr "การยกเว้นคุณลักษณะของเทมเพลตสินค้า"
 
 #. module: product
 #: model:ir.model,name:product.model_product_template_attribute_line
@@ -2093,7 +2131,7 @@ msgstr "ไลน์คุณลักษณะเทมเพลตผลิต
 #. module: product
 #: model:ir.model,name:product.model_product_template_attribute_value
 msgid "Product Template Attribute Value"
-msgstr ""
+msgstr "ค่าคุณลักษณะของเทมเพลตสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_label_layout__product_tmpl_ids
@@ -2104,7 +2142,7 @@ msgstr "เทมเพลตสินค้า"
 #: model:ir.model.fields,field_description:product.field_product_product__product_tooltip
 #: model:ir.model.fields,field_description:product.field_product_template__product_tooltip
 msgid "Product Tooltip"
-msgstr ""
+msgstr "คำแนะนำสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__detailed_type
@@ -2130,7 +2168,7 @@ msgstr "ความหลากหลายในสินค้า"
 #: code:addons/product/models/product_attribute.py:0
 #, python-format
 msgid "Product Variant Values"
-msgstr ""
+msgstr "ค่าตัวเลือกสินค้า"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.product_normal_action
@@ -2145,13 +2183,13 @@ msgstr "แบบที่ต่างกันของสินค้า"
 #: code:addons/product/report/product_label_report.py:0
 #, python-format
 msgid "Product model not defined, Please contact your administrator."
-msgstr ""
+msgstr "ไม่ได้กำหนดรุ่นสินค้า โปรดติดต่อผู้ดูแลระบบของคุณ"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "Product: %s"
-msgstr ""
+msgstr "สินค้า: %s"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.product_template_action
@@ -2174,23 +2212,23 @@ msgstr "ราคาสินค้า"
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view_tree
 msgid "Products Price List"
-msgstr ""
+msgstr "รายการราคาสินค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_view_search
 msgid "Products Price Rules Search"
-msgstr ""
+msgstr "ค้นหากฎราคาสินค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view_search
 msgid "Products Price Search"
-msgstr ""
+msgstr "ค้นหาราคาสินค้า"
 
 #. module: product
 #: code:addons/product/models/product.py:0
 #, python-format
 msgid "Products: %(category)s"
-msgstr ""
+msgstr "สินค้า: %(category)s"
 
 #. module: product
 #: model:product.pricelist,name:product.list0
@@ -2206,13 +2244,13 @@ msgstr "สั่งซื้อ"
 #: model:ir.model.fields,field_description:product.field_product_product__description_purchase
 #: model:ir.model.fields,field_description:product.field_product_template__description_purchase
 msgid "Purchase Description"
-msgstr ""
+msgstr "คำอธิบายการซื้อ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__uom_po_id
 #: model:ir.model.fields,field_description:product.field_product_template__uom_po_id
 msgid "Purchase UoM"
-msgstr ""
+msgstr "จัดซื้อ UoM"
 
 #. module: product
 #. openerp-web
@@ -2237,7 +2275,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,help:product.field_product_packaging__qty
 msgid "Quantity of products contained in the packaging."
-msgstr ""
+msgstr "จำนวนสินค้าที่บรรจุในบรรจุภัณฑ์"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__display_type__radio
@@ -2255,25 +2293,27 @@ msgid ""
 "Register the prices requested by your vendors for each product, based on the"
 " quantity and the period."
 msgstr ""
+"ลงทะเบียนราคาที่ผู้ขายของคุณร้องขอสำหรับแต่ละสินค้า "
+"โดยขึ้นอยู่กับปริมาณและระยะเวลา"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
 #: model:ir.model.fields,field_description:product.field_product_attribute__product_tmpl_ids
 #, python-format
 msgid "Related Products"
-msgstr ""
+msgstr "สินค้าที่เกี่ยวข้อง"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__ptav_product_variant_ids
 msgid "Related Variants"
-msgstr ""
+msgstr "ตัวเลือกที่เกี่ยวข้อง"
 
 #. module: product
 #. openerp-web
 #: code:addons/product/static/src/xml/pricelist_report.xml:0
 #, python-format
 msgid "Remove quantity"
-msgstr ""
+msgstr "ลบปริมาณ"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__activity_user_id
@@ -2285,7 +2325,7 @@ msgstr "ผู้ใช้ที่รับผิดชอบ"
 #: model:product.product,name:product.expense_product
 #: model:product.template,name:product.expense_product_product_template
 msgid "Restaurant Expenses"
-msgstr ""
+msgstr "ค่าใช้จ่ายร้านอาหาร"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
@@ -2300,7 +2340,7 @@ msgstr "แถว"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__rule_tip
 msgid "Rule Tip"
-msgstr ""
+msgstr "เคล็ดลับของกฎ"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -2312,12 +2352,12 @@ msgstr "ขาย"
 #: model:ir.model.fields,field_description:product.field_product_template__description_sale
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "Sales Description"
-msgstr ""
+msgstr "คำอธิบายการขาย"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__module_sale_product_matrix
 msgid "Sales Grid Entry"
-msgstr ""
+msgstr "รายการตารางการขาย"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__list_price
@@ -2327,12 +2367,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:product.product_template_tree_view
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "Sales Price"
-msgstr ""
+msgstr "ราคาขาย"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__lst_price
 msgid "Sales Price"
-msgstr ""
+msgstr "ราคาขาย"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__display_type__select
@@ -2374,6 +2414,9 @@ msgid ""
 "Rounding is applied after the discount and before the surcharge.\n"
 "To have prices that end in 9.99, set rounding 10, surcharge -0.01"
 msgstr ""
+"กำหนดราคาเพื่อให้เป็นผลคูณของค่านี้\n"
+"การปัดเศษจะใช้หลังส่วนลดและก่อนคิดค่าธรรมเนียม\n"
+"หากต้องการมีราคาที่ลงท้ายด้วย 9.99 ให้ปัดเศษ 10 บวกเพิ่ม -0.01"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_search_view
@@ -2383,7 +2426,7 @@ msgstr "Show all records which has next action date is before today"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_pricelist__discount_policy__without_discount
 msgid "Show public price & discount to the customer"
-msgstr ""
+msgstr "แสดงราคาและส่วนลดสาธารณะแก่ลูกค้า"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__categ_id
@@ -2391,6 +2434,8 @@ msgid ""
 "Specify a product category if this rule only applies to products belonging "
 "to this category or its children categories. Keep empty otherwise."
 msgstr ""
+"ระบุหมวดหมู่สินค้าหากกฎนี้ใช้กับสินค้าที่อยู่ในหมวดหมู่นี้หรือหมวดหมู่ย่อยเท่านั้น"
+" เว้นว่างไว้ถ้าเป็นอย่างอื่น"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__product_id
@@ -2398,6 +2443,7 @@ msgid ""
 "Specify a product if this rule only applies to one product. Keep empty "
 "otherwise."
 msgstr ""
+"ระบุสินค้าหากกฎนี้ใช้กับสินค้าเดียวเท่านั้น เว้นว่างไว้ถ้าเป็นอย่างอื่น"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__product_tmpl_id
@@ -2405,23 +2451,25 @@ msgid ""
 "Specify a template if this rule only applies to one product template. Keep "
 "empty otherwise."
 msgstr ""
+"ระบุเทมเพลตหากกฎนี้ใช้กับเทมเพลตสินค้าเดียวเท่านั้น "
+"เว้นว่างไว้ถ้าเป็นอย่างอื่น"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price_surcharge
 msgid ""
-"Specify the fixed amount to add or substract(if negative) to the amount "
+"Specify the fixed amount to add or subtract(if negative) to the amount "
 "calculated with the discount."
 msgstr ""
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price_max_margin
 msgid "Specify the maximum amount of margin over the base price."
-msgstr ""
+msgstr "ระบุจำนวนมาร์จิ้นสูงสุดเหนือราคาฐาน"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price_min_margin
 msgid "Specify the minimum amount of margin over the base price."
-msgstr ""
+msgstr "ระบุจำนวนมาร์จิ้นขั้นต่ำเหนือราคาฐาน"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__date_start
@@ -2432,7 +2480,7 @@ msgstr "วันที่เริ่ม"
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__date_start
 msgid "Start date for this vendor price"
-msgstr ""
+msgstr "วันที่เริ่มต้นสำหรับราคาของผู้ขายนี้"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__date_start
@@ -2440,6 +2488,8 @@ msgid ""
 "Starting datetime for the pricelist item validation\n"
 "The displayed value depends on the timezone set in your preferences."
 msgstr ""
+"วันที่และเวลาเริ่มต้นสำหรับการตรวจสอบรายการรายการราคา\n"
+"ค่าที่แสดงขึ้นอยู่กับเขตเวลาที่ตั้งค่าไว้ในการตั้งค่าของคุณ"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__activity_state
@@ -2460,13 +2510,13 @@ msgstr ""
 #: model:product.template.attribute.value,name:product.product_11_attribute_1_value_1
 #: model:product.template.attribute.value,name:product.product_4_attribute_1_value_1
 msgid "Steel"
-msgstr ""
+msgstr "เหล็ก"
 
 #. module: product
 #: model:product.product,name:product.product_product_7
 #: model:product.template,name:product.product_product_7_product_template
 msgid "Storage Box"
-msgstr ""
+msgstr "กล่องเก็บของ"
 
 #. module: product
 #: model:ir.model,name:product.model_product_supplierinfo
@@ -2491,13 +2541,13 @@ msgstr ""
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "The Internal Reference '%s' already exists."
-msgstr ""
+msgstr "การอ้างอิงภายใน '%s' มีอยู่แล้ว"
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "The Type of this product doesn't match the Detailed Type"
-msgstr ""
+msgstr "ประเภทของสินค้านี้ไม่ตรงกับประเภทรายละเอียด"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
@@ -2511,13 +2561,14 @@ msgid ""
 "The attribute cannot be changed once the value is used on at least one "
 "product."
 msgstr ""
+"ไม่สามารถเปลี่ยนคุณลักษณะได้เมื่อมีการใช้ค่ากับสินค้าอย่างน้อยหนึ่งรายการ"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid ""
 "The computed price is expressed in the default Unit of Measure of the "
 "product."
-msgstr ""
+msgstr "ราคาที่คำนวณจะแสดงเป็นหน่วยวัดเริ่มต้นของสินค้า"
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
@@ -2525,25 +2576,24 @@ msgstr ""
 msgid ""
 "The default Unit of Measure and the purchase Unit of Measure must be in the "
 "same category."
-msgstr ""
+msgstr "หน่วยวัดเริ่มต้นและหน่วยวัดการซื้อจะต้องอยู่ในหมวดหมู่เดียวกัน"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_attribute__display_type
 #: model:ir.model.fields,help:product.field_product_attribute_value__display_type
 #: model:ir.model.fields,help:product.field_product_template_attribute_value__display_type
 msgid "The display type used in the Product Configurator."
-msgstr ""
+msgstr "ประเภทการแสดงผลที่ใช้ในเครื่องมือกำหนดค่าของสินค้า"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_packaging__sequence
 msgid "The first in the sequence is the default one."
-msgstr ""
+msgstr "อันแรกในลำดับคืออันที่ถูกกำหนดโดยค่าเริ่มต้น"
 
 #. module: product
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "The minimum height is 65 cm, and for standing work the maximum height "
@@ -2555,14 +2605,14 @@ msgstr ""
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "The minimum margin should be lower than the maximum margin."
-msgstr ""
+msgstr "มาร์จิ้นขั้นต่ำควรต่ำกว่ามาร์จิ้นสูงสุด"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_category__product_count
 msgid ""
 "The number of products under this category (Does not consider the children "
 "categories)"
-msgstr ""
+msgstr "จำนวนสินค้าตามหมวดหมู่นี้ (ไม่นับหมวดหมู่ย่อย)"
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
@@ -2573,16 +2623,25 @@ msgid ""
 "sales order. To do so, open the form view of attributes and change the mode "
 "of *Create Variants*."
 msgstr ""
+"จำนวนตัวแปรที่จะสร้างสูงเกินไป "
+"คุณไม่ควรสร้างตัวแปรสำหรับชุดแต่ละชุดหรือสร้างตามความต้องการจากใบสั่งขาย "
+"โดยเปิดมุมมองแบบฟอร์มของคุณลักษณะและเปลี่ยนโหมดของ *สร้างตัวแปร*"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__price
 msgid "The price to purchase a product"
-msgstr ""
+msgstr "ราคาที่จะซื้อสินค้า"
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "The product template is archived so no combination is possible."
+msgstr "เทมเพลตสินค้าถูกเก็บถาวรแล้ว จึงไม่สามารถรวมกันได้"
+
+#. module: product
+#: code:addons/product/models/product.py:0
+#, python-format
+msgid "The product variant must be a variant of the product template."
 msgstr ""
 
 #. module: product
@@ -2592,6 +2651,14 @@ msgid ""
 "expressed in the vendor Product Unit of Measure if not any, in the default "
 "unit of measure of the product otherwise."
 msgstr ""
+"ปริมาณที่จะซื้อจากผู้ขายรายนี้เพื่อรับประโยชน์จากราคา "
+"แสดงในหน่วยวัดสินค้าของผู้ขาย หากไม่มี ในหน่วยวัดเริ่มต้นของสินค้า"
+
+#. module: product
+#: code:addons/product/models/product_pricelist.py:0
+#, python-format
+msgid "The rounding method must be strictly positive."
+msgstr "วิธีการปัดเศษต้องเป็นค่าบวกเท่านั้น"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__lst_price
@@ -2599,6 +2666,8 @@ msgid ""
 "The sale price is managed from the product template. Click on the 'Configure"
 " Variants' button to set the extra attribute prices."
 msgstr ""
+"ราคาลดได้รับการจัดการจากเทมเพลตสินค้า คลิกปุ่ม 'กำหนดค่าตัวเลือกสินค้า' "
+"เพื่อกำหนดราคาคุณลักษณะเพิ่มเติม"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
@@ -2610,19 +2679,19 @@ msgstr ""
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "There are no possible combination."
-msgstr ""
+msgstr "ไม่สามารถรวมกันได้"
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "There are no remaining closest combination."
-msgstr ""
+msgstr "ไม่มีชุดค่ารวมที่ใกล้เคียงที่สุดเหลืออยู่"
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "There are no remaining possible combination."
-msgstr ""
+msgstr "ไม่มีชุดค่ารวมที่เป็นไปได้เหลืออยู่"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__product_uom
@@ -2637,21 +2706,24 @@ msgid ""
 "to no possible variant. Please archive or delete your product directly if "
 "intended."
 msgstr ""
+"การกำหนดค่าคุณลักษณะ ค่า "
+"และการยกเว้นของสินค้านี้จะทำให้ไม่มีรายละเอียดปลีกย่อยที่เป็นไปได้ "
+"โปรดเก็บถาวรหรือลบสินค้าของคุณโดยตรงหากต้องการ"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__price_extra
 msgid "This is the sum of the extra price of all attributes"
-msgstr ""
+msgstr "นี่คือผลรวมของราคาเพิ่มเติมของแอตทริบิวต์ทั้งหมด"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "This note is added to sales orders and invoices."
-msgstr ""
+msgstr "หมายเหตุนี้ถูกเพิ่มลงในใบสั่งขายและใบแจ้งหนี้"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "This note is only for internal purposes."
-msgstr ""
+msgstr "หมายเหตุนี้มีวัตถุประสงค์สำหรับภายในเท่านั้น"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_res_partner__property_product_pricelist
@@ -2660,6 +2732,7 @@ msgid ""
 "This pricelist will be used, instead of the default one, for sales to the "
 "current partner"
 msgstr ""
+"รายการราคานี้จะถูกนำมาใช้แทนรายการเริ่มต้นสำหรับการขายให้กับพาร์ทเนอร์ปัจจุบัน"
 
 #. module: product
 #: code:addons/product/models/uom_uom.py:0
@@ -2669,6 +2742,9 @@ msgid ""
 "This may cause inconsistencies in computations.\n"
 "Please set a precision between %s and 1."
 msgstr ""
+"ความแม่นยำในการปัดเศษนี้สูงกว่าความแม่นยำของทศนิยม (%s หลัก)\n"
+"ซึ่งอาจทำให้เกิดความไม่สอดคล้องกันในการคำนวณ\n"
+"โปรดตั้งค่าความแม่นยำระหว่าง %s ถึง 1"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__product_code
@@ -2676,6 +2752,8 @@ msgid ""
 "This vendor's product code will be used when printing a request for "
 "quotation. Keep empty to use the internal one."
 msgstr ""
+"รหัสสินค้าของผู้ขายรายนี้จะถูกนำมาใช้เมื่อพิมพ์คำขอใบเสนอราคา "
+"ให้เว้นว่างไว้เพื่อใช้ช่องสำหรับภายใน"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__product_name
@@ -2683,18 +2761,20 @@ msgid ""
 "This vendor's product name will be used when printing a request for "
 "quotation. Keep empty to use the internal one."
 msgstr ""
+"ชื่อสินค้าของผู้ขายรายนี้จะถูกนำมาใช้เมื่อพิมพ์คำขอใบเสนอราคา "
+"ให้เว้นว่างไว้เพื่อใช้ช่องสำหรับภายใน"
 
 #. module: product
 #: model:product.product,description_sale:product.consu_delivery_01
 #: model:product.template,description_sale:product.consu_delivery_01_product_template
 msgid "Three Seater Sofa with Lounger in Steel Grey Colour"
-msgstr ""
+msgstr "โซฟา 3 ที่นั่งพร้อมเก้าอี้นอน สีเทาเหล็ก"
 
 #. module: product
 #: model:product.product,name:product.consu_delivery_01
 #: model:product.template,name:product.consu_delivery_01_product_template
 msgid "Three-Seat Sofa"
-msgstr ""
+msgstr "โซฟา 3 ที่นั่ง"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_search_view
@@ -2717,7 +2797,7 @@ msgstr "พิมพ์กิจกรรมข้อยกเว้นบนบ
 #: code:addons/product/wizard/product_label_layout.py:0
 #, python-format
 msgid "Unable to find report template for %s format"
-msgstr ""
+msgstr "ไม่พบเทมเพลตรายงานสำหรับรูปแบบ %s"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_form_view
@@ -2736,7 +2816,7 @@ msgstr "หน่วยวัด"
 #: model:ir.model.fields,field_description:product.field_product_product__uom_name
 #: model:ir.model.fields,field_description:product.field_product_template__uom_name
 msgid "Unit of Measure Name"
-msgstr ""
+msgstr "ชื่อหน่วยวัด"
 
 #. module: product
 #: model:product.product,uom_name:product.consu_delivery_01
@@ -2761,7 +2841,6 @@ msgstr ""
 #: model:product.product,uom_name:product.product_product_4
 #: model:product.product,uom_name:product.product_product_4b
 #: model:product.product,uom_name:product.product_product_4c
-#: model:product.product,uom_name:product.product_product_4d
 #: model:product.product,uom_name:product.product_product_5
 #: model:product.product,uom_name:product.product_product_6
 #: model:product.product,uom_name:product.product_product_7
@@ -2820,18 +2899,18 @@ msgstr "หน่วยวัด"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "Upsell & Cross-Sell"
-msgstr ""
+msgstr "การขายต่อยอดและการขายสินค้าแบบไขว้"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute_value__is_used_on_products
 msgid "Used on Products"
-msgstr ""
+msgstr "ใช้กับสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__valid_product_template_attribute_line_ids
 #: model:ir.model.fields,field_description:product.field_product_template__valid_product_template_attribute_line_ids
 msgid "Valid Product Attribute Lines"
-msgstr ""
+msgstr "รายการคุณสมบัติของสินค้าที่ถูกต้อง"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
@@ -2848,12 +2927,12 @@ msgstr "มูลค่า"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_line__value_count
 msgid "Value Count"
-msgstr ""
+msgstr "การนับมูลค่า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__price_extra
 msgid "Value Price Extra"
-msgstr ""
+msgstr "มูลค่าราคาเพิ่มเติม"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__value_ids
@@ -2866,65 +2945,65 @@ msgstr "มูลค่า"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_view_search
 msgid "Variant"
-msgstr ""
+msgstr "ตัวแปร"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_supplierinfo__product_variant_count
 msgid "Variant Count"
-msgstr ""
+msgstr "จำนวนตัวแปร"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__image_variant_1920
 msgid "Variant Image"
-msgstr ""
+msgstr "รูปภาพตัวแปร"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__image_variant_1024
 msgid "Variant Image 1024"
-msgstr ""
+msgstr "รูปภาพตัวแปร 1024"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__image_variant_128
 msgid "Variant Image 128"
-msgstr ""
+msgstr "รูปภาพตัวแปร 128"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__image_variant_256
 msgid "Variant Image 256"
-msgstr ""
+msgstr "รูปภาพตัวแปร 256"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__image_variant_512
 msgid "Variant Image 512"
-msgstr ""
+msgstr "รูปภาพตัวแปร 512"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "Variant Information"
-msgstr ""
+msgstr "ข้อมูลตัวแปร"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__price_extra
 msgid "Variant Price Extra"
-msgstr ""
+msgstr "ราคาตัวแปรเพิ่มเติม"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__variant_seller_ids
 #: model:ir.model.fields,field_description:product.field_product_template__variant_seller_ids
 msgid "Variant Seller"
-msgstr ""
+msgstr "ผู้ขายตัวเลือกย่อยของสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__product_template_variant_value_ids
 #: model_terms:ir.ui.view,arch_db:product.attribute_tree_view
 msgid "Variant Values"
-msgstr ""
+msgstr "มูลค่าตัวเลือกย่อยสินค้า"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "Variant: %s"
-msgstr ""
+msgstr "ตัวเลือกย่อย: %s"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__group_product_variant
@@ -2937,7 +3016,7 @@ msgstr "ตัวแปร"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__create_variant
 msgid "Variants Creation Mode"
-msgstr ""
+msgstr "โหมดการสร้างตัวเลือกย่อยสินค้า"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_supplierinfo__name
@@ -2955,7 +3034,7 @@ msgstr "บิลค่าใช้จ่าย"
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_form_view
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_tree_view
 msgid "Vendor Information"
-msgstr ""
+msgstr "ข้อมูลผู้ขาย"
 
 #. module: product
 #: model:ir.actions.act_window,name:product.product_supplierinfo_type_action
@@ -2965,12 +3044,12 @@ msgstr "รายการราคาผู้ขาย"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_supplierinfo__product_code
 msgid "Vendor Product Code"
-msgstr ""
+msgstr "รหัสสินค้าของผู้ขาย"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_supplierinfo__product_name
 msgid "Vendor Product Name"
-msgstr ""
+msgstr "ชื่อสินค้าของผู้ขาย"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__name
@@ -2987,13 +3066,13 @@ msgstr "ผู้ขาย"
 #: model:product.product,name:product.product_product_2
 #: model:product.template,name:product.product_product_2_product_template
 msgid "Virtual Home Staging"
-msgstr ""
+msgstr "การจัดเตรียมหน้าแรกเสมือนจริง"
 
 #. module: product
 #: model:product.product,name:product.product_product_1
 #: model:product.template,name:product.product_product_1_product_template
 msgid "Virtual Interior Design"
-msgstr ""
+msgstr "การออกแบบตกแต่งภายในเสมือนจริง"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__volume
@@ -3006,13 +3085,13 @@ msgstr "ปริมาตร"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__product_volume_volume_in_cubic_feet
 msgid "Volume unit of measure"
-msgstr ""
+msgstr "หน่วยวัดปริมาตร"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__volume_uom_name
 #: model:ir.model.fields,field_description:product.field_product_template__volume_uom_name
 msgid "Volume unit of measure label"
-msgstr ""
+msgstr "ฉลากหน่วยวัดปริมาตร"
 
 #. module: product
 #: code:addons/product/models/decimal_precision.py:0
@@ -3030,7 +3109,6 @@ msgstr "คำเตือน"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "We pay special attention to detail, which is why our desks are of a superior"
@@ -3049,7 +3127,7 @@ msgstr "น้ำหนัก"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__product_weight_in_lbs
 msgid "Weight unit of measure"
-msgstr ""
+msgstr "หน่วยวัดน้ำหนัก"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__weight_uom_name
@@ -3072,12 +3150,16 @@ msgid ""
 "This may cause inconsistencies in computations.\n"
 "Please increase the rounding of those units of measure, or the digits of this Decimal Accuracy."
 msgstr ""
+"คุณกำลังตั้งค่าความแม่นยำของทศนิยมน้อยกว่า UOM:\n"
+"%s\n"
+"ซึ่งอาจทำให้เกิดความไม่สอดคล้องกันในการคำนวณ\n"
+"โปรดเพิ่มการปัดเศษของหน่วยวัดเหล่านั้นหรือหลักความแม่นยำของทศนิยมนี้"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__percent_price
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price_discount
 msgid "You can apply a mark-up by setting a negative discount."
-msgstr ""
+msgstr "คุณสามารถใช้ส่วนเพิ่มได้โดยการตั้งค่าส่วนลดที่ติดลบ"
 
 #. module: product
 #: model_terms:ir.actions.act_window,help:product.product_pricelist_action2
@@ -3085,6 +3167,7 @@ msgid ""
 "You can assign pricelists to your customers or select one when creating a "
 "new sales quotation."
 msgstr ""
+"คุณสามารถกำหนดรายการราคาให้กับลูกค้าของคุณหรือเลือกรายการราคาหนึ่งรายการเมื่อสร้างใบเสนอราคาขายใหม่"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -3092,6 +3175,7 @@ msgstr ""
 msgid ""
 "You cannot assign the Main Pricelist as Other Pricelist in PriceList Item"
 msgstr ""
+"คุณไม่สามารถกำหนดรายการราคาหลักเป็นรายการราคาอื่นในรายการรายการราคาได้"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
@@ -3125,13 +3209,13 @@ msgstr ""
 #: code:addons/product/models/product.py:0
 #, python-format
 msgid "You cannot create recursive categories."
-msgstr ""
+msgstr "คุณไม่สามารถสร้างหมวดหมู่แบบเรียกซ้ำได้"
 
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_attribute_value_value_company_uniq
 msgid ""
 "You cannot create two values with the same name for the same attribute."
-msgstr ""
+msgstr "คุณไม่สามารถสร้างสองค่าด้วยชื่อเดียวกันสำหรับคุณสมบัติเดียวกันได้"
 
 #. module: product
 #: code:addons/product/models/decimal_precision.py:0
@@ -3140,6 +3224,14 @@ msgid ""
 "You cannot define the decimal precision of 'Account' as greater than the "
 "rounding factor of the company's main currency"
 msgstr ""
+"คุณไม่สามารถกำหนดความแม่นยำของทศนิยมของ 'บัญชี' "
+"ให้มากกว่าค่าตัวคูณการปัดเศษของสกุลเงินหลักของบริษัทได้"
+
+#. module: product
+#: code:addons/product/models/product.py:0
+#, python-format
+msgid "You cannot delete the %s product category."
+msgstr "คุณไม่สามารถลบหมวดหมู่สินค้า %s ได้"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
@@ -3154,7 +3246,8 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot delete the value %s because it is used on the following products:\n"
-"%s"
+"%s\n"
+" If the value has been associated to a product in the past, you will not be able to delete it."
 msgstr ""
 
 #. module: product
@@ -3163,6 +3256,7 @@ msgstr ""
 msgid ""
 "You cannot delete this product category, it is the default generic category."
 msgstr ""
+"คุณไม่สามารถลบหมวดหมู่ผลิตภัณฑ์นี้ได้ เนื่องจากเป็นหมวดหมู่ทั่วไปเริ่มต้น"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -3173,13 +3267,16 @@ msgid ""
 ", they are used in other pricelist(s):\n"
 "%s"
 msgstr ""
+"คุณไม่สามารถลบรายการราคาเหล่านั้นได้:\n"
+"(%s)\n"
+"จะถูกใช้ในรายการราคาอื่นๆ:\n"
+"%s"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
 #, python-format
-msgid ""
-"You cannot move the attribute %s from the product %s to the product %s."
-msgstr ""
+msgid "You cannot delete value %s because it was used in some products."
+msgstr "คุณไม่สามารถลบค่า %s ได้ เนื่องจากมีการใช้งานในบางผลิตภัณฑ์อยู่"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -3191,12 +3288,21 @@ msgstr ""
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
+#, python-format
+msgid ""
+"You cannot move the attribute %s from the product %s to the product %s."
+msgstr ""
+
+#. module: product
+#: code:addons/product/models/product_attribute.py:0
 #: code:addons/product/models/product_attribute.py:0
 #, python-format
 msgid ""
 "You cannot update related variants from the values. Please update related "
 "values from the variants."
 msgstr ""
+"คุณไม่สามารถอัปเดตรูปแบบที่เกี่ยวข้องจากมูลค่าได้ "
+"โปรดอัปเดตค่าที่เกี่ยวข้องจากตัวเลือกย่อยสินค้า"
 
 #. module: product
 #: model_terms:ir.actions.act_window,help:product.product_normal_action
@@ -3216,6 +3322,10 @@ msgid ""
 "                The product form contains information to simplify the sale process:\n"
 "                price, notes in the quotation, accounting data, procurement methods, etc."
 msgstr ""
+"คุณต้องกำหนดสินค้าสำหรับทุกสิ่งที่คุณขายหรือซื้อ\n"
+"               ไม่ว่าจะเป็นสินค้าที่สามารถจัดเก็บได้ สินค้าอุปโภคบริโภค หรือบริการ\n"
+"               แบบฟอร์มสินค้ามีข้อมูลเพื่อทำให้กระบวนการขายง่ายขึ้น:\n"
+"               ราคา, หมายเหตุในใบเสนอราคา, ข้อมูลทางบัญชี, วิธีการจัดซื้อจัดจ้าง ฯลฯ"
 
 #. module: product
 #: model_terms:ir.actions.act_window,help:product.product_normal_action_sell
@@ -3225,12 +3335,16 @@ msgid ""
 "                The product form contains information to simplify the sale process:\n"
 "                price, notes in the quotation, accounting data, procurement methods, etc."
 msgstr ""
+"คุณต้องกำหนดสินค้าสำหรับทุกสิ่งที่คุณขาย ไม่ว่าจะเป็นผลิตภัณฑ์ที่จับต้องได้\n"
+"              อุปโภคบริโภคหรือบริการที่คุณเสนอให้กับลูกค้า\n"
+"              แบบฟอร์มสินค้ามีข้อมูลเพื่อทำให้กระบวนการขายง่ายขึ้น:\n"
+"              ราคา, หมายเหตุในใบเสนอราคา, ข้อมูลทางบัญชี, วิธีการจัดซื้อ ฯลฯ"
 
 #. module: product
 #: code:addons/product/wizard/product_label_layout.py:0
 #, python-format
 msgid "You need to set a positive quantity."
-msgstr ""
+msgstr "คุณต้องกำหนดปริมาณที่เป็นบวก"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_form_view
@@ -3241,7 +3355,7 @@ msgstr "วัน"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "e.g. Cheese Burger"
-msgstr ""
+msgstr "เช่น ชีสเบอร์เกอร์"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_category_form_view
@@ -3256,12 +3370,12 @@ msgstr "เช่น การสมัครสมาชิก Odoo สำห�
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view
 msgid "e.g. USD Retailers"
-msgstr ""
+msgstr "เช่น ผู้ค้าปลีก USD"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "per"
-msgstr ""
+msgstr "ต่อ"
 
 #. module: product
 #: code:addons/product/models/product.py:0
@@ -3278,7 +3392,7 @@ msgstr "บริษัทแม่"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "the product template."
-msgstr ""
+msgstr "เทมเพลตสินค้า"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_form_view

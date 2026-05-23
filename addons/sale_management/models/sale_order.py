@@ -128,6 +128,11 @@ class SaleOrder(models.Model):
 
             order_lines.append((0, 0, data))
 
+        # set first line to sequence -99, so a resequence on first page doesn't cause following page
+        # lines (that all have sequence 10 by default) to get mixed in the first page
+        if len(order_lines) >= 2:
+            order_lines[1][2]['sequence'] = -99
+
         self.order_line = order_lines
         self.order_line._compute_tax_id()
 
@@ -186,7 +191,8 @@ class SaleOrderLine(models.Model):
         if self.product_id and self.order_id.sale_order_template_id:
             for line in self.order_id.sale_order_template_id.sale_order_template_line_ids:
                 if line.product_id == self.product_id:
-                    self.name = line.with_context(lang=self.order_id.partner_id.lang).name + self._get_sale_order_line_multiline_description_variants()
+                    lang = self.order_id.partner_id.lang
+                    self.name = line.with_context(lang=lang).name + self.with_context(lang=lang)._get_sale_order_line_multiline_description_variants()
                     break
         return domain
 

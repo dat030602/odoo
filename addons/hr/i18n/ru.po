@@ -20,15 +20,16 @@
 # Диляра Дельтаева <dilya.kz93@gmail.com>, 2021
 # Evgeniia Kotova, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 10:28+0000\n"
+"POT-Creation-Date: 2024-08-14 15:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:22+0000\n"
-"Last-Translator: Сергей Шебанин <sergey@shebanin.ru>, 2022\n"
-"Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -1846,7 +1847,7 @@ msgstr "Крайний срок моего действия"
 
 #. module: hr
 #. openerp-web
-#: code:addons/hr/static/src/xml/hr_templates.xml:0
+#: code:addons/hr/static/src/js/user_menu.js:0
 #, python-format
 msgid "My Profile"
 msgstr "Мои данные"
@@ -2926,8 +2927,8 @@ msgstr "Действующее разрешение на работу в Бел�
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__visa_expire
 #: model:ir.model.fields,field_description:hr.field_res_users__visa_expire
-msgid "Visa Expire Date"
-msgstr "Виза действительна до"
+msgid "Visa Expiration Date"
+msgstr "Дата окончания срока действия визы"
 
 #. module: hr
 #: model:ir.model.fields,field_description:hr.field_hr_employee__visa_no
@@ -3106,6 +3107,12 @@ msgstr ""
 #, python-format
 msgid "You cannot create recursive departments."
 msgstr "Вы не можете создавать рекурсивные отделы."
+
+#. module: hr
+#: code:addons/hr/models/hr_employee.py:0
+#, python-format
+msgid "You do not have access to this document."
+msgstr "У вас нет доступа к этому документу."
 
 #. module: hr
 #: code:addons/hr/models/res_config_settings.py:0

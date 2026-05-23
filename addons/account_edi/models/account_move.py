@@ -2,9 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+import math
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from odoo.tools import frozendict
 
 
 class AccountMove(models.Model):
@@ -159,6 +161,7 @@ class AccountMove(models.Model):
                 tax_details['base_amount_currency'] += tax_values['base_amount_currency']
         tax_details['tax_amount'] += tax_values['tax_amount']
         tax_details['tax_amount_currency'] += tax_values['tax_amount_currency']
+        tax_details['exemption_reason'] = tax_values['tax_id'].name
         tax_details['group_tax_details'].append(tax_values)
 
     def _prepare_edi_tax_details(self, filter_to_apply=None, filter_invl_to_apply=None, grouping_key_generator=None, compute_mode='tax_details'):
@@ -240,9 +243,6 @@ class AccountMove(models.Model):
         '''
         self.ensure_one()
 
-        def _serialize_python_dictionary(vals):
-            return '-'.join(str(vals[k]) for k in sorted(vals.keys()))
-
         def default_grouping_key_generator(tax_values):
             return {'tax': tax_values['tax_id']}
 
@@ -286,14 +286,18 @@ class AccountMove(models.Model):
                 invoice_lines_tax_values_dict[invoice_line] = []
                 rate = abs(invoice_line.balance) / abs(invoice_line.amount_currency) if invoice_line.amount_currency else 0.0
                 for tax_res in taxes_res['taxes']:
+                    tax_amount = tax_res['amount'] * rate
+                    if self.company_id.tax_calculation_rounding_method == 'round_per_line':
+                        tax_amount = invoice_line.company_currency_id.round(tax_amount)
                     invoice_lines_tax_values_dict[invoice_line].append({
                         'base_line_id': invoice_line,
                         'tax_id': self.env['account.tax'].browse(tax_res['id']),
                         'tax_repartition_line_id': self.env['account.tax.repartition.line'].browse(tax_res['tax_repartition_line_id']),
                         'base_amount': sign * invoice_line.company_currency_id.round(tax_res['base'] * rate),
-                        'tax_amount': sign * invoice_line.company_currency_id.round(tax_res['amount'] * rate),
+                        'tax_amount': sign * tax_amount,
                         'base_amount_currency': sign * tax_res['base'],
                         'tax_amount_currency': sign * tax_res['amount'],
+                        'tax_vals': tax_res,
                     })
             return invoice_lines_tax_values_dict
 
@@ -306,6 +310,59 @@ class AccountMove(models.Model):
             invoice_lines_tax_values_dict = compute_invoice_lines_tax_values_dict_from_compute_all(invoice_lines)
         else:
             invoice_lines_tax_values_dict = compute_invoice_lines_tax_values_dict_from_tax_details(invoice_lines)
+
+        # For compute_mode 'tax_details' the values in invoice_lines_tax_values_dict are already rounded
+        # (in the SQL query)
+        if compute_mode == 'compute_all' and self.env.company.tax_calculation_rounding_method == 'round_globally':
+            # Aggregate all amounts according the tax lines grouping key.
+            comp_currency = self.env.company.currency_id
+            amount_per_tax_repartition_line_id = defaultdict(lambda: {
+                'tax_amount': 0.0,
+                'tax_amount_currency': 0.0,
+                'tax_values_list': [],
+            })
+            for line, tax_values_list in invoice_lines_tax_values_dict.items():
+                currency = line.currency_id or comp_currency
+                for tax_values in tax_values_list:
+                    grouping_key = frozendict(self._get_tax_grouping_key_from_base_line(line, tax_values['tax_vals']))
+                    total_amounts = amount_per_tax_repartition_line_id[grouping_key]
+                    total_amounts['tax_amount_currency'] += tax_values['tax_amount_currency']
+                    total_amounts['tax_amount'] += tax_values['tax_amount']
+                    total_amounts['tax_values_list'].append(tax_values)
+
+            # Round them like what the creation of tax lines would do.
+            for key, values in amount_per_tax_repartition_line_id.items():
+                currency = self.env['res.currency'].browse(key['currency_id']) or comp_currency
+                values['tax_amount_rounded'] = comp_currency.round(values['tax_amount'])
+                values['tax_amount_currency_rounded'] = currency.round(values['tax_amount_currency'])
+
+            # Dispatch the amount accross the tax values.
+            for key, values in amount_per_tax_repartition_line_id.items():
+                foreign_currency = self.env['res.currency'].browse(key['currency_id']) or comp_currency
+                for currency, amount_field in ((comp_currency, 'tax_amount'), (foreign_currency, 'tax_amount_currency')):
+                    raw_value = values[amount_field]
+                    rounded_value = values[f'{amount_field}_rounded']
+                    diff = rounded_value - raw_value
+                    abs_diff = abs(diff)
+                    diff_sign = -1 if diff < 0 else 1
+                    tax_values_list = values['tax_values_list']
+                    nb_error = math.ceil(abs_diff / currency.rounding)
+                    nb_cents_per_tax_values = math.floor(nb_error / len(tax_values_list))
+                    nb_extra_cent = nb_error % len(tax_values_list)
+
+                    for tax_values in tax_values_list:
+                        if not abs_diff:
+                            break
+
+                        nb_amount_curr_cent = nb_cents_per_tax_values
+                        if nb_extra_cent:
+                            nb_amount_curr_cent += 1
+                            nb_extra_cent -= 1
+
+                        # We can have more than one cent to distribute on a single tax_values.
+                        abs_delta_to_add = min(abs_diff, currency.rounding * nb_amount_curr_cent)
+                        tax_values[amount_field] += diff_sign * abs_delta_to_add
+                        abs_diff -= abs_delta_to_add
 
         grouping_key_generator = grouping_key_generator or default_grouping_key_generator
 
@@ -398,7 +455,7 @@ class AccountMove(models.Model):
 
             for tax_values in tax_values_list:
                 grouping_key = grouping_key_generator(tax_values)
-                serialized_grouping_key = _serialize_python_dictionary(grouping_key)
+                serialized_grouping_key = frozendict(grouping_key)
                 key_by_tax[tax_values['tax_id']] = serialized_grouping_key
 
                 # Add to invoice line global tax amounts.
@@ -450,15 +507,19 @@ class AccountMove(models.Model):
     def _update_payments_edi_documents(self):
         ''' Update the edi documents linked to the current journal entries. These journal entries must be linked to an
         account.payment of an account.bank.statement.line. This additional method is needed because the payment flow is
-        not the same as the invoice one. Indeed, the edi documents must be updated when the reconciliation with some
-        invoices is changing.
+        not the same as the invoice one. Indeed, the edi documents must be created when the payment is fully reconciled
+        with invoices.
         '''
+        payments = self.filtered(lambda move: move.payment_id or move.statement_line_id)
         edi_document_vals_list = []
-        for payment in self:
-            edi_formats = payment._get_reconciled_invoices().journal_id.edi_format_ids + payment.edi_document_ids.edi_format_id
-            edi_formats = self.env['account.edi.format'].browse(edi_formats.ids) # Avoid duplicates
+        to_remove = self.env['account.edi.document']
+        for payment in payments:
+            edi_formats = payment._get_reconciled_invoices().journal_id.edi_format_ids | payment.edi_document_ids.edi_format_id
             for edi_format in edi_formats:
+                # Only recreate document when cancelled before.
                 existing_edi_document = payment.edi_document_ids.filtered(lambda x: x.edi_format_id == edi_format)
+                if existing_edi_document.state == 'sent':
+                    continue
 
                 if edi_format._is_required_for_payment(payment):
                     if existing_edi_document:
@@ -474,14 +535,11 @@ class AccountMove(models.Model):
                             'state': 'to_send',
                         })
                 elif existing_edi_document:
-                    existing_edi_document.write({
-                        'state': False,
-                        'error': False,
-                        'blocking_level': False,
-                    })
+                    to_remove |= existing_edi_document
 
+        to_remove.unlink()
         self.env['account.edi.document'].create(edi_document_vals_list)
-        self.edi_document_ids._process_documents_no_web_services()
+        payments.edi_document_ids._process_documents_no_web_services()
 
     def _is_ready_to_be_sent(self):
         # OVERRIDE
@@ -551,6 +609,7 @@ class AccountMove(models.Model):
         res = super().button_draft()
 
         self.edi_document_ids.write({'error': False, 'blocking_level': False})
+        self.edi_document_ids.filtered(lambda doc: doc.state == 'to_send').unlink()
 
         return res
 
@@ -559,6 +618,7 @@ class AccountMove(models.Model):
         '''
         to_cancel_documents = self.env['account.edi.document']
         for move in self:
+            move._check_fiscalyear_lock_date()
             is_move_marked = False
             for doc in move.edi_document_ids:
                 if doc.edi_format_id._needs_web_services() \
@@ -588,7 +648,7 @@ class AccountMove(models.Model):
             if is_move_marked:
                 move.message_post(body=_("A request for cancellation of the EDI has been called off."))
 
-        documents.write({'state': 'sent'})
+        documents.write({'state': 'sent', 'error': False, 'blocking_level': False})
 
     def _get_edi_document(self, edi_format):
         return self.edi_document_ids.filtered(lambda d: d.edi_format_id == edi_format)
@@ -616,9 +676,12 @@ class AccountMove(models.Model):
     # Business operations
     ####################################################
 
-    def action_process_edi_web_services(self):
+    def button_process_edi_web_services(self):
+        self.action_process_edi_web_services(with_commit=False)
+
+    def action_process_edi_web_services(self, with_commit=True):
         docs = self.edi_document_ids.filtered(lambda d: d.state in ('to_send', 'to_cancel') and d.blocking_level != 'error')
-        docs._process_documents_web_services()
+        docs._process_documents_web_services(with_commit=with_commit)
 
     def _retry_edi_documents_error_hook(self):
         ''' Hook called when edi_documents are retried. For example, when it's needed to clean a field.
@@ -662,7 +725,9 @@ class AccountMoveLine(models.Model):
             'price_subtotal_unit': self.currency_id.round(self.price_subtotal / self.quantity) if self.quantity else 0.0,
             'price_total_unit': self.currency_id.round(self.price_total / self.quantity) if self.quantity else 0.0,
             'price_discount': gross_price_subtotal - self.price_subtotal,
+            'price_discount_unit': (gross_price_subtotal - self.price_subtotal) / self.quantity if self.quantity else 0.0,
             'gross_price_total_unit': self.currency_id.round(gross_price_subtotal / self.quantity) if self.quantity else 0.0,
+            'unece_uom_code': self.product_id.product_tmpl_id.uom_id._get_unece_code(),
         }
         return res
 
@@ -672,40 +737,6 @@ class AccountMoveLine(models.Model):
         # there is at least one reconciled invoice to the payment. Then, we need to update the state of the edi
         # documents during the reconciliation.
         all_lines = self + self.matched_debit_ids.debit_move_id + self.matched_credit_ids.credit_move_id
-        payments = all_lines.move_id.filtered(lambda move: move.payment_id or move.statement_line_id)
-
-        invoices_per_payment_before = {pay: pay._get_reconciled_invoices() for pay in payments}
         res = super().reconcile()
-        invoices_per_payment_after = {pay: pay._get_reconciled_invoices() for pay in payments}
-
-        changed_payments = self.env['account.move']
-        for payment, invoices_after in invoices_per_payment_after.items():
-            invoices_before = invoices_per_payment_before[payment]
-
-            if set(invoices_after.ids) != set(invoices_before.ids):
-                changed_payments |= payment
-        changed_payments._update_payments_edi_documents()
-
-        return res
-
-    def remove_move_reconcile(self):
-        # OVERRIDE
-        # When a payment has been sent to the government, it usually contains some information about reconciled
-        # invoices. If the user breaks a reconciliation, the related payments must be cancelled properly and then, a new
-        # electronic document must be generated.
-        all_lines = self + self.matched_debit_ids.debit_move_id + self.matched_credit_ids.credit_move_id
-        payments = all_lines.move_id.filtered(lambda move: move.payment_id or move.statement_line_id)
-
-        invoices_per_payment_before = {pay: pay._get_reconciled_invoices() for pay in payments}
-        res = super().remove_move_reconcile()
-        invoices_per_payment_after = {pay: pay._get_reconciled_invoices() for pay in payments}
-
-        changed_payments = self.env['account.move']
-        for payment, invoices_after in invoices_per_payment_after.items():
-            invoices_before = invoices_per_payment_before[payment]
-
-            if set(invoices_after.ids) != set(invoices_before.ids):
-                changed_payments |= payment
-        changed_payments._update_payments_edi_documents()
-
+        all_lines.move_id._update_payments_edi_documents()
         return res

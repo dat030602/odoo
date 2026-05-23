@@ -5,17 +5,18 @@
 # Translators:
 # Bohdan Lisnenko, 2021
 # ТАрас <tratatuta@i.ua>, 2021
-# Martin Trigaux, 2021
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2022
+# Martin Trigaux, 2024
+# Wil Odoo, 2024
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:19+0000\n"
+"POT-Creation-Date: 2024-08-14 15:42+0000\n"
 "PO-Revision-Date: 2021-09-14 12:25+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2022\n"
-"Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024\n"
+"Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -522,6 +523,14 @@ msgstr "<span class=\"fa fa-user mr-2\" aria-label=\"Partner\" title=\"Partner\"
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.edit_project
 msgid ""
+"<span class=\"font-weight-bold oe_read_only\" attrs=\"{'invisible': [('alias_name', '!=', False)]}\" style=\"opacity: 0.7;\">Create tasks by sending an email to </span>\n"
+"                                        <span class=\"font-weight-bold oe_read_only text-dark\" attrs=\"{'invisible': [('alias_name', '=', False)]}\">Create tasks by sending an email to </span>\n"
+"                                        <span class=\"font-weight-bold oe_edit_only text-dark\">Create tasks by sending an email to </span>"
+msgstr ""
+
+#. module: project
+#: model_terms:ir.ui.view,arch_db:project.edit_project
+msgid ""
 "<span class=\"o_stat_text\">\n"
 "                                    Collaborators\n"
 "                                </span>"
@@ -577,17 +586,6 @@ msgstr "<span class=\"o_stat_text\">Валовий дохід</span>"
 #: model_terms:ir.ui.view,arch_db:project.view_task_form2
 msgid "<span class=\"o_stat_text\">in Recurrence</span>"
 msgstr "<span class=\"o_stat_text\">у повторенні</span>"
-
-#. module: project
-#: model_terms:ir.ui.view,arch_db:project.edit_project
-msgid ""
-"<span class=\"oe_read_only\" attrs=\"{'invisible': [('alias_name', '!=', False)]}\">Create tasks by sending an email to </span>\n"
-"                                        <span class=\"font-weight-bold oe_read_only\" attrs=\"{'invisible': [('alias_name', '=', False)]}\">Create tasks by sending an email to </span>\n"
-"                                        <span class=\"font-weight-bold oe_edit_only\">Create tasks by sending an email to </span>"
-msgstr ""
-"<span class=\"oe_read_only\" attrs=\"{'invisible': [('alias_name', '!=', False)]}\">Створюйте завдання, надсилаючи електронний лист </span>\n"
-"                                        <span class=\"font-weight-bold oe_read_only\" attrs=\"{'invisible': [('alias_name', '=', False)]}\">Створюйте завдання, надсилаючи електронний лист </span>\n"
-"                                        <span class=\"font-weight-bold oe_edit_only\">Створюйте завдання, надсилаючи електронний лист </span>"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_delete_wizard_form
@@ -682,6 +680,16 @@ msgstr ""
 "ласка, видаліть дублікати та повторіть спробу."
 
 #. module: project
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid ""
+"A personal stage cannot be linked to a project because it is only visible to"
+" its corresponding user."
+msgstr ""
+"Особистий етап не можна пов’язати з проектом, оскільки його бачить лише "
+"відповідний користувач."
+
+#. module: project
 #: model:ir.model.constraint,message:project.constraint_project_task_user_rel_project_personal_stage_unique
 msgid "A task can only have a single personal stage per user."
 msgstr "Завдання може мати лише один персональний етап на одного користувача."
@@ -762,6 +770,7 @@ msgid "Add Milestone"
 msgstr "Додати віху"
 
 #. module: project
+#: model_terms:ir.ui.view,arch_db:project.personal_task_type_edit
 #: model_terms:ir.ui.view,arch_db:project.task_type_edit
 msgid "Add a description..."
 msgstr "Додати опис..."
@@ -939,6 +948,7 @@ msgstr "Архівувати проект"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.edit_project
+#: model_terms:ir.ui.view,arch_db:project.personal_task_type_edit
 #: model_terms:ir.ui.view,arch_db:project.project_project_stage_view_form
 #: model_terms:ir.ui.view,arch_db:project.project_project_stage_view_search
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_form
@@ -949,6 +959,14 @@ msgstr "Архівувати проект"
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Archived"
 msgstr "Заархівовано"
+
+#. module: project
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid "Archived tasks cannot be recurring. Please unarchive the task first."
+msgstr ""
+"Архівовані завдання не можуть бути повторюваними. Спочатку розархівуйте "
+"завдання."
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_delete_confirmation_wizard
@@ -984,16 +1002,6 @@ msgid "Assign to Me"
 msgstr "Призначити мені"
 
 #. module: project
-#: model_terms:ir.ui.view,help:project.project_sharing_project_task_view_kanban
-msgid " assignee"
-msgstr "виконавець"
-
-#. module: project
-#: model_terms:ir.ui.view,help:project.project_sharing_project_task_view_kanban
-msgid " assignees"
-msgstr "виконавці"
-
-#. module: project
 #. openerp-web
 #: code:addons/project/static/src/js/project_task_kanban_examples.js:0
 #, python-format
@@ -1012,7 +1020,6 @@ msgid "Assigned to"
 msgstr "Призначено для"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:0
 #: model:ir.model.fields,field_description:project.field_project_task__user_ids
 #: model:ir.model.fields,field_description:project.field_project_task_burndown_chart_report__user_ids
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__user_ids
@@ -1023,7 +1030,6 @@ msgstr "Призначено для"
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_tree
 #: model_terms:ir.ui.view,arch_db:project.view_task_project_user_search
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
-#, python-format
 msgid "Assignees"
 msgstr "Уповноважені"
 
@@ -1200,6 +1206,26 @@ msgstr "Діаграма вигорання"
 #: model:project.task.type,legend_done:project.project_stage_1
 msgid "Buzz or set as done"
 msgstr "Залиште або встановіть як виконано"
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__day
+msgid "By Day"
+msgstr ""
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__month
+msgid "By Month"
+msgstr ""
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__year
+msgid "By Year"
+msgstr ""
+
+#. module: project
+#: model:ir.model.fields.selection,name:project.selection__project_task_burndown_chart_report__date_group_by__quarter
+msgid "By quarter"
+msgstr ""
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_delete_wizard_form
@@ -1680,22 +1706,6 @@ msgstr ""
 "вирішення задачі чи проблеми."
 
 #. module: project
-#: model:ir.model.fields,help:project.field_project_project__privacy_visibility
-#: model:ir.model.fields,help:project.field_project_task__project_privacy_visibility
-msgid ""
-"Defines the visibility of the tasks of the project:\n"
-"- Invited employees: employees may only see the followed project and tasks.\n"
-"- All employees: employees may see all project and tasks.\n"
-"- Invited portal users and all employees: employees may see everything.   Invited portal users may see project and tasks followed by.\n"
-"   them or by someone of their company."
-msgstr ""
-"Визначає видимість завдань проекту:\n"
-"- Запрошені співробітники: співробітники можуть бачити лише проект і завдання, на які він підписаний.\n"
-"- Усі співробітники: співробітники можуть бачити всі проекти та завдання.\n"
-"- Запрошені користувачі порталу та всі співробітники: співробітники можуть бачити все. Запрошені користувачі порталу можуть побачити проект і завдання, на який він підписаний.\n"
-"  ними або кимось із їхньої компанії."
-
-#. module: project
 #: model:ir.actions.server,name:project.unlink_project_action
 #: model:ir.actions.server,name:project.unlink_task_type_action
 #: model_terms:ir.ui.view,arch_db:project.view_project_task_type_delete_wizard
@@ -1884,6 +1894,13 @@ msgstr "Напр.: Запуск товару"
 #: model_terms:ir.ui.view,arch_db:project.view_task_kanban
 msgid "Edit"
 msgstr "Редагувати"
+
+#. module: project
+#. openerp-web
+#: code:addons/project/static/src/js/project_kanban.js:0
+#, python-format
+msgid "Edit Personal Stage"
+msgstr "Редагувати персональний етап"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.view_task_form2
@@ -2087,6 +2104,7 @@ msgstr "П’ятниця"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_search
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Future Activities"
 msgstr "Майбутні дії"
@@ -2217,12 +2235,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project.project_update_default_description
 msgid "How’s this project going?"
 msgstr "Як просувається цей проект?"
-
-#. module: project
-#: code:addons/project/models/project.py:0
-#, python-format
-msgid "I take it"
-msgstr "Беру собі"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_collaborator__id
@@ -2500,11 +2512,32 @@ msgstr "Здається, що деякі завдання є частиною �
 
 #. module: project
 #. openerp-web
+#: code:addons/project/static/src/js/project_list.js:0
+#, python-format
+msgid ""
+"It seems that some tasks are part of a recurrence. At least one of them must"
+" be kept as a model to create the next occurences."
+msgstr ""
+"Здається, що деякі завдання є частиною повторення. Принаймні один із них має"
+" бути збережений як модель для створення наступних випадків."
+
+#. module: project
+#. openerp-web
 #: code:addons/project/static/src/js/project_form.js:0
 #: code:addons/project/static/src/js/project_list.js:0
 #, python-format
 msgid "It seems that this task is part of a recurrence."
 msgstr "Здається, що це завдання є частиною повторення."
+
+#. module: project
+#. openerp-web
+#: code:addons/project/static/src/js/project_form.js:0
+#: code:addons/project/static/src/js/project_list.js:0
+#, python-format
+msgid ""
+"It seems that this task is part of a recurrence. You must keep it as a model"
+" to create the next occurences."
+msgstr ""
 
 #. module: project
 #: model:ir.model.fields.selection,name:project.selection__project_task__repeat_month__january
@@ -2658,6 +2691,7 @@ msgid "Last Updated on"
 msgstr "Останнє оновлення"
 
 #. module: project
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Late Activities"
 msgstr "Останні дії"
@@ -3380,6 +3414,40 @@ msgstr ""
 "Батьківська модель, що містить псевдонім. Модель, яка містить посилання на "
 "псевдонім, не обов'язково являє собою модель, що дається alias_model_id "
 "(наприклад: проект (parent_model) і завдання (model))"
+
+#. module: project
+#: model:ir.model.fields,help:project.field_project_project__privacy_visibility
+#: model:ir.model.fields,help:project.field_project_task__project_privacy_visibility
+msgid ""
+"People to whom this project and its tasks will be visible.\n"
+"\n"
+"- Invited internal users: when following a project, internal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+" A user with the project > administrator access right level can still access this project and its tasks, even if they are not explicitly part of the followers.\n"
+"\n"
+"- All internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"\n"
+"- Invited portal users and all internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"When following a project, portal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+"\n"
+"When a project is shared in read-only, the portal user is redirected to their portal. They can view the tasks, but not edit them.\n"
+"When a project is shared in edit, the portal user is redirected to the kanban and list views of the tasks. They can modify a selected number of fields on the tasks.\n"
+"\n"
+"In any case, an internal user with no project access rights can still access a task, provided that they are given the corresponding URL (and that they are part of the followers if the project is private)."
+msgstr ""
+"Люди, яким буде видно цей проект та його завдання.\n"
+"\n"
+"- Запрошені внутрішні користувачі: під час перегляду проекту внутрішні користувачі отримають доступ до всіх його завдань без різниці. В іншому випадку вони отримають доступ лише до конкретних завдань, які виконують.\n"
+" Користувач із рівнем прав доступу до проекту > адміністратора все ще може отримати доступ до цього проекту та його завдань, навіть якщо він явно не є частиною підписників.\n"
+"\n"
+"- Усі внутрішні користувачі: усі внутрішні користувачі можуть отримати доступ до проекту та всіх його завдань без різниці.\n"
+"\n"
+"- Запрошені користувачі порталу та всі внутрішні користувачі: усі внутрішні користувачі можуть отримати доступ до проекту та всіх його завдань без різниці.\n"
+"Під час перегляду проекту користувачі порталу отримають доступ до всіх його завдань без різниці. В іншому випадку вони отримають доступ лише до конкретних завдань, які виконують.\n"
+"\n"
+"Коли проект надається лише для читання, користувач порталу перенаправляється на свій портал. Вони можуть переглядати завдання, але не редагувати їх.\n"
+"Коли проект надається спільно в редагуванні, користувач порталу перенаправляється на канбан і список завдань. Вони можуть змінювати вибрану кількість полів у завданнях.\n"
+"\n"
+"У будь-якому випадку внутрішній користувач без прав доступу до проекту все ще може отримати доступ до завдання за умови, що йому надано відповідну URL-адресу (і що він є частиною підписників, якщо проект приватний)."
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project__rating_percentage_satisfaction
@@ -4287,6 +4355,7 @@ msgid "Show Project on Dashboard"
 msgstr "Показати Проект на Панелі приладів"
 
 #. module: project
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Show all records which has next action date is before today"
 msgstr "Показати всі записи, які мають дату наступної дії до сьогоднішньої"
@@ -4593,6 +4662,7 @@ msgstr "Повторення завдання"
 
 #. module: project
 #: model:ir.model,name:project.model_project_task_type
+#: model_terms:ir.ui.view,arch_db:project.personal_task_type_edit
 #: model_terms:ir.ui.view,arch_db:project.task_type_edit
 #: model_terms:ir.ui.view,arch_db:project.task_type_tree
 msgid "Task Stage"
@@ -4661,6 +4731,7 @@ msgid "Task: Reception Acknowledgment"
 msgstr "Завдання: Підтвердження отримання"
 
 #. module: project
+#: code:addons/project/models/project.py:0
 #: code:addons/project/models/project.py:0
 #: model:ir.actions.act_window,name:project.act_project_project_2_project_task_all
 #: model:ir.actions.act_window,name:project.action_view_task
@@ -4997,6 +5068,7 @@ msgstr "Сьогодні"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_search
+#: model_terms:ir.ui.view,arch_db:project.view_project_project_filter
 #: model_terms:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Today Activities"
 msgstr "Сьогоднішні дії"
@@ -5351,12 +5423,6 @@ msgstr ""
 #. module: project
 #: code:addons/project/models/project.py:0
 #, python-format
-msgid "You cannot %s %s fields in task."
-msgstr "Ви не можете %s %s поля у завданні."
-
-#. module: project
-#: code:addons/project/models/project.py:0
-#, python-format
 msgid ""
 "You cannot archive recurring tasks. Please disable the recurrence first."
 msgstr ""
@@ -5417,6 +5483,18 @@ msgstr ""
 #. module: project
 #: code:addons/project/models/project.py:0
 #, python-format
+msgid "You cannot read %s fields in task."
+msgstr "Ви не можете читати %s поля на завданні."
+
+#. module: project
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid "You cannot write on %s fields in task."
+msgstr "Ви не можете писати на %s полях на завданні."
+
+#. module: project
+#: code:addons/project/models/project.py:0
+#, python-format
 msgid "You have been assigned to %s"
 msgstr "Вас було призначено на %s"
 
@@ -5430,6 +5508,26 @@ msgstr "Ви були призначені на"
 #, python-format
 msgid "You have not write access of %s field."
 msgstr "У вас немає доступу писати в полі %s."
+
+#. module: project
+#: code:addons/project/models/project.py:0
+#, python-format
+msgid ""
+"You should at least have one personal stage. Create a new stage to which the"
+" tasks can be transferred after this one is deleted."
+msgstr ""
+"У вас повинен бути хоча б один особистий етап. Створіть новий етап, на який "
+"можна буде перенести завдання після видалення цього."
+
+#. module: project
+#: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_kanban
+msgid "assignee"
+msgstr "виконавець"
+
+#. module: project
+#: model_terms:ir.ui.view,arch_db:project.project_sharing_project_task_view_kanban
+msgid "assignees"
+msgstr "виконавці"
 
 #. module: project
 #: model_terms:ir.ui.view,arch_db:project.project_sharing_quick_create_task_form

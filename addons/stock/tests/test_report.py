@@ -17,6 +17,15 @@ class TestReportsCommon(TransactionCase):
         cls.supplier_location = cls.env['stock.location'].browse(cls.ModelDataObj._xmlid_to_res_id('stock.stock_location_suppliers'))
         cls.stock_location = cls.env['stock.location'].browse(cls.ModelDataObj._xmlid_to_res_id('stock.stock_location_stock'))
 
+        cls.product1 = cls.env['product.product'].create({
+            'name': 'Mellohi"',
+            'type': 'product',
+            'categ_id': cls.env.ref('product.product_category_all').id,
+            'tracking': 'lot',
+            'default_code': 'C4181234""154654654654',
+            'barcode': 'scan""me'
+        })
+
         product_form = Form(cls.env['product.product'])
         product_form.detailed_type = 'product'
         product_form.name = 'Product'
@@ -39,25 +48,46 @@ class TestReportsCommon(TransactionCase):
 
 
 class TestReports(TestReportsCommon):
+
+    def test_product_label_reports(self):
+        """ Test that all the special characters are correctly rendered for the product name, the default code and the barcode.
+            In this test we test that the double quote is rendered correctly.
+        """
+        report = self.env.ref('stock.label_product_product')
+        target = b'\n\t\t\n\n\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^FO100,160^BY3\n^BCN,100,Y,N,N\n^FDscan""me^FS\n\n^XZ\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^FO100,160^BY3\n^BCN,100,Y,N,N\n^FDscan""me^FS\n\n^XZ\n\n\n\n\n'
+        rendering, qweb_type = report._render_qweb_text(self.product1.product_tmpl_id.id, {'quantity_by_product': {self.product1.product_tmpl_id.id: 2}, 'active_model': 'product.template'})
+        self.assertEqual(target, rendering.replace(b' ', b''), 'Product name, default code or barcode is not correctly rendered, make sure the quotes are escaped correctly')
+        self.assertEqual(qweb_type, 'text', 'the report type is not good')
+
+    def test_product_label_custom_barcode_reports(self):
+        """ Test that the custom barcodes are correctly rendered with special characters."""
+        report = self.env.ref('stock.label_product_product')
+        target = b'\n\t\t\n\n\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^FO100,160^BY3\n^BCN,100,Y,N,N\n^FD123"barcode^FS\n\n^XZ\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^FO100,160^BY3\n^BCN,100,Y,N,N\n^FD123"barcode^FS\n\n^XZ\n\n\n\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^FO100,160^BY3\n^BCN,100,Y,N,N\n^FDbarcode"456^FS\n\n^XZ\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^FO100,160^BY3\n^BCN,100,Y,N,N\n^FDbarcode"456^FS\n\n^XZ\n\n\n\n\n'
+        rendering, qweb_type = report._render_qweb_text(self.product1.product_tmpl_id.id, {'custom_barcodes': {self.product1.product_tmpl_id.id: [('123"barcode', 2), ('barcode"456', 2)]}, 'quantity_by_product': {}, 'active_model': 'product.template'})
+        self.assertEqual(target, rendering.replace(b' ', b''), 'Custom barcodes are most likely not corretly rendered, make sure the quotes are escaped correctly')
+        self.assertEqual(qweb_type, 'text', 'the report type is not good')
+
     def test_reports(self):
-        product1 = self.env['product.product'].create({
-            'name': 'Mellohi',
-            'default_code': 'C418',
-            'type': 'product',
-            'categ_id': self.env.ref('product.product_category_all').id,
-            'tracking': 'lot',
-            'barcode': 'scan_me'
-        })
         lot1 = self.env['stock.production.lot'].create({
-            'name': 'Volume-Beta',
-            'product_id': product1.id,
+            'name': 'Volume-Beta"',
+            'product_id': self.product1.id,
             'company_id': self.env.company.id,
         })
         report = self.env.ref('stock.label_lot_template')
-        target = b'\n\n\n^XA\n^FO100,50\n^A0N,44,33^FD[C418]Mellohi^FS\n^FO100,100\n^A0N,44,33^FDLN/SN:Volume-Beta^FS\n^FO100,150^BY3\n^BCN,100,Y,N,N\n^FDVolume-Beta^FS\n^XZ\n\n\n'
+        target = b'\n\n\n^XA^CI28\n^FO100,50\n^A0N,44,33^FD[C4181234""154654654654]Mellohi"^FS\n^FO100,100\n^A0N,44,33^FDLN/SN:Volume-Beta"^FS\n^FO100,150^BY3\n^BCN,100,Y,N,N\n^FDVolume-Beta"^FS\n^XZ\n\n\n'
 
         rendering, qweb_type = report._render_qweb_text(lot1.id)
         self.assertEqual(target, rendering.replace(b' ', b''), 'The rendering is not good')
+        self.assertEqual(qweb_type, 'text', 'the report type is not good')
+
+    def test_reports_product_no_barcode(self):
+        """ Test that product without barcode is correctly rendered without a barcode.
+        """
+        report = self.env.ref('stock.label_product_product')
+        self.product1.barcode = False
+        target = b'\n\t\t\n\n\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^XZ\n\n\n\n^XA^CI28\n^FT100,80^A0N,40,30^FD[C4181234""154654654654]Mellohi"^FS\n\n^FT100,115^A0N,30,24^FDC4181234""15465^FS\n^FT100,150^A0N,30,24^FD4654654^FS\n\n\n\n^XZ\n\n\n\n\n'
+        rendering, qweb_type = report._render_qweb_text(self.product1.product_tmpl_id.id, {'quantity_by_product': {self.product1.product_tmpl_id.id: 2}, 'active_model': 'product.template'})
+        self.assertEqual(target, rendering.replace(b' ', b''), 'Product name, default code or barcode is not correctly rendered, make sure the quotes are escaped correctly')
         self.assertEqual(qweb_type, 'text', 'the report type is not good')
 
     def test_report_quantity_1(self):
@@ -977,7 +1007,7 @@ class TestReports(TestReportsCommon):
         receipt.action_confirm()
 
         # Test compute _compute_forecast_information
-        self.assertEqual(delivery.move_lines.forecast_availability, 0.0)
+        self.assertEqual(delivery.move_lines.forecast_availability, -100.0)
         self.assertEqual(delivery2.move_lines.forecast_availability, 200)
         self.assertFalse(delivery.move_lines.forecast_expected_date)
         self.assertEqual(delivery2.move_lines.forecast_expected_date, receipt.move_lines.date)
@@ -1209,7 +1239,7 @@ class TestReports(TestReportsCommon):
         self.assertEqual(lines[3]['document_out'].id, delivery_manual.id)
 
         all_delivery = delivery_by_date | delivery_at_confirm | delivery_by_date_priority | delivery_manual
-        self.assertEqual(all_delivery.move_lines.mapped("forecast_availability"), [0, 0, 0, 0])
+        self.assertEqual(all_delivery.move_lines.mapped("forecast_availability"), [-3.0, -3.0, -3.0, -3.0])
 
         # Creation of one receipt to fulfill the 2 first deliveries delivery_by_date and delivery_at_confirm
         receipt_form = Form(self.env['stock.picking'])
@@ -1222,7 +1252,7 @@ class TestReports(TestReportsCommon):
         receipt1 = receipt_form.save()
         receipt1.action_confirm()
 
-        self.assertEqual(all_delivery.move_lines.mapped("forecast_availability"), [3, 3, 0, 0])
+        self.assertEqual(all_delivery.move_lines.mapped("forecast_availability"), [3, 3, -3.0, -3.0])
 
     def test_report_reception_1_one_receipt(self):
         """ Create 2 deliveries and 1 receipt where some of the products being received

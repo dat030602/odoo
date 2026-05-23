@@ -723,3 +723,89 @@ class TestSaleService(TestCommonSaleTimesheet):
             else:
                 self.assertEqual(qty, planned_hours_for_uom[uom_in])
                 self.assertEqual(uom_out, company_time_uom.display_name)
+
+    def test_add_product_analytic_account(self):
+        """ When we have a project with an analytic account and we add a product to the task,
+            the consequent invoice line should have the same analytic account as the project.
+        """
+        # Ensure the SO has no analytic account to give to its SOLs
+        self.assertFalse(self.sale_order.analytic_account_id)
+        Product = self.env['product.product']
+        SaleOrderLine = self.env['sale.order.line']
+
+        # Create a SO with a service that creates a task
+        product_create = Product.create({
+            'name': 'Product that creates the task',
+            'type': 'service',
+            'service_type': 'timesheet',
+            'project_id': self.project_global.id,
+            'service_tracking': 'task_global_project',
+        })
+        sale_order_line_create = SaleOrderLine.create({
+            'order_id': self.sale_order.id,
+            'name': product_create.name,
+            'product_id': product_create.id,
+            'product_uom_qty': 5,
+            'product_uom': product_create.uom_id.id,
+            'price_unit': product_create.list_price,
+        })
+        self.sale_order.action_confirm()
+
+        # Add a SOL with a task_id to mimmic the "Add a product" flow on the task
+        product_add = Product.create({'name': 'Product added on task'})
+        SaleOrderLine.create({
+            'order_id': self.sale_order.id,
+            'name': product_add.name,
+            'product_id': product_add.id,
+            'product_uom_qty': 5,
+            'product_uom': product_add.uom_id.id,
+            'price_unit': product_add.list_price,
+            'task_id': sale_order_line_create.task_id.id,
+        })
+        self.sale_order._create_invoices()
+
+        # Check that the resulting invoice line and the project have the same analytic account
+        invoice_line = self.sale_order.invoice_ids.line_ids.filtered(lambda line: line.product_id == product_add)
+        self.assertEqual(invoice_line.analytic_account_id, self.project_global.analytic_account_id,
+             "SOL's analytic account should be the same as the project's")
+
+    def test_timesheet_hours_delivered_rounding(self):
+        """
+        Ensure hours are rounded consistently on SO & invoice.
+        """
+        self.env.company.project_time_mode_id.rounding = 1.0
+        self.env['sale.order.line'].create({
+            'name': self.product_delivery_timesheet3.name,
+            'product_id': self.product_delivery_timesheet3.id,
+            'product_uom_qty': 10,
+            'product_uom': self.product_delivery_timesheet3.uom_id.id,
+            'price_unit': self.product_delivery_timesheet3.list_price,
+            'order_id': self.sale_order.id,
+        })
+
+        for amount in (8.1, 8.5, 8.9):
+            order = self.sale_order.copy()
+            sol = order.order_line
+            order.action_confirm()
+
+            self.env['account.analytic.line'].create([{
+                'name': 'Test Line',
+                'project_id': sol.project_id.id,
+                'task_id': sol.task_id.id,
+                'unit_amount': amount,
+                'employee_id': self.employee_manager.id,
+            }])
+
+            invoice = order._create_invoices()
+            hours_delivered = sol._get_delivered_quantity_by_analytic([])[sol.id]
+
+            self.assertEqual(
+                order.timesheet_total_duration,
+                hours_delivered,
+                f"{amount} hours delivered should round the same for SO & timesheet",
+            )
+            self.assertEqual(
+                invoice.timesheet_total_duration,
+                hours_delivered,
+                f"{amount} hours delivered should round the same for invoice & timesheet",
+            )

@@ -8,8 +8,10 @@
 # grupoda2 <dmitrijus.ivanovas@gmail.com>, 2022
 # UAB "Draugiški sprendimai" <transifex@draugiskisprendimai.lt>, 2022
 # Denis Knotko <denis_knotko@yahoo.com>, 2022
-# Linas Versada <linaskrisiukenas@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2022
+# Jonas Zinkevicius <jozi@odoo.com>, 2023
+# Linas Versada <linaskrisiukenas@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
@@ -17,8 +19,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-11-16 13:18+0000\n"
 "PO-Revision-Date: 2021-09-14 12:25+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: Lithuanian (https://www.transifex.com/odoo/teams/41243/lt/)\n"
+"Last-Translator: Linas Versada <linaskrisiukenas@gmail.com>, 2024\n"
+"Language-Team: Lithuanian (https://app.transifex.com/odoo/teams/41243/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -27,10 +29,17 @@ msgstr ""
 
 #. module: pos_sale
 #. openerp-web
+#: code:addons/pos_sale/static/src/xml/OrderManagementScreen/SaleOrderRow.xml:0
+#, python-format
+msgid "(left:"
+msgstr ""
+
+#. module: pos_sale
+#. openerp-web
 #: code:addons/pos_sale/static/src/xml/ProductScreen/Orderline.xml:0
 #, python-format
 msgid "(tax incl.)"
-msgstr ""
+msgstr "(su PVM)"
 
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.pos_config_view_form_pos_sale
@@ -40,19 +49,19 @@ msgstr ""
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.pos_config_view_form_pos_sale
 msgid "<span class=\"o_form_label\">Sales Team</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Pardavimo komanda</span>"
 
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.report_invoice_document
 msgid "<span style=\"margin: 0px 5px;\">:</span>"
-msgstr ""
+msgstr "<span style=\"margin: 0px 5px;\">:</span>"
 
 #. module: pos_sale
 #. openerp-web
 #: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
 #, python-format
 msgid "Apply a down payment"
-msgstr ""
+msgstr "Pritaikyti avansinį mokėjimą"
 
 #. module: pos_sale
 #. openerp-web
@@ -66,7 +75,7 @@ msgstr "Grįžti"
 #: code:addons/pos_sale/static/src/xml/OrderManagementScreen/MobileSaleOrderManagementScreen.xml:0
 #, python-format
 msgid "Back to list"
-msgstr ""
+msgstr "Grįžti į sąrašą"
 
 #. module: pos_sale
 #. openerp-web
@@ -97,6 +106,13 @@ msgstr "Klientas"
 
 #. module: pos_sale
 #. openerp-web
+#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
+#, python-format
+msgid "Customer loading error"
+msgstr ""
+
+#. module: pos_sale
+#. openerp-web
 #: code:addons/pos_sale/static/src/xml/OrderManagementScreen/SaleOrderList.xml:0
 #: code:addons/pos_sale/static/src/xml/OrderManagementScreen/SaleOrderRow.xml:0
 #, python-format
@@ -106,7 +122,7 @@ msgstr "Data"
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.message_body
 msgid "Delivered from"
-msgstr ""
+msgstr "Pristatyta iš"
 
 #. module: pos_sale
 #. openerp-web
@@ -140,6 +156,13 @@ msgstr ""
 
 #. module: pos_sale
 #. openerp-web
+#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
+#, python-format
+msgid "Error amount too high"
+msgstr ""
+
+#. module: pos_sale
+#. openerp-web
 #: code:addons/pos_sale/static/src/xml/ReceiptScreen/OrderReceipt.xml:0
 #: model_terms:ir.ui.view,arch_db:pos_sale.report_invoice_document
 #, python-format
@@ -169,7 +192,7 @@ msgstr ""
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order_line__sale_order_origin_id
 msgid "Linked Sale Order"
-msgstr ""
+msgstr "Susietas pardavimo užsakymas"
 
 #. module: pos_sale
 #: code:addons/pos_sale/models/pos_order.py:0
@@ -190,7 +213,7 @@ msgstr "Užrakinta"
 #: code:addons/pos_sale/static/src/js/SetSaleOrderButton.js:0
 #, python-format
 msgid "Network Error"
-msgstr ""
+msgstr "Ryšio klaida"
 
 #. module: pos_sale
 #: model:ir.model.fields.selection,name:pos_sale.selection__sale_report__state__pos_draft
@@ -254,7 +277,7 @@ msgstr "Apmokėta"
 #: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
 #, python-format
 msgid "Percentage of %s"
-msgstr ""
+msgstr "Procentas nuo %s"
 
 #. module: pos_sale
 #: model:ir.model,name:pos_sale.model_pos_config
@@ -340,7 +363,7 @@ msgstr ""
 #: code:addons/pos_sale/static/src/xml/ProductScreen/Orderline.xml:0
 #, python-format
 msgid "SO"
-msgstr ""
+msgstr "Pard.užsakymas"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order__sale_order_count
@@ -424,6 +447,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
 #, python-format
+msgid "Settle the order"
+msgstr ""
+
+#. module: pos_sale
+#. openerp-web
+#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
+#, python-format
 msgid ""
 "Some of the products in your Sale Order are not available in POS, do you "
 "want to import them?"
@@ -432,13 +462,6 @@ msgstr ""
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_pos_order_line__sale_order_line_id
 msgid "Source Sale Order Line"
-msgstr ""
-
-#. module: pos_sale
-#. openerp-web
-#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
-#, python-format
-msgid "Settle the order"
 msgstr ""
 
 #. module: pos_sale
@@ -460,6 +483,13 @@ msgid ""
 "The rate of the currency to the currency of rate applicable at the date of "
 "the order"
 msgstr "Valiutų santykis, taikomas užsakymo datos metu "
+
+#. module: pos_sale
+#. openerp-web
+#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
+#, python-format
+msgid "There was a problem in loading the %s customer."
+msgstr ""
 
 #. module: pos_sale
 #: model:ir.model.fields,help:pos_sale.field_pos_config__crm_team_id
@@ -484,6 +514,11 @@ msgstr ""
 #, python-format
 msgid "Total"
 msgstr "Suma"
+
+#. module: pos_sale
+#: model:ir.model,name:pos_sale.model_stock_picking
+msgid "Transfer"
+msgstr "Perkelti"
 
 #. module: pos_sale
 #: model_terms:ir.ui.view,arch_db:pos_sale.view_pos_order_form_inherit_pos_sale
@@ -526,3 +561,12 @@ msgstr "Ką norite nuveikti?"
 #, python-format
 msgid "Yes"
 msgstr "Taip"
+
+#. module: pos_sale
+#. openerp-web
+#: code:addons/pos_sale/static/src/js/OrderManagementScreen/SaleOrderManagementScreen.js:0
+#, python-format
+msgid ""
+"You have tried to charge a down payment of %s but only %s remains to be "
+"paid, %s will be applied to the purchase order line."
+msgstr ""

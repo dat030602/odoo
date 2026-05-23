@@ -55,17 +55,19 @@ var MassMailingFieldHtml = FieldHtml.extend({
         }
         var fieldName = this.nodeOptions['inline-field'];
 
+        var $editable = this.wysiwyg.getEditable();
+        if (this._$codeview && !this._$codeview.hasClass('d-none')) {
+            $editable.html(self.value);
+        }
+
         if (this.$content.find('.o_basic_theme').length) {
             this.$content.find('*').css('font-family', '');
         }
 
-        var $editable = this.wysiwyg.getEditable();
-        if (this.wysiwyg.snippetsMenu) {
-            await this.wysiwyg.snippetsMenu.cleanForSave();
-        }
-        return this.wysiwyg.saveModifiedImages(this.$content).then(function () {
+        await this.wysiwyg.cleanForSave();
+        return this.wysiwyg.saveModifiedImages(this.$content).then(async function () {
             self._isDirty = self.wysiwyg.isDirty();
-            self._doAction();
+            await self._doAction();
 
             const $editorEnable = $editable.closest('.editor_enable');
             $editorEnable.removeClass('editor_enable');
@@ -125,6 +127,7 @@ var MassMailingFieldHtml = FieldHtml.extend({
         this.$content.find('.o_layout').addBack().data('name', 'Mailing');
         // We don't want to drop snippets directly within the wysiwyg.
         this.$content.removeClass('o_editable');
+        this.wysiwyg.getEditable().find('img').attr('loading', '');
     },
     /**
      * Returns true if the editable area is empty.
@@ -164,6 +167,15 @@ var MassMailingFieldHtml = FieldHtml.extend({
 
     /**
      * @override
+     */
+    _renderReadonly: function () {
+        if (!this.value) {
+            this.value = this.recordData[this.nodeOptions['inline-field']];
+        }
+        return this._super.apply(this, arguments);
+    },
+    /**
+     * @override
      * @returns {JQuery}
      */
     _renderTranslateButton: function () {
@@ -171,7 +183,7 @@ var MassMailingFieldHtml = FieldHtml.extend({
         if (_t.database.multi_lang && this.record.fields[fieldName].translate && this.res_id) {
             return $('<button>', {
                     type: 'button',
-                    'class': 'o_field_translate fa fa-globe btn btn-link',
+                    'class': 'o_field_translate fa fa-globe btn btn-primary',
                 })
                 .on('click', this._onTranslate.bind(this));
         }
@@ -302,8 +314,6 @@ var MassMailingFieldHtml = FieldHtml.extend({
      */
     _toggleCodeView: function ($codeview) {
         this._super(...arguments);
-        const isFullWidth = !!$(window.top.document).find('.o_mass_mailing_form_full_width')[0];
-        $codeview.css('height', isFullWidth ? $(window).height() : '');
         if ($codeview.hasClass('d-none')) {
             this.trigger_up('iframe_updated', { $iframe: this.wysiwyg.$iframe });
         }
@@ -332,6 +342,9 @@ var MassMailingFieldHtml = FieldHtml.extend({
      * @override
      */
     _onLoadWysiwyg: function () {
+        // Let the global hotkey manager know about our iframe.
+        this.call('hotkey', 'registerIframe', this.wysiwyg.$iframe[0]);
+
         if (this.snippetsLoaded) {
             this._onSnippetsLoaded(this.snippetsLoaded);
         }

@@ -2,10 +2,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
-
 from .common import TestCommonSaleTimesheet
+from odoo.tests import tagged, Form
 
+
+@tagged('post_install', '-at_install')
 class TestProject(TestCommonSaleTimesheet):
+
+    def setUp(self):
+        super().setUp()
+        self.project_global.write({
+            'sale_line_id': self.so.order_line[0].id,
+        })
+
     def test_fetch_sale_order_items(self):
         """ Test _fetch_sale_order_items and _get_sale_order_items methods
 
@@ -26,10 +35,6 @@ class TestProject(TestCommonSaleTimesheet):
         self.assertFalse(self.project_non_billable._get_sale_orders())
 
         sale_item = self.so.order_line[0]
-        self.project_global.sale_line_id = sale_item
-        self.project_global.write({
-            'sale_line_id': sale_item.id,
-        })
         self.project_global.invalidate_cache()
         expected_task_sale_order_items = self.project_global.tasks.sale_line_id
         expected_sale_order_items = sale_item | expected_task_sale_order_items
@@ -91,3 +96,34 @@ class TestProject(TestCommonSaleTimesheet):
         self.project_global.allow_billable = False
         self.assertFalse(self.project_global._get_sale_order_items())
         self.assertFalse(self.project_global._get_sale_orders())
+
+    def test_compute_cost_in_employee_mappings(self):
+        self.assertFalse(self.project_global.sale_line_employee_ids)
+        employee_mapping = self.env['project.sale.line.employee.map'] \
+            .with_context(default_project_id=self.project_global.id) \
+            .create({
+                'employee_id': self.employee_manager.id,
+                'sale_line_id': self.project_global.sale_line_id.id,
+            })
+        self.assertFalse(employee_mapping.is_cost_changed)
+        self.assertEqual(employee_mapping.cost, self.employee_manager.timesheet_cost)
+
+        employee_mapping.cost = 5
+        self.assertTrue(employee_mapping.is_cost_changed)
+        self.assertEqual(employee_mapping.cost, 5)
+
+        self.employee_manager.timesheet_cost = 80
+        self.assertTrue(employee_mapping.is_cost_changed)
+        self.assertEqual(employee_mapping.cost, 5)
+
+        employee_mapping.employee_id = self.employee_user
+        self.assertTrue(employee_mapping.is_cost_changed)
+        self.assertEqual(employee_mapping.cost, 5)
+
+        employee_mapping.cost = self.employee_user.timesheet_cost
+        employee_mapping.employee_id = self.employee_company_B
+        self.assertEqual(employee_mapping.cost, self.employee_company_B.timesheet_cost)
+
+    def test_open_product_form_with_default_service_policy(self):
+        form = Form(self.env['product.product'].with_context(default_detailed_type='service', default_service_policy='delivered_timesheet'))
+        self.assertEqual('delivered_timesheet', form.service_policy)

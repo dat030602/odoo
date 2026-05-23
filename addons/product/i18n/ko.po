@@ -11,15 +11,17 @@
 # Linkup <link-up@naver.com>, 2021
 # Seongseok Shin <shinss61@hotmail.com>, 2021
 # Heesoo Choi, 2021
+# Sarah Park, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:19+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:25+0000\n"
-"Last-Translator: Heesoo Choi, 2021\n"
-"Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
+"Last-Translator: Daye Jeong, 2023\n"
+"Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -44,12 +46,14 @@ msgid ""
 "%(base)s with a %(discount)s %% discount and %(surcharge)s extra fee\n"
 "Example: %(amount)s * %(discount_charge)s + %(price_surcharge)s → %(total_amount)s"
 msgstr ""
+"%(base)s 에 %(discount)s %% 할인 및 %(surcharge)s 추가 수수료 적용\n"
+"예시: %(amount)s * %(discount_charge)s + %(price_surcharge)s → %(total_amount)s"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
 #, python-format
 msgid "%(percentage)s %% discount and %(price)s surcharge"
-msgstr ""
+msgstr "%(percentage)s %% 할인 및 %(price)s 추가 요금"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -102,7 +106,6 @@ msgstr "1년"
 #: model:product.product,description_sale:product.product_product_4
 #: model:product.product,description_sale:product.product_product_4b
 #: model:product.product,description_sale:product.product_product_4c
-#: model:product.product,description_sale:product.product_product_4d
 #: model:product.template,description_sale:product.product_product_4_product_template
 msgid "160x80cm, with large legs."
 msgstr "160x80cm. 긴 다리."
@@ -110,7 +113,7 @@ msgstr "160x80cm. 긴 다리."
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__2x7xprice
 msgid "2 x 7 with price"
-msgstr ""
+msgstr "2 x 7 가격 포함"
 
 #. module: product
 #: model:product.attribute.value,name:product.product_attribute_value_6
@@ -120,17 +123,17 @@ msgstr "2년"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__4x12
 msgid "4 x 12"
-msgstr ""
+msgstr "4 x 12"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__4x12xprice
 msgid "4 x 12 with price"
-msgstr ""
+msgstr "4 x 12 가격 표시"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__4x7xprice
 msgid "4 x 7 with price"
-msgstr ""
+msgstr "4 x 7 가격 포함"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
@@ -138,6 +141,8 @@ msgid ""
 "<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow "
 "icon\" title=\"Arrow\"/>"
 msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow "
+"icon\" title=\"Arrow\"/>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view_kanban
@@ -154,6 +159,12 @@ msgid ""
 "                                        Extra Price\n"
 "                                    </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('pricelist_item_count', '=', 1)]}\">\n"
+"                                        가격 추가\n"
+"                                    </span>\n"
+"                                    <span attrs=\"{'invisible': [('pricelist_item_count', '!=', 1)]}\">\n"
+"                                        가격 추가\n"
+"                                    </span>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_category_form_view
@@ -163,12 +174,12 @@ msgstr "<span class=\"o_stat_text\"> 품목</span>"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_attribute_view_form
 msgid "<span class=\"o_stat_text\">Related Products</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">관련 품목</span>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid "<span>%</span>"
-msgstr ""
+msgstr "<span>%</span>"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
@@ -291,7 +302,7 @@ msgstr "활동 유형 아이콘"
 #: code:addons/product/static/src/xml/pricelist_report.xml:0
 #, python-format
 msgid "Add a quantity"
-msgstr ""
+msgstr "수량 추가"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings__group_sale_pricelist
@@ -424,7 +435,7 @@ msgstr "속성"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_only_form_view
 msgid "Attributes & Variants"
-msgstr ""
+msgstr "속성 및 세부선택사항"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view
@@ -525,12 +536,12 @@ msgstr "하위 분류"
 #. module: product
 #: model:ir.actions.act_window,name:product.action_open_label_layout
 msgid "Choose Labels Layout"
-msgstr ""
+msgstr "라벨 레이아웃 선택"
 
 #. module: product
 #: model:ir.model,name:product.model_product_label_layout
 msgid "Choose the sheet layout to print the labels"
-msgstr ""
+msgstr "라벨 인쇄용 시트 레이아웃 선택"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
@@ -602,7 +613,7 @@ msgstr "조건"
 #: model:product.product,name:product.product_product_11b
 #: model:product.template,name:product.product_product_11_product_template
 msgid "Conference Chair"
-msgstr ""
+msgstr "회의용 의자"
 
 #. module: product
 #: model:product.product,description_sale:product.consu_delivery_02
@@ -642,7 +653,7 @@ msgstr "소모품"
 msgid ""
 "Consumables are physical products for which you don't manage the inventory "
 "level: they are always available."
-msgstr ""
+msgstr "소모품 항목은 재고 수준을 관리하지 않는 실제 품목으로서 언제나 사용이 가능한 항목입니다."
 
 #. module: product
 #: model:ir.model,name:product.model_res_partner
@@ -653,7 +664,6 @@ msgstr "연락처"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid "Contact Us"
 msgstr "문의하기"
@@ -666,7 +676,7 @@ msgstr "포함된 수량"
 #. module: product
 #: model:ir.model.constraint,message:product.constraint_product_packaging_positive_qty
 msgid "Contained Quantity should be positive."
-msgstr ""
+msgstr "포함된 수량은 양수여야 합니다."
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_packaging_form_view
@@ -677,7 +687,7 @@ msgstr "포함된 수량"
 #: model:product.product,name:product.product_product_13
 #: model:product.template,name:product.product_product_13_product_template
 msgid "Corner Desk Left Sit"
-msgstr ""
+msgstr "코너 데스크 왼쪽 시트"
 
 #. module: product
 #: model:product.product,name:product.product_product_5
@@ -797,10 +807,9 @@ msgstr "고객 참조"
 #: model:product.product,name:product.product_product_4
 #: model:product.product,name:product.product_product_4b
 #: model:product.product,name:product.product_product_4c
-#: model:product.product,name:product.product_product_4d
 #: model:product.template,name:product.product_product_4_product_template
 msgid "Customizable Desk"
-msgstr ""
+msgstr "맞춤형 책상"
 
 #. module: product
 #: model:product.product,uom_name:product.expense_hotel
@@ -844,12 +853,12 @@ msgstr "공급업체 가격표를 정의하십시오."
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Define your volume unit of measure"
-msgstr ""
+msgstr "부피 측정 단위를 선택하세요"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Define your weight unit of measure"
-msgstr ""
+msgstr "무게 측정 단위를 선택하세요"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_supplierinfo__delay
@@ -941,7 +950,7 @@ msgstr "표시명"
 #: code:addons/product/static/src/xml/pricelist_report.xml:0
 #, python-format
 msgid "Display Pricelist"
-msgstr ""
+msgstr "가격표 표시"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__display_type
@@ -981,7 +990,7 @@ msgstr "기간"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_label_layout__print_format__dymo
 msgid "Dymo"
-msgstr ""
+msgstr "다이모"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__create_variant__dynamic
@@ -1010,15 +1019,16 @@ msgid ""
 "Ending datetime for the pricelist item validation\n"
 "The displayed value depends on the timezone set in your preferences."
 msgstr ""
+"가격표 항목 유효성 검사 종료 일시\n"
+"표시되는 값은 개인 설정에서 설정한 시간대에 따라 다릅니다."
 
 #. module: product
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid "Ergonomic"
-msgstr ""
+msgstr "인체공학적"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__exclude_for
@@ -1034,12 +1044,12 @@ msgstr "이 가격리스트 명세의 명시적 규칙 이름"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_label_layout__extra_html
 msgid "Extra Content"
-msgstr ""
+msgstr "추가할 내용"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid "Extra Fee"
-msgstr ""
+msgstr "추가 수수료"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_template_attribute_value__price_extra
@@ -1139,12 +1149,12 @@ msgstr ""
 #. module: product
 #: model:ir.actions.server,name:product.action_product_template_price_list_report
 msgid "Generate Pricelist Report"
-msgstr ""
+msgstr "가격표 보고서 생성"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Get product pictures using Barcode"
-msgstr ""
+msgstr "바코드를 사용하여 제품 사진 가져오기"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__packaging_ids
@@ -1161,7 +1171,7 @@ msgstr "품목 목록을 표시할 때 주문 순서를 제공합니다"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.res_config_settings_view_form
 msgid "Google Images"
-msgstr ""
+msgstr "구글 이미지"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_item_view_search
@@ -1495,10 +1505,9 @@ msgstr "명세"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid "Locally handmade"
-msgstr ""
+msgstr "현지에서 직접 수제 생산"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -1510,12 +1519,11 @@ msgstr "물류 센터"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "Looking for a custom bamboo stain to match existing furniture? Contact us "
 "for a quote."
-msgstr ""
+msgstr "기존 가구와 어울리는 맞춤형 대나무색 염료를 찾고 있으신가요? 견적 관련하여 연락주시기 바랍니다."
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__message_main_attachment_id
@@ -1614,13 +1622,13 @@ msgstr "이름"
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__create_variant__no_variant
 msgid "Never (option)"
-msgstr ""
+msgstr "없음 (선택사항)"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__activity_calendar_event_id
 #: model:ir.model.fields,field_description:product.field_product_template__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "다음 활동 캘린더 행사"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__activity_date_deadline
@@ -1641,9 +1649,17 @@ msgid "Next Activity Type"
 msgstr "다음 활동 유형"
 
 #. module: product
+#: code:addons/product/wizard/product_label_layout.py:0
+#, python-format
+msgid ""
+"No product to print, if the product is archived please unarchive it before "
+"printing its label."
+msgstr "인쇄할 품목이 없습니다. 품목이 보관 처리된 경우, 라벨을 인쇄하기 전에 보관 취소해야 합니다."
+
+#. module: product
 #: model_terms:ir.actions.act_window,help:product.product_supplierinfo_type_action
 msgid "No vendor pricelist found"
-msgstr ""
+msgstr "공급업체 가격표를 찾을 수 없습니다!"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_template__priority__0
@@ -1660,7 +1676,7 @@ msgstr "노트 :"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute__number_related_products
 msgid "Number Related Products"
-msgstr ""
+msgstr "번호와 연관된 품목"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__message_needaction_counter
@@ -1813,12 +1829,11 @@ msgstr "파운드"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "Press a button and watch your desk glide effortlessly from sitting to "
 "standing height in seconds."
-msgstr ""
+msgstr "버튼을 누르면 책상이 몇 초 만에 스탠딩 책상으로 부드럽게 조절됩니다."
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__price
@@ -1904,7 +1919,7 @@ msgstr "가격표 이름"
 #: model:ir.model,name:product.model_report_product_report_pricelist
 #, python-format
 msgid "Pricelist Report"
-msgstr ""
+msgstr "가격표 보고서"
 
 #. module: product
 #: model:ir.model,name:product.model_product_pricelist_item
@@ -1918,7 +1933,7 @@ msgstr "가격표 규칙"
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view
 #: model_terms:ir.ui.view,arch_db:product.product_pricelist_view_inherit
 msgid "Pricelist Rules"
-msgstr ""
+msgstr "가격표 규칙"
 
 #. module: product
 #. openerp-web
@@ -2048,7 +2063,7 @@ msgstr "품목 라벨 (PDF)"
 #: model:ir.model,name:product.model_report_product_report_producttemplatelabel
 #: model:ir.model,name:product.model_report_product_report_producttemplatelabel_dymo
 msgid "Product Label Report"
-msgstr ""
+msgstr "품목 라벨 보고서"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -2117,7 +2132,7 @@ msgstr "상품 서식"
 #: model:ir.model.fields,field_description:product.field_product_product__product_tooltip
 #: model:ir.model.fields,field_description:product.field_product_template__product_tooltip
 msgid "Product Tooltip"
-msgstr ""
+msgstr "품목 도움말"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__detailed_type
@@ -2158,7 +2173,7 @@ msgstr "파생 품목"
 #: code:addons/product/report/product_label_report.py:0
 #, python-format
 msgid "Product model not defined, Please contact your administrator."
-msgstr ""
+msgstr "품목 모델이 정의되지 않았습니다. 관리자에게 문의하십시오."
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -2225,7 +2240,7 @@ msgstr "구매 설명"
 #: model:ir.model.fields,field_description:product.field_product_product__uom_po_id
 #: model:ir.model.fields,field_description:product.field_product_template__uom_po_id
 msgid "Purchase UoM"
-msgstr ""
+msgstr "단위 구매"
 
 #. module: product
 #. openerp-web
@@ -2286,7 +2301,7 @@ msgstr "연관된 파생품"
 #: code:addons/product/static/src/xml/pricelist_report.xml:0
 #, python-format
 msgid "Remove quantity"
-msgstr ""
+msgstr "수량 제거"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__activity_user_id
@@ -2313,7 +2328,7 @@ msgstr "행"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item__rule_tip
 msgid "Rule Tip"
-msgstr ""
+msgstr "규칙 도움말"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
@@ -2345,7 +2360,7 @@ msgstr "판매 가격"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__lst_price
 msgid "Sales Price"
-msgstr ""
+msgstr "판매 가격"
 
 #. module: product
 #: model:ir.model.fields.selection,name:product.selection__product_attribute__display_type__select
@@ -2427,9 +2442,9 @@ msgstr "이 규칙이 하나의 품목 양식에만 적용되는 경우 양식�
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price_surcharge
 msgid ""
-"Specify the fixed amount to add or substract(if negative) to the amount "
+"Specify the fixed amount to add or subtract(if negative) to the amount "
 "calculated with the discount."
-msgstr "할인으로 계산된 금액에 더하거나 빼기(고정된 경우)할 고정 금액을 지정하십시오."
+msgstr ""
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price_max_margin
@@ -2458,6 +2473,8 @@ msgid ""
 "Starting datetime for the pricelist item validation\n"
 "The displayed value depends on the timezone set in your preferences."
 msgstr ""
+"가격표 항목 유효성 검사 시작 일시\n"
+"표시되는 값은 개인 설정에서 설정한 시간대에 따라 다릅니다."
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__activity_state
@@ -2509,13 +2526,13 @@ msgstr "기술 필드. 데이터베이스에 저장되지 않은 가격표를 �
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "The Internal Reference '%s' already exists."
-msgstr ""
+msgstr "'%s' 내부 참조 항목이 이미 있습니다."
 
 #. module: product
 #: code:addons/product/models/product_template.py:0
 #, python-format
 msgid "The Type of this product doesn't match the Detailed Type"
-msgstr ""
+msgstr "이 품목의 유형이 상세 유형과 일치하지 않습니다"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
@@ -2561,12 +2578,11 @@ msgstr "순서의 첫 번째가 기본입니다."
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "The minimum height is 65 cm, and for standing work the maximum height "
 "position is 125 cm."
-msgstr ""
+msgstr "최소 높이는 65 cm 이고, 스탠딩으로 바꿀 경우에는 최대 높이는 125 cm 입니다."
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -2605,6 +2621,12 @@ msgid "The product template is archived so no combination is possible."
 msgstr "품목 양식이 보관되어 있어서 조합할 수 없습니다."
 
 #. module: product
+#: code:addons/product/models/product.py:0
+#, python-format
+msgid "The product variant must be a variant of the product template."
+msgstr ""
+
+#. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo__min_qty
 msgid ""
 "The quantity to purchase from this vendor to benefit from the price, "
@@ -2612,6 +2634,12 @@ msgid ""
 "unit of measure of the product otherwise."
 msgstr ""
 "가격에서 혜택을 받기 위해 이 공급업체로부터 구매할 수량. 공급업체 상품 단위로 표시되고, 그렇지 않으면 품목의 기본 단위로 표시됩니다."
+
+#. module: product
+#: code:addons/product/models/product_pricelist.py:0
+#, python-format
+msgid "The rounding method must be strictly positive."
+msgstr "올림 방법은 반드시 양수여야 합니다."
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__lst_price
@@ -2657,6 +2685,8 @@ msgid ""
 "to no possible variant. Please archive or delete your product directly if "
 "intended."
 msgstr ""
+"이러한 품목 속성과 값 및 예외 사항에 대한 구성 때문에 사용할 수 있는 세부 사양이 없습니다. 필요한 경우, 품목을 직접 보관 "
+"처리하거나 삭제하십시오."
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product__price_extra
@@ -2740,7 +2770,7 @@ msgstr "레코드에 있는 예외 활동의 유형입니다."
 #: code:addons/product/wizard/product_label_layout.py:0
 #, python-format
 msgid "Unable to find report template for %s format"
-msgstr ""
+msgstr "%s 형식의 보고서 서식을 찾을 수 없습니다."
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_form_view
@@ -2784,7 +2814,6 @@ msgstr "단위명"
 #: model:product.product,uom_name:product.product_product_4
 #: model:product.product,uom_name:product.product_product_4b
 #: model:product.product,uom_name:product.product_product_4c
-#: model:product.product,uom_name:product.product_product_4d
 #: model:product.product,uom_name:product.product_product_5
 #: model:product.product,uom_name:product.product_product_6
 #: model:product.product,uom_name:product.product_product_7
@@ -2843,7 +2872,7 @@ msgstr "단위"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "Upsell & Cross-Sell"
-msgstr ""
+msgstr "상향판매 및 교차판매"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_attribute_value__is_used_on_products
@@ -2871,7 +2900,7 @@ msgstr "가치"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_line__value_count
 msgid "Value Count"
-msgstr ""
+msgstr "값 수"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_attribute_value__price_extra
@@ -3053,12 +3082,11 @@ msgstr "경고"
 #: model_terms:product.product,website_description:product.product_product_4
 #: model_terms:product.product,website_description:product.product_product_4b
 #: model_terms:product.product,website_description:product.product_product_4c
-#: model_terms:product.product,website_description:product.product_product_4d
 #: model_terms:product.template,website_description:product.product_product_4_product_template
 msgid ""
 "We pay special attention to detail, which is why our desks are of a superior"
 " quality."
-msgstr ""
+msgstr "세부 디테일을 꼼꼼하게 따져 만들어진 저희 책상 제품은 최고의 품질을 자랑합니다."
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product__weight
@@ -3102,7 +3130,7 @@ msgstr ""
 #: model:ir.model.fields,help:product.field_product_pricelist_item__percent_price
 #: model:ir.model.fields,help:product.field_product_pricelist_item__price_discount
 msgid "You can apply a mark-up by setting a negative discount."
-msgstr ""
+msgstr "마이너스 할인을 설정하여 가격을 인상시킬 수 있습니다."
 
 #. module: product
 #: model_terms:ir.actions.act_window,help:product.product_pricelist_action2
@@ -3169,6 +3197,12 @@ msgid ""
 msgstr "'계정'의 십진 정밀도를 회사 주요 통화의 반올림 계수보다 큰 것으로 정의할 수 없습니다"
 
 #. module: product
+#: code:addons/product/models/product.py:0
+#, python-format
+msgid "You cannot delete the %s product category."
+msgstr "%s 품목 카테고리는 삭제할 수 없습니다."
+
+#. module: product
 #: code:addons/product/models/product_attribute.py:0
 #, python-format
 msgid ""
@@ -3183,10 +3217,9 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot delete the value %s because it is used on the following products:\n"
-"%s"
+"%s\n"
+" If the value has been associated to a product in the past, you will not be able to delete it."
 msgstr ""
-"%s 값이 다음 품목에 사용되기 때문에 삭제할 수 없습니다 :\n"
-"%s"
 
 #. module: product
 #: code:addons/product/models/product.py:0
@@ -3204,13 +3237,16 @@ msgid ""
 ", they are used in other pricelist(s):\n"
 "%s"
 msgstr ""
+"해당 가격표는 삭제할 수 없습니다:\n"
+"(%s)\n"
+", 다른 가격표에서 사용 중입니다:\n"
+"%s"
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
 #, python-format
-msgid ""
-"You cannot move the attribute %s from the product %s to the product %s."
-msgstr "%s 사양을 %s 품목에서 %s 품목으로 이동할 수 없습니다."
+msgid "You cannot delete value %s because it was used in some products."
+msgstr "다른 품목에서 사용되고 있으므로 %s 값을 삭제할 수 없습니다."
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:0
@@ -3219,6 +3255,13 @@ msgid ""
 "You cannot disable a pricelist rule, please delete it or archive its "
 "pricelist instead."
 msgstr ""
+
+#. module: product
+#: code:addons/product/models/product_attribute.py:0
+#, python-format
+msgid ""
+"You cannot move the attribute %s from the product %s to the product %s."
+msgstr "%s 사양을 %s 품목에서 %s 품목으로 이동할 수 없습니다."
 
 #. module: product
 #: code:addons/product/models/product_attribute.py:0
@@ -3267,7 +3310,7 @@ msgstr ""
 #: code:addons/product/wizard/product_label_layout.py:0
 #, python-format
 msgid "You need to set a positive quantity."
-msgstr ""
+msgstr "수량은 양수로 설정해야 합니다."
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_supplierinfo_form_view
@@ -3278,7 +3321,7 @@ msgstr "일"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view
 msgid "e.g. Cheese Burger"
-msgstr ""
+msgstr "예: 치즈버거"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_category_form_view

@@ -4,15 +4,18 @@
 # 
 # Translators:
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2022
+# Martin Trigaux, 2023
+# Wil Odoo, 2024
+# Tony Ng, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:20+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:27+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2022\n"
-"Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
+"Last-Translator: Tony Ng, 2024\n"
+"Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -32,6 +35,29 @@ msgstr "記錄"
 #, python-format
 msgid "# Code editor"
 msgstr "# 代碼編輯器"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/web_calendar.xml:0
+#, python-format
+msgid ""
+"#{ ['all', false].includes(filter.value) or !widget.avatar_field ? "
+"filter.label : '' }"
+msgstr ""
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "#{i.display_name} is current state"
+msgstr ""
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "#{i.display_name} is not current state"
+msgstr ""
 
 #. module: web
 #. openerp-web
@@ -424,6 +450,13 @@ msgstr "存取全部企業版應用"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
+#, python-format
+msgid "Action"
+msgstr "動作"
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Action ID:"
@@ -447,13 +480,6 @@ msgstr "啟用資產偵錯"
 #, python-format
 msgid "Activate Tests Assets Debugging"
 msgstr "啟動測試資產偵錯"
-
-#. module: web
-#. openerp-web
-#: code:addons/web/static/src/core/debug/debug_providers.js:0
-#, python-format
-msgid "Activate debug mode"
-msgstr "啟動Debug模式"
 
 #. module: web
 #. openerp-web
@@ -483,7 +509,7 @@ msgstr "添加自訂篩選"
 #: code:addons/web/static/src/search/group_by_menu/custom_group_by_item.xml:0
 #, python-format
 msgid "Add Custom Group"
-msgstr "添加自訂組"
+msgstr "加入自訂分組"
 
 #. module: web
 #. openerp-web
@@ -578,6 +604,13 @@ msgstr "添加： "
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
+#, python-format
+msgid "Additional actions"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/js/views/signature_dialog.js:0
 #, python-format
 msgid "Adopt Your Signature"
@@ -644,7 +677,7 @@ msgstr "Alt"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Among the"
-msgstr ""
+msgstr "在以下項目中:"
 
 #. module: web
 #. openerp-web
@@ -776,6 +809,7 @@ msgstr "是否確實要對這些更新執行以下更新"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Ascending"
 msgstr "升序"
@@ -844,6 +878,7 @@ msgstr "徽章"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Bar Chart"
@@ -1058,6 +1093,13 @@ msgstr "清除簽名"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "Click to change current state to #{i.display_name}"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
 #: code:addons/web/static/src/core/dialog/dialog.xml:0
 #: code:addons/web/static/src/core/notifications/notification.xml:0
@@ -1250,7 +1292,7 @@ msgstr "複製到剪貼簿"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.frontend_layout
 msgid "Copyright &amp;copy;"
-msgstr "Copyright &amp;copy;"
+msgstr "版權所有 &amp;copy;"
 
 #. module: web
 #. openerp-web
@@ -1534,6 +1576,7 @@ msgstr "刪除行"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Descending"
 msgstr "降序"
@@ -1673,6 +1716,7 @@ msgstr "下載 PDF 預覽"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/pivot/pivot_view.xml:0
+#: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #, python-format
 msgid "Download xlsx"
 msgstr "下載 xlsx"
@@ -1774,7 +1818,7 @@ msgstr "編輯記錄"
 #: model_terms:ir.ui.view,arch_db:web.login
 #, python-format
 msgid "Email"
-msgstr "Email"
+msgstr "電郵"
 
 #. module: web
 #. openerp-web
@@ -1814,6 +1858,7 @@ msgstr "一切"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #, python-format
 msgid "Expand all"
@@ -1947,6 +1992,7 @@ msgstr "篩選"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #: code:addons/web/static/src/views/pivot/pivot_view.xml:0
 #, python-format
 msgid "Flip axis"
@@ -2250,6 +2296,11 @@ msgid ""
 "            compilation...). During rendering, the global time also takes part of the time to make\n"
 "            the profile as well as some part not logged in the function generated by the qweb."
 msgstr ""
+"t-call 時間可能與範本的總時間不對應。因為全域時間\n"
+"            （在下拉選單中）沒有考慮繪製過程中未包含的持續時間\n"
+"            （尋找範本、讀取、繼承、編譯等）。在繪製過程中，\n"
+"            全域時間也計及製作設定檔的部份時間，\n"
+"            以及qweb產生的函數中未記錄的部份時間。"
 
 #. module: web
 #. openerp-web
@@ -2337,6 +2388,7 @@ msgstr "淺藍"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Line Chart"
@@ -2525,7 +2577,7 @@ msgstr "也許您應該考慮按下 F5 鍵重新載入網頁...ORZ"
 #: code:addons/web/static/src/views/view.xml:0
 #, python-format
 msgid "Measures"
-msgstr "度量"
+msgstr "量度"
 
 #. module: web
 #. openerp-web
@@ -2634,8 +2686,8 @@ msgstr "多行文本"
 #. openerp-web
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.js:0
 #, python-format
-msgid "My Odoo.com.account"
-msgstr "我的 Odoo.com.account"
+msgid "My Odoo.com account"
+msgstr "我的 Odoo.com 帳戶"
 
 #. module: web
 #. openerp-web
@@ -2849,6 +2901,13 @@ msgstr "處於歸檔狀態，點選以更改它"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/search/filter_menu/custom_filter_item.xml:0
+#, python-format
+msgid "Number using {{ DECIMAL_POINT }} as decimal separator."
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
@@ -2898,7 +2957,7 @@ msgstr "Odoo錯誤"
 #: code:addons/web/static/src/core/errors/error_dialogs.js:0
 #, python-format
 msgid "Odoo Network Error"
-msgstr "Odoo 網路錯誤"
+msgstr "Odoo 網絡錯誤"
 
 #. module: web
 #. openerp-web
@@ -2913,7 +2972,7 @@ msgstr "Odoo 伺服器錯誤"
 #: code:addons/web/static/src/public/error_notifications.js:0
 #, python-format
 msgid "Odoo Session Expired"
-msgstr "Odoo會話過期"
+msgstr "操作時段過期"
 
 #. module: web
 #. openerp-web
@@ -3025,6 +3084,13 @@ msgstr "打開視圖"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/core/debug/debug_menu.xml:0
+#, python-format
+msgid "Open developer tools"
+msgstr "開啟開發人員工具"
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/webclient/user_menu/user_menu_items.xml:0
 #, python-format
 msgid "Open the next record"
@@ -3129,7 +3195,7 @@ msgstr "頁: <span class=\"page\"/> / <span class=\"topage\"/>"
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
 msgid "Pager"
-msgstr ""
+msgstr "頁面工具"
 
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__paperformat_id
@@ -3179,6 +3245,7 @@ msgstr "選一種顏色"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Pie Chart"
@@ -3285,7 +3352,7 @@ msgstr "請更新以下翻譯："
 #, python-format
 msgid ""
 "Please use the copy button to report the error to your support service."
-msgstr "請使用複製按鈕將錯誤報告給您的支援服務。"
+msgstr "請使用複製按鈕，向你的技術支援服務報告此錯誤。"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.report_invoice_wizard_preview
@@ -3297,12 +3364,12 @@ msgstr "付款時請備註以下資訊： <b><span>INV/2020/07/0003</span></b>"
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.brand_promotion_message
 msgid "Powered by %s%s"
-msgstr "源自 %s%s"
+msgstr "由 %s%s 驅動"
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.login_layout
 msgid "Powered by <span>Odoo</span>"
-msgstr "由<span>Odoo</span>提供支援"
+msgstr "由 <span>Odoo</span> 驅動"
 
 #. module: web
 #. openerp-web
@@ -3379,11 +3446,19 @@ msgstr "主要色彩"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
 #: code:addons/web/static/src/legacy/xml/report.xml:0
 #: code:addons/web/static/src/legacy/xml/report.xml:0
 #, python-format
 msgid "Print"
 msgstr "列印"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/js/components/action_menus.js:0
+#, python-format
+msgid "Printing options"
+msgstr ""
 
 #. module: web
 #. openerp-web
@@ -3889,6 +3964,13 @@ msgstr "全選"
 #. openerp-web
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #, python-format
+msgid "Select all records matching the search"
+msgstr "選取所有符合搜尋條件的記錄"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
 msgid "Select field"
 msgstr "選擇欄位"
 
@@ -4056,6 +4138,7 @@ msgstr "特殊："
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/legacy/xml/base.xml:0
 #: code:addons/web/static/src/views/graph/graph_view.xml:0
+#: code:addons/web/static/src/views/graph/graph_view.xml:0
 #, python-format
 msgid "Stacked"
 msgstr "堆疊"
@@ -4114,6 +4197,14 @@ msgstr "語法錯誤"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "Tag color: #{colornames[color]}"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/js/fields/relational_fields.js:0
 #, python-format
 msgid "Tags"
@@ -4138,7 +4229,7 @@ msgstr ""
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__vat
 msgid "Tax ID"
-msgstr "稅ID"
+msgstr "稅務編號"
 
 #. module: web
 #. openerp-web
@@ -4666,7 +4757,7 @@ msgstr "驗證錯誤"
 #: code:addons/web/static/src/legacy/js/views/basic/basic_renderer.js:0
 #, python-format
 msgid "Values set here are company-specific."
-msgstr "此處設置的值是特定於公司的。"
+msgstr "此處設定的值是特定於每間公司的。"
 
 #. module: web
 #. openerp-web
@@ -4902,7 +4993,7 @@ msgstr "您應該將Wkhtmltopdf的版本至少升級到0.12.0，以便正確顯�
 #: code:addons/web/static/src/public/error_notifications.js:0
 #, python-format
 msgid "Your Odoo session expired. The current page is about to be refreshed."
-msgstr "您的 Odoo 會話已過期。當前頁面即將刷新。"
+msgstr "你的 Odoo 操作時段已過期。本頁面即將自動重新載入。"
 
 #. module: web
 #. openerp-web
@@ -4967,6 +5058,14 @@ msgstr "大約一年前"
 #, python-format
 msgid "about an hour ago"
 msgstr "大約一小時前"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "all"
+msgstr "所有"
 
 #. module: web
 #. openerp-web
@@ -5298,10 +5397,17 @@ msgstr "少於或等於"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/search/search_dropdown_item/search_dropdown_item.xml:0
+#, python-format
+msgid "menuitemcheckbox"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/js/views/file_upload_mixin.js:0
 #, python-format
 msgid "message: %s"
-msgstr "訊息:%s..."
+msgstr ""
 
 #. module: web
 #. openerp-web
@@ -5311,6 +5417,13 @@ msgstr "訊息:%s..."
 #, python-format
 msgid "ms"
 msgstr "毫秒"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "new_template"
+msgstr "new_template"
 
 #. module: web
 #. openerp-web
@@ -5373,6 +5486,13 @@ msgstr "上級"
 
 #. module: web
 #. openerp-web
+#: code:addons/web/static/src/search/search_dropdown_item/search_dropdown_item.xml:0
+#, python-format
+msgid "props.checked ? 'true' : 'false'"
+msgstr ""
+
+#. module: web
+#. openerp-web
 #: code:addons/web/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "props.fields"
@@ -5385,7 +5505,7 @@ msgstr "props.fields"
 #: code:addons/web/static/src/core/debug/profiling/profiling_qweb.xml:0
 #, python-format
 msgid "query"
-msgstr ""
+msgstr "查詢"
 
 #. module: web
 #. openerp-web
@@ -5430,6 +5550,14 @@ msgstr "已選取"
 #, python-format
 msgid "selected records,"
 msgstr "選擇的記錄"
+
+#. module: web
+#. openerp-web
+#: code:addons/web/static/src/core/debug/debug_menu_items.xml:0
+#: code:addons/web/static/src/legacy/xml/base.xml:0
+#, python-format
+msgid "self"
+msgstr "自行"
 
 #. module: web
 #. openerp-web

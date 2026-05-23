@@ -14,15 +14,6 @@ odoo.define('hr_holidays.dashboard.view_custo', function(require) {
     var _t = core._t;
     var QWeb = core.qweb;
 
-    var TimeOffCalendarModel = CalendarModel.extend({
-
-        _getFilterDomain: function() {
-            const company_domain = [['user_id.company_id', 'in', this.data.context.allowed_company_ids]];
-            return this._super().concat(company_domain);
-        },
-
-    });
-
     var TimeOffCalendarPopover = CalendarPopover.extend({
         template: 'hr_holidays.calendar.popover',
 
@@ -87,20 +78,7 @@ odoo.define('hr_holidays.dashboard.view_custo', function(require) {
         //--------------------------------------------------------------------------
 
         _getNewTimeOffContext: function() {
-            let date_from = moment().set({
-                'hour': 0,
-                'minute': 0,
-                'second': 0
-            });
-            date_from.subtract(this.getSession().getTZOffset(date_from), 'minutes');
-            date_from = date_from.locale('en').format('YYYY-MM-DD HH:mm:ss');
-            let date_to = moment().set({
-                'hour': 23,
-                'minute': 59,
-                'second': 59
-            });
-            date_to.subtract(this.getSession().getTZOffset(date_to), 'minutes');
-            date_to = date_to.locale('en').format('YYYY-MM-DD HH:mm:ss');
+            const { date_from, date_to } = this.model._getTimeOffDates(moment());
             return {
                 'default_date_from': date_from,
                 'default_date_to': date_to,
@@ -264,6 +242,44 @@ odoo.define('hr_holidays.dashboard.view_custo', function(require) {
             });
         },
     });
+
+    const TimeOffCalendarModel = CalendarModel.extend({
+        calendarEventToRecord(event) {
+            const res = this._super(...arguments);
+            if (['day', 'week'].includes(this.data.scale)) {
+                const { date_from, date_to } = this._getTimeOffDates(event.start.clone());
+
+                res['date_from'] = date_from;
+                res['date_to'] = date_to;
+            }
+
+            return res;
+        },
+
+        _getTimeOffDates(date_from) {
+            date_from.set({
+                'hour': 0,
+                'minute': 0,
+                'second': 0
+            });
+            let date_to = date_from.clone().set({
+                'hour': 23,
+                'minute': 59,
+                'second': 59
+            });
+
+            date_from.subtract(this.getSession().getTZOffset(date_from), 'minutes');
+            date_from = date_from.locale('en').format('YYYY-MM-DD HH:mm:ss');
+            date_to.subtract(this.getSession().getTZOffset(date_to), 'minutes');
+            date_to = date_to.locale('en').format('YYYY-MM-DD HH:mm:ss');
+
+            return {
+                date_from,
+                date_to,
+            }
+        },
+    });
+
     var TimeOffCalendarView = CalendarView.extend({
         config: _.extend({}, CalendarView.prototype.config, {
             Controller: TimeOffCalendarController,
@@ -279,6 +295,7 @@ odoo.define('hr_holidays.dashboard.view_custo', function(require) {
         config: _.extend({}, CalendarView.prototype.config, {
             Controller: TimeOffCalendarController,
             Renderer: TimeOffPopoverRenderer,
+            Model: TimeOffCalendarModel,
         }),
     });
 

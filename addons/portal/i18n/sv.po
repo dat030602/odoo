@@ -9,22 +9,24 @@
 # Haojun Zou <apollo_zhj@msn.com>, 2021
 # Martin Wilderoth <martin.wilderoth@linserv.se>, 2021
 # Daniel Osser <danielosser@gmail.com>, 2021
-# Jakob Krabbe <jakob.krabbe@vertel.se>, 2021
 # Kim Asplund <kim.asplund@gmail.com>, 2021
 # Simon S, 2021
 # Daniel Löfgren, 2022
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023
+# Lasse L, 2023
+# Jakob Krabbe <jakob.krabbe@vertel.se>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 10:55+0000\n"
+"POT-Creation-Date: 2024-08-14 15:44+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
+"Last-Translator: Jakob Krabbe <jakob.krabbe@vertel.se>, 2024\n"
+"Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -36,7 +38,7 @@ msgstr ""
 #: code:addons/portal/static/src/js/portal_sidebar.js:0
 #, python-format
 msgid "%1d days overdue"
-msgstr ""
+msgstr "%1d dagar försenad"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -76,7 +78,17 @@ msgstr "<i class=\"fa fa-pencil\"/> Ändra"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
-msgstr ""
+msgstr "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid "<option value=\"\">Country...</option>"
+msgstr "<option value=\"\">Land...</option>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid "<option value=\"\">select...</option>"
+msgstr "<option value=\"\">välja...</option>"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
@@ -85,6 +97,25 @@ msgid ""
 " not allowed once document(s) have been issued for your account. <br/>Please"
 " contact us directly for this operation.</small>"
 msgstr ""
+"<small class=\"form-text text-muted\">Det är inte tillåtet att ändra "
+"företagsnamn eller momsregistreringsnummer när dokument har utfärdats för "
+"ditt konto. <br/>Vänligen kontakta oss direkt för denna åtgärd.</small>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.pager
+msgid ""
+"<span class=\"fa fa-chevron-left\" role=\"img\" aria-label=\"Previous\" "
+"title=\"Previous\"/>"
+msgstr ""
+"<span class=\"fa fa-chevron-left\" role=\"img\" aria-label=\"Föregående\" "
+"title=\"Föregående\"/>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.pager
+msgid "<span class=\"fa fa-chevron-right\" role=\"img\" aria-label=\"Next\" title=\"Next\"/>"
+msgstr ""
+"<span class=\"fa fa-chevron-right\" role=\"img\" aria-label=\"Nästa\" "
+"title=\"Nästa\"/>"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_searchbar
@@ -194,7 +225,7 @@ msgstr ""
 #: code:addons/portal/static/src/js/portal.js:0
 #, python-format
 msgid "API Key Ready"
-msgstr ""
+msgstr "API-nyckel redo"
 
 #. module: portal
 #. openerp-web
@@ -239,13 +270,7 @@ msgstr "Lägg till extra innehåll i e-posten"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Added On"
-msgstr ""
-
-#. module: portal
-#: code:addons/portal/controllers/mail.py:0
-#, python-format
-msgid "An access token must be provided for each attachment."
-msgstr "En åtkomsttoken måste anges för respektive dokument."
+msgstr "Tillagt den"
 
 #. module: portal
 #. openerp-web
@@ -377,11 +402,6 @@ msgid "Country"
 msgstr "Land"
 
 #. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
-msgid "Country..."
-msgstr "Land..."
-
-#. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__create_uid
 #: model:ir.model.fields,field_description:portal.field_portal_wizard__create_uid
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__create_uid
@@ -420,7 +440,7 @@ msgstr ""
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_res_config_settings__portal_allow_api_keys
 msgid "Customer API Keys"
-msgstr ""
+msgstr "API-nycklar för kunder"
 
 #. module: portal
 #: model:ir.model.fields,help:portal.field_portal_mixin__access_url
@@ -479,7 +499,7 @@ msgstr "Dokument"
 #: code:addons/portal/static/src/js/portal_sidebar.js:0
 #, python-format
 msgid "Due in %1d days"
-msgstr ""
+msgstr "Förfaller till betalning om %1d dagar"
 
 #. module: portal
 #. openerp-web
@@ -511,7 +531,7 @@ msgstr "Anställda enbart"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Enter a description of and purpose for the key."
-msgstr ""
+msgstr "Ange en beskrivning av och ett syfte med nyckeln."
 
 #. module: portal
 #. openerp-web
@@ -523,7 +543,7 @@ msgstr "Glömt lösenord?"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Grant Access"
-msgstr ""
+msgstr "Bevilja tillgång"
 
 #. module: portal
 #: model:ir.model,name:portal.model_portal_wizard
@@ -549,6 +569,8 @@ msgid ""
 "Here is your new API key, use it instead of a password for RPC access.\n"
 "                Your login is still necessary for interactive usage."
 msgstr ""
+"Här är din nya API-nyckel, använd den istället för ett lösenord för RPC-åtkomst.\n"
+"                Din inloggning är fortfarande nödvändig för interaktiv användning."
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_breadcrumbs
@@ -567,12 +589,26 @@ msgstr "ID"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Important:"
-msgstr ""
+msgstr "Viktigt:"
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+#, python-format
+msgid "Internal Note"
+msgstr "Intern notering"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Internal User"
 msgstr "Intern användare"
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+#, python-format
+msgid "Internal notes are only displayed to internal users."
+msgstr "Interna anteckningar visas endast för interna användare."
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -594,12 +630,12 @@ msgstr "Inbjudningsmeddelande"
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__is_internal
 msgid "Is Internal"
-msgstr ""
+msgstr "Är intern"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__is_portal
 msgid "Is Portal"
-msgstr ""
+msgstr "Är Portal"
 
 #. module: portal
 #. openerp-web
@@ -608,6 +644,15 @@ msgstr ""
 msgid ""
 "It is very important that this description be clear\n"
 "                and complete,"
+msgstr ""
+"Det är mycket viktigt att denna beskrivning är tydlig\n"
+"                och fullständig,"
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_security.xml:0
+#, python-format
+msgid "Key Description"
 msgstr ""
 
 #. module: portal
@@ -634,7 +679,7 @@ msgstr "Senast uppdaterad"
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__login_date
 msgid "Latest Authentication"
-msgstr ""
+msgstr "Senaste autentiseringen"
 
 #. module: portal
 #. openerp-web
@@ -646,7 +691,7 @@ msgstr "Lämna en kommentar"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.res_config_settings_view_form
 msgid "Let your customers create developer API keys"
-msgstr ""
+msgstr "Låt dina kunder skapa API-nycklar för utvecklare"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__share_link
@@ -688,7 +733,7 @@ msgstr "Namn"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Name your key"
-msgstr ""
+msgstr "Namnge din nyckel"
 
 #. module: portal
 #. openerp-web
@@ -707,7 +752,6 @@ msgstr "Nytt lösenord:"
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
-#: model_terms:ir.ui.view,arch_db:portal.pager
 #, python-format
 msgid "Next"
 msgstr "Nästa"
@@ -726,7 +770,7 @@ msgstr "Odoo Logo"
 #: code:addons/portal/models/res_users_apikeys_description.py:0
 #, python-format
 msgid "Only internal and portal users can create API keys"
-msgstr ""
+msgstr "Endast interna användare och portalanvändare kan skapa API-nycklar"
 
 #. module: portal
 #. openerp-web
@@ -761,14 +805,14 @@ msgstr "Telefon"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Please enter your password to confirm you own this account"
-msgstr ""
+msgstr "Ange ditt lösenord för att bekräfta att du äger detta konto"
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 #, python-format
 msgid "Portal Access Management"
-msgstr ""
+msgstr "Hantering av portalåtkomst"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_mixin__access_url
@@ -793,17 +837,12 @@ msgstr "Konfigurerings portalanvändare"
 #. module: portal
 #: model:mail.template,name:portal.mail_template_data_portal_welcome
 msgid "Portal: User Invite"
-msgstr ""
+msgstr "Portal: Inbjudan till användare"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_record_sidebar
 msgid "Powered by"
 msgstr "Drivs med"
-
-#. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.pager
-msgid "Prev"
-msgstr "Föreg"
 
 #. module: portal
 #. openerp-web
@@ -823,7 +862,7 @@ msgstr "Publicerad på %s"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Re-Invite"
-msgstr ""
+msgstr "Bjud in igen"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__partner_ids
@@ -833,7 +872,7 @@ msgstr "Mottagare"
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__resource_ref
 msgid "Related Document"
-msgstr ""
+msgstr "Relaterade dokument"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__res_id
@@ -848,7 +887,7 @@ msgstr "Modell för relaterade dokument"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Revoke Access"
-msgstr ""
+msgstr "Återkalla åtkomst"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
@@ -868,6 +907,7 @@ msgstr "Säkerhet"
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/js/portal.js:0
+#: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Security Control"
 msgstr "Säkerhetskontroll"
@@ -920,6 +960,8 @@ msgid ""
 "Some fields are required. Please make sure to write a message or attach a "
 "document"
 msgstr ""
+"Vissa fält är obligatoriska. Se till att skriva ett meddelande eller bifoga "
+"ett dokument"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -959,13 +1001,6 @@ msgid ""
 msgstr "Bilagan %s kan inte raderas eftersom den är i ett väntande tillstånd."
 
 #. module: portal
-#: code:addons/portal/controllers/mail.py:0
-#, python-format
-msgid ""
-"The attachment %s does not exist or you do not have the rights to access it."
-msgstr "Bilagan %s finns inte eller så har du inte åtkomst till den."
-
-#. module: portal
 #: code:addons/portal/controllers/portal.py:0
 #, python-format
 msgid ""
@@ -977,7 +1012,7 @@ msgstr ""
 #: code:addons/portal/wizard/portal_wizard.py:0
 #, python-format
 msgid "The contact \"%s\" does not have a valid email."
-msgstr ""
+msgstr "Kontakten \"%s\" har inte ett giltigt e-postmeddelande."
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
@@ -997,7 +1032,7 @@ msgstr "Dokumentet finns inte eller så saknar du rättigheter till det."
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "The key cannot be retrieved later and provides"
-msgstr ""
+msgstr "Nyckeln kan inte återskapas senare och ger"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -1017,7 +1052,7 @@ msgstr ""
 #: code:addons/portal/wizard/portal_wizard.py:0
 #, python-format
 msgid "The partner \"%s\" already has the portal access."
-msgstr ""
+msgstr "Partnern \"%s\" har redan tillgång till portalen."
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
@@ -1032,6 +1067,8 @@ msgid ""
 "The template \"Portal: new user\" not found for sending email to the portal "
 "user."
 msgstr ""
+"Mallen \"Portal: ny användare\" hittades inte för att skicka e-post till "
+"portalanvändaren."
 
 #. module: portal
 #. openerp-web
@@ -1057,12 +1094,16 @@ msgid ""
 "This partner is linked to an internal User and already has access to the "
 "Portal."
 msgstr ""
+"Denna partner är kopplad till en intern användare och har redan tillgång "
+"till portalen."
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid ""
 "This text is included at the end of the email sent to new portal users."
 msgstr ""
+"Denna text ingår i slutet av det e-postmeddelande som skickas till nya "
+"portalanvändare."
 
 #. module: portal
 #: model:ir.model.fields,help:portal.field_portal_wizard__welcome_message
@@ -1233,12 +1274,12 @@ msgstr "Du måste vara"
 #: code:addons/portal/wizard/portal_wizard.py:0
 #, python-format
 msgid "You should first grant the portal access to the partner \"%s\"."
-msgstr ""
+msgstr "Du bör först ge portalen åtkomst till partnern \"%s\"."
 
 #. module: portal
 #: model:mail.template,subject:portal.mail_template_data_portal_welcome
 msgid "Your account at {{ object.user_id.company_id.name }}"
-msgstr ""
+msgstr "Ditt konto på {{ object.user_id.company_id.name }}"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_contact
@@ -1276,7 +1317,7 @@ msgstr "kommentarer"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "full access"
-msgstr ""
+msgstr "full tillgång"
 
 #. module: portal
 #. openerp-web
@@ -1286,6 +1327,8 @@ msgid ""
 "it will be the only way to\n"
 "                identify the key once created"
 msgstr ""
+"det kommer att vara det enda sättet att\n"
+"                identifiera nyckeln när den har skapats"
 
 #. module: portal
 #. openerp-web
@@ -1310,11 +1353,6 @@ msgid "res.users.apikeys.description"
 msgstr "res.users.apikeys.description"
 
 #. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
-msgid "select..."
-msgstr "välj..."
-
-#. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
@@ -1327,3 +1365,5 @@ msgstr "för att kommentera"
 #, python-format
 msgid "to your user account, it is very important to store it securely."
 msgstr ""
+"till ditt användarkonto är det mycket viktigt att du förvarar den på ett "
+"säkert sätt."

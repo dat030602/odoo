@@ -8,15 +8,17 @@
 # Odoo Thaidev <odoothaidev@gmail.com>, 2021
 # Martin Trigaux, 2022
 # Wichanon Jamwutthipreecha, 2022
+# Rasareeyar Lappiam, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-24 08:20+0000\n"
+"POT-Creation-Date: 2024-08-14 15:43+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
-"Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -45,6 +47,8 @@ msgid ""
 "<h3>Please make a payment to: </h3><ul><li>Bank: %s</li><li>Account Number: "
 "%s</li><li>Account Holder: %s</li></ul>"
 msgstr ""
+"<h3>กรุณาชำระเงินที่: </h3><ul><li>ธนาคาร: %s</li><li>หมายเลขบัญชี: "
+"%s</li><li>เจ้าของบัญชี: %s</li></ul>"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.confirm
@@ -54,7 +58,7 @@ msgstr "<i class=\"fa fa-arrow-circle-right\"/> กลับไปยังบ�
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.portal_breadcrumb
 msgid "<i class=\"fa fa-home\" role=\"img\" title=\"Home\" aria-label=\"Home\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-home\" role=\"รูปหน้า\" title=\"หน้าแรก\" aria-label=\"หน้าแรก\"/>"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.manage
@@ -71,7 +75,7 @@ msgstr ""
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.view_partners_form_payment_defaultcreditcard
 msgid "<span class=\"o_stat_text\">Saved Payment Methods</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">วิธีการชำระเงินที่บันทึกไว้</span>"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_onboarding_wizard_form
@@ -83,13 +87,6 @@ msgstr ""
 msgid ""
 "<span><i class=\"fa fa-arrow-right\"/> How to configure your PayPal "
 "account</span>"
-msgstr ""
-
-#. module: payment
-#: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_onboarding_wizard_form
-msgid ""
-"<span>Start selling directly without an account; an email will be sent by "
-"Paypal to create your new account and collect your payments.</span>"
 msgstr ""
 
 #. module: payment
@@ -136,13 +133,13 @@ msgstr "<strong>คำเตือน</strong>สกุลเงินหาย�
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
 msgid "<strong>Warning</strong> You must be logged in to pay."
-msgstr ""
+msgstr "<strong>คำเตือน</strong> คุณต้องเข้าสู่ระบบเพื่อชำระเงิน"
 
 #. module: payment
 #: code:addons/payment/models/account_payment.py:0
 #, python-format
 msgid "A payment transaction with reference %s already exists."
-msgstr ""
+msgstr "มีธุรกรรมการชำระเงินที่มีการอ้างอิง %s อยู่แล้ว"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
@@ -156,7 +153,7 @@ msgstr ""
 #: code:addons/payment/models/account_payment.py:0
 #, python-format
 msgid "A token is required to create a new payment transaction."
-msgstr ""
+msgstr "ต้องใช้โทเค็นเพื่อสร้างธุรกรรมการชำระเงินใหม่"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
@@ -229,7 +226,7 @@ msgstr "เปิดใช้งาน"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.onboarding_payment_acquirer_step
 msgid "Activate Stripe"
-msgstr ""
+msgstr "เปิดใช้งาน Stripe"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_token__active
@@ -255,12 +252,12 @@ msgstr "Adyen"
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_alipay
 msgid "Alipay"
-msgstr ""
+msgstr "Alipay"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__allow_tokenization
 msgid "Allow Saving Payment Methods"
-msgstr ""
+msgstr "อนุญาตให้บันทึกวิธีการชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_link_wizard__amount
@@ -272,12 +269,19 @@ msgstr "จำนวน"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_account_payment__amount_available_for_refund
 msgid "Amount Available For Refund"
-msgstr ""
+msgstr "จำนวนเงินที่สามารถขอคืนเงินได้"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_link_wizard__amount_max
 msgid "Amount Max"
-msgstr ""
+msgstr "จำนวนเงินสูงสุด"
+
+#. module: payment
+#: model:ir.model.fields,field_description:payment.field_account_bank_statement_line__amount_paid
+#: model:ir.model.fields,field_description:payment.field_account_move__amount_paid
+#: model:ir.model.fields,field_description:payment.field_account_payment__amount_paid
+msgid "Amount paid"
+msgstr "จำนวนที่จ่าย"
 
 #. module: payment
 #. openerp-web
@@ -303,7 +307,7 @@ msgstr "เก็บถาวร"
 #: code:addons/payment/static/src/js/manage_form.js:0
 #, python-format
 msgid "Are you sure you want to delete this payment method?"
-msgstr ""
+msgstr "คุณแน่ใจหรือไม่ว่าต้องการลบวิธีการชำระเงินนี้"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.account_invoice_view_form_inherit_payment
@@ -323,17 +327,17 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__auth_msg
 msgid "Authorize Message"
-msgstr ""
+msgstr "อนุญาตข้อความ"
 
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_authorize
 msgid "Authorize.net"
-msgstr ""
+msgstr "Authorize.net"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__authorized
 msgid "Authorized"
-msgstr ""
+msgstr "ได้รับอนุญาต"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_account_bank_statement_line__authorized_transaction_ids
@@ -366,32 +370,32 @@ msgstr "ชื่อธนาคาร"
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_buckaroo
 msgid "Buckaroo"
-msgstr ""
+msgstr "Buckaroo"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__callback_model_id
 msgid "Callback Document Model"
-msgstr ""
+msgstr "โมเดลเอกสารโทรกลับ"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__callback_is_done
 msgid "Callback Done"
-msgstr ""
+msgstr "โทรกลับเรียบร้อยแล้ว"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__callback_hash
 msgid "Callback Hash"
-msgstr ""
+msgstr "แฮชโทรกลับ"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__callback_method
 msgid "Callback Method"
-msgstr ""
+msgstr "วิธีการโทรกลับ"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__callback_res_id
 msgid "Callback Record ID"
-msgstr ""
+msgstr "ID บันทึกการโทรกลับ"
 
 #. module: payment
 #. openerp-web
@@ -409,7 +413,7 @@ msgstr "ถูกยกเลิก"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__cancel_msg
 msgid "Canceled Message"
-msgstr ""
+msgstr "ข้อความที่ยกเลิก"
 
 #. module: payment
 #. openerp-web
@@ -421,7 +425,7 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__capture_manually
 msgid "Capture Amount Manually"
-msgstr ""
+msgstr "จับยอดเงินด้วยตนเอง"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.account_invoice_view_form_inherit_payment
@@ -436,6 +440,9 @@ msgid ""
 "Use this if you want to charge your customers cards only when\n"
 "you are sure you can ship the goods to them."
 msgstr ""
+"เก็บเงินจาก Odoo เมื่อการส่งมอบเสร็จสิ้น\n"
+"ใช้สิ่งนี้หากคุณต้องการเรียกเก็บเงินจากบัตรของลูกค้าของคุณเฉพาะเมื่อ\n"
+"คุณแน่ใจว่าคุณสามารถจัดส่งสินค้าให้พวกเขาได้เท่านั้น"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_onboarding_wizard_form
@@ -513,7 +520,7 @@ msgstr "ตั้งค่า"
 #: code:addons/payment/static/src/js/manage_form.js:0
 #, python-format
 msgid "Confirm Deletion"
-msgstr ""
+msgstr "ยืนยันการลบ"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__done
@@ -528,7 +535,7 @@ msgstr "ติดต่อ"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__module_id
 msgid "Corresponding Module"
-msgstr ""
+msgstr "โมดูลที่สอดคล้องกัน"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__country_ids
@@ -544,7 +551,7 @@ msgstr "ประเทศ"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__tokenize
 msgid "Create Token"
-msgstr ""
+msgstr "สร้างโทเค็น"
 
 #. module: payment
 #: model_terms:ir.actions.act_window,help:payment.action_payment_acquirer
@@ -594,6 +601,11 @@ msgid "Credit & Debit Card"
 msgstr ""
 
 #. module: payment
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__stripe
+msgid "Credit & Debit card (via Stripe)"
+msgstr "บัตรเครดิต & เดบิต (ผ่าน Stripe)"
+
+#. module: payment
 #: model:payment.acquirer,display_as:payment.payment_acquirer_adyen
 msgid "Credit Card (powered by Adyen)"
 msgstr ""
@@ -635,6 +647,7 @@ msgstr ""
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__stripe
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__stripe
 msgid "Credit card (via Stripe)"
 msgstr "บัตรเครดิต (ผ่าน Stripe)"
 
@@ -647,6 +660,8 @@ msgstr "สกุลเงิน"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__manual
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__manual
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__manual
 msgid "Custom payment instructions"
 msgstr "คำแนะนำการชำระเงินที่กำหนดเอง"
 
@@ -658,7 +673,7 @@ msgstr "ลูกค้า"
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__sequence
 msgid "Define the display order"
-msgstr ""
+msgstr "กำหนดลำดับการแสดง"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__description
@@ -705,7 +720,7 @@ msgstr "เสร็จสิ้น"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__done_msg
 msgid "Done Message"
-msgstr ""
+msgstr "ส่งข้อความเรียบร้อยแล้ว"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__draft
@@ -728,7 +743,7 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer__state__enabled
 msgid "Enabled"
-msgstr ""
+msgstr "เปิดใช้งานแล้ว"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__state__error
@@ -741,7 +756,7 @@ msgstr "ผิดพลาด"
 #: code:addons/payment/static/src/js/payment_form_mixin.js:0
 #, python-format
 msgid "Error: %s"
-msgstr ""
+msgstr "ข้อผิดพลาด: %s"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__fees
@@ -766,7 +781,9 @@ msgid "Fixed international fees"
 msgstr ""
 
 #. module: payment
+#: code:addons/payment/wizards/payment_link_wizard.py:0
 #: model:ir.model.fields,field_description:payment.field_payment_link_wizard__acquirer_id
+#, python-format
 msgid "Force Payment Acquirer"
 msgstr ""
 
@@ -785,12 +802,12 @@ msgstr "จาก"
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer__support_refund__full_only
 msgid "Full Only"
-msgstr ""
+msgstr "เต็มรูปแบบเท่านั้น"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_link_wizard_view_form
 msgid "Generate Payment Link"
-msgstr ""
+msgstr "สร้างลิงค์การชำระเงิน"
 
 #. module: payment
 #: model:ir.model,name:payment.model_payment_link_wizard
@@ -822,12 +839,12 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_refund_wizard__has_pending_refund
 msgid "Has a pending refund"
-msgstr ""
+msgstr "มีการคืนเงินที่ค้างอยู่"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__is_post_processed
 msgid "Has the payment been post-processed"
-msgstr ""
+msgstr "มีการชำระเงินภายหลังการประมวลผลหรือไม่"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__pre_msg
@@ -836,11 +853,15 @@ msgstr "ข้อความช่วยเหลือ"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__paypal_user_type__new_user
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__paypal_user_type__new_user
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__paypal_user_type__new_user
 msgid "I don't have a Paypal account"
 msgstr ""
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__paypal_user_type__existing_user
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__paypal_user_type__existing_user
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__paypal_user_type__existing_user
 msgid "I have a Paypal account"
 msgstr ""
 
@@ -865,14 +886,14 @@ msgstr ""
 #: code:addons/payment/static/src/xml/payment_post_processing.xml:0
 #, python-format
 msgid "If the payment hasn't been confirmed you can contact us."
-msgstr ""
+msgstr "หากการชำระเงินไม่ได้รับการยืนยัน คุณสามารถติดต่อเราได้"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_methods
 msgid ""
 "If you believe that it is an error, please contact the website "
 "administrator."
-msgstr ""
+msgstr "หากคุณคิดว่าเกิดข้อผิดพลาด โปรดติดต่อผู้ดูแลเว็บไซต์"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__image_128
@@ -896,7 +917,7 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__inline_form_view_id
 msgid "Inline Form Template"
-msgstr ""
+msgstr "เทมเพลตฟอร์มอินไลน์"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_form
@@ -907,7 +928,7 @@ msgstr "ติดตั้ง"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__module_state
 msgid "Installation State"
-msgstr ""
+msgstr "สถานะการติดตั้ง"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_search
@@ -919,12 +940,12 @@ msgstr "ติดตั้งแล้ว"
 #: code:addons/payment/static/src/xml/payment_post_processing.xml:0
 #, python-format
 msgid "Internal server error"
-msgstr ""
+msgstr "เกิดข้อผิดพลาดเซิร์ฟเวอร์ภายใน"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
 msgid "Invoice(s)"
-msgstr ""
+msgstr "ใบแจ้งหนี้"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
@@ -936,19 +957,19 @@ msgstr "ใบแจ้งหนี้"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__invoices_count
 msgid "Invoices Count"
-msgstr ""
+msgstr "จำนวนใบแจ้งหนี้"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__is_post_processed
 msgid "Is Post-processed"
-msgstr ""
+msgstr "เป็นขั้นตอนหลังการประมวลผล"
 
 #. module: payment
 #. openerp-web
 #: code:addons/payment/static/src/js/manage_form.js:0
 #, python-format
 msgid "It is currently linked to the following documents:"
-msgstr ""
+msgstr "ขณะนี้มีการเชื่อมโยงกับเอกสารดังต่อไปนี้:"
 
 #. module: payment
 #: model:ir.model,name:payment.model_account_journal
@@ -968,7 +989,7 @@ msgstr "ทําสําเร็จ"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__landing_route
 msgid "Landing Route"
-msgstr ""
+msgstr "เส้นทางการลง"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__partner_lang
@@ -989,7 +1010,7 @@ msgstr "แก้ไขครั้งสุดท้ายเมื่อ"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__last_state_change
 msgid "Last State Change Date"
-msgstr ""
+msgstr "วันที่เปลี่ยนสถานะล่าสุด"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__write_uid
@@ -1031,7 +1052,7 @@ msgstr "ด้วยตนเอง"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_refund_wizard__amount_available_for_refund
 msgid "Maximum Refund Allowed"
-msgstr ""
+msgstr "อนุญาตให้คืนเงินสูงสุดได้"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer_onboarding_wizard__paypal_seller_account
@@ -1057,7 +1078,7 @@ msgstr "วิธีการ"
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_mollie
 msgid "Mollie"
-msgstr ""
+msgstr "Mollie"
 
 #. module: payment
 #. openerp-web
@@ -1078,7 +1099,7 @@ msgstr "ชื่อ"
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer__provider__none
 msgid "No Provider Set"
-msgstr ""
+msgstr "ไม่มีการตั้งค่าผู้ให้บริการ"
 
 #. module: payment
 #: code:addons/payment/wizards/payment_acquirer_onboarding_wizard.py:0
@@ -1110,7 +1131,7 @@ msgstr "ยังไม่เสร็จ"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.verified_token_checkmark
 msgid "Not verified"
-msgstr ""
+msgstr "ยังไม่ได้รับการยืนยัน"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_account_payment__payment_token_id
@@ -1134,12 +1155,12 @@ msgstr "Odoo สำหรับองค์กร"
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__offline
 msgid "Offline payment by token"
-msgstr ""
+msgstr "ชำระเงินออฟไลน์ด้วยโทเค็น"
 
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_ogone
 msgid "Ogone"
-msgstr ""
+msgstr "Ogone"
 
 #. module: payment
 #. openerp-web
@@ -1152,22 +1173,22 @@ msgstr "ตกลง"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.onboarding_payment_acquirer_step
 msgid "Online Payments"
-msgstr ""
+msgstr "การชำระเงินออนไลน์"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__online_direct
 msgid "Online direct payment"
-msgstr ""
+msgstr "ชำระเงินโดยตรงออนไลน์"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__online_token
 msgid "Online payment by token"
-msgstr ""
+msgstr "ชำระเงินออนไลน์ด้วยโทเค็น"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__online_redirect
 msgid "Online payment with redirection"
-msgstr ""
+msgstr "การชำระเงินออนไลน์พร้อมการเปลี่ยนเส้นทาง"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.onboarding_payment_acquirer_step
@@ -1178,7 +1199,7 @@ msgstr ""
 #: code:addons/payment/wizards/payment_acquirer_onboarding_wizard.py:0
 #, python-format
 msgid "Only administrators can access this data."
-msgstr ""
+msgstr "มีเพียงผู้ดูแลระบบเท่านั้นที่สามารถเข้าถึงข้อมูลนี้ได้"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
@@ -1190,13 +1211,13 @@ msgstr ""
 #: code:addons/payment/models/payment_transaction.py:0
 #, python-format
 msgid "Only authorized transactions can be voided."
-msgstr ""
+msgstr "เฉพาะธุรกรรมที่ได้รับอนุญาตเท่านั้นที่สามารถถือเป็นโมฆะได้"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
 #, python-format
 msgid "Only confirmed transactions can be refunded."
-msgstr ""
+msgstr "เฉพาะธุรกรรมที่ยืนยันแล้วเท่านั้นที่สามารถขอคืนเงินได้"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__operation
@@ -1210,6 +1231,8 @@ msgstr "อื่นๆ"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__other
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__other
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__other
 msgid "Other payment acquirer"
 msgstr "ผู้ให้บริการชำระเงินอื่น ๆ "
 
@@ -1244,6 +1267,8 @@ msgstr "จ่าย"
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_acquirer_onboarding_wizard__payment_method__paypal
 #: model:ir.model.fields.selection,name:payment.selection__res_company__payment_onboarding_payment_method__paypal
+#: model:ir.model.fields.selection,name:payment.selection__sale_payment_acquirer_onboarding_wizard__payment_method__paypal
+#: model:ir.model.fields.selection,name:payment.selection__website_sale_payment_acquirer_onboarding_wizard__payment_method__paypal
 #: model:payment.acquirer,name:payment.payment_acquirer_paypal
 msgid "PayPal"
 msgstr "PayPal"
@@ -1291,12 +1316,12 @@ msgstr "จำนวนชำระ"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_form
 msgid "Payment Followup"
-msgstr ""
+msgstr "ติดตามการชำระเงิน"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_form
 msgid "Payment Form"
-msgstr ""
+msgstr "แบบฟอร์มการชำระเงิน"
 
 #. module: payment
 #: model:ir.model,name:payment.model_payment_icon
@@ -1323,7 +1348,7 @@ msgstr "สมุดรายวันชำระเงิน"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_link_wizard__link
 msgid "Payment Link"
-msgstr ""
+msgstr "ลิงค์การชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer_onboarding_wizard__payment_method
@@ -1343,7 +1368,7 @@ msgstr "อ้างอิงการชำระเงิน"
 #. module: payment
 #: model:ir.model,name:payment.model_payment_refund_wizard
 msgid "Payment Refund Wizard"
-msgstr ""
+msgstr "โปรแกรมการคืนเงินการชำระเงิน"
 
 #. module: payment
 #: model:ir.model,name:payment.model_payment_token
@@ -1355,7 +1380,7 @@ msgstr "โทเคนการชำระเงิน"
 #: model:ir.model.fields,field_description:payment.field_res_partner__payment_token_count
 #: model:ir.model.fields,field_description:payment.field_res_users__payment_token_count
 msgid "Payment Token Count"
-msgstr ""
+msgstr "จำนวนโทเค็นการชำระเงิน"
 
 #. module: payment
 #: model:ir.actions.act_window,name:payment.action_payment_token
@@ -1388,7 +1413,7 @@ msgstr "ธุรกรรมการชำระเงิน"
 #. module: payment
 #: model:ir.actions.act_window,name:payment.action_payment_transaction_linked_to_token
 msgid "Payment Transactions Linked To Token"
-msgstr ""
+msgstr "ธุรกรรมการชำระเงินที่เชื่อมโยงกับโทเค็น"
 
 #. module: payment
 #: model:ir.model,name:payment.model_payment_acquirer_onboarding_wizard
@@ -1480,7 +1505,7 @@ msgstr ""
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.confirm
 msgid "Processed by"
-msgstr ""
+msgstr "ดำเนินการโดย"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__provider
@@ -1501,12 +1526,12 @@ msgstr "เหตุผล:"
 #: code:addons/payment/models/payment_transaction.py:0
 #, python-format
 msgid "Reason: %s"
-msgstr ""
+msgstr "เหตุผล: %s"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__redirect_form_view_id
 msgid "Redirect Form Template"
-msgstr ""
+msgstr "เทมเพลตแบบฟอร์มการเปลี่ยนเส้นทาง"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__reference
@@ -1517,7 +1542,7 @@ msgstr "อ้างอิง"
 #. module: payment
 #: model:ir.model.constraint,message:payment.constraint_payment_transaction_reference_uniq
 msgid "Reference must be unique!"
-msgstr ""
+msgstr "การอ้างอิงต้องไม่ซ้ำกัน!"
 
 #. module: payment
 #: code:addons/payment/models/account_payment.py:0
@@ -1533,12 +1558,12 @@ msgstr "คืนเงิน"
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_refund_wizard__amount_to_refund
 msgid "Refund Amount"
-msgstr ""
+msgstr "จำนวนการคืนเงิน"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_refund_wizard__refunded_amount
 msgid "Refunded Amount"
-msgstr ""
+msgstr "จำนวนเงินที่คืน"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_transaction_form
@@ -1550,7 +1575,7 @@ msgstr "การคืนเงิน"
 #: model:ir.model.fields,field_description:payment.field_account_payment__refunds_count
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__refunds_count
 msgid "Refunds Count"
-msgstr ""
+msgstr "จำนวนการคืนเงิน"
 
 #. module: payment
 #: model:ir.model,name:payment.model_account_payment_register
@@ -1575,7 +1600,7 @@ msgstr "เดบิต"
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.view_account_journal_form
 msgid "SETUP"
-msgstr ""
+msgstr "การตั้งค่า"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.manage
@@ -1590,12 +1615,12 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_account_payment__payment_token_id
 msgid "Saved Payment Token"
-msgstr ""
+msgstr "โทเค็นการชำระเงินที่บันทึกไว้"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_account_payment_register__payment_token_id
 msgid "Saved payment token"
-msgstr ""
+msgstr "โทเค็นการชำระเงินที่บันทึกไว้"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.payment_acquirer_form
@@ -1605,7 +1630,7 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_res_company__payment_onboarding_payment_method
 msgid "Selected onboarding payment method"
-msgstr ""
+msgstr "วิธีการชำระเงินการเริ่มต้นใช้งานที่เลือก"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__sequence
@@ -1633,27 +1658,27 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_allow_tokenization
 msgid "Show Allow Tokenization"
-msgstr ""
+msgstr "แสดงการอนุญาตโทเค็น"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_auth_msg
 msgid "Show Auth Msg"
-msgstr ""
+msgstr "แสดงข้อความการยืนยันตัวตน"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_cancel_msg
 msgid "Show Cancel Msg"
-msgstr ""
+msgstr "แสดงข้อความการยกเลิก"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_credentials_page
 msgid "Show Credentials Page"
-msgstr ""
+msgstr "แสดงหน้าข้อมูลประจำตัว"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_done_msg
 msgid "Show Done Msg"
-msgstr ""
+msgstr "แสดงข้อความเสร็จสิ้น"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_payment_icon_ids
@@ -1663,27 +1688,27 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_pending_msg
 msgid "Show Pending Msg"
-msgstr ""
+msgstr "แสดงข้อความที่รอดำเนินการ"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__show_pre_msg
 msgid "Show Pre Msg"
-msgstr ""
+msgstr "แสดงข้อความก่อนหน้า"
 
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_sips
 msgid "Sips"
-msgstr ""
+msgstr "Sips"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_account_payment__source_payment_id
 msgid "Source Payment"
-msgstr ""
+msgstr "แหล่งที่มาของการชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_transaction__source_transaction_id
 msgid "Source Transaction"
-msgstr ""
+msgstr "ธุรกรรมแหล่งที่มา"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_account_payment_method_line__payment_acquirer_state
@@ -1725,7 +1750,7 @@ msgstr "Stripe Secret Key"
 #: model:ir.model.fields,field_description:payment.field_account_payment__suitable_payment_token_ids
 #: model:ir.model.fields,field_description:payment.field_account_payment_register__suitable_payment_token_ids
 msgid "Suitable Payment Token"
-msgstr ""
+msgstr "โทเค็นการชำระเงินที่เหมาะสม"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__payment_icon_ids
@@ -1762,7 +1787,7 @@ msgstr ""
 #: code:addons/payment/controllers/portal.py:0
 #, python-format
 msgid "The access token is invalid."
-msgstr ""
+msgstr "โทเค็นการเข้าถึงไม่ถูกต้อง"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_token__acquirer_ref
@@ -1775,11 +1800,18 @@ msgid "The acquirer reference of the transaction"
 msgstr ""
 
 #. module: payment
+#: model:ir.model.fields,help:payment.field_account_bank_statement_line__amount_paid
+#: model:ir.model.fields,help:payment.field_account_move__amount_paid
+#: model:ir.model.fields,help:payment.field_account_payment__amount_paid
+msgid "The amount already paid for this invoice."
+msgstr ""
+
+#. module: payment
 #: code:addons/payment/wizards/payment_refund_wizard.py:0
 #, python-format
 msgid ""
 "The amount to be refunded must be positive and cannot be superior to %s."
-msgstr ""
+msgstr "จำนวนเงินที่จะคืนต้องเป็นจำนวนบวกและไม่อาจเหนือกว่าได้ %s"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_token__name
@@ -1789,12 +1821,12 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__color
 msgid "The color of the card in kanban view"
-msgstr ""
+msgstr "สีของการ์ดในมุมมองคัมบัง"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__state_message
 msgid "The complementary information message about the state"
-msgstr ""
+msgstr "ข้อความข้อมูลเสริมเกี่ยวกับรัฐ"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__country_ids
@@ -1817,12 +1849,12 @@ msgstr ""
 #: code:addons/payment/models/payment_acquirer.py:0
 #, python-format
 msgid "The following fields must be filled: %s"
-msgstr ""
+msgstr "ต้องกรอกข้อมูลในฟิลด์ต่อไปนี้: %s"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__reference
 msgid "The internal reference of the transaction"
-msgstr ""
+msgstr "การอ้างอิงภายในของธุรกรรม"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__journal_id
@@ -1837,30 +1869,31 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__auth_msg
 msgid "The message displayed if payment is authorized"
-msgstr ""
+msgstr "ข้อความปรากฏขึ้นหากการชำระเงินได้รับการอนุมัติ"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__cancel_msg
 msgid ""
 "The message displayed if the order is canceled during the payment process"
-msgstr ""
+msgstr "ข้อความที่แสดงขึ้นหากคำสั่งซื้อถูกยกเลิกในระหว่างขั้นตอนการชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__done_msg
 msgid ""
 "The message displayed if the order is successfully done after the payment "
 "process"
-msgstr ""
+msgstr "ข้อความที่แสดงขึ้นหากคำสั่งซื้อเสร็จสิ้นหลังจากขั้นตอนการชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__pending_msg
 msgid "The message displayed if the order pending after the payment process"
 msgstr ""
+"ข้อความที่แสดงขึ้นหากคำสั่งซื้ออยู่ระหว่างดำเนินการหลังจากขั้นตอนการชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__pre_msg
 msgid "The message displayed to explain and help the payment process"
-msgstr ""
+msgstr "ข้อความที่แสดงขึ้นเพื่ออธิบายและช่วยเหลือขั้นตอนการชำระเงิน"
 
 #. module: payment
 #: code:addons/payment/controllers/portal.py:0
@@ -1868,6 +1901,8 @@ msgstr ""
 msgid ""
 "The payment should either be direct, with redirection, or made by a token."
 msgstr ""
+"การชำระเงินควรเป็นการชำระเงินโดยตรง หรือมีการเปลี่ยนเส้นทาง "
+"หรือชำระด้วยโทเค็น"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
@@ -1878,12 +1913,12 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__landing_route
 msgid "The route the user is redirected to after the transaction"
-msgstr ""
+msgstr "เส้นทางที่ผู้ใช้ถูกเปลี่ยนเส้นทางไปหลังการทำธุรกรรม"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_account_payment__source_payment_id
 msgid "The source payment of related refund payments"
-msgstr ""
+msgstr "แหล่งที่มาของการชำระเงินของการคืนเงินที่เกี่ยวข้อง"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__source_transaction_id
@@ -1895,13 +1930,13 @@ msgstr ""
 msgid ""
 "The template rendering a form submitted to redirect the user when making a "
 "payment"
-msgstr ""
+msgstr "เทมเพลตแสดงแบบฟอร์มที่ส่งเพื่อเปลี่ยนเส้นทางผู้ใช้เมื่อชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_acquirer__inline_form_view_id
 msgid ""
 "The template rendering the inline payment form when making a direct payment"
-msgstr ""
+msgstr "เทมเพลตที่แสดงแบบฟอร์มการชำระเงินแบบอินไลน์เมื่อชำระเงินโดยตรง"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
@@ -1952,7 +1987,7 @@ msgstr ""
 #. module: payment
 #: model_terms:ir.actions.act_window,help:payment.action_payment_transaction
 msgid "There are no transactions to show"
-msgstr ""
+msgstr "ไม่มีธุรกรรมที่จะแสดง"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.pay
@@ -2009,7 +2044,7 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__support_tokenization
 msgid "Tokenization Supported"
-msgstr ""
+msgstr "รองรับโทเค็น"
 
 #. module: payment
 #: code:addons/payment/models/payment_transaction.py:0
@@ -2030,7 +2065,7 @@ msgstr "ธุรกรรม"
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__support_refund
 #: model:ir.model.fields,field_description:payment.field_payment_refund_wizard__support_refund
 msgid "Type of Refund Supported"
-msgstr ""
+msgstr "ประเภทของการคืนเงินที่รองรับ"
 
 #. module: payment
 #. openerp-web
@@ -2049,12 +2084,12 @@ msgstr "อัพเกรด"
 #: model:ir.model.fields,field_description:payment.field_account_payment__use_electronic_payment_method
 #: model:ir.model.fields,field_description:payment.field_account_payment_register__use_electronic_payment_method
 msgid "Use Electronic Payment Method"
-msgstr ""
+msgstr "ใช้วิธีการชำระเงินทางอิเล็กทรอนิกส์"
 
 #. module: payment
 #: model:ir.model.fields.selection,name:payment.selection__payment_transaction__operation__validation
 msgid "Validation of the payment method"
-msgstr ""
+msgstr "การตรวจสอบความถูกต้องของวิธีการชำระเงิน"
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_acquirer__fees_dom_var
@@ -2115,7 +2150,7 @@ msgstr ""
 #: code:addons/payment/static/src/xml/payment_post_processing.xml:0
 #, python-format
 msgid "We are not able to find your payment, but don't worry."
-msgstr ""
+msgstr "เราไม่พบการชำระเงินของคุณ แต่ไม่ต้องกังวล"
 
 #. module: payment
 #. openerp-web
@@ -2150,17 +2185,17 @@ msgstr ""
 msgid ""
 "Whether a payment token should be created when post-processing the "
 "transaction"
-msgstr ""
+msgstr "ควรสร้างโทเค็นการชำระเงินเมื่อมีการประมวลผลธุรกรรมภายหลังหรือไม่"
 
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_transaction__callback_is_done
 msgid "Whether the callback has already been executed"
-msgstr ""
+msgstr "ไม่ว่าการโทรกลับจะถูกดำเนินการแล้วก็ตาม"
 
 #. module: payment
 #: model:payment.acquirer,name:payment.payment_acquirer_transfer
 msgid "Wire Transfer"
-msgstr ""
+msgstr "โอนเงิน"
 
 #. module: payment
 #. openerp-web
@@ -2170,12 +2205,14 @@ msgid "You can click here to be redirected to the confirmation page."
 msgstr ""
 
 #. module: payment
-#: code:addons/payment/models/account_journal.py:0
+#: code:addons/payment/models/account_payment_method.py:0
 #, python-format
 msgid ""
-"You can't delete a payment method that is linked to an acquirer in the enabled or test state.\n"
-"Linked acquirer(s): %s"
+"You can't delete a payment method that is linked to a provider in the enabled or test state.\n"
+"Linked providers(s): %s"
 msgstr ""
+"คุณไม่สามารถลบวิธีการชำระเงินที่เชื่อมโยงกับผู้ให้บริการในสถานะเปิดใช้งานหรือทดสอบได้\n"
+"ผู้ให้บริการที่เชื่อมโยง: %s"
 
 #. module: payment
 #: code:addons/payment/models/ir_ui_view.py:0
@@ -2184,11 +2221,33 @@ msgid "You cannot delete a view that is used by a payment acquirer."
 msgstr ""
 
 #. module: payment
+#: code:addons/payment/models/payment_acquirer.py:0
+#, python-format
+msgid ""
+"You cannot delete the payment acquirer %s; disable it or uninstall it "
+"instead."
+msgstr ""
+
+#. module: payment
+#: code:addons/payment/controllers/portal.py:0
+#, python-format
+msgid "You do not have access to this payment token."
+msgstr "คุณไม่มีสิทธิ์เข้าถึงโทเค็นการชำระเงินนี้"
+
+#. module: payment
+#: code:addons/payment/models/account_journal.py:0
+#, python-format
+msgid ""
+"You must first deactivate a payment acquirer before deleting its journal.\n"
+"Linked acquirer(s): %s"
+msgstr ""
+
+#. module: payment
 #. openerp-web
 #: code:addons/payment/static/src/xml/payment_post_processing.xml:0
 #, python-format
 msgid "You should receive an email confirming your payment in a few minutes."
-msgstr ""
+msgstr "คุณควรได้รับอีเมลยืนยันการชำระเงินของคุณภายในไม่กี่นาที"
 
 #. module: payment
 #. openerp-web
@@ -2283,7 +2342,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Your payment has been successfully processed but is waiting for approval."
-msgstr ""
+msgstr "การชำระเงินของคุณได้รับการประมวลผลเรียบร้อยแล้ว แต่กำลังรอการอนุมัติ"
 
 #. module: payment
 #: code:addons/payment/models/payment_acquirer.py:0
@@ -2327,7 +2386,7 @@ msgstr "รหัสไปรษณีย์"
 #: model:ir.cron,cron_name:payment.cron_post_process_payment_tx
 #: model:ir.cron,name:payment.cron_post_process_payment_tx
 msgid "payment: post-process transactions"
-msgstr ""
+msgstr "การชำระเงิน: การทำธุรกรรมหลังการประมวลผล"
 
 #. module: payment
 #: model_terms:ir.ui.view,arch_db:payment.icon_list

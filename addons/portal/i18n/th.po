@@ -5,17 +5,20 @@
 # Translators:
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2021
 # Odoo Thaidev <odoothaidev@gmail.com>, 2021
-# Wichanon Jamwutthipreecha, 2022
 # Martin Trigaux, 2022
+# Wichanon Jamwutthipreecha, 2022
+# Ped Sansiri, 2023
+# Rasareeyar Lappiam, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 10:55+0000\n"
+"POT-Creation-Date: 2024-08-14 15:44+0000\n"
 "PO-Revision-Date: 2021-09-14 12:24+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -60,12 +63,22 @@ msgstr ""
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_layout
 msgid "<i class=\"fa fa-pencil\"/> Edit"
-msgstr ""
+msgstr "<i class=\"fa fa-pencil\"/> แก้ไข"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
-msgstr ""
+msgstr "<i title=\"เอกสาร\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid "<option value=\"\">Country...</option>"
+msgstr "<option value=\"\">ประเทศ...</option>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid "<option value=\"\">select...</option>"
+msgstr "<option value=\"\">เลือก...</option>"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
@@ -74,6 +87,26 @@ msgid ""
 " not allowed once document(s) have been issued for your account. <br/>Please"
 " contact us directly for this operation.</small>"
 msgstr ""
+"<small class=\"form-text text-"
+"muted\">ไม่อนุญาตให้เปลี่ยนชื่อบริษัทหรือหมายเลข VAT "
+"เมื่อมีการออกเอกสารสำหรับบัญชีของคุณแล้ว <br/> "
+"กรุณาติดต่อเราโดยตรงสำหรับการดำเนินการนี้</small>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.pager
+msgid ""
+"<span class=\"fa fa-chevron-left\" role=\"img\" aria-label=\"Previous\" "
+"title=\"Previous\"/>"
+msgstr ""
+"<span class=\"fa fa-chevron-left\" role=\"รูปภาพ\" aria-label=\"ก่อนหน้า\" "
+"title=\"ก่อนหน้า\"/>"
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.pager
+msgid "<span class=\"fa fa-chevron-right\" role=\"img\" aria-label=\"Next\" title=\"Next\"/>"
+msgstr ""
+"<span class=\"fa fa-chevron-right\" role=\"รูปภาพ\" aria-label=\"ถัดไป\" "
+"title=\"ถัดไป\"/>"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_searchbar
@@ -93,7 +126,7 @@ msgstr ""
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_template
 msgid "<strong>Open </strong>"
-msgstr ""
+msgstr "<strong>เปิด </strong>"
 
 #. module: portal
 #: model:mail.template,body_html:portal.mail_template_data_portal_welcome
@@ -183,14 +216,14 @@ msgstr ""
 #: code:addons/portal/static/src/js/portal.js:0
 #, python-format
 msgid "API Key Ready"
-msgstr ""
+msgstr "คีย์ API พร้อมแล้ว"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/js/portal_signature.js:0
 #, python-format
 msgid "Accept & Sign"
-msgstr ""
+msgstr "ยอมรับและลงนาม"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_mixin__access_warning
@@ -218,23 +251,17 @@ msgstr "Add attachment"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
 msgid "Add contacts to share the document..."
-msgstr ""
+msgstr "เพิ่มผู้ติดต่อเพื่อแชร์เอกสาร..."
 
 #. module: portal
 #: model:ir.model.fields,help:portal.field_portal_share__note
 msgid "Add extra content to display in the email"
-msgstr ""
+msgstr "เพิ่มเนื้อหาเพิ่มเติมเพื่อแสดงในอีเมล"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Added On"
 msgstr "เพิ่มลงบน"
-
-#. module: portal
-#: code:addons/portal/controllers/mail.py:0
-#, python-format
-msgid "An access token must be provided for each attachment."
-msgstr ""
 
 #. module: portal
 #. openerp-web
@@ -282,7 +309,7 @@ msgstr ""
 #: code:addons/portal/static/src/js/portal.js:0
 #, python-format
 msgid "Check failed"
-msgstr ""
+msgstr "การตรวจสอบล้มเหลว"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
@@ -294,7 +321,7 @@ msgstr "เขต / อำเภอ"
 #: code:addons/portal/static/src/xml/portal_signature.xml:0
 #, python-format
 msgid "Click here to see your document."
-msgstr ""
+msgstr "คลิกที่นี่เพื่อดูเอกสารของคุณ"
 
 #. module: portal
 #. openerp-web
@@ -357,17 +384,12 @@ msgstr "รายชื่อ"
 #: code:addons/portal/static/src/js/portal_composer.js:0
 #, python-format
 msgid "Could not save file <strong>%s</strong>"
-msgstr ""
+msgstr "ไม่สามารถบันทึกไฟล์ได้ <strong>%s</strong>"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
 msgid "Country"
 msgstr "ประเทศ"
-
-#. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
-msgid "Country..."
-msgstr "ประเทศ..."
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__create_uid
@@ -391,6 +413,7 @@ msgid ""
 "Currently available to everyone viewing this document, click to restrict to "
 "internal employees."
 msgstr ""
+"ขณะนี้เปิดให้ทุกคนที่ดูเอกสารนี้ คลิกเพื่อจำกัดเฉพาะพนักงานภายในเท่านั้น"
 
 #. module: portal
 #. openerp-web
@@ -400,11 +423,13 @@ msgid ""
 "Currently restricted to internal employees, click to make it available to "
 "everyone viewing this document."
 msgstr ""
+"ขณะนี้จำกัดเฉพาะพนักงานภายในเท่านั้น "
+"คลิกเพื่อให้ทุกคนที่ดูเอกสารนี้สามารถใช้ได้"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_res_config_settings__portal_allow_api_keys
 msgid "Customer API Keys"
-msgstr ""
+msgstr "คีย์ API ของลูกค้า"
 
 #. module: portal
 #: model:ir.model.fields,help:portal.field_portal_mixin__access_url
@@ -437,7 +462,7 @@ msgstr "รายละเอียด"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Developer API Keys"
-msgstr ""
+msgstr "คีย์ API ของนักพัฒนา"
 
 #. module: portal
 #. openerp-web
@@ -470,7 +495,7 @@ msgstr ""
 #: code:addons/portal/static/src/js/portal_sidebar.js:0
 #, python-format
 msgid "Due today"
-msgstr ""
+msgstr "ครบกำหนดวันนี้"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__email
@@ -488,21 +513,21 @@ msgstr "เธรดอีเมล"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "Employees Only"
-msgstr ""
+msgstr "เฉพาะพนักงานเท่านั้น"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Enter a description of and purpose for the key."
-msgstr ""
+msgstr "ป้อนคำอธิบายและวัตถุประสงค์ของคีย์"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Forgot password?"
-msgstr ""
+msgstr "ลืมรหัสผ่าน?"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
@@ -533,6 +558,8 @@ msgid ""
 "Here is your new API key, use it instead of a password for RPC access.\n"
 "                Your login is still necessary for interactive usage."
 msgstr ""
+"นี่คือคีย์ API ใหม่ของคุณ ใช้แทนรหัสผ่านสำหรับการเข้าถึง RPC\n"
+"                การเข้าสู่ระบบของคุณยังจำเป็นสำหรับการใช้งานเชิงโต้ตอบ"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_breadcrumbs
@@ -551,12 +578,26 @@ msgstr "รหัส"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Important:"
-msgstr ""
+msgstr "สิ่งสำคัญ:"
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+#, python-format
+msgid "Internal Note"
+msgstr "บันทึกย่อภายใน"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Internal User"
 msgstr "ผู้ใช้งาน"
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_chatter.xml:0
+#, python-format
+msgid "Internal notes are only displayed to internal users."
+msgstr "โน๊ตภายในจะแสดงต่อผู้ใช้ภายในเท่านั้น"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -568,7 +609,7 @@ msgstr "อีเมลไม่ถูกต้อง! กรุณาใส่�
 #: code:addons/portal/controllers/portal.py:0
 #, python-format
 msgid "Invalid report type: %s"
-msgstr ""
+msgstr "ประเภทรายงานไม่ถูกต้อง: %s"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard__welcome_message
@@ -578,12 +619,12 @@ msgstr "ข้อความเชื้อเชิญ"
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__is_internal
 msgid "Is Internal"
-msgstr ""
+msgstr "เป็นภายใน"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__is_portal
 msgid "Is Portal"
-msgstr ""
+msgstr "เป็นพอร์ทัล"
 
 #. module: portal
 #. openerp-web
@@ -592,6 +633,15 @@ msgstr ""
 msgid ""
 "It is very important that this description be clear\n"
 "                and complete,"
+msgstr ""
+"เป็นสิ่งสำคัญมากที่คำอธิบายนี้จะต้อง\n"
+"                ชัดเจนและครบถ้วน"
+
+#. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_security.xml:0
+#, python-format
+msgid "Key Description"
 msgstr ""
 
 #. module: portal
@@ -618,14 +668,14 @@ msgstr "อัพเดทครั้งสุดท้ายเมื่อ"
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__login_date
 msgid "Latest Authentication"
-msgstr ""
+msgstr "การรับรองความถูกต้องล่าสุด"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "Leave a comment"
-msgstr ""
+msgstr "แสดงความคิดเห็น"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.res_config_settings_view_form
@@ -654,6 +704,8 @@ msgid ""
 "Model %(model_name)s does not support token signature, as it does not have "
 "%(field_name)s field."
 msgstr ""
+"โมเดล %(model_name)s ไม่รองรับลายเซ็นโทเค็น เนื่องจากไม่มีฟิลด์ "
+"%(field_name)s"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.my_account_link
@@ -670,7 +722,7 @@ msgstr "ชื่อ"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Name your key"
-msgstr ""
+msgstr "ตั้งชื่อกุญแจของคุณ"
 
 #. module: portal
 #. openerp-web
@@ -678,18 +730,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 #, python-format
 msgid "New API Key"
-msgstr ""
+msgstr "คีย์ API ใหม่"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "New Password:"
-msgstr ""
+msgstr "รหัสผ่านใหม่:"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
-#: model_terms:ir.ui.view,arch_db:portal.pager
 #, python-format
 msgid "Next"
 msgstr "ต่อไป"
@@ -708,14 +759,14 @@ msgstr "โลโก้ Odoo "
 #: code:addons/portal/models/res_users_apikeys_description.py:0
 #, python-format
 msgid "Only internal and portal users can create API keys"
-msgstr ""
+msgstr "เฉพาะผู้ใช้ภายในและพอร์ทัลเท่านั้นที่สามารถสร้างคีย์ API ได้"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "Oops! Something went wrong. Try to reload the page and log in."
-msgstr ""
+msgstr "อ๊ะ! มีบางอย่างผิดพลาด ลองโหลดหน้านี้อีกครั้งและเข้าสู่ระบบ"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard__partner_ids
@@ -725,12 +776,12 @@ msgstr "คู่ค้า"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Password Updated!"
-msgstr ""
+msgstr "อัปเดตรหัสผ่านแล้ว!"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Password:"
-msgstr ""
+msgstr "รหัสผ่าน:"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
@@ -742,14 +793,14 @@ msgstr "โทรศัพท์"
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Please enter your password to confirm you own this account"
-msgstr ""
+msgstr "โปรดป้อนรหัสผ่านของคุณเพื่อยืนยันว่าคุณเป็นเจ้าของบัญชีนี้"
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 #, python-format
 msgid "Portal Access Management"
-msgstr ""
+msgstr "การจัดการการเข้าถึงพอร์ทัล"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_mixin__access_url
@@ -759,32 +810,27 @@ msgstr "URL ที่เข้าถึงได้"
 #. module: portal
 #: model:ir.model,name:portal.model_portal_mixin
 msgid "Portal Mixin"
-msgstr ""
+msgstr "พอร์ทัลมิกซ์อิน"
 
 #. module: portal
 #: model:ir.model,name:portal.model_portal_share
 msgid "Portal Sharing"
-msgstr ""
+msgstr "การแชร์พอร์ทัล"
 
 #. module: portal
 #: model:ir.model,name:portal.model_portal_wizard_user
 msgid "Portal User Config"
-msgstr ""
+msgstr "การกำหนดค่าผู้ใช้พอร์ทัล"
 
 #. module: portal
 #: model:mail.template,name:portal.mail_template_data_portal_welcome
 msgid "Portal: User Invite"
-msgstr ""
+msgstr "พอร์ทัล: คำเชิญผู้ใช้"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_record_sidebar
 msgid "Powered by"
 msgstr "สนับสนุนโดย"
-
-#. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.pager
-msgid "Prev"
-msgstr "ก่อนหน้า"
 
 #. module: portal
 #. openerp-web
@@ -804,7 +850,7 @@ msgstr ""
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Re-Invite"
-msgstr ""
+msgstr "เชิญอีกครั้ง"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__partner_ids
@@ -814,7 +860,7 @@ msgstr "ผู้รับ"
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__resource_ref
 msgid "Related Document"
-msgstr ""
+msgstr "เอกสารที่เกี่ยวข้อง"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_share__res_id
@@ -829,7 +875,7 @@ msgstr "รูปแบบเอกสารที่เกี่ยวข้อ
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid "Revoke Access"
-msgstr ""
+msgstr "เพิกถอนการเข้าถึง"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
@@ -849,9 +895,10 @@ msgstr "ความปลอดภัย"
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/js/portal.js:0
+#: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Security Control"
-msgstr ""
+msgstr "การควบคุมความปลอดภัย"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_mixin__access_token
@@ -865,6 +912,9 @@ msgid ""
 "                        The email address of each selected contact must be valid and unique.\n"
 "                        If necessary, you can fix any contact's email address directly in the list."
 msgstr ""
+"เลือกผู้ติดต่อที่ควรเป็นของพอร์ทัลในรายการด้านล่าง\n"
+"                        ที่อยู่อีเมลของผู้ติดต่อที่เลือกแต่ละรายการจะต้องถูกต้องและไม่ซ้ำกัน\n"
+"                        หากจำเป็น คุณสามารถแก้ไขที่อยู่อีเมลของผู้ติดต่อในรายการได้โดยตรง"
 
 #. module: portal
 #. openerp-web
@@ -878,7 +928,7 @@ msgstr "ส่ง"
 #: model:ir.actions.act_window,name:portal.portal_share_action
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
 msgid "Share Document"
-msgstr ""
+msgstr "แชร์เอกสาร"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_ir_ui_view__customize_show
@@ -898,6 +948,7 @@ msgid ""
 "Some fields are required. Please make sure to write a message or attach a "
 "document"
 msgstr ""
+"ต้องระบุข้อมูลบางช่อง กรุณาตรวจสอบให้แน่ใจว่าได้เขียนข้อความหรือแนบเอกสาร"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -926,34 +977,27 @@ msgstr "ขอบคุณ!"
 #: code:addons/portal/controllers/portal.py:0
 #, python-format
 msgid "The attachment %s cannot be removed because it is linked to a message."
-msgstr ""
+msgstr "สิ่งที่แนบมา %s ไม่สามารถลบออกได้ เนื่องจากถูกเชื่อมโยงกับข้อความ"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
 #, python-format
 msgid ""
 "The attachment %s cannot be removed because it is not in a pending state."
-msgstr ""
-
-#. module: portal
-#: code:addons/portal/controllers/mail.py:0
-#, python-format
-msgid ""
-"The attachment %s does not exist or you do not have the rights to access it."
-msgstr ""
+msgstr "สิ่งที่แนบมา %s ไม่สามารถลบออกได้ เนื่องจากไม่อยู่ในสถานะรอดำเนินการ"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
 #, python-format
 msgid ""
 "The attachment does not exist or you do not have the rights to access it."
-msgstr ""
+msgstr "ไม่มีเอกสารแนบหรือคุณไม่มีสิทธิ์ในการเข้าถึง"
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
 #, python-format
 msgid "The contact \"%s\" does not have a valid email."
-msgstr ""
+msgstr "ผู้ติดต่อ \"%s\" ไม่มีอีเมลที่ถูกต้อง"
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
@@ -966,14 +1010,14 @@ msgstr ""
 #, python-format
 msgid ""
 "The document does not exist or you do not have the rights to access it."
-msgstr ""
+msgstr "ไม่มีเอกสารนี้หรือคุณไม่มีสิทธิ์ในการเข้าถึงเอกสารนั้น"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "The key cannot be retrieved later and provides"
-msgstr ""
+msgstr "ไม่สามารถเรียกคีย์ได้ในภายหลังและให้"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
@@ -992,7 +1036,7 @@ msgstr "รหัสผ่านเดิมผิด รหัสผ่าน�
 #: code:addons/portal/wizard/portal_wizard.py:0
 #, python-format
 msgid "The partner \"%s\" already has the portal access."
-msgstr ""
+msgstr "พาร์ทเนอร์ \"%s\" มีการเข้าถึงพอร์ทัลแล้ว"
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
@@ -1006,48 +1050,48 @@ msgstr ""
 msgid ""
 "The template \"Portal: new user\" not found for sending email to the portal "
 "user."
-msgstr ""
+msgstr "ไม่พบเทมเพลต \"พอร์ทัล: ผู้ใช้ใหม่\" สำหรับการส่งอีเมลไปยังผู้ใช้พอร์ทัล"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "There are no comments for now."
-msgstr ""
+msgstr "ไม่มีความคิดเห็นในขณะนี้"
 
 #. module: portal
 #: code:addons/portal/controllers/portal.py:0
 #, python-format
 msgid "This document does not exist."
-msgstr ""
+msgstr "ไม่มีเอกสารนี้"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_back_in_edit_mode
 msgid "This is a preview of the customer portal."
-msgstr ""
+msgstr "นี่คือการแสดงตัวอย่างของพอร์ทัลลูกค้า"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid ""
 "This partner is linked to an internal User and already has access to the "
 "Portal."
-msgstr ""
+msgstr "พาร์ทเนอร์รายนี้เชื่อมโยงกับผู้ใช้ภายในและมีสิทธิ์เข้าถึงพอร์ทัลแล้ว"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.wizard_view
 msgid ""
 "This text is included at the end of the email sent to new portal users."
-msgstr ""
+msgstr "ข้อความนี้รวมอยู่ท้ายอีเมลที่ส่งถึงผู้ใช้พอร์ทัลใหม่แล้ว"
 
 #. module: portal
 #: model:ir.model.fields,help:portal.field_portal_wizard__welcome_message
 msgid "This text is included in the email sent to new users of the portal."
-msgstr ""
+msgstr "ข้อความนี้รวมอยู่ในอีเมลที่ส่งถึงผู้ใช้ใหม่ของพอร์ทัลแล้ว"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_searchbar
 msgid "Toggle filters"
-msgstr ""
+msgstr "สลับตัวกรอง"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__user_id
@@ -1062,12 +1106,12 @@ msgstr "ผู้ใช้งาน"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
 msgid "VAT Number"
-msgstr ""
+msgstr "หมายเลขภาษี"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "Verify New Password:"
-msgstr ""
+msgstr "ยืนยันรหัสผ่านใหม่:"
 
 #. module: portal
 #: model:ir.model,name:portal.model_ir_ui_view
@@ -1156,7 +1200,7 @@ msgstr "ประวัติการสื่อสารของเว็บ
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "What's this key for?"
-msgstr ""
+msgstr "กุญแจนี้มีไว้เพื่ออะไร?"
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__wizard_id
@@ -1168,14 +1212,14 @@ msgstr "วิซาร์ด"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "Write a message..."
-msgstr ""
+msgstr "เริ่มเขียนข้อความ..."
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "Write down your key"
-msgstr ""
+msgstr "จดรหัสของคุณ"
 
 #. module: portal
 #: code:addons/portal/wizard/portal_share.py:0
@@ -1200,23 +1244,23 @@ msgstr ""
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "You must be"
-msgstr ""
+msgstr "คุณจะต้องเป็น"
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:0
 #, python-format
 msgid "You should first grant the portal access to the partner \"%s\"."
-msgstr ""
+msgstr "คุณควรให้สิทธิ์การเข้าถึงพอร์ทัลกับพาร์ทเนอร์ \"%s\" ก่อน"
 
 #. module: portal
 #: model:mail.template,subject:portal.mail_template_data_portal_welcome
 msgid "Your account at {{ object.user_id.company_id.name }}"
-msgstr ""
+msgstr "บัญชีของคุณที่ {{ object.user_id.company_id.name }}"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_contact
 msgid "Your contact"
-msgstr ""
+msgstr "ผู้ติดต่อของคุณ"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_details
@@ -1228,7 +1272,7 @@ msgstr "รหัสไปรษณีย์"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "avatar"
-msgstr ""
+msgstr "สัญลักษณ์"
 
 #. module: portal
 #. openerp-web
@@ -1242,14 +1286,14 @@ msgstr "ความเห็น"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "comments"
-msgstr ""
+msgstr "ความคิดเห็น"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "full access"
-msgstr ""
+msgstr "เข้าถึงได้เต็มรูปแบบ"
 
 #. module: portal
 #. openerp-web
@@ -1259,23 +1303,25 @@ msgid ""
 "it will be the only way to\n"
 "                identify the key once created"
 msgstr ""
+"มันจะเป็นวิธีเดียวที่จะ\n"
+"                ระบุรหัสเมื่อสร้างขึ้นแล้ว"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "logged in"
-msgstr ""
+msgstr "เข้าสู่ระบบ"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_record_sidebar
 msgid "odoo"
-msgstr ""
+msgstr "odoo"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_my_security
 msgid "password"
-msgstr ""
+msgstr "รหัสผ่าน"
 
 #. module: portal
 #: model:ir.model,name:portal.model_res_users_apikeys_description
@@ -1283,20 +1329,15 @@ msgid "res.users.apikeys.description"
 msgstr ""
 
 #. module: portal
-#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
-msgid "select..."
-msgstr "เลือก..."
-
-#. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_chatter.xml:0
 #, python-format
 msgid "to post a comment."
-msgstr ""
+msgstr "แสดงความคิดเห็น"
 
 #. module: portal
 #. openerp-web
 #: code:addons/portal/static/src/xml/portal_security.xml:0
 #, python-format
 msgid "to your user account, it is very important to store it securely."
-msgstr ""
+msgstr "ไปยังบัญชีผู้ใช้ของคุณ สิ่งสำคัญมากคือต้องเก็บไว้อย่างปลอดภัย"

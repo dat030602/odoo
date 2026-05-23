@@ -11,7 +11,7 @@ const { Settings } = luxon;
 
 /** @type {[RegExp, string][]} */
 const NUMBERING_SYSTEMS = [
-    [/^ar-(sa|001)$/i, "arab"],
+    [/^ar-(sa|sy|001)$/i, "arab"],
     [/^bn/i, "beng"],
     [/^bo/i, "tibt"],
     // [/^fa/i, "Farsi (Persian)"], // No numberingSystem found in Intl
@@ -27,10 +27,10 @@ export const localizationService = {
     start: async (env, { user }) => {
         // add "data-toolip" to the list of translatable attributes in owl templates
         owl.config.translatableAttributes.push("data-tooltip");
-
+        const locale = document.documentElement.getAttribute("lang") || "";
         const cacheHashes = session.cache_hashes || {};
         const translationsHash = cacheHashes.translations || new Date().getTime().toString();
-        const lang = user.lang || null;
+        const lang = user.lang || locale.replace(/-/g, "_");
         const translationURL = session.translationURL || "/web/webclient/translations";
         let url = `${translationURL}/${translationsHash}`;
         if (lang) {
@@ -42,7 +42,11 @@ export const localizationService = {
             throw new Error("Error while fetching translations");
         }
 
-        const { lang_parameters: userLocalization, modules: modules } = await response.json();
+        const {
+            lang_parameters: userLocalization,
+            modules: modules,
+            multi_lang: multiLang,
+        } = await response.json();
 
         // FIXME We flatten the result of the python route.
         // Eventually, we want a new python route to return directly the good result.
@@ -83,7 +87,7 @@ export const localizationService = {
             decimalPoint: userLocalization.decimal_point,
             direction: userLocalization.direction,
             grouping,
-            multiLang: userLocalization.multi_lang,
+            multiLang,
             thousandsSep: userLocalization.thousands_sep,
             weekStart: userLocalization.week_start,
         });

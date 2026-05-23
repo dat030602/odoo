@@ -4,6 +4,7 @@
 import time
 from psycopg2 import IntegrityError
 
+from odoo import Command
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
@@ -14,6 +15,7 @@ class TestProductAttributeValueCommon(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super(TestProductAttributeValueCommon, cls).setUpClass()
+        cls.env.company.country_id = cls.env.ref('base.us')
 
         cls.computer = cls.env['product.template'].create({
             'name': 'Super Computer',
@@ -665,3 +667,48 @@ class TestProductAttributeValueConfig(TestProductAttributeValueCommon):
                 'name': '32 GB',
                 'attribute_id': self.ram_attribute.id,
             })
+
+    def test_inactive_related_product_update(self):
+        """
+            Create a product and give it a product attribute then archive it, delete the product attribute,
+            unarchive the product and check that the product is not related to the product attribute.
+        """
+        product_attribut = self.env['product.attribute'].create({
+            'name': 'PA',
+            'sequence': 1,
+            'create_variant': 'no_variant',
+        })
+        a1 = self.env['product.attribute.value'].create({
+            'name': 'pa_value',
+            'attribute_id': product_attribut.id,
+            'sequence': 1,
+        })
+        product = self.env['product.template'].create({
+            'name': 'P1',
+            'type': 'consu',
+            'attribute_line_ids': [(0, 0, {
+                'attribute_id': product_attribut.id,
+                'value_ids': [(6, 0, [a1.id])],
+            })]
+        })
+        self.assertEqual(product_attribut.number_related_products, 1, 'The product attribute must have an associated product')
+        product.action_archive()
+        self.assertFalse(product.active, 'The product should be archived.')
+        product.write({'attribute_line_ids': [[5, 0, 0]]})
+        product.action_unarchive()
+        self.assertTrue(product.active, 'The product should be unarchived.')
+        self.assertEqual(product_attribut.number_related_products, 0, 'The product attribute must not have an associated product')
+
+    def test_copy_extra_prices_of_product_attribute_values(self):
+        """
+        Check that the extra price of attributes are copied along the duplication of a product.
+        """
+        product_template = self.computer
+        extra_prices = product_template.attribute_line_ids.product_template_value_ids.mapped(
+            'price_extra'
+        )
+        copied_template = product_template.copy()
+        copied_extra_prices = copied_template.attribute_line_ids.product_template_value_ids.mapped(
+            'price_extra'
+        )
+        self.assertEqual(extra_prices, copied_extra_prices)

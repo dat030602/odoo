@@ -152,8 +152,11 @@ class Website(Home):
         if lang == 'default':
             lang = request.website.default_lang_id.url_code
             r = '/%s%s' % (lang, r or '/')
-        redirect = werkzeug.utils.redirect(r or ('/%s' % lang), 303)
         lang_code = request.env['res.lang']._lang_get_code(lang)
+        # replace context with correct lang, to avoid that the url_for of request.redirect remove the
+        # default lang in case we switch from /fr -> /en with /en as default lang.
+        request.context = dict(request.context, lang=lang_code)
+        redirect = request.redirect(r or ('/%s' % lang))
         redirect.set_cookie('frontend_lang', lang_code)
         return redirect
 
@@ -199,7 +202,7 @@ class Website(Home):
             sitemaps.unlink()
 
             pages = 0
-            locs = request.website.with_user(request.website.user_id)._enumerate_pages()
+            locs = request.website.with_context(_filter_duplicate_pages=True).with_user(request.website.user_id)._enumerate_pages()
             while True:
                 values = {
                     'locs': islice(locs, 0, LOC_PER_SITEMAP),
@@ -234,12 +237,26 @@ class Website(Home):
 
         return request.make_response(content, [('Content-Type', mimetype)])
 
-    @http.route('/website/info', type='http', auth="public", website=True, sitemap=True)
+    def sitemap_website_info(env, rule, qs):
+        website = env['website'].get_current_website()
+        if not (
+            website.viewref('website.website_info', False).active
+            and website.viewref('website.show_website_info', False).active
+        ):
+            # avoid 404 or blank page in sitemap
+            return False
+
+        if not qs or qs.lower() in '/website/info':
+            yield {'loc': '/website/info'}
+
+    @http.route('/website/info', type='http', auth="public", website=True, sitemap=sitemap_website_info)
     def website_info(self, **kwargs):
-        try:
-            request.website.get_template('website.website_info').name
-        except Exception as e:
-            return request.env['ir.http']._handle_exception(e)
+        if not request.website.viewref('website.website_info', False).active:
+            # Deleted or archived view (through manual operation in backend).
+            # Don't check `show_website_info` view: still need to access if
+            # disabled to be able to enable it through the customize show.
+            raise request.not_found()
+
         Module = request.env['ir.module.module'].sudo()
         apps = Module.search([('state', '=', 'installed'), ('application', '=', True)])
         l10n = Module.search([('state', '=', 'installed'), ('name', '=like', 'l10n_%')])
@@ -273,7 +290,7 @@ class Website(Home):
         current_website = request.website
 
         matching_pages = []
-        for page in current_website.search_pages(needle, limit=int(limit)):
+        for page in current_website.with_context(_filter_duplicate_pages=True).search_pages(needle, limit=int(limit)):
             matching_pages.append({
                 'value': page['loc'],
                 'label': 'name' in page and '%s (%s)' % (page['loc'], page['name']) or page['loc'],
@@ -281,7 +298,7 @@ class Website(Home):
         matching_urls = set(map(lambda match: match['value'], matching_pages))
 
         matching_last_modified = []
-        last_modified_pages = current_website._get_website_pages(order='write_date desc', limit=5)
+        last_modified_pages = current_website.with_context(_filter_duplicate_pages=True)._get_website_pages(order='write_date desc', limit=5)
         for url, name in last_modified_pages.mapped(lambda p: (p.url, p.name)):
             if needle.lower() in name.lower() or needle.lower() in url.lower() and url not in matching_urls:
                 matching_last_modified.append({
@@ -293,7 +310,7 @@ class Website(Home):
         for name, url, mod in current_website.get_suggested_controllers():
             if needle.lower() in name.lower() or needle.lower() in url.lower():
                 module_sudo = mod and request.env.ref('base.module_%s' % mod, False).sudo()
-                icon = mod and "<img src='%s' width='24px' class='mr-2 rounded' /> " % (module_sudo and module_sudo.icon or mod) or ''
+                icon = mod and "<img src='%s' width='24px' height='24px' class='mr-2 rounded' /> " % (module_sudo and module_sudo.icon or mod) or ''
                 suggested_controllers.append({
                     'value': url,
                     'label': '%s%s (%s)' % (icon, url, name),
@@ -602,23 +619,48 @@ class Website(Home):
         template = template and dict(template=template) or {}
         page = request.env['website'].new_page(path, add_menu=add_menu, **template)
         url = page['url']
+        # In case the page is created through the 404 "Create Page" button, the
+        # URL may use special characters which are slugified on page creation.
+        # If that URL is also a menu, we update it accordingly.
+        # NB: we don't want to slugify on menu creation as it could redirect
+        # towards files (with spaces, apostrophes, etc.).
+        menu = request.env['website.menu'].search([('url', '=', '/' + path)])
+        if menu:
+            menu.page_id = page['page_id']
         if noredirect:
             return werkzeug.wrappers.Response(url, mimetype='text/plain')
 
         if ext_special_case:  # redirect non html pages to backend to edit
-            return werkzeug.utils.redirect('/web#id=' + str(page.get('view_id')) + '&view_type=form&model=ir.ui.view')
-        return werkzeug.utils.redirect(url + "?enable_editor=1")
+            return request.redirect('/web#id=' + str(page.get('view_id')) + '&view_type=form&model=ir.ui.view')
+        return request.redirect(url + "?enable_editor=1")
 
     @http.route("/website/get_switchable_related_views", type="json", auth="user", website=True)
     def get_switchable_related_views(self, key):
         views = request.env["ir.ui.view"].get_related_views(key, bundles=False).filtered(lambda v: v.customize_show)
+
+        # TODO remove in master: customize_show was kept by mistake on a view
+        # in website_crm. It was removed in stable at the same time this hack is
+        # introduced but would still be shown for existing customers if nothing
+        # else was done here. For users that disabled the view but were not
+        # supposed to be able to, we hide it too. The feature does not do much
+        # and is not a discoverable feature anyway, best removing the confusion
+        # entirely. If someone somehow wants that very technical feature, they
+        # can still enable the view again via the backend. We will also
+        # re-enable the view automatically in master.
+        crm_contactus_view = request.website.viewref('website_crm.contactus_form', raise_if_not_found=False)
+        views -= crm_contactus_view
+
         views = views.sorted(key=lambda v: (v.inherit_id.id, v.name))
         return views.with_context(display_website=False).read(['name', 'id', 'key', 'xml_id', 'active', 'inherit_id'])
 
     @http.route('/website/toggle_switchable_view', type='json', auth='user', website=True)
     def toggle_switchable_view(self, view_key):
         if request.website.user_has_groups('website.group_website_designer'):
-            request.website.viewref(view_key).toggle_active()
+            view = request.website.viewref(view_key)
+            # TODO: In master, set the priority in XML directly.
+            if view_key == 'website_blog.opt_blog_cover_post':
+                view.priority = 17
+            view.toggle_active()
         else:
             return werkzeug.exceptions.Forbidden()
 
@@ -684,8 +726,9 @@ class Website(Home):
         if not request.website.google_search_console:
             logger.warning('Google Search Console not enable')
             raise werkzeug.exceptions.NotFound()
+        gsc = request.website.google_search_console
+        trusted = gsc[gsc.startswith('google') and len('google'):gsc.endswith('.html') and -len('.html') or None]
 
-        trusted = request.website.google_search_console.lstrip('google').rstrip('.html')
         if key != trusted:
             if key.startswith(trusted):
                 request.website.sudo().google_search_console = "google%s.html" % key
