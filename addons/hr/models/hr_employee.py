@@ -79,6 +79,7 @@ class HrEmployeePrivate(models.Model):
         domain="[('partner_id', '=', address_home_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         groups="hr.group_hr_user",
         tracking=True,
+        copy=False,
         help='Employee bank account to pay salaries')
     permit_no = fields.Char('Work Permit No', groups="hr.group_hr_user", tracking=True)
     visa_no = fields.Char('Visa No', groups="hr.group_hr_user", tracking=True)
@@ -423,7 +424,7 @@ class HrEmployeePrivate(models.Model):
             employee_fields_to_empty = self._get_employee_m2o_to_empty_on_archived_employees()
             user_fields_to_empty = self._get_user_m2o_to_empty_on_archived_employees()
             employee_domain = [[(field, 'in', archived_employees.ids)] for field in employee_fields_to_empty]
-            user_domain = [[(field, 'in', archived_employees.user_id.ids) for field in user_fields_to_empty]]
+            user_domain = [[(field, 'in', archived_employees.user_id.ids)] for field in user_fields_to_empty]
             employees = self.env['hr.employee'].search(expression.OR(employee_domain + user_domain))
             for employee in employees:
                 for field in employee_fields_to_empty:

@@ -14,7 +14,7 @@ from odoo.tests import tagged
 from odoo.tools import (
     is_html_empty, html_to_inner_content, html_sanitize, append_content_to_html, plaintext2html,
     email_domain_normalize, email_normalize, email_split, email_split_and_format, html2plaintext,
-    misc, formataddr,
+    misc, formataddr, email_anonymize,
     prepend_html_content,
     config,
 )
@@ -659,17 +659,55 @@ class TestEmailTools(BaseCase):
             ('admin@example.com', ['admin@example.com']),
             ('"Admin" <admin@example.com>, Demo <malformed email>', ['admin@example.com']),
             ('admin@éxample.com', ['admin@xn--xample-9ua.com']),
-            # formatted input containing email
-            ('"admin@éxample.com" <admin@éxample.com>', ['admin@xn--xample-9ua.com', 'admin@xn--xample-9ua.com']),
+            # email-like names
+            (
+                '"admin@éxample.com" <admin@éxample.com>',
+                ['admin@xn--xample-9ua.com', 'admin@xn--xample-9ua.com'],
+            ),
             ('"Robert Le Grand" <robert@notgmail.com>', ['robert@notgmail.com']),
             ('"robert@notgmail.com" <robert@notgmail.com>', ['robert@notgmail.com', 'robert@notgmail.com']),
+            # "@' in names
+            ('"Bike @ Home" <bike@example.com>', ['bike@example.com']),
+            ('"Bike@Home" <bike@example.com>', ['Bike@Home', 'bike@example.com']),
+            # combo @ in names + multi email
+            (
+                '"Not an Email" <robert@notgmail.com>, "robert@notgmail.com" <robert@notgmail.com>',
+                ['robert@notgmail.com', 'robert@notgmail.com', 'robert@notgmail.com'],
+            ),
             # accents
             ('DéBoulonneur@examplé.com', ['DéBoulonneur@xn--exampl-gva.com']),
         ]
-
         for source, expected in cases:
             with self.subTest(source=source):
                 self.assertEqual(extract_rfc2822_addresses(source), expected)
+
+    def test_email_anonymize(self):
+        cases = [
+            # examples
+            ('admin@example.com', 'a****@example.com', 'a****@e******.com'),  # short
+            ('portal@example.com', 'p***al@example.com', 'p***al@e******.com'),  # long
+
+            # edge cases
+            ('a@example.com', 'a@example.com', 'a@e******.com'),  # single letter
+            ('joé@example.com', 'j**@example.com', 'j**@e******.com'),  # hidden unicode
+            ('élise@example.com', 'é****@example.com', 'é****@e******.com'),  # visible unicode
+            ('admin@[127.0.0.1]', 'a****@[127.0.0.1]', 'a****@[127.0.0.1]'),  # IPv4
+            ('admin@[IPv6:::1]', 'a****@[IPv6:::1]', 'a****@[IPv6:::1]'),  # IPv6
+
+            # bad cases, to show how the system behave
+            ('', '', ''),  # empty string
+            ('@example.com', '@example.com', '@e******.com'),  # missing local part
+            ('john', 'j***', 'j***'),  # missing domain
+            ('Jo <j@example.com>', 'J****@example.com>', 'J****@e******.com>'),  # non-normalized
+            ('admin@com', 'a****@com', 'a****@com'),  # dotless domain, prohibited by icann
+        ]
+        for source, expected, expected_redacted_domain in cases:
+            with self.subTest(source=source):
+                self.assertEqual(email_anonymize(source), expected)
+                self.assertEqual(
+                    email_anonymize(source, redact_domain=True),
+                    expected_redacted_domain,
+                )
 
 
 class EmailConfigCase(TransactionCase):
