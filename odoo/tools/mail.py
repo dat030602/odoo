@@ -51,6 +51,7 @@ safe_attrs = defs.safe_attrs | frozenset(
      'data-shape', 'data-shape-colors', 'data-file-name', 'data-original-mimetype',
      'data-behavior-props', 'data-prop-name',  # knowledge commands
      'data-mimetype-before-conversion',
+     'data-bs-toggle',  # support nav-tabs
      ])
 SANITIZE_TAGS = {
     # allow new semantic HTML5 tags
@@ -256,6 +257,8 @@ def html_normalize(src, filter_callback=None):
         for el in doc.iter(tag=etree.Element):
             tag_quote(el)
 
+    doc = html.fromstring(html.tostring(doc))
+
     if filter_callback:
         doc = filter_callback(doc)
 
@@ -392,10 +395,12 @@ def create_link(url, label):
     return f'<a href="{url}" target="_blank" rel="noreferrer noopener">{label}</a>'
 
 
-def html2plaintext(html, body_id=None, encoding='utf-8'):
+def html2plaintext(html, body_id=None, encoding='utf-8', include_references=True):
     """ From an HTML text, convert the HTML to plain text.
     If @param body_id is provided then this is the tag where the
     body (not necessarily <body>) starts.
+    :param include_references: If False, numbered references and
+        URLs for links and images will not be included.
     """
     ## (c) Fry-IT, www.fry-it.com, 2007
     ## <peter@fry-it.com>
@@ -417,25 +422,26 @@ def html2plaintext(html, body_id=None, encoding='utf-8'):
 
     url_index = []
     i = 0
-    for link in tree.findall('.//a'):
-        url = link.get('href')
-        if url:
-            i += 1
-            link.tag = 'span'
-            link.text = '%s [%s]' % (link.text, i)
-            url_index.append(url)
+    if include_references:
+        for link in tree.findall('.//a'):
+            url = link.get('href')
+            if url:
+                i += 1
+                link.tag = 'span'
+                link.text = '%s [%s]' % (link.text, i)
+                url_index.append(url)
 
-    for img in tree.findall('.//img'):
-        src = img.get('src')
-        if src:
-            i += 1
-            img.tag = 'span'
-            if src.startswith('data:'):
-                img_name = None   # base64 image
-            else:
-                img_name = re.search(r'[^/]+(?=\.[a-zA-Z]+(?:\?|$))', src)
-            img.text = '%s [%s]' % (img_name.group(0) if img_name else 'Image', i)
-            url_index.append(src)
+        for img in tree.findall('.//img'):
+            src = img.get('src')
+            if src:
+                i += 1
+                img.tag = 'span'
+                if src.startswith('data:'):
+                    img_name = None   # base64 image
+                else:
+                    img_name = re.search(r'[^/]+(?=\.[a-zA-Z]+(?:\?|$))', src)
+                    img.text = '%s [%s]' % (img_name.group(0) if img_name else 'Image', i)
+                    url_index.append(src)
 
     html = ustr(etree.tostring(tree, encoding=encoding))
     # \r char is converted into &#13;, must remove it
@@ -468,18 +474,19 @@ def html2plaintext(html, body_id=None, encoding='utf-8'):
 
     return html.strip()
 
-def plaintext2html(text, container_tag=None):
+
+def plaintext2html(text, container_tag=None, with_paragraph=True):
     r"""Convert plaintext into html. Content of the text is escaped to manage
     html entities, using :func:`~odoo.tools.misc.html_escape`.
 
     - all ``\n``, ``\r`` are replaced by ``<br/>``
-    - enclose content into ``<p>``
     - convert url into clickable link
-    - 2 or more consecutive ``<br/>`` are considered as paragraph breaks
 
     :param str text: plaintext to convert
     :param str container_tag: container of the html; by default the content is
         embedded into a ``<div>``
+    :param with_paragraph: whether or not considering 2 or more consecutive ``<br/>``
+        as paragraph breaks and enclosing content in ``<p>``
     :rtype: markupsafe.Markup
     """
     text = misc.html_escape(ustr(text))
@@ -491,13 +498,15 @@ def plaintext2html(text, container_tag=None):
     text = html_keep_url(text)
 
     # 3-4: form paragraphs
-    idx = 0
-    final = '<p>'
-    br_tags = re.compile(r'(([<]\s*[bB][rR]\s*/?[>]\s*){2,})')
-    for item in re.finditer(br_tags, text):
-        final += text[idx:item.start()] + '</p><p>'
-        idx = item.end()
-    final += text[idx:] + '</p>'
+    final = text
+    if with_paragraph:
+        idx = 0
+        final = '<p>'
+        br_tags = re.compile(r'(([<]\s*[bB][rR]\s*/?[>]\s*){2,})')
+        for item in re.finditer(br_tags, text):
+            final += text[idx:item.start()] + '</p><p>'
+            idx = item.end()
+        final += text[idx:] + '</p>'
 
     # 5. container
     if container_tag: # FIXME: validate that container_tag is just a simple tag?

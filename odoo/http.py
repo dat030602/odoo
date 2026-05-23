@@ -132,7 +132,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from os.path import join as opj
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlsplit
 from zlib import adler32
 
 import babel.core
@@ -403,6 +403,19 @@ def dispatch_rpc(service_name, method, params):
 
         dispatch = rpc_dispatchers[service_name]
         return dispatch(method, params)
+
+
+def get_session_max_inactivity(env):
+    if not env or env.cr._closed:
+        return SESSION_LIFETIME
+
+    ICP = env['ir.config_parameter'].sudo()
+
+    try:
+        return int(ICP.get_param('sessions.max_inactivity_seconds', SESSION_LIFETIME))
+    except ValueError:
+        _logger.warning("Invalid value for 'sessions.max_inactivity_seconds', using default value.")
+        return SESSION_LIFETIME
 
 
 def is_cors_preflight(request, endpoint):
@@ -1846,7 +1859,8 @@ class Request:
         if isinstance(location, URL):
             location = location.to_url()
         if local:
-            location = '/' + url_parse(location).replace(scheme='', netloc='').to_url().lstrip('/\\')
+            location = url_parse(location).replace(scheme='', netloc='').to_url().lstrip('/\\')
+            location = '/' + urlsplit(location).geturl().lstrip('/\\')
         if self.db:
             return self.env['ir.http']._redirect(location, code)
         return werkzeug.utils.redirect(location, code, Response=Response)
@@ -1888,7 +1902,7 @@ class Request:
 
         cookie_sid = self.httprequest.cookies.get('session_id')
         if sess.is_dirty or cookie_sid != sess.sid:
-            self.future_response.set_cookie('session_id', sess.sid, max_age=SESSION_LIFETIME, httponly=True)
+            self.future_response.set_cookie('session_id', sess.sid, max_age=get_session_max_inactivity(self.env), httponly=True)
 
     def _set_request_dispatcher(self, rule):
         routing = rule.endpoint.routing
@@ -2135,7 +2149,7 @@ class HttpDispatcher(Dispatcher):
             response = self.request.redirect_query('/web/login', {'redirect': self.request.httprequest.full_path})
             if was_connected:
                 root.session_store.rotate(session, self.request.env)
-                response.set_cookie('session_id', session.sid, max_age=SESSION_LIFETIME, httponly=True)
+                response.set_cookie('session_id', session.sid, max_age=get_session_max_inactivity(self.env), httponly=True)
             return response
 
         return (exc if isinstance(exc, HTTPException)
@@ -2289,7 +2303,7 @@ class Application:
         if ((netloc and netloc != host) or (path_netloc and path_netloc != host)):
             return None
 
-        if (module not in self.statics or static != 'static' or not resource):
+        if (static != 'static' or not resource or module not in self.statics):
             return None
 
         try:

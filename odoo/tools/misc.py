@@ -5,14 +5,17 @@
 """
 Miscellaneous tools used by OpenERP.
 """
+import base64
 import cProfile
 import collections
 import contextlib
 import datetime
+import functools
 import hmac as hmac_lib
 import hashlib
 import io
 import itertools
+import json
 import logging
 import os
 import pickle as pickle_
@@ -855,8 +858,8 @@ class lower_logging(logging.Handler):
         if record.levelno > self.max_level:
             record.levelname = f'_{record.levelname}'
             record.levelno = self.to_level
+            record.munge_traceback = True
             self.had_error_log = True
-            record.args = tuple(arg.replace('Traceback (most recent call last):', '_Traceback_ (most recent call last):') if isinstance(arg, str) else arg for arg in record.args)
 
         if logging.getLogger(record.name).isEnabledFor(record.levelno):
             for handler in self.old_handlers:
@@ -1151,6 +1154,9 @@ class OrderedSet(MutableSet):
     def intersection(self, *others):
         return reduce(OrderedSet.__and__, others, self)
 
+    def copy(self):
+        return self.__class__(self)
+
 
 class LastOrderedSet(OrderedSet):
     """ A set collection that remembers the elements last insertion order. """
@@ -1371,6 +1377,8 @@ def get_lang(env, lang_code=False):
         lang = env.user.company_id.partner_id.lang
     return env['res.lang']._lang_get(lang)
 
+
+@functools.lru_cache
 def babel_locale_parse(lang_code):
     try:
         return babel.Locale.parse(lang_code)
@@ -1816,6 +1824,58 @@ def hmac(env, scope, message, hash_function=hashlib.sha256):
         message.encode(),
         hash_function,
     ).hexdigest()
+
+
+def hash_sign(env, scope, message_values, expiration=None, expiration_hours=None):
+    """ Generate an urlsafe payload signed with the HMAC signature for an iterable set of data.
+    This feature is very similar to JWT, but in a more generic implementation that is inline with out previous hmac implementation.
+
+    :param env: sudo environment to use for retrieving config parameter
+    :param scope: scope of the authentication, to have different signature for the same
+        message in different usage
+    :param message_values: values to be encoded inside the payload
+    :param expiration: optional, a datetime or timedelta
+    :param expiration_hours: optional, a int representing a number of hours before expiration. Cannot be set at the same time as expiration
+    :return: the payload that can be used as a token
+    """
+    assert not (expiration and expiration_hours)
+    assert message_values is not None
+
+    if expiration_hours:
+        expiration = datetime.datetime.now() + datetime.timedelta(hours=expiration_hours)
+    else:
+        if isinstance(expiration, datetime.timedelta):
+            expiration = datetime.datetime.now() + expiration
+    expiration_timestamp = 0 if not expiration else int(expiration.timestamp())
+    message_strings = json.dumps(message_values)
+    hash_value = hmac(env, scope, f'1:{message_strings}:{expiration_timestamp}', hash_function=hashlib.sha256)
+    token = b"\x01" + expiration_timestamp.to_bytes(8, 'little') + bytes.fromhex(hash_value) + message_strings.encode()
+    return base64.urlsafe_b64encode(token).decode().rstrip('=')
+
+
+def verify_hash_signed(env, scope, payload):
+    """ Verify and extract data from a given urlsafe  payload generated with hash_sign()
+
+    :param env: sudo environment to use for retrieving config parameter
+    :param scope: scope of the authentication, to have different signature for the same
+        message in different usage
+    :param payload: the token to verify
+    :return: The payload_values if the check was successful, None otherwise.
+    """
+
+    token = base64.urlsafe_b64decode(payload.encode() + b'===')
+    version = token[:1]
+    if version != b'\x01':
+        raise ValueError('Unknown token version')
+
+    expiration_value, hash_value, message = token[1:9], token[9:41].hex(), token[41:].decode()
+    expiration_value = int.from_bytes(expiration_value, byteorder='little')
+    hash_value_expected = hmac(env, scope, f'1:{message}:{expiration_value}', hash_function=hashlib.sha256)
+
+    if consteq(hash_value, hash_value_expected) and (expiration_value == 0 or datetime.datetime.now().timestamp() < expiration_value):
+        message_values = json.loads(message)
+        return message_values
+    return None
 
 
 ADDRESS_REGEX = re.compile(r'^(.*?)(\s[0-9][0-9\S]*)?(?: - (.+))?$', flags=re.DOTALL)
