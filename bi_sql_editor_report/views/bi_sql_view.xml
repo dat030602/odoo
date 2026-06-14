@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="bi_sql_view_form_inherit" model="ir.ui.view">
+        <field name="name">bi.sql.view.form.inherit</field>
+        <field name="model">bi.sql.view</field>
+        <field name="inherit_id" ref="bi_sql_editor.view_bi_sql_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_note']" position="before">
+                <page string="Report">
+                    <group>
+                        <field name="report_page_format_id"/>
+                        <field name="report_action_id" readonly="1"/>
+                        <field name="report_view_id" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

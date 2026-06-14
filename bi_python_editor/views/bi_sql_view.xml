@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add execution_type field and hot update buttons to bi.sql.view form -->
+    <record id="view_bi_sql_view_form_inherit" model="ir.ui.view">
+        <field name="name">bi.sql.view.form.inherit</field>
+        <field name="model">bi.sql.view</field>
+        <field name="inherit_id" ref="bi_sql_editor.view_bi_sql_view_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Add execution_type field in group_main_info -->
+            <xpath expr="//group[@name='group_main_info']/group[1]" position="inside">
+                <field name="execution_type" readonly="state not in ('draft', 'sql_valid')"/>
+            </xpath>
+
+            <xpath expr="//button[@name='button_validate_sql_expression']" position="attributes">
+                <attribute name="string">Validate Logic</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='page_sql']" position="attributes">
+                <attribute name="string">Code</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='group_query']" position="attributes">
+                <attribute name="string"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='query']" position="attributes">
+                <attribute name="invisible">execution_type == 'python'</attribute>
+                <attribute name="readonly">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='query']" position="after">
+                <field
+                    name="query"
+                    nolabel="1"
+                    colspan="2"
+                    invisible="execution_type != 'python'"
+                    readonly="0"
+                    widget="ace"
+                    options="{'mode': 'python'}"
+                />
+            </xpath>
+            
+            <!-- Add hot update buttons in header -->
+            <xpath expr="//header/button[@name='button_refresh_materialized_view']" position="after">
+                <button
+                    name="button_reset_for_new_fields"
+                    type="object"
+                    string="Reset for New Fields"
+                    class="btn-warning"
+                    invisible="not has_field_structure_change"
+                    help="Reset the view to accommodate new field structure changes"
+                />
+            </xpath>
+            
+            <!-- Add field change warning display -->
+            <xpath expr="//group[@name='group_main_info']" position="after">
+                <div invisible="not has_field_structure_change" class="alert alert-warning" style="margin-bottom: 16px;">
+                    <strong>Warning:</strong>
+                    <field name="field_change_warning" readonly="1" widget="text"/>
+                </div>
+            </xpath>
+            
+            <!-- Update query field help text based on execution_type -->
+            <field name="query" position="attributes">
+                <attribute name="readonly">state not in ['draft', 'sql_valid', 'model_valid', 'ui_valid']</attribute>
+            </field>
+            
+        </field>
+    </record>
+</odoo>
