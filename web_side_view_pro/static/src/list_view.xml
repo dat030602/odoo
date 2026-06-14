@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dn.ProjectTaskListView" t-inherit="project.ProjectTaskListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+    <t t-name="dn.ProjectListView" t-inherit="project.ProjectListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+    <t t-name="dn.ProjectUpdateListView" t-inherit="project.ProjectUpdateListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+</templates>

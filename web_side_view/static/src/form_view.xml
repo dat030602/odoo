@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dn.FormViewSide">
+        <div class="o_form_view_container">
+            <div class="d-flex w-100 h-100 position-relative dn-form-view-container">
+                <div t-attf-class="dn-form-wrapper d-flex flex-column {{ env.mjbFormActions and env.mjbFormActions.mode == 'split' and env.mjbFormActions.selectedRecordId !== null ? 'border-end dn-split-active' : 'w-100' }}"
+                        t-attf-style="width: {{ env.mjbFormActions and env.mjbFormActions.mode == 'split' and env.mjbFormActions.selectedRecordId !== null ? (100 - env.mjbFormActions.splitWidth) : 100 }}%;">
+                    <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="display">
+                        <t t-set-slot="control-panel-create-button">
+                            <button t-if="canCreate" type="button" class="btn btn-outline-primary o_form_button_create" data-hotkey="c" t-on-click.stop="create">New</button>
+                        </t>
+
+                        <t t-set-slot="layout-buttons">
+                            <t t-if="env.inDialog">
+                                <t t-if="footerArchInfo">
+                                    <t t-component="props.Renderer" record="model.root" Compiler="props.Compiler" archInfo="footerArchInfo">
+                                        <t t-set-slot="default_buttons">
+                                            <t t-call="{{ props.buttonTemplate }}"/>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <t t-call="{{ props.buttonTemplate }}"/>
+                                </t>
+                            </t>
+                        </t>
+
+                        <t t-set-slot="layout-actions">
+                            <t t-if="!env.isSmall and buttonBoxTemplate">
+                                <t t-call="{{ buttonBoxTemplate }}" t-call-context="{ __comp__: Object.assign(Object.create(this), { this, props: { ...this.props, record: this.model.root } }) }"/>
+                            </t>
+                        </t>
+
+                        <t t-set-slot="control-panel-additional-actions">
+                            <CogMenu t-props="this.cogMenuProps" />
+                            <t t-if="env.isSmall and buttonBoxTemplate">
+                                <t t-call="{{ buttonBoxTemplate }}" t-call-context="{ __comp__: Object.assign(Object.create(this), { this, props: { ...this.props, record: this.model.root } }) }"/>
+                            </t>
+                        </t>
+
+                        <t t-set-slot="control-panel-status-indicator">
+                            <t t-if="canEdit">
+                                <FormStatusIndicator model="model" discard.bind="discard" save.bind="saveButtonClicked" />
+                            </t>
+                        </t>
+
+                        <t t-component="props.Renderer" record="model.root" Compiler="props.Compiler" readonly="props.readonly" archInfo="archInfo" translateAlert="translateAlert" onNotebookPageChange.bind="onNotebookPageChange" activeNotebookPages="props.state and props.state.activeNotebookPages"/>
+                    </Layout>
+                </div>
+
+                <div t-if="env.mjbFormActions and env.mjbFormActions.mode == 'split' and env.mjbFormActions.selectedRecordId !== null"
+                        class="dn-split-form-view h-100 bg-view position-relative overflow-auto shadow-sm"
+                        t-attf-style="width: {{ env.mjbFormActions.splitWidth }}%;">
+
+                    <div class="dn-resizer" t-on-mousedown="env.mjbFormActions.onResizeStart" title="Drag to resize"></div>
+
+                    <button class="btn btn-light position-absolute top-0 end-0 m-2 shadow-sm rounded-circle p-2 d-flex align-items-center justify-content-center"
+                            style="z-index: 10; width: 32px; height: 32px;"
+                            t-on-click="() => env.mjbFormActions.setSelectedRecordId(null)"
+                            title="Close">
+                        <i class="fa fa-times"></i>
+                    </button>
+
+                    <t t-component="env.mjbFormActions.getMjbViewComponent()"
+                        t-key="env.mjbFormActions.mode + '_' + env.mjbFormActions.selectedRecordId"
+                        type="'form'"
+                        views="[[false, 'form']]"
+                        resModel="env.mjbFormActions.selectedResModel || props.resModel"
+                        resId="env.mjbFormActions.selectedRecordId" />
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="dn.FormView" t-inherit="web.FormView" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_form_view_container')]" position="replace">
+            <t t-call="dn.FormViewSide" />
+        </xpath>
+    </t>
+
+</templates>

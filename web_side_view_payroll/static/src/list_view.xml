@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dn.PayslipListView" t-inherit="hr_payroll.PayslipListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+    <t t-name="dn.EmployeeDeclarationListController" t-inherit="hr_payroll.EmployeeDeclarationListController" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+</templates>

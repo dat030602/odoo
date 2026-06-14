@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dn.Breadcrumbs" t-inherit="web.Breadcrumbs" t-inherit-mode="extension">
+        <xpath expr="//div[@class='o_breadcrumb d-flex gap-1 text-truncate']" position="after">
+            <li class="ms-3 d-flex align-items-center" style="list-style: none;" t-if="env.mjbListActions and env.config and env.config.viewType == 'list'">
+                <div class="dropdown d-inline-block dn-view-mode-dropdown position-relative" style="z-index: 1054;">
+                    <button class="btn btn-sm btn-light dropdown-toggle px-2 py-1 border shadow-sm" data-bs-toggle="dropdown" title="Change View Mode">
+                        <i t-attf-class="fa fa-columns text-{{ env.mjbListActions.mode != 'default' ? 'primary' : 'muted' }} me-1"></i>
+                        <span class="d-none d-md-inline" t-if="env.mjbListActions.mode == 'default'">Default</span>
+                        <span class="d-none d-md-inline" t-elif="env.mjbListActions.mode == 'split'">Split View</span>
+                        <span class="d-none d-md-inline" t-elif="env.mjbListActions.mode == 'popup'">Popup</span>
+                    </button>
+                    
+                    <ul class="dropdown-menu shadow-sm" style="z-index: 1054;">
+                        <li><a class="dropdown-item" t-on-click.prevent="() => env.mjbListActions.setMode('default')" href="#">
+                            <i class="fa fa-fw fa-list text-muted me-2"></i> Default
+                        </a></li>
+                        <li><a class="dropdown-item" t-on-click.prevent="() => env.mjbListActions.setMode('split')" href="#">
+                            <i class="fa fa-fw fa-columns text-muted me-2"></i> Split View
+                        </a></li>
+                        <li><a class="dropdown-item" t-on-click.prevent="() => env.mjbListActions.setMode('popup')" href="#">
+                            <i class="fa fa-fw fa-window-restore text-muted me-2"></i> Popup View
+                        </a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="ms-3 d-flex align-items-center" style="list-style: none;" t-if="env.mjbFormActions and env.config and env.config.viewType == 'form'">
+                <div class="dropdown d-inline-block dn-view-mode-dropdown position-relative" style="z-index: 1054;">
+                    <button class="btn btn-sm btn-light dropdown-toggle px-2 py-1 border shadow-sm" data-bs-toggle="dropdown" title="Change Form View Mode">
+                        <i t-if="env.mjbFormActions.mode == 'current'" class="fa fa-window-maximize text-{{ env.mjbFormActions.mode != 'default' ? 'primary' : 'muted' }} me-1"/>
+                        <i t-elif="env.mjbFormActions.mode == 'split'" class="fa fa-columns text-{{ env.mjbFormActions.mode != 'default' ? 'primary' : 'muted' }} me-1"/>
+                        <i t-elif="env.mjbFormActions.mode == 'popup'" class="fa fa-window-restore text-{{ env.mjbFormActions.mode != 'default' ? 'primary' : 'muted' }} me-1"/>
+                        <i t-else="" class="fa fa-columns text-{{ env.mjbFormActions.mode != 'default' ? 'primary' : 'muted' }} me-1"/>
+                        <span class="d-none d-md-inline" t-if="env.mjbFormActions.mode == 'default'">Default</span>
+                        <span class="d-none d-md-inline" t-elif="env.mjbFormActions.mode == 'current'">Current</span>
+                        <span class="d-none d-md-inline" t-elif="env.mjbFormActions.mode == 'split'">Split View</span>
+                        <span class="d-none d-md-inline" t-elif="env.mjbFormActions.mode == 'popup'">Popup</span>
+                    </button>
+
+                    <ul class="dropdown-menu shadow-sm" style="z-index: 1054;">
+                        <li><a class="dropdown-item" t-on-click.prevent="() => env.mjbFormActions.setMode('default')" href="#">
+                            <i class="fa fa-fw fa-list text-muted me-2"></i> Default
+                        </a></li>
+                        <li><a class="dropdown-item" t-on-click.prevent="() => env.mjbFormActions.setMode('current')" href="#">
+                            <i class="fa fa-fw fa-window-maximize text-muted me-2"></i> Current
+                        </a></li>
+                        <li><a class="dropdown-item" t-on-click.prevent="() => env.mjbFormActions.setMode('split')" href="#">
+                            <i class="fa fa-fw fa-columns text-muted me-2"></i> Split View
+                        </a></li>
+                        <li><a class="dropdown-item" t-on-click.prevent="() => env.mjbFormActions.setMode('popup')" href="#">
+                            <i class="fa fa-fw fa-window-restore text-muted me-2"></i> Popup View
+                        </a></li>
+                    </ul>
+                </div>
+            </li>
+        </xpath>
+    </t>
+
+</templates>

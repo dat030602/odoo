@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dn.ListViewSide">
+        <div class="d-flex w-100 h-100 position-relative dn-list-view-container">
+                
+                 <div t-attf-class="dn-list-wrapper d-flex flex-column {{ env.mjbListActions and env.mjbListActions.mode == 'split' and env.mjbListActions.selectedRecordId !== null ? 'border-end' : 'w-100' }}"
+                     t-attf-style="width: {{ env.mjbListActions and env.mjbListActions.mode == 'split' and env.mjbListActions.selectedRecordId !== null ? (100 - env.mjbListActions.splitWidth) : 100 }}%;">
+                    <t t-component="props.Renderer" t-if="model.isReady"
+                        list="model.root"
+                        activeActions="activeActions"
+                        archInfo="archInfo"
+                        allowSelectors="props.allowSelectors"
+                        editable="editable"
+                        onOpenFormView="onOpenFormView"
+                        hasOpenFormViewButton="hasOpenFormViewButton"
+                        openRecord.bind="openRecord"
+                        noContentHelp="props.info.noContentHelp"
+                        onAdd.bind="createRecord"
+                        optionalActiveFields="optionalActiveFields"
+                        readonly="props.readonly"
+                    ></t>
+                </div>
+                 <div t-if="env.mjbListActions and env.mjbListActions.mode == 'split' and env.mjbListActions.selectedRecordId !== null" 
+                     class="dn-split-form-view h-100 bg-view position-relative overflow-auto shadow-sm"
+                     t-attf-style="width: {{ env.mjbListActions.splitWidth }}%;">
+                    
+                    <div class="dn-resizer" t-on-mousedown="env.mjbListActions.onResizeStart" title="Drag to resize"></div>
+
+                    <button class="btn btn-light position-absolute top-0 end-0 m-2 shadow-sm rounded-circle p-2 d-flex align-items-center justify-content-center" 
+                            style="z-index: 10; width: 32px; height: 32px;" 
+                            t-on-click="() => env.mjbListActions.setSelectedRecordId(null)" 
+                            title="Close">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    
+                    <t t-component="getMjbViewComponent()" 
+                       t-key="env.mjbListActions.mode + '_' + env.mjbListActions.selectedRecordId"
+                       type="'form'" 
+                              views="[[false, 'form']]"
+                              resModel="env.mjbListActions.selectedResModel || props.resModel" 
+                       resId="env.mjbListActions.selectedRecordId" />
+                </div>
+            </div>
+    </t>
+    
+    <t t-name="dn.ListView" t-inherit="web.ListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+
+</templates>

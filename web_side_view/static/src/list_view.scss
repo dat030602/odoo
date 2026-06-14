@@ -1,0 +1,108 @@
+/* CSS styles for the Split View */
+.dn-split-form-view {
+    /* Hide the navigation section (breadcrumbs, filters, etc.) in the control panel */
+    .o_control_panel_navigation {
+        display: none !important;
+    }
+    
+    /* Hide the 'New' button inside the inner Form View */
+    .o_control_panel_main_buttons button.o_form_button_create {
+        display: none !important;
+    }
+
+    /* Hide the Change View Mode dropdown in the side panel */
+    .dn-view-mode-dropdown {
+        display: none !important;
+    }
+
+    /* Force the Form flex container to display vertically (chatter at the bottom) */
+    .o_form_view_container, 
+    .o_form_view .d-flex.flex-nowrap.h-100 {
+        flex-direction: column !important;
+    }
+
+    /* Fix widths for the sheet layout */
+    .o_form_sheet_bg {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 auto !important;
+    }
+
+    /* Fix chatter width and borders */
+    .o-mail-Form-chatter, .o-mail-ChatterContainer {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-left: none !important;
+        border-top: 1px solid var(--border-color, #dee2e6) !important;
+    }
+}
+
+/* Styles for the main Form View when split mode is active */
+.dn-form-wrapper.dn-split-active {
+    .o_form_renderer {
+        flex-direction: column !important;
+    }
+    .o_form_renderer .o-mail-ChatterContainer,
+    .o_form_renderer .o-mail-Form-chatter {
+        width: 100% !important;
+    }
+}
+
+
+/* Resizer handle for Split View */
+.dn-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 6px;
+    background-color: transparent;
+    cursor: col-resize;
+    z-index: 50;
+    transition: background-color 0.2s;
+}
+
+.dn-resizer:hover, .dn-resizer:active {
+    background-color: var(--primary, #017e84);
+    opacity: 0.6;
+}
+
+/* Base transitions for smooth mode switching */
+.dn-split-form-view, 
+.dn-list-wrapper, 
+.dn-form-wrapper {
+    transition: width 0.3s ease !important;
+}
+
+/* Disable transitions entirely during active resizing for real-time preview */
+body.dn-resizing {
+    cursor: col-resize !important;
+    user-select: none; /* Prevent text selection during drag */
+    
+    .dn-split-form-view, 
+    .dn-list-wrapper, 
+    .dn-form-wrapper {
+        transition: none !important;
+    }
+    
+    /* Ensure the iframe/components don't re-render or flicker during resize */
+    .o_view_controller {
+        overflow: hidden !important;
+    }
+    
+    /* Cover the whole screen with an invisible overlay to capture mouse events 
+       and prevent iframe/widget interference during resizing */
+    &:after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 999999;
+        cursor: col-resize;
+    }
+}
+
+
+
