@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_partner_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-warning oe_edit_only" role="alert" name="warning_tax" invisible="not dn_name_dup_id and not dn_email_dup_id and not dn_phone_dup_id and not dn_phone_mobile_search_dup_id">
+                    <strong>Warning!</strong>
+                    <br/>
+                    <span invisible="not dn_name_dup_id">
+                        - <field name="dn_name_dup_id" context="{'show_address': False, 'show_vat': False}"/>
+                        (Same Name)
+                    </span>
+                    <span invisible="not dn_email_dup_id">
+                        - <field name="dn_email_dup_id" context="{'show_address': False, 'show_vat': False}"/>
+                        (Same Email)
+                    </span>
+                     <span invisible="not dn_phone_dup_id">
+                        - <field name="dn_phone_dup_id" context="{'show_address': False, 'show_vat': False}"/>
+                        (Same Phone)
+                    </span>
+                     <span invisible="not dn_phone_mobile_search_dup_id">
+                        - <field name="dn_phone_mobile_search_dup_id" context="{'show_address': False, 'show_vat': False}"/>
+                        (Same Mobile Phone)
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

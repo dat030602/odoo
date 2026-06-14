@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Upload Wizard Form View -->
+        <record id="view_xml_invoice_upload_wizard_form" model="ir.ui.view">
+            <field name="name">xml.invoice.upload.wizard.form</field>
+            <field name="model">xml.invoice.upload.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Upload XML Invoice Files">
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="xml_file_ids" widget="many2many_binary" filename="name"/>
+                    </group>
+                    <footer>
+                        <button name="action_upload" string="Upload" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Upload Action -->
+        <record id="action_xml_invoice_upload_wizard" model="ir.actions.act_window">
+            <field name="name">Upload XML Invoice Files</field>
+            <field name="res_model">xml.invoice.upload.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu Item for Upload -->
+        <menuitem id="menu_xml_invoice_upload" name="Upload XML Files" parent="menu_xml_invoice_import_root" 
+                  action="action_xml_invoice_upload_wizard" sequence="2"/>
+    </data>
+</odoo>

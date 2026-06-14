@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Record Rule: Prevent deletion of finalized imports -->
+        <record id="xml_invoice_import_delete_rule" model="ir.rule">
+            <field name="name">XML Invoice Import: Prevent deletion of finalized imports</field>
+            <field name="model_id" ref="model_xml_invoice_import"/>
+            <field name="domain_force">[('state', '!=', 'move_created')]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Record Rule: Multi-company -->
+        <record id="xml_invoice_import_company_rule" model="ir.rule">
+            <field name="name">XML Invoice Import: Multi-company</field>
+            <field name="model_id" ref="model_xml_invoice_import"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Record Rule: Raw lines multi-company -->
+        <record id="xml_invoice_raw_line_company_rule" model="ir.rule">
+            <field name="name">XML Invoice Raw Line: Multi-company</field>
+            <field name="model_id" ref="model_xml_invoice_raw_line"/>
+            <field name="domain_force">['|', ('xml_import_id.company_id', '=', False), ('xml_import_id.company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Record Rule: Invoice lines multi-company -->
+        <record id="xml_invoice_line_company_rule" model="ir.rule">
+            <field name="name">XML Invoice Line: Multi-company</field>
+            <field name="model_id" ref="model_xml_invoice_line"/>
+            <field name="domain_force">['|', ('xml_import_id.company_id', '=', False), ('xml_import_id.company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+
+    <data noupdate="1">
+        <!-- System Parameter: Product matching threshold -->
+        <record id="param_product_match_threshold" model="ir.config_parameter">
+            <field name="key">l10n_vn_xml_invoice_import.product_match_threshold</field>
+            <field name="value">80</field>
+        </record>
+    </data>
+</odoo>

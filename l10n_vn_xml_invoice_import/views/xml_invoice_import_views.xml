@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_xml_invoice_import_tree" model="ir.ui.view">
+            <field name="name">xml.invoice.import.tree</field>
+            <field name="model">xml.invoice.import</field>
+            <field name="arch" type="xml">
+                <list string="Invoice Import" create="false" edit="false">
+                    <field name="invoice_number"/>
+                    <field name="invoice_series"/>
+                    <field name="invoice_date"/>
+                    <field name="seller_name"/>
+                    <field name="buyer_name"/>
+                    <field name="price_total"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_xml_invoice_import_form" model="ir.ui.view">
+            <field name="name">xml.invoice.import.form</field>
+            <field name="model">xml.invoice.import</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Import" create="false">
+                    <header>
+                        <button name="action_confirm" string="Confirm" type="object" invisible="state != 'draft'" class="btn-primary"/>
+                        <button name="action_post" string="Post" type="object" invisible="state != 'reviewed'" class="btn-primary"/>
+                        <button name="button_draft" string="Reset to Draft" type="object" invisible="state != 'reviewed'" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,reviewed,move_created"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Vendor Bill" bg_color="text-bg-warning" invisible="invoice_type != 'in'"/>
+                        <widget name="web_ribbon" title="Customer Invoice" bg_color="text-bg-success" invisible="invoice_type != 'out'"/>
+                        <div class="oe_button_box">
+                            <button name="action_view_move" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="move_id == False">
+                                <field name="move_id" widget="statinfo" string="Account Move"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="invoice_number"/>
+                                <field name="invoice_series"/>
+                                <field name="invoice_sequence"/>
+                                <field name="invoice_date"/>
+                                <field name="version"/>
+                                <field name="einvoice_type"/>
+                                <field name="invoice_type"/>
+                                <field name="is_main_invoice"/>
+                            </group>
+                            <group>
+                                <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="price_subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="price_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="price_total_text"/>
+                                <field name="currency_id" readonly="1"/>
+                                <field name="currency_rate"/>
+                                <field name="payment_method"/>
+                                <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Seller Information" name="seller_info">
+                                <field name="seller_name"/>
+                                <field name="seller_vat"/>
+                                <field name="seller_tax_code"/>
+                                <field name="seller_address"/>
+                                <field name="seller_phone"/>
+                                <field name="seller_bank_account"/>
+                                <field name="seller_bank_name"/>
+                                <field name="seller_partner_id"/>
+                                <button name="action_create_seller_partner" type="object" string="Create Seller Partner"
+                                        invisible="seller_partner_id != False" class="btn-link"/>
+                            </group>
+                            <group string="Buyer Information" name="buyer_info">
+                                <field name="buyer_name"/>
+                                <field name="buyer_vat"/>
+                                <field name="buyer_address"/>
+                                <field name="buyer_phone"/>
+                                <field name="buyer_code"/>
+                                <field name="buyer_partner_id"/>
+                                <button name="action_create_buyer_partner" type="object" string="Create Buyer Partner"
+                                        invisible="buyer_partner_id != False" class="btn-link"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <!-- Raw Invoice Lines -->
+                            <page string="Raw Invoice Lines">
+                                <field name="raw_line_ids" readonly="1">
+                                    <list>
+                                        <field name="type" column_invisible="1"/>
+                                        <field name="name"/>
+                                        <field name="uom_name" invisible="type == '4'"/>
+                                        <field name="quantity" invisible="type == '4'"/>
+                                        <field name="price_unit" invisible="type == '4'"/>
+                                        <field name="discount" invisible="type == '4'"/>
+                                        <field name="price_discount" invisible="type == '4'"/>
+                                        <field name="tax_percent" invisible="type == '4'"/>
+                                        <field name="price_subtotal" invisible="type == '4'"/>
+                                        <field name="price_tax" invisible="type == '4'"/>
+                                        <field name="price_total" invisible="type == '4'"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <!-- Invoice Lines -->
+                            <page string="Invoice Lines" invisible="state == 'draft'">
+                                <field name="invoice_line_ids" invisible="state == 'draft'" readonly="state == 'posted'">
+                                    <list editable="bottom" create="false" delete="false">
+                                        <field name="product_id"/>
+                                        <field name="name"/>
+                                        <field name="quantity"/>
+                                        <field name="price_unit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="tax_ids" widget="many2many_tags"/>
+                                        <field name="price_subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="price_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="price_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="currency_id" column_invisible="1"/>
+                                    </list>
+                                </field>
+                                
+                                <group colspan="6">
+                                    <group col="4">
+                                        <field name="note" nolabel="1" readonly="1"/>
+                                    </group>
+                                    <group col="2">
+                                        <field name="tax_totals" widget="account-tax-totals-field" nolabel="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_xml_invoice_import_search" model="ir.ui.view">
+            <field name="name">xml.invoice.import.search</field>
+            <field name="model">xml.invoice.import</field>
+            <field name="arch" type="xml">
+                <search string="Invoice Import">
+                    <field name="invoice_number"/>
+                    <field name="invoice_series"/>
+                    <field name="seller_name"/>
+                    <field name="buyer_name"/>
+                    <field name="state"/>
+                    <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                    <filter name="reviewed" string="Reviewed" domain="[('state', '=', 'reviewed')]"/>
+                    <filter name="move_created" string="Move Created" domain="[('state', '=', 'move_created')]"/>
+                    <group>
+                        <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                        <filter name="group_seller" string="Seller" context="{'group_by': 'seller_name'}"/>
+                        <filter name="group_buyer" string="Buyer" context="{'group_by': 'buyer_name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_xml_invoice_import" model="ir.actions.act_window">
+            <field name="name">Invoice Import</field>
+            <field name="res_model">xml.invoice.import</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Upload your first XML invoice file
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_xml_invoice_import_root" name="Invoice Import" parent="account.menu_finance" sequence="10"/>
+        <menuitem id="menu_xml_invoice_import" name="Invoice Import" parent="menu_xml_invoice_import_root" 
+                  action="action_xml_invoice_import" sequence="1"/>
+    </data>
+</odoo>
