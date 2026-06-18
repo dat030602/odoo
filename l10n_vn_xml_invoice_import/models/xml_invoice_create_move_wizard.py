@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 
 
 class XmlInvoiceCreateMoveWizard(models.TransientModel):
-    """Wizard for creating Account Move from reviewed invoice import."""
+    """Wizard for creating Account Move from review invoice import."""
 
     _name = "xml.invoice.create.move.wizard"
     _description = "XML Invoice Create Move Wizard"
@@ -88,9 +88,7 @@ class XmlInvoiceCreateMoveWizard(models.TransientModel):
         move = self.env["account.move"].create(move_vals)
 
         # Update XML import record
-        self.xml_import_id.move_id = move.id
         self.xml_import_id.state = "move_created"
-        self.xml_import_id.message_post(body=_("Account move created: %s") % move.name)
 
         return {
             "type": "ir.actions.act_window",

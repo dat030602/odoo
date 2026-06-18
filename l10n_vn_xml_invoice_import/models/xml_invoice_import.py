@@ -19,8 +19,9 @@ class XmlInvoiceImport(models.Model):
     state = fields.Selection(
         [
             ("draft", "Draft"),
-            ("reviewed", "Reviewed"),
+            ("review", "Review"),
             ("move_created", "Posted"),
+            ("cancelled", "Cancelled"),
         ],
         string="State",
         default="draft",
@@ -104,9 +105,6 @@ class XmlInvoiceImport(models.Model):
     # Tax totals computed field
     tax_totals = fields.Json(compute="_compute_tax_totals", string="Tax Totals")
 
-    # Related Account Move
-    move_id = fields.Many2one("account.move", string="Account Move", readonly=True, copy=False)
-
     # Company
     company_id = fields.Many2one(
         "res.company",
@@ -118,18 +116,36 @@ class XmlInvoiceImport(models.Model):
     # Note
     note = fields.Text(string="Notes")
 
-    _sql_constraints = [
-        (
-            "unique_raw_file_checksum",
-            "UNIQUE(raw_file_checksum)",
-            "This XML file has already been imported.",
-        ),
-        (
-            "unique_business_checksum",
-            "UNIQUE(business_checksum)",
-            "This invoice has already been imported.",
-        ),
-    ]
+    @api.constrains("invoice_number", "invoice_series", "invoice_date", "company_id", "state")
+    def _check_duplicate_invoice(self):
+        """Check for duplicate invoices based on series, number, date, and company."""
+        for record in self:
+            if not (record.invoice_series and record.invoice_number and record.invoice_date):
+                continue  # Skip if any key field is missing
+
+            existing = self.search(
+                [
+                    ("id", "!=", record.id),
+                    ("invoice_series", "=", record.invoice_series),
+                    ("invoice_number", "=", record.invoice_number),
+                    ("invoice_date", "=", record.invoice_date),
+                    ("company_id", "=", record.company_id.id),
+                    ("state", "!=", "cancelled"),
+                ],
+                limit=1,
+            )
+            if existing:
+                raise ValidationError(
+                    _(
+                        "Duplicate invoice detected: Series '%s', Number '%s', Date '%s' already exists for company '%s'."
+                    )
+                    % (
+                        record.invoice_series,
+                        record.invoice_number,
+                        record.invoice_date,
+                        record.company_id.name,
+                    )
+                )
 
     @api.depends("invoice_number", "invoice_series", "invoice_date")
     def _compute_display_name(self):
@@ -267,8 +283,8 @@ class XmlInvoiceImport(models.Model):
         self._generate_invoice_lines()
         self.note = "\n".join(self.raw_line_ids.filtered(lambda line: line.type == "4").mapped("name"))
 
-        # Move to reviewed state
-        self.state = "reviewed"
+        # Move to review state
+        self.state = "review"
         self.message_post(body=_("Invoice confirmed and lines generated."))
 
     def _generate_invoice_lines(self):
@@ -369,11 +385,17 @@ class XmlInvoiceImport(models.Model):
     def action_post(self):
         """Open wizard to create account move."""
         self.ensure_one()
-        if self.state != "reviewed":
-            raise UserError(_("Only reviewed invoices can create account move."))
+        if self.state != "review":
+            raise UserError(_("Only review invoices can create account move."))
 
         if not self.buyer_partner_id:
             raise UserError(_("Please select or create a buyer partner first."))
+
+        if not self.invoice_line_ids:
+            raise UserError(_("No invoice lines to create account move."))
+
+        if not self.invoice_line_ids.mapped("product_id"):
+            raise UserError(_("Please match products for all invoice lines before posting."))
 
         return {
             "type": "ir.actions.act_window",
@@ -390,17 +412,18 @@ class XmlInvoiceImport(models.Model):
     def action_view_move(self):
         """View related account move."""
         self.ensure_one()
-        if not self.move_id:
-            raise UserError(_("No account move created yet."))
 
-        return {
-            "type": "ir.actions.act_window",
-            "name": _("Account Move"),
-            "res_model": "account.move",
-            "res_id": self.move_id.id,
-            "view_mode": "form",
-            "target": "current",
-        }
+        move_id = self.env['account.move'].search([('xml_import_id', '=', self.id)], limit=1)
+        if move_id:
+            return {
+                "type": "ir.actions.act_window",
+                "name": _("Account Move"),
+                "res_model": "account.move",
+                "res_id": move_id.id,
+                "view_mode": "form",
+                "target": "current",
+            }
+        return
 
     def unlink(self):
         """Prevent deletion of finalized imports."""
@@ -521,6 +544,7 @@ class XmlInvoiceImport(models.Model):
         # Check for duplicates
         existing = self.search(
             [
+                ("state", "!=", "cancelled"),
                 "|",
                 ("raw_file_checksum", "=", raw_checksum),
                 ("business_checksum", "=", business_checksum),
@@ -593,3 +617,12 @@ class XmlInvoiceImport(models.Model):
         record.message_post(body=_("XML file imported: %s") % filename, attachment_ids=[attachment.id])
 
         return record
+
+    def action_cancel(self):
+        """Cancel the invoice import."""
+        self.ensure_one()
+        if self.state == "move_created":
+            move = self.env['account.move'].search([('xml_import_id', '=', self.id)], limit=1)
+            if move:
+                move.button_cancel()
+        self.state = "cancelled"

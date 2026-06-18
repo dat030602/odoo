@@ -8,6 +8,9 @@ class AccountMove(models.Model):
 
     _inherit = "account.move"
 
+    invoice_number = fields.Char(string="Invoice Number", related="xml_import_id.invoice_number", readonly=True)
+    invoice_series = fields.Char(string="Invoice Series", related="xml_import_id.invoice_series", readonly=True)
+
     xml_import_id = fields.Many2one("xml.invoice.import", string="XML Invoice Import", readonly=True, copy=False)
 
     def action_view_xml_import(self):

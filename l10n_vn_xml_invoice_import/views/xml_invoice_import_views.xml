@@ -13,7 +13,7 @@
                     <field name="seller_name"/>
                     <field name="buyer_name"/>
                     <field name="price_total"/>
-                    <field name="state"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'review'" decoration-success="state == 'move_created'" decoration-danger="state == 'cancelled'"/>
                 </list>
             </field>
         </record>
@@ -26,18 +26,18 @@
                 <form string="Invoice Import" create="false">
                     <header>
                         <button name="action_confirm" string="Confirm" type="object" invisible="state != 'draft'" class="btn-primary"/>
-                        <button name="action_post" string="Post" type="object" invisible="state != 'reviewed'" class="btn-primary"/>
-                        <button name="button_draft" string="Reset to Draft" type="object" invisible="state != 'reviewed'" class="btn-secondary"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,reviewed,move_created"/>
+                        <button name="action_post" string="Post" type="object" invisible="state != 'review'" class="btn-primary"/>
+                        <button name="button_draft" string="Reset to Draft" type="object" invisible="state != 'review'" class="btn-secondary"/>
+                        <button name="action_cancel" string="Cancel" type="object" invisible="state == 'cancelled'" class="btn-danger"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,review,move_created"/>
                     </header>
                     <sheet>
-                        <widget name="web_ribbon" title="Vendor Bill" bg_color="text-bg-warning" invisible="invoice_type != 'in'"/>
-                        <widget name="web_ribbon" title="Customer Invoice" bg_color="text-bg-success" invisible="invoice_type != 'out'"/>
-                        <div class="oe_button_box">
-                            <button name="action_view_move" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="move_id == False">
-                                <field name="move_id" widget="statinfo" string="Account Move"/>
-                            </button>
+                        <div name="button_box" class="oe_button_box">
+                            <button name="action_view_move" string="Invoice" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="einvoice_type != 'out'"/>
+                            <button name="action_view_move" string="Bill" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="einvoice_type != 'in'"/>
                         </div>
+                        <widget name="web_ribbon" title="Vendor Bill" bg_color="text-bg-warning" invisible="einvoice_type != 'in'"/>
+                        <widget name="web_ribbon" title="Customer Invoice" bg_color="text-bg-success" invisible="einvoice_type != 'out'"/>
                         <group>
                             <group>
                                 <field name="invoice_number"/>
@@ -147,7 +147,7 @@
                     <field name="buyer_name"/>
                     <field name="state"/>
                     <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
-                    <filter name="reviewed" string="Reviewed" domain="[('state', '=', 'reviewed')]"/>
+                    <filter name="review" string="Reviewed" domain="[('state', '=', 'review')]"/>
                     <filter name="move_created" string="Move Created" domain="[('state', '=', 'move_created')]"/>
                     <group>
                         <filter name="group_state" string="State" context="{'group_by': 'state'}"/>

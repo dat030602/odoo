@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-        <!-- Record Rule: Prevent deletion of finalized imports -->
-        <record id="xml_invoice_import_delete_rule" model="ir.rule">
-            <field name="name">XML Invoice Import: Prevent deletion of finalized imports</field>
-            <field name="model_id" ref="model_xml_invoice_import"/>
-            <field name="domain_force">[('state', '!=', 'move_created')]</field>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="True"/>
-        </record>
 
         <!-- Record Rule: Multi-company -->
         <record id="xml_invoice_import_company_rule" model="ir.rule">
