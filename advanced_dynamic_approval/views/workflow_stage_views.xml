@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_workflow_stage_view_tree" model="ir.ui.view">
+        <field name="name">approval.workflow.stage.list</field>
+        <field name="model">approval.workflow.stage</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="workflow_id"/>
+                <field name="approver_type"/>
+                <field name="user_id"/>
+                <field name="group_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="approval_workflow_stage_view_form" model="ir.ui.view">
+        <field name="name">approval.workflow.stage.form</field>
+        <field name="model">approval.workflow.stage</field>
+        <field name="arch" type="xml">
+            <form string="Workflow Stage">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="workflow_id"/>
+                            <field name="name"/>
+                            <field name="sequence" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="approver_type"/>
+                            <field name="user_id" invisible="approver_type != 'user'" required="approver_type == 'user'"/>
+                            <field name="group_id" invisible="approver_type != 'group'" required="approver_type == 'group'"/>
+                        </group>
+                    </group>
+                    <group string="Conditional Routing">
+                        <field name="condition_python" placeholder="result = self.amount_total > 10000"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="approval_workflow_stage_view_hierarchy" model="ir.ui.view">
+        <field name="name">approval.workflow.stage.hierarchy</field>
+        <field name="model">approval.workflow.stage</field>
+        <field name="arch" type="xml">
+            <hierarchy child_field="child_ids" draggable="1">
+                <!-- preload -->
+                <field name="name"/>
+                <field name="approver_type"/>
+                <field name="user_id"/>
+                <field name="group_id"/>
+                <field name="condition_python"/>
+
+                <templates>
+                    <t t-name="hierarchy-box">
+                        <div class="o_hierarchy_node p-2" t-att-title="record.condition_python.value">
+                            <div>
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div>
+                                <span class="fw-bold fst-italic text-decoration-underline me-1">Type:</span>
+                                <field name="approver_type"/>
+                            </div>
+                            <div invisible="approver_type != 'user'">
+                                <span class="fw-bold fst-italic text-decoration-underline me-1">User:</span>
+                                <field name="user_id"/>
+                            </div>
+                            <div invisible="approver_type != 'group'">
+                                <span class="fw-bold fst-italic text-decoration-underline me-1">Group:</span>
+                                <field name="group_id"/>
+                            </div>
+                            <div invisible="not condition_python">
+                                <span class="fw-bold fst-italic text-decoration-underline">Condition:</span>
+                                <br/>
+                                <field name="condition_python" widget="ace" options="{'mode': 'python'}"/>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </hierarchy>
+        </field>
+    </record>
+
+    <record id="approval_workflow_stage_action" model="ir.actions.act_window">
+        <field name="name">Workflow Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">approval.workflow.stage</field>
+        <field name="view_mode">hierarchy,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first workflow stage
+            </p>
+        </field>
+    </record>
+</odoo>

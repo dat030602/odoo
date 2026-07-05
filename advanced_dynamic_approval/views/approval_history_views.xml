@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Approval History Tree View -->
+    <record id="approval_history_tree_view" model="ir.ui.view">
+        <field name="name">approval.history.tree</field>
+        <field name="model">approval.history</field>
+        <field name="arch" type="xml">
+            <list string="Approval History">
+                <field name="name" column_invisible="1"/>
+                <field name="request_id" column_invisible="1"/>
+                <field name="sent_time"/>
+                <field name="eligible_approvers_ids" widget="many2many_tags"/>
+                <field name="approver_id"/>
+                <field name="approval_time"/>
+                <field name="status" widget="badge" decoration-info="status == 'new'" decoration-warning="status == 'pending'" decoration-success="status == 'approved'" decoration-danger="status in ['refused', 'cancel']"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Approval History Form View -->
+    <record id="approval_history_form_view" model="ir.ui.view">
+        <field name="name">approval.history.form</field>
+        <field name="model">approval.history</field>
+        <field name="arch" type="xml">
+            <form string="Approval History">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="request_id"/>
+                            <field name="workflow_id"/>
+                            <field name="stage_id"/>
+                        </group>
+                        <group>
+                            <field name="status"/>
+                            <field name="approver_id"/>
+                            <field name="approval_time"/>
+                            <field name="sent_time"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Eligible Approvers" name="eligible_approvers">
+                            <field name="eligible_approvers_ids" widget="many2many_tags"/>
+                        </page>
+                        <page string="Comments" name="comments">
+                            <field name="comments"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Approval History Action -->
+    <record id="approval_history_action" model="ir.actions.act_window">
+        <field name="name">Approval History</field>
+        <field name="res_model">approval.history</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No approval history found.
+            </p>
+        </field>
+    </record>
+
+    <!-- Approval History Menu Item -->
+    <menuitem id="approval_history_menu" 
+              name="Approval History" 
+              parent="approvals.approvals_menu_manager" 
+              action="approval_history_action" 
+              sequence="20"/>
+              
+    <!-- Approval Request Form View Inheritance -->
+    <record id="approval_request_form_view_inherit" model="ir.ui.view">
+        <field name="name">approval.request.form.inherit</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Approval History" name="approval_history">
+                    <field name="approval_history_ids">
+                        <list>
+                            <field name="status" widget="badge" decoration-info="status == 'new'" decoration-warning="status == 'pending'" decoration-success="status == 'approved'" decoration-danger="status in ['refused', 'cancel']"/>
+                            <field name="approver_id"/>
+                            <field name="eligible_approvers_ids" widget="many2many_tags"/>
+                            <field name="approval_time"/>
+                            <field name="sent_time"/>
+                            <field name="create_date"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

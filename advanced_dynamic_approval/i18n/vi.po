@@ -1,0 +1,699 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * advanced_dynamic_approval
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-05 06:15+0000\n"
+"PO-Revision-Date: 2026-07-05 06:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_request__workflow_id
+msgid "Workflow Configuration"
+msgstr "Cấu hình quy trình duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_request__current_stage_id
+msgid "Current Stage"
+msgstr "Giai đoạn hiện tại"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_request__can_click_approval
+msgid "Can Click Approval Buttons"
+msgstr "Có thể bấm nút duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_request__approval_history_ids
+msgid "Approval History"
+msgstr "Lịch sử duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_request__custom_request_status
+msgid "Custom Request Status"
+msgstr "Trạng thái yêu cầu tùy chỉnh"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_request__custom_request_status__new
+msgid "To Submit"
+msgstr "Cần gửi"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_request__custom_request_status__pending
+msgid "Submitted"
+msgstr "Đã gửi"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_request__custom_request_status__approved
+msgid "Approved"
+msgstr "Đã duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_request__custom_request_status__refused
+msgid "Refused"
+msgstr "Đã từ chối"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_request__custom_request_status__cancel
+msgid "Canceled"
+msgstr "Đã hủy"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__name
+msgid "Name"
+msgstr "Tên"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__category_id
+msgid "Approval Category"
+msgstr "Danh mục duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__model_id
+msgid "Target Model"
+msgstr "Mô hình đích"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__technical_name
+msgid "Technical Name"
+msgstr "Tên kỹ thuật"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_workflow_config__technical_name
+msgid "Used for generated objects (views, actions, menus)"
+msgstr "Dùng cho các đối tượng được tạo (views, actions, menus)"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__technical_name_prefix
+msgid "Technical Name Prefix"
+msgstr "Tiền tố tên kỹ thuật"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__active
+msgid "Active"
+msgstr "Hoạt động"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__stage_ids
+msgid "Workflow Stages"
+msgstr "Các giai đoạn quy trình"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__server_id
+msgid "Server Action"
+msgstr "Hành động máy chủ"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__action_id
+msgid "Action"
+msgstr "Hành động"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__menu_id
+msgid "Menu"
+msgstr "Menu"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__list_view_id
+msgid "List View"
+msgstr "View danh sách"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__form_view_id
+msgid "Form View"
+msgstr "View biểu mẫu"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__state
+msgid "State"
+msgstr "Trạng thái"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_workflow_config__state__draft
+msgid "Draft"
+msgstr "Nháp"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_workflow_config__state__locked
+msgid "Locked"
+msgstr "Đã khóa"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_workflow_config__state
+msgid "Locked state means the workflow is active and cannot be edited. To make changes, you need to archive the workflow and create a new one."
+msgstr "Trạng thái đã khóa có nghĩa là quy trình đang hoạt động và không thể chỉnh sửa. Để thực hiện thay đổi, bạn cần lưu trữ quy trình và tạo một quy trình mới."
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_config__init_code
+msgid "Initialization Python Code"
+msgstr "Mã khởi tạo Python"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_workflow_config__init_code
+msgid "Python code to execute when creating an approval request to initialize data. Available variables: record (the approval.request record), env, user. Use 'record' to modify the approval request fields."
+msgstr "Mã Python để thực thi khi tạo yêu cầu duyệt để khởi tạo dữ liệu. Các biến có sẵn: record (bản ghi approval.request), env, user. Sử dụng 'record' để sửa các trường yêu cầu duyệt."
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Generate Views"
+msgstr "Tạo Views"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Create Server Action"
+msgstr "Tạo Server Action"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Stages"
+msgstr "Giai đoạn"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Server Action"
+msgstr "Hành động máy chủ"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Code"
+msgstr "Mã"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Views"
+msgstr "Views"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Help"
+msgstr "Trợ giúp"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Description"
+msgstr "Mô tả"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Approval History"
+msgstr "Lịch sử duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Send for Approval"
+msgstr "Gửi để duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Approve"
+msgstr "Duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Reject"
+msgstr "Từ chối"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_config_view_form
+msgid "e.g. Approval Workflow"
+msgstr "ví dụ: Quy trình duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__name
+msgid "Reference"
+msgstr "Tham chiếu"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__request_id
+msgid "Approval Request"
+msgstr "Yêu cầu duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__workflow_id
+msgid "Workflow Configuration"
+msgstr "Cấu hình quy trình duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__stage_id
+msgid "Stage"
+msgstr "Giai đoạn"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__status
+msgid "Approval Status"
+msgstr "Trạng thái duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_history__status__new
+msgid "New"
+msgstr "Mới"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_history__status__pending
+msgid "Pending"
+msgstr "Đang chờ"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_history__status__approved
+msgid "Approved"
+msgstr "Đã duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_history__status__refused
+msgid "Refused"
+msgstr "Đã từ chối"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_history__status__cancel
+msgid "Cancelled"
+msgstr "Đã hủy"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__approver_id
+msgid "Approver"
+msgstr "Người duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_history__approver_id
+msgid "User who clicked the approval button"
+msgstr "Người dùng đã bấm nút duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__eligible_approvers_ids
+msgid "Eligible Approvers"
+msgstr "Người có thể duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_history__eligible_approvers_ids
+msgid "List of users who can approve at this time"
+msgstr "Danh sách người dùng có thể duyệt tại thời điểm này"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__approval_time
+msgid "Approval Time"
+msgstr "Thời gian duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_history__approval_time
+msgid "Time when approver clicked the button"
+msgstr "Thời gian khi người duyệt bấm nút"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__sent_time
+msgid "Sent Time"
+msgstr "Thời gian gửi"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_history__sent_time
+msgid "Time when the request was sent"
+msgstr "Thời gian khi yêu cầu được gửi"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__comments
+msgid "Comments"
+msgstr "Bình luận"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_history__company_id
+msgid "Company"
+msgstr "Công ty"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_history_tree_view
+msgid "Approval History"
+msgstr "Lịch sử duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_history_form_view
+msgid "Approval History"
+msgstr "Lịch sử duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_history_form_view
+msgid "Eligible Approvers"
+msgstr "Người có thể duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_history_form_view
+msgid "Comments"
+msgstr "Bình luận"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__workflow_id
+msgid "Workflow"
+msgstr "Quy trình"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__name
+msgid "Stage Name"
+msgstr "Tên giai đoạn"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__sequence
+msgid "Sequence"
+msgstr "Thứ tự"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__approver_type
+msgid "Approver Type"
+msgstr "Loại người duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_workflow_stage__approver_type__user
+msgid "Specific User"
+msgstr "Người dùng cụ thể"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_workflow_stage__approver_type__group
+msgid "User Group"
+msgstr "Nhóm người dùng"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__user_id
+msgid "Approver User"
+msgstr "Người dùng duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__group_id
+msgid "Approver Group"
+msgstr "Nhóm duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__condition_python
+msgid "Python Condition"
+msgstr "Điều kiện Python"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_workflow_stage__condition_python
+msgid "Python code that returns True/False. Example: result = self.amount_total > 10000"
+msgstr "Mã Python trả về True/False. Ví dụ: result = self.amount_total > 10000"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__parent_id
+msgid "Parent Stage"
+msgstr "Giai đoạn cha"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_workflow_stage__child_ids
+msgid "Child Stages"
+msgstr "Giai đoạn con"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_stage_view_form
+msgid "Workflow Stage"
+msgstr "Giai đoạn quy trình"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_stage_view_form
+msgid "Conditional Routing"
+msgstr "Định tuyến có điều kiện"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_workflow_stage_view_form
+msgid "result = self.amount_total > 10000"
+msgstr "result = self.amount_total > 10000"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_field_config__workflow_id
+msgid "Workflow"
+msgstr "Quy trình"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_field_config__model_id
+msgid "Model"
+msgstr "Mô hình"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_field_config__field_id
+msgid "Field"
+msgstr "Trường"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_field_config__readonly
+msgid "Readonly"
+msgstr "Chỉ đọc"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_field_config__required
+msgid "Required"
+msgstr "Bắt buộc"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_category__workflow_config_id
+msgid "Workflow Configuration"
+msgstr "Cấu hình quy trình duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,help:advanced_dynamic_approval.field_approval_category__workflow_config_id
+msgid "Bind approval category with workflow configuration"
+msgstr "Gắn danh mục duyệt với cấu hình quy trình"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_reason_wizard__reason
+msgid "Reason"
+msgstr "Lý do"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_reason_wizard__request_id
+msgid "Approval Request"
+msgstr "Yêu cầu duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields,field_description:advanced_dynamic_approval.field_approval_reason_wizard__action_type
+msgid "Action Type"
+msgstr "Loại hành động"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_reason_wizard__action_type__reject
+msgid "Reject"
+msgstr "Từ chối"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model.fields.selection,name:advanced_dynamic_approval.selection__approval_reason_wizard__action_type__cancel
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_reason_wizard_form
+msgid "Approval Reason"
+msgstr "Lý do duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_reason_wizard_form
+msgid "Confirm"
+msgstr "Xác nhận"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_reason_wizard_form
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.view,arch_db:advanced_dynamic_approval.approval_reason_wizard_form
+msgid "Please enter the reason..."
+msgstr "Vui lòng nhập lý do..."
+
+#. module: advanced_dynamic_approval
+#: model:ir.actions.act_window,name:advanced_dynamic_approval.action_approval_reason_wizard
+msgid "Approval Reason"
+msgstr "Lý do duyệt"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_request.py:0
+#, python-format
+msgid "No workflow configured for this approval request."
+msgstr "Không có quy trình nào được cấu hình cho yêu cầu duyệt này."
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_request.py:0
+#, python-format
+msgid "Reject Approval"
+msgstr "Từ chối duyệt"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_request.py:0
+#, python-format
+msgid "Cancel Approval"
+msgstr "Hủy duyệt"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_request.py:0
+#, python-format
+msgid "Approval Request: %s"
+msgstr "Yêu cầu duyệt: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_request.py:0
+#, python-format
+msgid "Please review and approve this request at stage: %s"
+msgstr "Vui lòng xem xét và duyệt yêu cầu này tại giai đoạn: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_request.py:0
+#, python-format
+msgid "Error evaluating condition: %s"
+msgstr "Lỗi khi đánh giá điều kiện: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_workflow_config.py:0
+#, python-format
+msgid "Technical Name only allows letters, numbers and underscore (_)"
+msgstr "Tên kỹ thuật chỉ cho phép chữ cái, số và dấu gạch dưới (_)"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_workflow_config.py:0
+#, python-format
+msgid "Cannot delete a locked workflow configuration. Please archive it instead."
+msgstr "Không thể xóa cấu hình quy trình đã khóa. Vui lòng lưu trữ nó thay thế."
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_workflow_config.py:0
+#, python-format
+msgid "Cannot delete workflow configuration '%s' because there are existing approval requests associated with its category."
+msgstr "Không thể xóa cấu hình quy trình '%s' vì có các yêu cầu duyệt hiện tại liên quan đến danh mục của nó."
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_workflow_stage.py:0
+#, python-format
+msgid "You cannot create cyclic hierarchy."
+msgstr "Bạn không thể tạo thứ bậc vòng lặp."
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_workflow_stage.py:0
+#, python-format
+msgid "Error evaluating condition for stage '%s': %s"
+msgstr "Lỗi khi đánh giá điều kiện cho giai đoạn '%s': %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_history.py:0
+#, python-format
+msgid "<b>Approval Request Created</b><br/>Sent: %s"
+msgstr "<b>Yêu cầu duyệt đã được tạo</b><br/>Đã gửi: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_history.py:0
+#, python-format
+msgid "<b>Approval Request Sent</b><br/>Sent: %s<br/>Eligible Approvers: %s"
+msgstr "<b>Yêu cầu duyệt đã được gửi</b><br/>Đã gửi: %s<br/>Người có thể duyệt: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_history.py:0
+#, python-format
+msgid "<b>Approved</b><br/>Approver: %s<br/>Approval Time: %s"
+msgstr "<b>Đã duyệt</b><br/>Người duyệt: %s<br/>Thời gian duyệt: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_history.py:0
+#, python-format
+msgid "<b>Refused</b><br/>Approver: %s<br/>Refusal Time: %s"
+msgstr "<b>Đã từ chối</b><br/>Người duyệt: %s<br/>Thời gian từ chối: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_history.py:0
+#, python-format
+msgid "<b>Cancelled</b><br/>Cancelled by: %s<br/>Cancellation Time: %s"
+msgstr "<b>Đã hủy</b><br/>Đã hủy bởi: %s<br/>Thời gian hủy: %s"
+
+#. module: advanced_dynamic_approval
+#: code:addons/advanced_dynamic_approval/models/approval_history.py:0
+#, python-format
+msgid "Approval Status Updated: %s"
+msgstr "Trạng thái duyệt đã được cập nhật: %s"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model,name:advanced_dynamic_approval.model_approval_request
+msgid "Approval Request"
+msgstr "Yêu cầu duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model,name:advanced_dynamic_approval.model_approval_workflow_config
+msgid "Approval Workflow Configuration"
+msgstr "Cấu hình quy trình duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model,name:advanced_dynamic_approval.model_approval_workflow_stage
+msgid "Approval Workflow Stage"
+msgstr "Giai đoạn quy trình duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model,name:advanced_dynamic_approval.model_approval_history
+msgid "Approval History"
+msgstr "Lịch sử duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model,name:advanced_dynamic_approval.model_approval_field_config
+msgid "Approval Field Configuration"
+msgstr "Cấu hình trường duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.model,name:advanced_dynamic_approval.model_approval_reason_wizard
+msgid "Approval Reason Wizard"
+msgstr "Wizard lý do duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.menu,name:advanced_dynamic_approval.approval_workflow_config_menu
+msgid "Workflow"
+msgstr "Quy trình"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.menu,name:advanced_dynamic_approval.approvals_menu_config
+msgid "Configuration"
+msgstr "Cấu hình"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.menu,name:advanced_dynamic_approval.approvals_menu_manager
+msgid "Approvals"
+msgstr "Duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.ui.menu,name:advanced_dynamic_approval.approval_history_menu
+msgid "Approval History"
+msgstr "Lịch sử duyệt"
+
+#. module: advanced_dynamic_approval
+#: model:ir.actions.act_window,name:advanced_dynamic_approval.approval_workflow_config_action
+msgid "Workflow Config"
+msgstr "Cấu hình quy trình"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.actions.act_window,help:advanced_dynamic_approval.approval_workflow_config_action
+msgid "Create your first workflow configuration"
+msgstr "Tạo cấu hình quy trình đầu tiên của bạn"
+
+#. module: advanced_dynamic_approval
+#: model:ir.actions.act_window,name:advanced_dynamic_approval.approval_workflow_stage_action
+msgid "Workflow Stages"
+msgstr "Các giai đoạn quy trình"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.actions.act_window,help:advanced_dynamic_approval.approval_workflow_stage_action
+msgid "Create your first workflow stage"
+msgstr "Tạo giai đoạn quy trình đầu tiên của bạn"
+
+#. module: advanced_dynamic_approval
+#: model:ir.actions.act_window,name:advanced_dynamic_approval.approval_history_action
+msgid "Approval History"
+msgstr "Lịch sử duyệt"
+
+#. module: advanced_dynamic_approval
+#: model_terms:ir.actions.act_window,help:advanced_dynamic_approval.approval_history_action
+msgid "No approval history found."
+msgstr "Không tìm thấy lịch sử duyệt nào."
+
+#. module: advanced_dynamic_approval
+#: model:ir.actions.server,name:advanced_dynamic_approval.server_action_send_approval
+msgid "[%s] Send Approval"
+msgstr "[%s] Gửi duyệt"
