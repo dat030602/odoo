@@ -37,7 +37,7 @@
     ],
     # 'assets': {
     #     'web.assets_backend': [
-    #         'l10n_vn_xml_invoice_import/static/src/js/xml_invoice_upload.js',
+    #         'l10n_vn_invoice_import/static/src/js/xml_invoice_upload.js',
     #     ],
     # },
     'python_requires': '>=3.8',

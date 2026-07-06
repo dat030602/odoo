@@ -6,7 +6,7 @@ import markupsafe
 class ApprovalHistory(models.Model):
     _name = "approval.history"
     _description = "Approval History"
-    _order = "create_date desc"
+    _order = "create_date"
     
     name = fields.Char(string="Reference", compute="_compute_name", store=True)
     request_id = fields.Many2one("approval.request", string="Approval Request", required=True, ondelete="cascade")

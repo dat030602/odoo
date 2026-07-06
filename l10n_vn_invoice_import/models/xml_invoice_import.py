@@ -298,7 +298,7 @@ class XmlInvoiceImport(models.Model):
         threshold = int(
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("l10n_vn_xml_invoice_import.product_match_threshold", default="80")
+            .get_param("l10n_vn_invoice_import.product_match_threshold", default="80")
         )
         for raw_line in self.raw_line_ids.filtered(lambda line: line.type != "4"):
             # Try fuzzy product matching

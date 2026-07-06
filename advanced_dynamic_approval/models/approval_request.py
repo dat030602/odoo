@@ -6,7 +6,7 @@ class ApprovalRequest(models.Model):
     _inherit = "approval.request"
 
     workflow_id = fields.Many2one("approval.workflow.config", string="Workflow Configuration")
-    current_stage_id = fields.Many2one("approval.workflow.stage", string="Current Stage")
+    current_stage_id = fields.Many2one("approval.workflow.stage", string="Current Stage", copy=False)
     can_click_approval = fields.Boolean(string="Can Click Approval Buttons", compute="_compute_can_click_approval")
     approval_history_ids = fields.One2many("approval.history", "request_id", string="Approval History")
     
@@ -17,7 +17,7 @@ class ApprovalRequest(models.Model):
         ('approved', 'Approved'),
         ('refused', 'Refused'),
         ('cancel', 'Canceled'),
-    ], default="new", string="Custom Request Status", tracking=True)
+    ], default="new", string="Custom Request Status", tracking=True, copy=False)
 
     @api.depends("custom_request_status", "workflow_id", "current_stage_id")
     def _compute_can_click_approval(self):
@@ -57,6 +57,7 @@ class ApprovalRequest(models.Model):
             rec._custom_done_activities(user=self.env.user)
             # Done activity current user
             rec._custom_cancel_activities()
+            rec._update_approval_history('approved', self.env.user)
             if next_stage:
                 rec.current_stage_id = next_stage.id
                 rec.custom_request_status = 'pending'
@@ -67,8 +68,6 @@ class ApprovalRequest(models.Model):
                 rec._custom_create_approval_history('pending', None, eligible_approvers)
             else:
                 rec.write({"custom_request_status": "approved"})
-                # Update existing pending history to approved
-                rec._update_approval_history('approved', self.env.user)
 
     def action_custom_reject(self):
         self.ensure_one()
