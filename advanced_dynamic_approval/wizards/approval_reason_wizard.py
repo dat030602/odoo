@@ -20,12 +20,14 @@ class ApprovalReasonWizard(models.TransientModel):
         if self.action_type == 'reject':
             # Cancel pending activities for current user with feedback
             request._custom_cancel_activities(user=self.env.user, feedback=self.reason)
+            request._custom_cancel_activities()
             request.write({"custom_request_status": "refused"})
             # Update existing pending history to refused
             request._update_approval_history('refused', self.env.user)
         elif self.action_type == 'cancel':
             # Cancel pending activities for current user with feedback
             request._custom_cancel_activities(user=self.env.user, feedback=self.reason)
+            request._custom_cancel_activities()
             request.write({"custom_request_status": "cancel"})
             # Update existing pending history to cancel status
             request._update_approval_history('cancel', self.env.user)
