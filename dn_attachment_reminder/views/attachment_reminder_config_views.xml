@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Attachment Reminder Config Tree View -->
+    <record id="view_attachment_reminder_config_tree" model="ir.ui.view">
+        <field name="name">attachment.reminder.config.list</field>
+        <field name="model">attachment.reminder.config</field>
+        <field name="arch" type="xml">
+            <list string="Attachment Reminder Configurations" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="language_id"/>
+                <field name="activity_type_id"/>
+                <field name="keyword_count"/>
+                <field name="active"/>
+                <field name="match_count"/>
+                <field name="last_match_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Attachment Reminder Config Form View -->
+    <record id="view_attachment_reminder_config_form" model="ir.ui.view">
+        <field name="name">attachment.reminder.config.form</field>
+        <field name="model">attachment.reminder.config</field>
+        <field name="arch" type="xml">
+            <form string="Attachment Reminder Configuration">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Configuration Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="model_id" options="{'no_create': True}"/>
+                            <field name="language_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Keywords" name="keywords">
+                            <field name="keyword_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="case_sensitive"/>
+                                    <field name="is_regex"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Activity Settings" name="activity">
+                            <group>
+                                <field name="activity_type_id" options="{'no_create': True}"/>
+                                <field name="create_default_activity"/>
+                            </group>
+                        </page>
+                        <page string="Message Types" name="message_types">
+                            <field name="message_type_ids" widget="many2many_tags">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Statistics" name="statistics">
+                            <group>
+                                <field name="match_count" readonly="1"/>
+                                <field name="last_match_date" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Attachment Reminder Config Search View -->
+    <record id="view_attachment_reminder_config_search" model="ir.ui.view">
+        <field name="name">attachment.reminder.config.search</field>
+        <field name="model">attachment.reminder.config</field>
+        <field name="arch" type="xml">
+            <search string="Search Attachment Reminder Configurations">
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="language_id"/>
+                <field name="active"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Model-Specific" name="model_specific" domain="[('model_id', '!=', False)]"/>
+                <filter string="Generic" name="generic" domain="[('model_id', '=', False)]"/>
+                <separator/>
+                <group>
+                    <field name="name"/>
+                    <field name="model_id"/>
+                    <field name="language_id"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Attachment Reminder Config Action -->
+    <record id="action_attachment_reminder_config" model="ir.actions.act_window">
+        <field name="name">Attachment Reminder Configurations</field>
+        <field name="res_model">attachment.reminder.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first attachment reminder configuration
+            </p>
+            <p>
+                Configure keywords and activity types to automatically remind users 
+                when they forget to attach files to their messages.
+            </p>
+        </field>
+    </record>
+
+    <!-- Attachment Reminder Keyword Tree View -->
+    <record id="view_attachment_reminder_keyword_tree" model="ir.ui.view">
+        <field name="name">attachment.reminder.keyword.list</field>
+        <field name="model">attachment.reminder.keyword</field>
+        <field name="arch" type="xml">
+            <list string="Attachment Reminder Keywords" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="case_sensitive"/>
+                <field name="is_regex"/>
+                <field name="config_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Attachment Reminder Keyword Form View -->
+    <record id="view_attachment_reminder_keyword_form" model="ir.ui.view">
+        <field name="name">attachment.reminder.keyword.form</field>
+        <field name="model">attachment.reminder.keyword</field>
+        <field name="arch" type="xml">
+            <form string="Attachment Reminder Keyword">
+                <sheet>
+                    <group>
+                        <field name="config_id"/>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="case_sensitive"/>
+                        <field name="is_regex"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Attachment Reminder Keyword Action -->
+    <record id="action_attachment_reminder_keyword" model="ir.actions.act_window">
+        <field name="name">Attachment Reminder Keywords</field>
+        <field name="res_model">attachment.reminder.keyword</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_attachment_reminder_root" 
+              name="Attachment Reminder" 
+              parent="base.menu_custom" 
+              sequence="10"
+              groups="base.group_system"/>
+    
+    <menuitem id="menu_attachment_reminder_config" 
+              name="Configurations" 
+              parent="menu_attachment_reminder_root" 
+              action="action_attachment_reminder_config" 
+              sequence="10"
+              groups="base.group_system"/>
+    
+    <menuitem id="menu_attachment_reminder_keyword" 
+              name="Keywords" 
+              parent="menu_attachment_reminder_root" 
+              action="action_attachment_reminder_keyword" 
+              sequence="20"
+              groups="base.group_system"/>
+</odoo>

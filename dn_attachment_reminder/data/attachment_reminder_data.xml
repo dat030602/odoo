@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Activity Templates for Attachment Reminder -->
+        <record id="attachment_reminder_activity_template" model="mail.activity.type">
+            <field name="name">Attachment Reminder</field>
+            <field name="category">upload_file</field>
+            <field name="icon">fa-paperclip</field>
+            <field name="decoration_type">warning</field>
+            <field name="sequence">100</field>
+            <field name="delay_count">0</field>
+            <field name="delay_from">current_date</field>
+            <field name="summary">Missing Attachment?</field>
+            <field name="default_note">It seems you may have forgotten to attach a file to this message. The content mentions attachments but no files were uploaded.</field>
+        </record>
+        
+        <!-- Vietnamese Activity Template -->
+        <record id="attachment_reminder_activity_template_vi" model="mail.activity.type">
+            <field name="name">Nhắc Nhở Đính Kèm</field>
+            <field name="category">upload_file</field>
+            <field name="icon">fa-paperclip</field>
+            <field name="decoration_type">warning</field>
+            <field name="sequence">100</field>
+            <field name="delay_count">0</field>
+            <field name="delay_from">current_date</field>
+            <field name="summary">Thiếu Tệp Đính Kèm?</field>
+            <field name="default_note">Có vẻ bạn đã quên đính kèm tệp vào tin nhắn này. Nội dung có nhắc đến tệp đính kèm nhưng không có tệp nào được tải lên.</field>
+        </record>
+
+        <!-- Default English Configuration -->
+        <record id="attachment_reminder_config_en" model="attachment.reminder.config">
+            <field name="name">English Attachment Reminder</field>
+            <field name="sequence">10</field>
+            <field name="active">True</field>
+            <field name="language_id" ref="base.lang_en"/>
+            <field name="activity_type_id" ref="attachment_reminder_activity_template"/>
+            <field name="create_default_activity">False</field>
+        </record>
+        
+        <!-- English Keywords -->
+        <record id="attachment_reminder_keyword_en_1" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">attach</field>
+            <field name="sequence">10</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_2" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">attachment</field>
+            <field name="sequence">20</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_3" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">file</field>
+            <field name="sequence">30</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_4" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">document</field>
+            <field name="sequence">40</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_5" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">invoice</field>
+            <field name="sequence">50</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_6" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">quote</field>
+            <field name="sequence">60</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_7" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">attached</field>
+            <field name="sequence">70</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_8" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">enclosed</field>
+            <field name="sequence">80</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_9" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">see attached</field>
+            <field name="sequence">90</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_10" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">see enclosed</field>
+            <field name="sequence">100</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <!-- Vietnamese-style Configuration (using English language as base) -->
+        <record id="attachment_reminder_config_vi" model="attachment.reminder.config">
+            <field name="name">Vietnamese Keywords (English Language Base)</field>
+            <field name="sequence">20</field>
+            <field name="active">True</field>
+            <field name="language_id" ref="base.lang_vi_VN"/>
+            <field name="activity_type_id" ref="attachment_reminder_activity_template_vi"/>
+            <field name="create_default_activity">False</field>
+        </record>
+        
+        <!-- Vietnamese Keywords -->
+        <record id="attachment_reminder_keyword_vi_1" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">đính kèm</field>
+            <field name="sequence">10</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_2" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tệp</field>
+            <field name="sequence">20</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_3" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tài liệu</field>
+            <field name="sequence">30</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_4" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">báo giá</field>
+            <field name="sequence">40</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_5" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">hóa đơn</field>
+            <field name="sequence">50</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_6" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">gửi kèm</field>
+            <field name="sequence">60</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_7" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tệp đính kèm</field>
+            <field name="sequence">70</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_8" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">file đính kèm</field>
+            <field name="sequence">80</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_9" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tài liệu đính kèm</field>
+            <field name="sequence">90</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_10" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">báo giá gửi kèm</field>
+            <field name="sequence">100</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_11" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">hóa đơn gửi kèm</field>
+            <field name="sequence">110</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <!-- Vietnamese Keywords -->
+        <record id="attachment_reminder_keyword_vi_1" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">đính kèm</field>
+            <field name="sequence">10</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_2" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">file</field>
+            <field name="sequence">20</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_3" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tệp</field>
+            <field name="sequence">30</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_4" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tài liệu</field>
+            <field name="sequence">40</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_5" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">báo giá</field>
+            <field name="sequence">50</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_6" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">hóa đơn</field>
+            <field name="sequence">60</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_7" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">gửi kèm</field>
+            <field name="sequence">70</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_8" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tệp đính kèm</field>
+            <field name="sequence">80</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_9" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">file đính kèm</field>
+            <field name="sequence">90</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_10" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">tài liệu đính kèm</field>
+            <field name="sequence">100</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_11" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">báo giá gửi kèm</field>
+            <field name="sequence">110</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_vi_12" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_vi"/>
+            <field name="name">hóa đơn gửi kèm</field>
+            <field name="sequence">120</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+
+        <!-- Default English Configuration -->
+        <record id="attachment_reminder_config_en" model="attachment.reminder.config">
+            <field name="name">English Attachment Reminder</field>
+            <field name="sequence">20</field>
+            <field name="active">True</field>
+            <field name="language_id" ref="base.lang_en"/>
+            <field name="create_default_activity">True</field>
+        </record>
+        
+        <!-- English Keywords -->
+        <record id="attachment_reminder_keyword_en_1" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">attach</field>
+            <field name="sequence">10</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_2" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">attachment</field>
+            <field name="sequence">20</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_3" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">file</field>
+            <field name="sequence">30</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_4" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">document</field>
+            <field name="sequence">40</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_5" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">invoice</field>
+            <field name="sequence">50</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_6" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">quote</field>
+            <field name="sequence">60</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_7" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">attached</field>
+            <field name="sequence">70</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_8" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">enclosed</field>
+            <field name="sequence">80</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_9" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">see attached</field>
+            <field name="sequence">90</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+        
+        <record id="attachment_reminder_keyword_en_10" model="attachment.reminder.keyword">
+            <field name="config_id" ref="attachment_reminder_config_en"/>
+            <field name="name">see enclosed</field>
+            <field name="sequence">100</field>
+            <field name="case_sensitive">False</field>
+            <field name="is_regex">False</field>
+        </record>
+    </data>
+</odoo>

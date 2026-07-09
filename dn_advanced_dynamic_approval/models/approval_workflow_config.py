@@ -195,8 +195,8 @@ action['res_id'] = request_id.id
             <header>
                 <button name="action_custom_approve" string="Send for Approval" type="object" class="btn-primary" invisible="custom_request_status != 'new'"/>
                 <button name="action_custom_approve" string="Approve" type="object" class="btn-primary" invisible="not can_click_approval or custom_request_status != 'pending'"/>
-                <button name="advanced_dynamic_approval.action_approval_reason_wizard" string="Reject" type="action" class="btn-danger" context="{'default_approval_request_id': id, 'default_action': 'reject'}" invisible="not can_click_approval or custom_request_status != 'pending'"/>
-                <button name="advanced_dynamic_approval.action_approval_reason_wizard" string="Cancel" type="action" class="btn-secondary" context="{'default_approval_request_id': id, 'default_action': 'cancel'}" invisible="custom_request_status in ['cancel', 'approved']"/>
+                <button name="dn_advanced_dynamic_approval.action_approval_reason_wizard" string="Reject" type="action" class="btn-danger" context="{'default_approval_request_id': id, 'default_action': 'reject'}" invisible="not can_click_approval or custom_request_status != 'pending'"/>
+                <button name="dn_advanced_dynamic_approval.action_approval_reason_wizard" string="Cancel" type="action" class="btn-secondary" context="{'default_approval_request_id': id, 'default_action': 'cancel'}" invisible="custom_request_status in ['cancel', 'approved']"/>
                 <field name="custom_request_status" widget="statusbar" statusbar_visible="new,pending,approved"/>
             </header>
             <sheet>
@@ -286,7 +286,7 @@ action['res_id'] = request_id.id
 
     def action_open_stages(self):
         self.ensure_one()
-        action = self.env.ref('advanced_dynamic_approval.approval_workflow_stage_action').sudo().read()[0]
+        action = self.env.ref('dn_advanced_dynamic_approval.approval_workflow_stage_action').sudo().read()[0]
         action['domain'] = [('workflow_id', '=', self.id)]
         action['context'] = {'default_workflow_id': self.id}
         return action
