@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Request Log Form View -->
+        <record id="view_connector_request_log_form" model="ir.ui.view">
+            <field name="name">connector.request.log.form</field>
+            <field name="model">connector.request.log</field>
+            <field name="arch" type="xml">
+                <form string="Connector Request Log">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="execution_id"/>
+                                <field name="provider_id"/>
+                                <field name="api_id"/>
+                            </group>
+                            <group>
+                                <field name="method"/>
+                                <field name="request_time"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="url"/>
+                        </group>
+                        <notebook>
+                            <page string="Headers">
+                                <field name="headers" widget="text"/>
+                            </page>
+                            <page string="Request Body">
+                                <field name="body" widget="text"/>
+                            </page>
+                            <page string="Query Parameters">
+                                <field name="query_params" widget="text"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Request Log Tree View -->
+        <record id="view_connector_request_log_tree" model="ir.ui.view">
+            <field name="name">connector.request.log.tree</field>
+            <field name="model">connector.request.log</field>
+            <field name="arch" type="xml">
+                <tree string="Connector Request Logs">
+                    <field name="request_time"/>
+                    <field name="provider_id"/>
+                    <field name="api_id"/>
+                    <field name="method"/>
+                    <field name="url"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Request Log Action -->
+        <record id="action_connector_request_log" model="ir.actions.act_window">
+            <field name="name">Connector Request Logs</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">connector.request.log</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- Response Log Form View -->
+        <record id="view_connector_response_log_form" model="ir.ui.view">
+            <field name="name">connector.response.log.form</field>
+            <field name="model">connector.response.log</field>
+            <field name="arch" type="xml">
+                <form string="Connector Response Log">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="execution_id"/>
+                                <field name="request_log_id"/>
+                                <field name="provider_id"/>
+                            </group>
+                            <group>
+                                <field name="status_code"/>
+                                <field name="success"/>
+                                <field name="duration"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Response Body">
+                                <field name="body" widget="text"/>
+                            </page>
+                            <page string="Headers">
+                                <field name="headers" widget="text"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Response Log Tree View -->
+        <record id="view_connector_response_log_tree" model="ir.ui.view">
+            <field name="name">connector.response.log.tree</field>
+            <field name="model">connector.response.log</field>
+            <field name="arch" type="xml">
+                <tree string="Connector Response Logs">
+                    <field name="response_time"/>
+                    <field name="provider_id"/>
+                    <field name="api_id"/>
+                    <field name="status_code"/>
+                    <field name="success"/>
+                    <field name="duration"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Response Log Action -->
+        <record id="action_connector_response_log" model="ir.actions.act_window">
+            <field name="name">Connector Response Logs</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">connector.response.log</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- Error Log Form View -->
+        <record id="view_connector_error_log_form" model="ir.ui.view">
+            <field name="name">connector.error.log.form</field>
+            <field name="model">connector.error.log</field>
+            <field name="arch" type="xml">
+                <form string="Connector Error Log">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="execution_id"/>
+                                <field name="provider_id"/>
+                                <field name="api_id"/>
+                            </group>
+                            <group>
+                                <field name="error_type"/>
+                                <field name="severity"/>
+                                <field name="error_time"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="step_name"/>
+                        </group>
+                        <notebook>
+                            <page string="Error Message">
+                                <field name="error_message" widget="text"/>
+                            </page>
+                            <page string="Error Traceback">
+                                <field name="error_traceback" widget="text"/>
+                            </page>
+                            <page string="Stack Trace">
+                                <field name="stack_trace" widget="text"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Error Log Tree View -->
+        <record id="view_connector_error_log_tree" model="ir.ui.view">
+            <field name="name">connector.error.log.tree</field>
+            <field name="model">connector.error.log</field>
+            <field name="arch" type="xml">
+                <tree string="Connector Error Logs">
+                    <field name="error_time"/>
+                    <field name="provider_id"/>
+                    <field name="api_id"/>
+                    <field name="error_type"/>
+                    <field name="severity"/>
+                    <field name="step_name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Error Log Action -->
+        <record id="action_connector_error_log" model="ir.actions.act_window">
+            <field name="name">Connector Error Logs</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">connector.error.log</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- Logs Menu Item -->
+        <menuitem id="menu_connector_logs" 
+                  name="Logs" 
+                  parent="payment_connector_base.menu_connector_root" 
+                  sequence="11"/>
+        
+        <menuitem id="menu_connector_request_log" 
+                  name="Request Logs" 
+                  parent="payment_connector_base.menu_connector_logs" 
+                  action="action_connector_request_log"
+                  sequence="1"/>
+        
+        <menuitem id="menu_connector_response_log" 
+                  name="Response Logs" 
+                  parent="payment_connector_base.menu_connector_logs" 
+                  action="action_connector_response_log"
+                  sequence="2"/>
+        
+        <menuitem id="menu_connector_error_log" 
+                  name="Error Logs" 
+                  parent="payment_connector_base.menu_connector_logs" 
+                  action="action_connector_error_log"
+                  sequence="3"/>
+        
+    </data>
+</odoo>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Auth Method Form View -->
+        <record id="view_connector_auth_method_form" model="ir.ui.view">
+            <field name="name">connector.auth.method.form</field>
+            <field name="model">connector.auth.method</field>
+            <field name="arch" type="xml">
+                <form string="Connector Authentication Method">
+                    <sheet>
+                        <div class="oe_title">
+                            <field name="name" placeholder="Auth Method Name"/>
+                            <field name="code" placeholder="auth_code"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="type" required="1"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                        <group attrs="{'invisible': [('type', '!=', 'custom')]}">
+                            <field name="python_class" placeholder="module.ClassName"/>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Auth Method Tree View -->
+        <record id="view_connector_auth_method_tree" model="ir.ui.view">
+            <field name="name">connector.auth.method.tree</field>
+            <field name="model">connector.auth.method</field>
+            <field name="arch" type="xml">
+                <tree string="Connector Authentication Methods">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="type"/>
+                    <field name="active" widget="toggle"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Auth Method Action -->
+        <record id="action_connector_auth_method" model="ir.actions.act_window">
+            <field name="name">Connector Authentication Methods</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">connector.auth.method</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- Auth Menu Item -->
+        <menuitem id="menu_connector_auth" 
+                  name="Authentication" 
+                  parent="payment_connector_base.menu_connector_root" 
+                  action="action_connector_auth_method"
+                  sequence="8"/>
+        
+    </data>
+</odoo>

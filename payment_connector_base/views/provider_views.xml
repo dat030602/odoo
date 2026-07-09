@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Provider Form View -->
+        <record id="view_connector_provider_form" model="ir.ui.view">
+            <field name="name">connector.provider.form</field>
+            <field name="model">connector.provider</field>
+            <field name="arch" type="xml">
+                <form string="Connector Provider">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_environments" type="object" class="oe_stat_button" icon="fa-server">
+                                <field name="environment_count" widget="statinfo" string="Environments"/>
+                            </button>
+                            <button name="action_view_apis" type="object" class="oe_stat_button" icon="fa-plug">
+                                <field name="api_count" widget="statinfo" string="APIs"/>
+                            </button>
+                        </div>
+                        <field name="icon" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <field name="name" placeholder="Provider Name"/>
+                            <field name="code" placeholder="provider_code"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="version"/>
+                                <field name="author"/>
+                                <field name="module_name"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                                <field name="company_dependent"/>
+                                <field name="sequence"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Environments">
+                                <field name="environment_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="active"/>
+                                        <field name="priority"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="APIs">
+                                <field name="api_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="version"/>
+                                        <field name="active"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Settings">
+                                <field name="setting_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="value_type"/>
+                                        <field name="encrypt"/>
+                                        <field name="active"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Plugins">
+                                <field name="plugin_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="active"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Provider Tree View -->
+        <record id="view_connector_provider_tree" model="ir.ui.view">
+            <field name="name">connector.provider.tree</field>
+            <field name="model">connector.provider</field>
+            <field name="arch" type="xml">
+                <tree string="Connector Providers">
+                    <field name="sequence" widget="handle"/>
+                    <field name="icon" widget="image"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="version"/>
+                    <field name="author"/>
+                    <field name="active" widget="toggle"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Provider Search View -->
+        <record id="view_connector_provider_search" model="ir.ui.view">
+            <field name="name">connector.provider.search</field>
+            <field name="model">connector.provider</field>
+            <field name="arch" type="xml">
+                <search string="Search Providers">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="author"/>
+                    <field name="module_name"/>
+                    <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                    <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <group>
+                        <filter name="author" string="Author" context="{'group_by': 'author'}"/>
+                        <filter name="version" string="Version" context="{'group_by': 'version'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Provider Action -->
+        <record id="action_connector_provider" model="ir.actions.act_window">
+            <field name="name">Connector Providers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">connector.provider</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_active': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first connector provider!
+                </p>
+                <p>
+                    Providers represent external systems you want to integrate with
+                    (e.g., MoMo, VNPay, Stripe, GHN, etc.).
+                </p>
+            </field>
+        </record>
+        
+        <!-- Provider Menu Item -->
+        <menuitem id="menu_connector_provider" 
+                  name="Providers" 
+                  parent="payment_connector_base.menu_connector_root" 
+                  action="action_connector_provider"
+                  sequence="1"/>
+        
+    </data>
+</odoo>

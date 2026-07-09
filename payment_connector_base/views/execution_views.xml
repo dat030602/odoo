@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Execution Form View -->
+        <record id="view_connector_execution_form" model="ir.ui.view">
+            <field name="name">connector.execution.form</field>
+            <field name="model">connector.execution</field>
+            <field name="arch" type="xml">
+                <form string="Connector Execution">
+                    <header>
+                        <button name="retry" string="Retry" type="object" states="failed" class="btn-primary"/>
+                        <button name="cancel" string="Cancel" type="object" states="pending,running" class="btn-secondary"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_steps" type="object" class="oe_stat_button" icon="fa-tasks">
+                                <field name="step_count" widget="statinfo" string="Steps"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="provider_id"/>
+                                <field name="api_id"/>
+                                <field name="endpoint_id"/>
+                            </group>
+                            <group>
+                                <field name="mode"/>
+                                <field name="retry_count"/>
+                                <field name="duration"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                            </group>
+                            <group>
+                                <field name="response_status_code"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Source Record">
+                                <group>
+                                    <field name="res_model"/>
+                                    <field name="res_id"/>
+                                </group>
+                            </page>
+                            <page string="Error">
+                                <group>
+                                    <field name="error_message"/>
+                                    <field name="error_traceback"/>
+                                </group>
+                            </page>
+                            <page string="Response">
+                                <field name="response_body" widget="text"/>
+                            </page>
+                            <page string="Execution Steps">
+                                <field name="step_ids">
+                                    <tree>
+                                        <field name="sequence"/>
+                                        <field name="step_name"/>
+                                        <field name="status"/>
+                                        <field name="duration"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Execution Tree View -->
+        <record id="view_connector_execution_tree" model="ir.ui.view">
+            <field name="name">connector.execution.tree</field>
+            <field name="model">connector.execution</field>
+            <field name="arch" type="xml">
+                <tree string="Connector Executions">
+                    <field name="create_date"/>
+                    <field name="provider_id"/>
+                    <field name="api_id"/>
+                    <field name="state"/>
+                    <field name="duration"/>
+                    <field name="retry_count"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Execution Search View -->
+        <record id="view_connector_execution_search" model="ir.ui.view">
+            <field name="name">connector.execution.search</field>
+            <field name="model">connector.execution</field>
+            <field name="arch" type="xml">
+                <search string="Search Executions">
+                    <field name="provider_id"/>
+                    <field name="api_id"/>
+                    <field name="res_model"/>
+                    <field name="res_id"/>
+                    <filter name="success" string="Success" domain="[('state', '=', 'success')]"/>
+                    <filter name="failed" string="Failed" domain="[('state', '=', 'failed')]"/>
+                    <filter name="running" string="Running" domain="[('state', '=', 'running')]"/>
+                    <separator/>
+                    <group>
+                        <filter name="provider" string="Provider" context="{'group_by': 'provider_id'}"/>
+                        <filter name="api" string="API" context="{'group_by': 'api_id'}"/>
+                        <filter name="state" string="State" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Execution Action -->
+        <record id="action_connector_execution" model="ir.actions.act_window">
+            <field name="name">Connector Executions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">connector.execution</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- Execution Menu Item -->
+        <menuitem id="menu_connector_execution" 
+                  name="Executions" 
+                  parent="payment_connector_base.menu_connector_root" 
+                  action="action_connector_execution"
+                  sequence="10"/>
+        
+    </data>
+</odoo>

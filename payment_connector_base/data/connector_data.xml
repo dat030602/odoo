@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Default Compute Functions - String -->
+        <record id="compute_function_upper" model="connector.compute.function">
+            <field name="name">Upper Case</field>
+            <field name="code">upper</field>
+            <field name="category">string</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_lower" model="connector.compute.function">
+            <field name="name">Lower Case</field>
+            <field name="code">lower</field>
+            <field name="category">string</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_trim" model="connector.compute.function">
+            <field name="name">Trim</field>
+            <field name="code">trim</field>
+            <field name="category">string</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_length" model="connector.compute.function">
+            <field name="name">Length</field>
+            <field name="code">length</field>
+            <field name="category">string</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Compute Functions - Number -->
+        <record id="compute_function_round" model="connector.compute.function">
+            <field name="name">Round</field>
+            <field name="code">round</field>
+            <field name="category">number</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_multiply" model="connector.compute.function">
+            <field name="name">Multiply</field>
+            <field name="code">multiply</field>
+            <field name="category">number</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_divide" model="connector.compute.function">
+            <field name="name">Divide</field>
+            <field name="code">divide</field>
+            <field name="category">number</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_abs" model="connector.compute.function">
+            <field name="name">Absolute</field>
+            <field name="code">abs</field>
+            <field name="category">number</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Compute Functions - Date -->
+        <record id="compute_function_today" model="connector.compute.function">
+            <field name="name">Today</field>
+            <field name="code">today</field>
+            <field name="category">date</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_now" model="connector.compute.function">
+            <field name="name">Now</field>
+            <field name="code">now</field>
+            <field name="category">date</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_format_date" model="connector.compute.function">
+            <field name="name">Format Date</field>
+            <field name="code">format_date</field>
+            <field name="category">date</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Compute Functions - JSON -->
+        <record id="compute_function_json_encode" model="connector.compute.function">
+            <field name="name">JSON Encode</field>
+            <field name="code">json_encode</field>
+            <field name="category">json</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_json_decode" model="connector.compute.function">
+            <field name="name">JSON Decode</field>
+            <field name="code">json_decode</field>
+            <field name="category">json</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Compute Functions - Encoding -->
+        <record id="compute_function_base64" model="connector.compute.function">
+            <field name="name">Base64 Encode</field>
+            <field name="code">base64</field>
+            <field name="category">encoding</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_base64_decode" model="connector.compute.function">
+            <field name="name">Base64 Decode</field>
+            <field name="code">base64_decode</field>
+            <field name="category">encoding</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_md5" model="connector.compute.function">
+            <field name="name">MD5 Hash</field>
+            <field name="code">md5</field>
+            <field name="category">encoding</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_sha256" model="connector.compute.function">
+            <field name="name">SHA256 Hash</field>
+            <field name="code">sha256</field>
+            <field name="category">encoding</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Compute Functions - Utility -->
+        <record id="compute_function_uuid" model="connector.compute.function">
+            <field name="name">UUID</field>
+            <field name="code">uuid</field>
+            <field name="category">utility</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_bool" model="connector.compute.function">
+            <field name="name">Boolean</field>
+            <field name="code">bool</field>
+            <field name="category">utility</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Compute Functions - Payment -->
+        <record id="compute_function_bank_amount" model="connector.compute.function">
+            <field name="name">Bank Amount</field>
+            <field name="code">bank_amount</field>
+            <field name="category">payment</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="compute_function_remove_dot" model="connector.compute.function">
+            <field name="name">Remove Dot</field>
+            <field name="code">remove_dot</field>
+            <field name="category">payment</field>
+            <field name="type">builtin</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Auth Methods -->
+        <record id="auth_method_api_key" model="connector.auth.method">
+            <field name="name">API Key</field>
+            <field name="code">api_key</field>
+            <field name="type">api_key</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="auth_method_basic" model="connector.auth.method">
+            <field name="name">Basic Auth</field>
+            <field name="code">basic</field>
+            <field name="type">basic</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="auth_method_bearer" model="connector.auth.method">
+            <field name="name">Bearer Token</field>
+            <field name="code">bearer</field>
+            <field name="type">bearer</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="auth_method_jwt" model="connector.auth.method">
+            <field name="name">JWT</field>
+            <field name="code">jwt</field>
+            <field name="type">jwt</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="auth_method_oauth2" model="connector.auth.method">
+            <field name="name">OAuth2</field>
+            <field name="code">oauth2</field>
+            <field name="type">oauth2</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="auth_method_hmac" model="connector.auth.method">
+            <field name="name">HMAC</field>
+            <field name="code">hmac</field>
+            <field name="type">hmac</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Default Hash Methods -->
+        <record id="hash_method_md5" model="connector.hash.method">
+            <field name="name">MD5</field>
+            <field name="code">md5</field>
+            <field name="algorithm">md5</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="hash_method_sha1" model="connector.hash.method">
+            <field name="name">SHA1</field>
+            <field name="code">sha1</field>
+            <field name="algorithm">sha1</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="hash_method_sha256" model="connector.hash.method">
+            <field name="name">SHA256</field>
+            <field name="code">sha256</field>
+            <field name="algorithm">sha256</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="hash_method_sha512" model="connector.hash.method">
+            <field name="name">SHA512</field>
+            <field name="code">sha512</field>
+            <field name="algorithm">sha512</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="hash_method_hmac_sha256" model="connector.hash.method">
+            <field name="name">HMAC SHA256</field>
+            <field name="code">hmac_sha256</field>
+            <field name="algorithm">hmac_sha256</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <record id="hash_method_hmac_sha512" model="connector.hash.method">
+            <field name="name">HMAC SHA512</field>
+            <field name="code">hmac_sha512</field>
+            <field name="algorithm">hmac_sha512</field>
+            <field name="active" eval="True"/>
+        </record>
+        
+    </data>
+</odoo>
