@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hide trashed attachments from ordinary users -->
+    <record id="rule_hide_trashed_attachments" model="ir.rule">
+        <field name="name">Hide trashed attachments</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="domain_force">[('in_trash','=',False)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user')), (4, ref('base.group_portal')), (4, ref('base.group_public'))]"/>
+    </record>
+
+    <!-- Allow system group to see all attachments (override) -->
+    <record id="rule_system_sees_all_attachments" model="ir.rule">
+        <field name="name">System sees all attachments</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_attachment_move_trash_form" model="ir.ui.view">
+        <field name="name">attachment.move.trash.form</field>
+        <field name="model">attachment.move.trash</field>
+        <field name="arch" type="xml">
+            <form string="Move Attachments to Trash">
+                <group>
+                    <field name="attachment_ids" widget="many2many_tags"/>
+                    <field name="expire_days"/>
+                </group>
+                <footer>
+                    <button string="Move" type="object" name="action_move" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_attachment_list" model="ir.ui.view">
+        <field name="name">ir.attachment.list</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="human_size" string="Size"/>
+                <field name="create_uid" string="Owner"/>
+                <field name="create_date" string="Create Date"/>
+                <field name="in_trash"/>
+            </list>
+        </field>
+    </record>
+</odoo>
