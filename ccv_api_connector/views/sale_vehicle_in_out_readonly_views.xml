@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Kế thừa sale.vehicle.in.out (Main form) -->
+    <record id="view_sale_vehicle_in_out_form_readonly" model="ir.ui.view">
+        <field name="name">sale.vehicle.in.out.form.readonly</field>
+        <field name="model">sale.vehicle.in.out</field>
+        <field name="inherit_id" ref="ccv_api_connector.view_sale_vehicle_in_out_form"/>
+        <field name="arch" type="xml">
+            <!-- Thêm field ẩn để làm điều kiện readonly -->
+            <xpath expr="//form" position="inside">
+                <field name="is_warehouse_readonly" invisible="1"/>
+            </xpath>
+
+            <!-- Ẩn các nút thao tác trên header của form chính -->
+            <xpath expr="//button[@name='action_sale_vehicle_in_out_wizard']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('status','=','lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_send_to_conveyor']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('status','=','lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_force_unlock']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('force_unlock','=',True), ('status','!=','lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_force_lock']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('force_unlock','=',False), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+
+            <!-- Khóa các trường chính trên form thay vì dùng edit=0 -->
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=','lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=','lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=','lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kế thừa sale.vehicle.in.out.line (Line form) -->
+    <record id="view_sale_vehicle_in_out_line_form_readonly" model="ir.ui.view">
+        <field name="name">sale.vehicle.in.out.line.form.readonly</field>
+        <field name="model">sale.vehicle.in.out.line</field>
+        <field name="inherit_id" ref="ccv_api_connector.view_sale_vehicle_in_out_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field name="is_warehouse_readonly" invisible="1"/>
+            </xpath>
+
+            <!-- Ẩn các nút thao tác trên header của form chi tiết -->
+            <xpath expr="//button[@name='action_create_next_day']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|',('is_next_day','=', False), '|',('status','=', 'lock'), '|',('has_link_line','=', True), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_update_fields_to_picking']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', '&amp;', ('stocker_id','=', False), '&amp;', ('loading_id','=', False), '&amp;', ('vehicle_driver','=', False), ('vehicle_num','=', False), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+
+            <!-- Ẩn cụm nút thông minh (smart buttons) -->
+            <xpath expr="//div[@name='button_box']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+
+            <!-- Khóa các trường trên form chi tiết -->
+            <xpath expr="//field[@name='type']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_name']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vehicle_num']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vehicle_driver']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_order_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)], 'invisible':[('type','=', 'in')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='purchase_order_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)], 'invisible':[('type','=', 'out')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='picking_id']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='quantity']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_note']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('status','=', 'lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kế thừa sale.vehicle.in.out.line (Line tree) -->
+    <record id="view_sale_vehicle_in_out_line_tree_readonly" model="ir.ui.view">
+        <field name="name">sale.vehicle.in.out.line.tree.readonly</field>
+        <field name="model">sale.vehicle.in.out.line</field>
+        <field name="inherit_id" ref="ccv_api_connector.view_sale_vehicle_in_out_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="is_warehouse_readonly" invisible="1"/>
+            </xpath>
+            <!-- Ẩn nút Xóa dòng (thùng rác) -->
+            <xpath expr="//button[@name='action_delete_self']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('status','=','lock'), ('is_warehouse_readonly','=',True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

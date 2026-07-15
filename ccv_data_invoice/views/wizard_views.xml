@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Wizard Form View -->
+        <record id="view_wz_invoice_data_create_invoice_form" model="ir.ui.view">
+            <field name="name">wz.invoice.data.create.invoice.form</field>
+            <field name="model">wz.invoice.data.create.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Chọn sản phẩm để tạo hóa đơn">
+                    <group>
+                        <field name="invoice_data_id" readonly="1"/>
+                    </group>
+                    <field name="order_line">
+                        <tree editable="bottom">
+                            <field name="invoice_data_line_id" invisible="1"/>
+                            <field name="is_selected"/>
+                            <field name="sequence"/>
+                            <field name="product_id"/>
+                            <field name="purchase_line_id" invisible="1"/>
+                            <field name="uom_id"/>
+                            <field name="account_id"/>
+                            <field name="so_luong"/>
+                            <field name="don_gia"/>
+                            <field name="thanh_tien"/>
+                            <field name="tax_id"/>
+                            <field name="thue_gtgt"/>
+                            <field name="ghi_chu"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="action_confirm" string="Tạo hóa đơn" type="object" class="btn-primary"/>
+                        <button string="Hủy" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard Action -->
+        <record id="action_wz_invoice_data_create_invoice" model="ir.actions.act_window">
+            <field name="name">Chọn sản phẩm để tạo hóa đơn</field>
+            <field name="res_model">wz.invoice.data.create.invoice</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

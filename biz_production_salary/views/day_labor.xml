@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_day_labor_tree" model="ir.ui.view">
+        <field name="name">day.labor.tree</field>
+        <field name="model">day.labor</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="day_labor_coefficient"/>
+                <field name="unit_price"/>
+                <field name="employee_applicable_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_day_labor" model="ir.actions.act_window">
+        <field name="name">Day Labor</field>
+        <field name="res_model">day.labor</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+            id="menu_day_labor"
+            action="action_day_labor"
+            name="Day Labor"
+            parent="biz_production_salary.menu_common_worker_output_salary"
+            sequence="30"/>
+    
+</odoo>

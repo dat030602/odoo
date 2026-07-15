@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="purchase_receipt_sheet_wizard_form_ccv" model="ir.ui.view">
+            <field name="name">Invoice list</field>
+            <field name="model">purchase.receipt.sheet.wizard.ccv</field>
+            <field name="arch" type="xml">
+                <form string="Invoice list">
+                    <group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Generate &amp; Print" name="action_print" type="object" default_focus="1" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_purchase_receipt_sheet_wizard_ccv" model="ir.actions.act_window">
+            <field name="name">Printed copy of purchase receipt CCV</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.receipt.sheet.wizard.ccv</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

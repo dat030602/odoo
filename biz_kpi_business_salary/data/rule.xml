@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Rules for salary_plan_sales -->
+        <record id="salary_plan_sales_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng</field>
+            <field name="model_id" ref="model_salary_plan_sales"/>
+            <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="salary_plan_sales_team_rule" model="ir.rule">
+            <field name="name">Dòng theo đội bán hàng</field>
+            <field name="model_id" ref="model_salary_plan_sales"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('team_id.sales_assistant_ids', 'in', [user.id]),
+                    ('team_id.user_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <!-- Rules for model_salary_customer_open_list -->
+        <record id="salary_customer_open_list_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng</field>
+            <field name="model_id" ref="model_salary_customer_open_list"/>
+            <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="salary_customer_open_list_team_rule" model="ir.rule">
+            <field name="name">Dòng theo đội bán hàng</field>
+            <field name="model_id" ref="model_salary_customer_open_list"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('team_id.sales_assistant_ids', 'in', [user.id]),
+                    ('team_id.user_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <!-- Rules for model_salary_humic_sales_detail -->
+        <record id="salary_humic_sales_detail_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng</field>
+            <field name="model_id" ref="model_salary_humic_sales_detail"/>
+            <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="salary_humic_sales_detail_team_rule" model="ir.rule">
+            <field name="name">Dòng theo đội bán hàng</field>
+            <field name="model_id" ref="model_salary_humic_sales_detail"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('team_id.sales_assistant_ids', 'in', [user.id]),
+                    ('team_id.user_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <!-- Rules for model_salary_sales_summary_line -->
+        <record id="salary_sales_summary_line_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng</field>
+            <field name="model_id" ref="model_salary_sales_summary_line"/>
+            <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="salary_sales_summary_line_team_rule" model="ir.rule">
+            <field name="name">Dòng theo đội bán hàng</field>
+            <field name="model_id" ref="model_salary_sales_summary_line"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('team_id.sales_assistant_ids', 'in', [user.id]),
+                    ('team_id.user_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <!-- Rules for model_salary_sales_summary_detail_line -->
+        <record id="salary_sales_summary_detail_line_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng</field>
+            <field name="model_id" ref="model_salary_sales_summary_detail_line"/>
+            <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="salary_sales_summary_detail_line_team_rule" model="ir.rule">
+            <field name="name">Dòng theo đội bán hàng</field>
+            <field name="model_id" ref="model_salary_sales_summary_detail_line"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('team_id.sales_assistant_ids', 'in', [user.id]),
+                    ('team_id.user_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <!-- Rules for model_salary_sales_summary_total_line -->
+        <record id="salary_sales_summary_total_line_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng</field>
+            <field name="model_id" ref="model_salary_sales_summary_total_line"/>
+            <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="salary_sales_summary_total_line_team_rule" model="ir.rule">
+            <field name="name">Dòng theo đội bán hàng</field>
+            <field name="model_id" ref="model_salary_sales_summary_total_line"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('team_id.sales_assistant_ids', 'in', [user.id]),
+                    ('team_id.user_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <!-- Rules for salary.commission.result -->
+        <record id="salary_commission_result_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng kết quả tính toán hoa hồng</field>
+            <field name="model_id" ref="model_salary_commission_result"/>
+            <field name="groups" eval="[(4, ref('hr_payroll.group_hr_payroll_user')), (4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="salary_commission_result_team_rule" model="ir.rule">
+            <field name="name">Dòng kết quả hoa hồng theo đội bán hàng</field>
+            <field name="model_id" ref="model_salary_commission_result"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('team_id.sales_assistant_ids', 'in', [user.id]),
+                    ('team_id.user_id', '=', user.id)
+                ]
+            </field>
+        </record>
+    </data>
+</odoo>

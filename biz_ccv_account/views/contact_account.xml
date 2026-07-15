@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="contact_account_ccv_view_form" model="ir.ui.view">
+        <field name="name">res.partner.account.form</field>
+        <field name="model">res.partner.account</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="type_contact_name"/>
+                    <field name="code_type_contact"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="contact_account_ccv_view_tree" model="ir.ui.view">
+        <field name="name">res.partner.account.tree</field>
+        <field name="model">res.partner.account</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="type_contact_name"/>
+                <field name="code_type_contact"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_partner_title_contact_action" model="ir.actions.act_window">
+        <field name="name">Contact Account</field>
+        <field name="res_model">res.partner.account</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_partner_type_contact"
+              action="biz_ccv_account.action_partner_title_contact_action"
+              name="Contact Account" parent="contacts.res_partner_menu_config"
+              sequence="3"/>
+</odoo>

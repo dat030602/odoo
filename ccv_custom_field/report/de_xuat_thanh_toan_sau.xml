@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="de_xuat_thanh_toan_sau_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_custom_field.de_xuat_thanh_toan_sau_document"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="de_xuat_thanh_toan_sau_document">
+            <t t-call="ccv_bao_cao.ccv_header_img">
+                <style>
+                    .page * {
+                        font-size: 15px;
+                        line-height: 18px;
+                    }
+                </style>
+                <div class="page" style="font-size: 14px;font-family: Times New Roman; padding-top: 20px;">
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12" style="text-align: center; font-size: 20px">
+                            <p><strong style="font-size: 15px">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong></p>
+                            <p><strong style="font-size: 51px">Độc lập - Tự do - Hạnh phúc</strong></p>
+                            <br/>
+                            <p><strong style="font-size: 20px">BẢN CAM KẾT</strong></p>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3" style="text-align: right;padding-right: 8px;padding-top: 3px;">
+                            Kính gửi:
+                        </div>
+                        <div class="col-9">
+                            <strong>Ban Lãnh Đạo</strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Khu vực kinh doanh: <strong><t t-esc="doc.team_id.report_name"/></strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Phụ trách khu vực: <strong><t t-esc="doc.team_id.user_id.name_without_position"/></strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <t t-set="sum_quantity" t-value="sum(doc.product_line_ids.mapped('quantity'))"/>
+                        <t t-set="sum_qty_produced" t-value="sum(doc.product_line_ids.mapped('qty_produced'))"/>
+                        <div class="col-12">
+                            <t t-esc="doc.sudo().team_id.report_name"/> xin cam kết các nội dung sau đây:
+                        </div>
+                    </div>
+                    <t t-foreach="doc.product_line_ids" t-as="line">
+                        <div class="row" style="margin-top: 12px">
+                            <strong t-esc="line.partner_id.name"/> hôm nay nhận đơn hàng <strong t-esc="line.order_id.name"/> số lượng <t t-esc="format_float_number_weight(line.quantity)"/> tấn, 
+                            số tiền <t t-esc="format_float_number(line.amount)"/>VNĐ.
+                            <t t-if="line.credit"/>
+                                Công nợ <t t-esc="format_float_number(line.credit)"/>VNĐ.
+                            </t>
+                            <t t-if="line.credit_limit"/>
+                                Hạn mức công nợ <t t-esc="format_float_number(line.credit_limit)"/>VNĐ.
+                            </t>
+                            <t t-if="line.credit_over"/>
+                                Tổng tiền vượt hạn mức <t t-esc="format_float_number(line.credit_over)"/>VNĐ.
+                            </t>
+                            <t t-esc="line.note"/>.
+                        </div>
+                    </t>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            <span>Trưởng Khu vực <strong t-esc="doc.team_id.user_id.name_without_position"/> chịu trách nhiệm liên hệ đôn đốc
+                                <strong t-esc="', '.join(doc.line_ids.mapped('partner_id').mapped('name'))"/> 
+                                thanh toán và khu vực xin chịu trách nhiệm thu đủ số tiền đơn hàng.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            <span>1. Ban Lãnh Đạo hỗ trợ duyệt cho xe được ra khỏi nhà máy và thanh toán sau theo cam kết trên.</span>
+                            <br/>
+                            <span>Khu vực xin cam kết sẽ làm đúng theo những điều đã cam kết như trên, nếu có vấn đề xảy ra</span>
+                            <br/>
+                            <span>Khu vực xin tự chịu trách nhiệm trước Ban Lãnh Đạo.</span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;text-align: right;">
+                        <div class="col-12">
+                            <span>Đồng Nai, ngày <t t-esc="doc.date.strftime('%d')"/> tháng <t t-esc="doc.date.strftime('%m')"/> năm <t t-esc="doc.date.strftime('%Y')"/></span>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="text-align: center; margin-top: 12px">
+                        <t t-set="team_lead" t-value="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id in doc.team_id.sudo().user_id.ids and l.status == 'approved')"/>
+                        <t t-set="sale_admin" t-value="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id in [56] and l.status == 'approved')"/>
+                        <t t-set="unit_head" t-value="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id in [43,60,62,61] and l.status == 'approved')"/>
+                        <div class="col-4">
+                            <span>
+                                <strong>Chịu trách nhiệm</strong>
+                            </span>
+                            <br/>
+                            <t t-if="team_lead and team_lead.sudo().user_id.sign_signature is not False">
+                                <br/>
+                                <img t-att-src="image_data_uri(team_lead.sudo().user_id.sign_signature)" width='120px' height="50px"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <span><strong t-esc="team_lead.sudo().user_id.name_without_position"/></span>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                <strong>Ban Lãnh Đạo</strong>
+                            </span>
+                            <br/>
+                            <t t-if="unit_head and unit_head.sudo().user_id.sign_signature is not False">
+                                <br/>
+                                <img t-att-src="image_data_uri(unit_head.sudo().user_id.sign_signature)" width='120px' height="50px"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <span><strong t-esc="unit_head.sudo().user_id.name_without_position"/></span>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

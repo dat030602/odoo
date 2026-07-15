@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="search_template_account">
+        <button t-if="options.get('account')" type="button" class="o-no-caret btn btn-secondary dropdown-toggle account_account_filter" data-bs-toggle="dropdown">
+            <span class="fa fa-folder-open"/> Accounts
+        </button>
+        <ul class="dropdown-menu o_filter_menu" role="menu">
+            <li class="o_account_report_search js_account_account_m2m"/>
+        </ul>
+    </template>
+
+    <template id="search_template_detail_book" inherit_id="account_reports.search_template">
+        <xpath expr="." position="inside">
+            <div class="btn-group dropdown o_account_reports_filter_account" t-if="options.get('account')">
+                <t t-call="biz_account_report_filter_account.search_template_account"/>
+            </div>
+        </xpath>
+    </template>
+
+    <record id="view_account_report_form_filter_account" model="ir.ui.view">
+        <field name="name">account.report.form.inherit.filter.account</field>
+        <field name="model">account.report</field>
+        <field name="inherit_id" ref="account_reports.account_report_form"/>
+        <field name="arch" type="xml">
+            <field name="filter_account_type" position="after">
+                <field name="filter_account"/>
+            </field>
+        </field>
+    </record>
+</odoo>

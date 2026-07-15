@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="biz_mail.CustomMessagingMenu" t-inherit="mail.MessagingMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//a[hasclass('o_MessagingMenu_toggler')]" position="attributes">
+            <attribute name="t-if">!hiddenChat</attribute>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="ccv_header_img1">
+        <style>
+        </style>
+        <div class="header" style="font-family: 'Times New Roman';font-size:15px">
+            <div class="row" t-att-style="report_header_style">
+                <div class="col-2">
+                    <br/>
+                    <img t-if="o.env.company.logo" t-att-src="image_data_uri(o.env.company.logo)" style="max-height: 70px;max-width: 90%" alt="Logo"/>
+                </div>
+                <div class="col-5" style="position: relative">
+                    <br/>
+                    <p style="position: absolute; left: 0; top: 46%">Công ty Cổ phần Tập đoàn Con Cò Vàng -<br/>Mã số thuế: 0305995751</p>
+                </div>
+                <div class="col-5 text-center">
+                    <strong>Mẫu số: 02 - VT</strong><br/><br/>
+                    <i>(Ban hành theo Thông tư số 200/2014/TT-BTC<br/>Ngày 22/12/2014 của Bộ Tài chính)</i>
+                </div>
+            </div>
+        </div>
+        <div class="article o_report_layout_standard">
+            <t t-out="0"/>
+        </div>
+        <div class="footer o_standard_footer">
+        </div>
+    </template>
+    <!-- PDF -->
+     <record id="rp_plant_yield_charge_daily_work_report" model="ir.actions.report">
+        <field name="name">Báo cáo Sản lượng Chất cây - Xạc cây - Công nhật</field>
+        <field name="model">approval.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_custom_field.rp_plant_yield_charge_daily_work</field>
+        <field name="report_file">ccv_custom_field.rp_plant_yield_charge_daily_work</field>
+        <field name="print_report_name">'Báo cáo Sản lượng Chất cây - Xạc cây - Công nhật - %s' % (object.create_uid.name)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="model_approval_request"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_bao_cao.format_a4_ccv_bao_cao1"/>
+    </record>
+    <record id="phieu_xuat_kho_vat_tu_report" model="ir.actions.report">
+        <field name="name">Phiếu xuất kho vật tư (PDF)</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_custom_field.phieu_xuat_kho_vat_tu_template</field>
+        <field name="report_file">ccv_custom_field.phieu_xuat_kho_vat_tu_template</field>
+        <field name="print_report_name">'Phiếu xuất kho vật tư - %s' % (object.voter_id.name)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="model_stock_picking"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+    </record>
+    <record id="action_report_rent_proposal" model="ir.actions.report">
+        <field name="name">Đề Xuất Thuê Xe</field>
+        <field name="model">approval.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_custom_field.rent_proposal_template</field>
+        <field name="report_file">ccv_custom_field.rent_proposal_template</field>
+        <field name="print_report_name">'Đề xuất thuê xe - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_approval_request"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+    </record>
+    <record id="de_xuat_phat_sinh_hang_ban_report" model="ir.actions.report">
+        <field name="name">Đề xuất phát sinh hàng bán</field>
+        <field name="model">approval.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_custom_field.de_xuat_phat_sinh_hang_ban_template</field>
+        <field name="report_file">ccv_custom_field.de_xuat_phat_sinh_hang_ban_template</field>
+        <field name="print_report_name">'Đề xuất phát sinh hàng bán - %s' % (object.team_id.user_id.name_without_position)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="model_approval_request"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+    </record>
+    <record id="phieu_de_xuat_dat_bao_bi_report" model="ir.actions.report">
+        <field name="name">Phiếu đề xuất đặt bao bì</field>
+        <field name="model">approval.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_custom_field.phieu_de_xuat_dat_bao_bi_template</field>
+        <field name="report_file">ccv_custom_field.phieu_de_xuat_dat_bao_bi_template</field>
+        <field name="print_report_name">'Phiếu đề xuất đặt bao bì - %s' % (object.request_owner_id.name)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="model_approval_request"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+    </record>
+    <!-- Word -->
+</odoo>

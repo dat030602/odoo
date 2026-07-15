@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="summary_accounts_payable_book_template_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="biz_details_purchase_report.summary_accounts_payable_book_document"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="summary_accounts_payable_book_document">
+            <t t-call="ccv_sql.ccv_header">
+                <div class="page" style="font-size: 14px;font-family: Times New Roman">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong>Tổng Hợp Công Nợ Phải Trả</strong>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center; margin-top: 10px;">
+                        <strong>Từ ngày &amp;nbsp;<t t-esc="doc.date_from.strftime('%d/%m/%Y')"/>&amp;nbsp; đến ngày &amp;nbsp;<t t-esc="doc.date_to.strftime('%d/%m/%Y')"/></strong>
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm fixed" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                            <col width="5%"/>
+                            <col width="8%"/>
+                            <col width="15%"/>
+                            <col width="18%"/>
+                            <col width="9%"/>
+                            <col width="9%"/>
+                            <col width="9%"/>
+                            <col width="9%"/>
+                            <col width="9%"/>
+                            <col width="9%"/>
+                            <tr style="border: solid 1px;border-bottom: double 3px;">
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" rowspan="2">STT</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" rowspan="2">Mã NCC</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" rowspan="2">Tên NCC</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" rowspan="2">Địa chỉ</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" colspan="2">Đầu kỳ</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" colspan="2">Phát sinh</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" colspan="2">Cuối kỳ</th>
+                            </tr>
+                            <tr style="border: solid 1px;border-bottom: double 3px;">
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;">Nợ</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;">Có</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;">Nợ</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;">Có</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;">Nợ</th>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;">Có</th>
+                            </tr>
+                            <t t-set="stt" t-value="0"/>
+                            <t t-set="total_start_debit" t-value="0"/>
+                            <t t-set="total_start_credit" t-value="0"/>
+                            <t t-set="total_ps_debit" t-value="0"/>
+                            <t t-set="total_ps_credit" t-value="0"/>
+                            <t t-set="total_end_debit" t-value="0"/>
+                            <t t-set="total_end_credit" t-value="0"/>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <t t-set="stt" t-value="stt + 1"/>
+                                <tr>
+                                    <td style="border: solid 1px;text-align: center; vertical-align: middle;"><t t-esc="stt"/></td>
+                                    <td style="border: solid 1px;text-align: center; vertical-align: middle;"><t t-esc="line.customer_code"/></td>
+                                    <td style="border: solid 1px;text-align: left; vertical-align: middle;"><t t-esc="line.customer_name"/></td>
+                                    <td style="border: solid 1px;text-align: left; vertical-align: middle;"><t t-esc="line.address"/></td>
+                                    <td style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(line.start_debit)"/></td>
+                                    <td style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(line.start_credit)"/></td>
+                                    <td style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(line.ps_debit)"/></td>
+                                    <td style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(line.ps_credit)"/></td>
+                                    <td style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(line.end_debit)"/></td>
+                                    <td style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(line.end_credit)"/></td>
+                                </tr>
+                                <t t-set="total_start_debit" t-value="total_start_debit + line.start_debit"/>
+                                <t t-set="total_start_credit" t-value="total_start_credit + line.start_credit"/>
+                                <t t-set="total_ps_debit" t-value="total_ps_debit + line.ps_debit"/>
+                                <t t-set="total_ps_credit" t-value="total_ps_credit + line.ps_credit"/>
+                                <t t-set="total_end_debit" t-value="total_end_debit + line.end_debit"/>
+                                <t t-set="total_end_credit" t-value="total_end_credit + line.end_credit"/>
+                            </t>
+                            <tr>
+                                <th style="border: solid 1px;text-align: center; vertical-align: middle;" colspan="4"><strong>Cộng:</strong></th>
+                                <th style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(total_start_debit)"/></th>
+                                <th style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(total_start_credit)"/></th>
+                                <th style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(total_ps_debit)"/></th>
+                                <th style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(total_ps_credit)"/></th>
+                                <th style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(total_end_debit)"/></th>
+                                <th style="border: solid 1px;text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(total_end_credit)"/></th>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                        <div class="col-8"></div>
+                        <div class="col-4"><span>Ngày <t t-esc="datetime.datetime.now().strftime('%d')"/> tháng <t t-esc="datetime.datetime.now().strftime('%m')"/> năm <t t-esc="datetime.datetime.now().strftime('%Y')"/></span></div>
+                    </div>
+                    
+                    <div class="row rowp" style="padding-top: 2px; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span><strong>Người lập phiếu</strong></span><br/>
+                            <t t-if="doc.state == 'approved' and doc.sudo().voter_id.sign_signature">
+                                <br/><img t-att-src="image_data_uri(doc.sudo().voter_id.sign_signature)" style="width: 100px; height: 40px;"/><br/>
+                            </t>
+                            <t t-else=""><br/><br/><br/></t>
+                            <t t-if="doc.voter_id"><strong><span t-esc="doc.sudo().voter_id.name_without_position if doc.voter_id else ''"/></strong></t>
+                        </div>
+                        <div class="col-3">
+                            <span><strong>Trưởng phòng thương mại</strong></span><br/>
+                            <t t-if="doc.state == 'approved' and doc.sudo().department_head_id.sign_signature">
+                                <br/><img t-att-src="image_data_uri(doc.sudo().department_head_id.sign_signature)" style="width: 100px; height: 40px;"/><br/>
+                            </t>
+                            <t t-else=""><br/><br/><br/></t>
+                            <t t-if="doc.department_head_id"><strong><span t-esc="doc.sudo().department_head_id.name_without_position if doc.department_head_id else ''"/></strong></t>
+                        </div>
+                        <div class="col-3">
+                            <span><strong>Kế toán trưởng</strong></span><br/>
+                            <t t-if="doc.state == 'approved' and doc.sudo().chief_accountant_id.sign_signature">
+                                <br/><img t-att-src="image_data_uri(doc.sudo().chief_accountant_id.sign_signature)" style="width: 100px; height: 40px;"/><br/>
+                            </t>
+                            <t t-else=""><br/><br/><br/></t>
+                            <t t-if="doc.chief_accountant_id"><strong><span t-esc="doc.sudo().chief_accountant_id.name_without_position if doc.chief_accountant_id else ''"/></strong></t>
+                        </div>
+                        <div class="col-3">
+                            <span><strong>Thủ trưởng đơn vị</strong></span><br/>
+                            <t t-if="doc.state == 'approved' and doc.sudo().director_id.sign_signature">
+                                <br/><img t-att-src="image_data_uri(doc.sudo().director_id.sign_signature)" style="width: 100px; height: 40px;"/><br/>
+                            </t>
+                            <t t-else=""><br/><br/><br/></t>
+                            <t t-if="doc.director_id"><strong><span t-esc="doc.sudo().director_id.name_without_position if doc.director_id else ''"/></strong></t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="summary_accounts_payable_book_report" model="ir.actions.report">
+            <field name="name">Tổng Hợp Công Nợ Phải Trả</field>
+            <field name="model">summary.accounts.payable.book</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">biz_details_purchase_report.summary_accounts_payable_book_template_report</field>
+            <field name="report_file">biz_details_purchase_report.summary_accounts_payable_book_template_report</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+            <field name="print_report_name">'Tổng Hợp Công Nợ Phải Trả'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

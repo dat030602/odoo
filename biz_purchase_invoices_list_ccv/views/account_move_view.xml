@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_inherit_purchase" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.purchase</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_date']" position="after">
+                <field name="document_number" attrs="{'invisible': [('move_type', 'not in', ['in_invoice', 'in_refund'])],'readonly': [('state', '=', 'posted')]}"/>
+                <field name="document_date" attrs="{'invisible': [('move_type', 'not in', ['in_invoice', 'in_refund'])],'readonly': [('state', '=', 'posted')]}"/>
+                <field name="invoice_code" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//tree//field[@name='account_id']" position="after">
+                <field name="product_shared" optional="hide"/>
+                <field name="invoice_code" optional="hide"/>
+                <field name="invoice_number" optional="hide"/>
+                <field name="date_invoice" optional="hide"/>
+                <field name="partner_id" attrs="{'column_invisible': ['|',('parent.move_type', '!=', 'in_invoice'),('parent.move_type', '=', 'entry')]}" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='name']" position="after">
+                <field name="invoice_code" optional="hide"/>
+                <field name="invoice_number" optional="hide"/>
+                <field name="date_invoice" optional="hide"/>
+                <field name="partner_id" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//tree//field[@name='debit']" position="attributes">
+                <attribute name="attrs">{'invisible': [('display_type', 'in', ('line_section', 'line_note'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//tree//field[@name='credit']" position="attributes">
+                <attribute name="attrs">{'invisible': [('display_type', 'in', ('line_section', 'line_note'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//tree//field[@name='tax_ids']" position="attributes">
+                <attribute name="attrs">{}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Kế thừa tree view của Chi tiết bút toán (Journal Items) -->
+    <record id="view_move_line_tree_inherit_purchase_ccv" model="ir.ui.view">
+        <field name="name">account.move.line.tree.inherit.purchase.ccv</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_id']" position="before">
+                <field name="vat_invoice_number" optional="show" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

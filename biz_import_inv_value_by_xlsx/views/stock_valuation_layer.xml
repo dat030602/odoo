@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="stock_valuation_layer_form_biz_import_inv_value_by_xlsx" model="ir.ui.view">
+		<field name="name">stock.valuation.layer.form.inherit.biz_import_inv_value_by_xlsx</field>
+		<field name="model">stock.valuation.layer</field>
+		<field name="inherit_id" ref="stock_account.stock_valuation_layer_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='quantity']" position="after">
+				<field name="value_import"/>
+				<field name="unit_cost_float"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="stock_valuation_layer_tree_biz_import_inv_value_by_xlsx" model="ir.ui.view">
+		<field name="name">stock.valuation.layer.tree.inherit.biz_import_inv_value_by_xlsx</field>
+		<field name="model">stock.valuation.layer</field>
+		<field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//tree" position="attributes">
+				<attribute name="create">1</attribute>
+				<attribute name="import">1</attribute>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="action_server_update_value" model="ir.actions.server">
+		<field name="name">Update value</field>
+		<field name="type">ir.actions.server</field>
+		<field name="model_id" ref="model_stock_valuation_layer"/>
+		<field name="binding_model_id" ref="model_stock_valuation_layer"/>
+		<field name="state">code</field>
+		<field name="code">records.action_update_value()</field>
+	</record>
+
+	<record id="action_server_cancel_move" model="ir.actions.server">
+		<field name="name">Cancel Move</field>
+		<field name="type">ir.actions.server</field>
+		<field name="model_id" ref="model_stock_valuation_layer"/>
+		<field name="binding_model_id" ref="model_stock_valuation_layer"/>
+		<field name="state">code</field>
+		<field name="code">records.action_cancel_move()</field>
+	</record>
+
+	<record id="action_server_delete_layer" model="ir.actions.server">
+		<field name="name">Delete Layer</field>
+		<field name="type">ir.actions.server</field>
+		<field name="model_id" ref="model_stock_valuation_layer"/>
+		<field name="binding_model_id" ref="model_stock_valuation_layer"/>
+		<field name="state">code</field>
+		<field name="code">records.action_delete_layer()</field>
+	</record>
+
+
+</odoo>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ccv_sale_plan_export_form" model="ir.ui.view">
+        <field name="name">ccv.sale.plan.export.form</field>
+        <field name="model">ccv.sale.plan.export</field>
+        <field name="arch" type="xml">
+            <form>
+            <header>
+                <field name="can_set_draft" invisible="1" />
+                <field name="can_set_comfirm" invisible="1" />
+                <button name="action_confirm" string="Xác nhận" type="object" class="btn-primary" attrs="{'invisible': [('state','!=','draft')]}"/>
+                <button name="action_lock" string="Khóa" type="object" class="btn-primary" attrs="{'invisible': [('state','!=','confirm')]}" confirm="Bạn đã kiểm tra lại chưa?"/>
+                <!-- <button name="action_reset_uom_qty" string="Cập nhật số lượng đặt" attrs="{'invisible': [('state','!=','confirm')]}" type="object" confirm="Hành động này sẽ cập nhật lại số lượng giao. Bạn có muốn thực hiện?"/> -->
+                <button name="action_change_state_confirm" string="Trở lại xác nhận" attrs="{'invisible':[('can_set_comfirm','!=',True)]}" type="object"/>
+                <button name="action_change_state_draft" string="Trở lại bản nháp" attrs="{'invisible':[('can_set_draft','!=',True)]}" type="object"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_pk" type="object" icon="fa-truck" attrs="{'invisible':[('plan_pk_count','=',0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text"><field name="plan_pk_count"/></span>
+                            <span class="o_stat_text">Điều chuyển</span>
+                        </div>
+                    </button>
+                    <button name="action_view_team_plan" type="object" icon="fa-globe icon" attrs="{'invisible':[('plan_sale_count','=',0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text"><field name="plan_sale_count"/></span>
+                            <span class="o_stat_text">KH Xuất hàng</span>
+                        </div>
+                    </button>
+                    <button name="action_view_mrp_plan" type="object" icon="fa-globe icon" attrs="{'invisible':[('plan_mrp_count','=',0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text"><field name="plan_mrp_count"/></span>
+                            <span class="o_stat_text">KH Sản xuất</span>
+                        </div>
+                    </button>
+                    <button name="action_view_tree" type="object" icon="fa-list-alt icon">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Kế hoạch</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="oe_title">
+                    <label for="name" string="Tên"/>
+                    <h1>
+                        <div class="d-flex">
+                            <field class="text-break" name="name" placeholder="e.g. Đặt tên Kế hoạch" attrs="{'readonly': [('state','in',('confirm','locked'))]}"/>
+                        </div>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="type" invisible="1" />
+                        <field name="team_id" attrs="{'readonly': [('state','in',('confirm','locked'))],'invisible': [('type','!=','team')]}"/>
+                    </group>
+                    <group>
+                        <field name="date" required="1" attrs="{'readonly': [('state','in',('confirm','locked'))]}"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Kế hoạch xuất hàng" name="line_ids" attrs="{'invisible': [('state','=','draft')]}">
+                        <field name="line_ids" attrs="{'readonly': [('state','=','locked')]}" context="{'default_team_id': team_id}" />
+                    </page>
+                    <page string="Đơn hàng" name="order_ids" attrs="{'invisible': [('state','=','locked')]}">
+                        <field name="order_ids" domain="[('team_id','=', team_id),('state','not in', ('cancel','done')),('delivery_status','!=', 'full'),('sale_sign_requests_state','in', ('draft','approve','approved'))]" attrs="{'readonly': [('state','in',('locked'))]}">
+                            <tree create="0" edit="0">
+                                <field name="date_order" optional="show"/>
+                                <field name="partner_id" optional="show" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="name" optional="show"/>
+                                <field name="user_id" optional="show"/>
+                                <field name="team_id" optional="show"/>
+                                <field name="state" optional="show" widget="badge" decoration-success="state in ('sale','done')" decoration-info="state == 'draft'"/>
+                                <field name="amount_total" optional="show" digits="[16,3]" sum="total_amount_total"/>
+                                <field name="delivery_status" optional="hide" widget="badge" decoration-success="delivery_status == 'delivered'" decoration-info="delivery_status == 'in_transit'" decoration-warning="delivery_status == 'to_deliver'"/>
+                                <field name="currency_id" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Chi tiết đơn hàng" name="order_line_ids" attrs="{'invisible': [('state','=','locked')]}">
+                        <field name="order_line_ids" domain="[('order_id', 'in', order_ids), ('is_delivered', '=', False)]" attrs="{'readonly': [('state','in',('locked'))]}">
+                            <tree create="0" edit="0">
+                                <field name="is_delivered" invisible="1"/>
+                                <field name="order_id" optional="show"/>
+                                <field name="name" optional="show"/>
+                                <field name="product_id" invisible="1"/>
+                                <field name="order_partner_id" optional="show"/>
+                                <field name="product_uom_qty" optional="show" digits="[16,3]" sum="total_product_uom_qty"/>
+                                <field name="product_uom" optional="show"/>
+                                <field name="qty_delivered" optional="show" digits="[16,3]" sum="total_qty_delivered"/>
+                                <field name="currency_id" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="ccv_sale_plan_export_form_sumary" model="ir.ui.view">
+        <field name="name">ccv.sale.plan.export.form</field>
+        <field name="model">ccv.sale.plan.export</field>
+        <field name="arch" type="xml">
+            <form>
+            <header>
+                <field name="can_set_draft" invisible="1" />
+                <field name="can_set_comfirm" invisible="1" />
+                <field name="can_create_pk" invisible="1"/>
+                <button name="action_create_picking" string="Tạo lệnh phiếu xuất hàng" type="object" class="btn-primary" attrs="{'invisible': [('can_create_pk','=',False)]}"/>
+                <button name="action_confirm" string="Tổng hợp" type="object" class="btn-primary" attrs="{'invisible': [('state','!=','draft')]}"/>
+                <button name="action_lock" string="Khóa" type="object" class="btn-primary" attrs="{'invisible': [('state','!=','confirm')]}"/>
+                <button name="action_change_state_confirm" string="Trở lại xác nhận" attrs="{'invisible':[('can_set_comfirm','!=',True)]}" type="object"/>
+                <button name="action_change_state_draft" string="Trở lại bản nháp" attrs="{'invisible':[('can_set_draft','!=',True)]}" type="object"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_pk" type="object" icon="fa-truck" attrs="{'invisible':[('plan_pk_count','=',0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text"><field name="plan_pk_count"/></span>
+                            <span class="o_stat_text">Điều chuyển</span>
+                        </div>
+                    </button>
+                    <button name="action_view_team_plan" type="object" icon="fa-globe icon" attrs="{'invisible':[('plan_sale_count','=',0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text"><field name="plan_sale_count"/></span>
+                            <span class="o_stat_text">KH Xuất hàng theo khu vực</span>
+                        </div>
+                    </button>
+                    <button name="action_view_mrp_plan" type="object" icon="fa-globe icon" attrs="{'invisible':[('plan_mrp_count','=',0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text"><field name="plan_mrp_count"/></span>
+                            <span class="o_stat_text">KH sản xuất</span>
+                        </div>
+                    </button>
+                    <button name="action_view_tree" type="object" icon="fa-list-alt icon">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Kế hoạch</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="oe_title">
+                    <label for="name" string="Tên"/>
+                    <h1>
+                        <div class="d-flex">
+                            <field class="text-break" name="name" placeholder="e.g. Đặt tên Kế hoạch" attrs="{'readonly': [('state','in',('confirm','locked'))]}"/>
+                        </div>
+                    </h1>
+                </div>
+                <group>
+                    <field name="date" required="1" attrs="{'readonly': [('state','in',('confirm','locked'))]}"/>
+                    <field name="channel_id" attrs="{'readonly': [('state','in',('locked'))]}"/>
+                    <field name="is_next_plan"/>
+                </group>
+                <notebook>
+                    <page string="Kế hoạch xuất hàng" name="line_ids">
+                        <field name="line_ids" attrs="{'readonly': [('state','=','locked')]}"/>
+                    </page>
+                </notebook>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="ccv_sale_plan_export_tree" model="ir.ui.view">
+        <field name="name">ccv.sale.plan.export.tree.inherit</field>
+        <field name="model">ccv.sale.plan.export</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="team_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ccv_sale_plan_export_sumary_tree" model="ir.ui.view">
+        <field name="name">ccv.sale.plan.export.tree.inherit</field>
+        <field name="model">ccv.sale.plan.export</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

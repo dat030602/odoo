@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="vp_bank_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.vp_bank_document"
+                       t-lang="user.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="vp_bank_document">
+            <t t-call="ccv_sql.header_vp_bank">
+                <div class="page" style="font-size: 14px;font-family: Times New Roman; padding-top: 20px;">
+                    <div class="row">
+                        <div class="col-8">
+                        </div>
+                        <div class="col-4" style="text-align: left;margin-left: 45px;">
+                            Ngày (date):&amp;nbsp;
+                            <t t-esc="doc.convert_print(doc.date)"/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-12">
+                            Đơn vị/Người trả tiền (Customer's name): &amp;nbsp;Công ty TNHH Con Cò Vàng
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-6">
+                            Số tài khoản (A/C no): &amp;nbsp;308006597
+                        </div>
+                        <div class="col-6">
+                            Tại VPBank (With Branch): &amp;nbsp;Hồ Chí Minh
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 30px;">
+                        <div class="col-12">
+                            Đơn vị/Người nhận tiền (Customer's name): &amp;nbsp;
+                            <t t-esc="doc.partner_id.name"/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-12">
+                            Số tài khoản (A/C no): &amp;nbsp;
+                            <t t-esc="doc.bank_account_contact_id.acc_number"/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-12">
+                            Tại ngân hàng (With Branch):: &amp;nbsp;
+                            <t t-if="doc.bank_account_contact_id">
+                                <t t-esc="doc.bank_account_contact_id.name_get()[0][1]"/>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-6">
+                            Chi nhánh (Branch): &amp;nbsp;
+                            <t t-esc="doc.bank_account_contact_id.bank_id.name"/>
+                        </div>
+                        <div class="col-6">
+                            Tỉnh/TP(Province): &amp;nbsp;
+                            <t t-esc="doc.bank_account_contact_id.bank_id.city"/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-8">
+                            Số tiền bằng chữ (Amount in words): &amp;nbsp;
+                            <t t-esc="doc.convert_money(doc.amount)"/>&amp;nbsp;
+                        </div>
+                        <div class="col-4">
+                            <table>
+                                <tr>
+                                    <td style="text-align: center;">
+                                        &amp;nbsp;Số tiền bằng số (Amount in figures): &amp;nbsp;
+                                        <p style="padding-top: 2px">
+                                            <strong>
+                                                <t t-esc="doc.convert_vnd(doc.amount)"/>
+                                            </strong>&amp;nbsp;
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-12">
+                            Nôi dung (Payment Details): &amp;nbsp;
+                            <t t-esc="doc.ref"/>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-6">
+                            <strong>ĐƠN VỊ/NGƯỜI YÊU CẦU (CUSTOMER)</strong>
+                        </div>
+                        <div class="col-6">
+                            <strong>VPBANK</strong>
+                        </div>
+                    </div>
+                    <t t-set="chief_accountant_id"
+                       t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.chief_accountant_id', False)"/>
+                    <t t-if="chief_accountant_id">
+                        <t t-set="chief_accountant_id"
+                           t-value="doc.env['res.users'].sudo().search([('id', '=', int(chief_accountant_id))])"/>
+                    </t>
+                    <div class="row rowp" style="margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span>
+                                <strong>Kế toán trưởng</strong>
+                            </span>
+                            <br/>
+                            <span>
+                                <strong>(Chief Accountant)</strong>
+                            </span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Chủ tài khoản</strong>
+                            </span>
+                            <br/>
+                            <span>
+                                <strong>(A/C holder)</strong>
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <span>
+                                Ghi sổ ngày:&amp;nbsp;.................................................................
+                            </span>
+                            <div class="row">
+                                <div class="col-3">
+                                    <strong>Giao dịch viên</strong>
+                                </div>
+                                <div class="col-3">
+                                    <strong>Kiểm soát</strong>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Giám đốc/Trưởng PGD</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="margin-left: 2px;text-align: center;padding-top:80px">
+                        <div class="col-3">
+                            <strong>
+                                <t t-if="chief_accountant_id">
+                                    <strong>
+                                        <t t-esc="chief_accountant_id.name_without_position"/>
+                                    </strong>
+                                </t>
+                            </strong>
+                        </div>
+                        <div class="col-3">
+                        </div>
+                        <div class="col-6">
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="vp_bank_report" model="ir.actions.report">
+            <field name="name">UNC VP</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.vp_bank_template</field>
+            <field name="report_file">ccv_sql.vp_bank_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a5_2"/>
+            <field name="print_report_name">'UNC VP'</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

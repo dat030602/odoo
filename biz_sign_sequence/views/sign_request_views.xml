@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sign_request_item_view_tree_inherited" model="ir.ui.view">
+        <field name="name">sign.request.item.tree.inherited</field>
+        <field name="model">sign.request.item</field>
+        <field name="inherit_id" ref="sign.sign_request_item_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="role_id" position="after">
+                <field name="mail_sent_order" attrs="{'readonly': ['|', '|', ('change_authorized', '=', False), ('state', 'in', ['completed', 'refused']), ('is_mail_sent', '!=', False)]}"/>
+            </field>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">mail_sent_order</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

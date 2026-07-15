@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<odoo>
+
+<!--    <record id="group_all_channel" model="res.groups">-->
+<!--        <field name="name">All Channel</field>-->
+<!--        <field name="category_id" ref="base.module_category_hidden"/>-->
+<!--    </record>-->
+
+    <data>
+        <record id="group_admin_all_channel" model="res.groups">
+            <field name="name">Admin all channel</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+        <record id="group_hidden_menu_chat" model="res.groups">
+            <field name="name">Hidden menu chat</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+    </data>
+
+
+    <!-- RULES -->
+    <!-- <record id="mail_channel_rule" model="ir.rule">
+        <field name="name">Mail.channel: access only public and joined groups</field>
+        <field name="model_id" ref="model_mail_channel"/>
+        <field name="groups" eval="[Command.link(ref('base.group_user')), Command.link(ref('base.group_portal')), Command.link(ref('base.group_public'))]"/>
+        <field name="domain_force">['|', '|',
+            ('public', '=', 'public'),
+            '&amp;', ('public', '=', 'private'), ('channel_partner_ids', 'in', [user.partner_id.id]),
+            '&amp;', ('public', '=', 'groups'), ('group_public_id', 'in', [g.id for g in user.groups_id])]</field>
+        <field name="perm_create" eval="False"/>
+    </record> -->
+</odoo>

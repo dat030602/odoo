@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_sale_vehicle_in_out" name="Vehicle In/Out" parent="sale.sale_order_menu" action="action_sale_vehicle_in_out_out" sequence="100"/>
+    <menuitem id="menu_sale_vehicle_in_out_purchase" name="Vehicle In/Out" parent="purchase.menu_procurement_management" action="action_sale_vehicle_in_out_in" sequence="100"/>
+    <menuitem id="menu_sale_vehicle_map" name="Vehicle Mapping" parent="sale.menu_sale_config" action="action_sale_vehicle_map" sequence="100"/>
+    <menuitem id="menu_sale_vehicle_conveyor_map" name="Băng tải mapping" parent="sale.menu_sale_config" action="action_sale_vehicle_conveyor_map" sequence="101"/>
+
+    <!-- NPK Weighing Configuration Menu -->
+    <menuitem id="menu_npk_weighing_config" name="Cân NPK" parent="mrp.menu_mrp_config" sequence="100"/>
+    <menuitem id="menu_npk_weighing_factory" name="Nhà máy cân" parent="menu_npk_weighing_config" action="action_npk_weighing_factory" sequence="10"/>
+    <menuitem id="menu_npk_weighing_machine" name="Máy cân" parent="menu_npk_weighing_config" action="action_npk_weighing_machine" sequence="20"/>
+
+    <menuitem id="menu_product_tag_ids_mrp" name="Thẻ sản phẩm" parent="mrp.menu_mrp_bom" action="website_sale.product_public_tags_action" sequence="2000"/>
+    <menuitem id="menu_product_tag_ids_stock" name="Thẻ sản phẩm" parent="stock.menu_stock_inventory_control" action="website_sale.product_public_tags_action" sequence="2000"/>
+    <menuitem id="menu_product_tag_ids_sale" name="Thẻ sản phẩm" parent="sale.product_menu_catalog" action="website_sale.product_public_tags_action" sequence="2000"/>
+    
+    <menuitem id="menu_npk_weighing_history" name="Lịch sử cân NPK" parent="mrp.menu_mrp_manufacturing" action="action_npk_weighing_history" sequence="30"/>
+
+</odoo>

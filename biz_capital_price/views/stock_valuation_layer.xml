@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="stock_valuation_layer_form" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.view.form</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref='stock_account.stock_valuation_layer_form'/>
+        <field name="arch" type="xml">
+            <field name='value' position="after">
+                <field name="initial_value"/>
+            </field>
+            <field name='stock_move_id' position="after">
+                <field name="interval_move_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="layer_update_date_account_move" model="ir.actions.server">
+        <field name="name">Cập nhật ngày bút toán</field>
+        <field name="model_id" ref="stock_account.model_stock_valuation_layer"/>
+        <field name="binding_model_id" ref="stock_account.model_stock_valuation_layer"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.layer_update_date_account_move()</field>
+    </record>
+</odoo>

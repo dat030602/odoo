@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<data>
+		<record model="ir.ui.view" id="create_invoice_wizard_form_view">
+			<field name="name">Create Invoice Wizard</field>
+			<field name="model">create.invoice.wizard</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="order_reference_id" options="{'no_create_edit': True}" invisible="context.get('move_type') != 'out_invoice'"/>
+						<field name="purchase_reference_id" options="{'no_create_edit': True}"  invisible="context.get('move_type') != 'in_invoice'"/>
+					</group>
+					<footer>
+						<button name="create_invoice" type="object"
+							string="Create Invoice" class="oe_highlight"/>
+						<button special="cancel" string="Cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+	</data>
+</odoo>

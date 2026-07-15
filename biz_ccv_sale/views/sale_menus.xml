@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Create "Thống kê" menu in Sales app, before "Cấu hình" (which is sequence 50) -->
+        <menuitem id="menu_sale_statistics"
+            name="Thống kê"
+            parent="sale.sale_menu_root"
+            sequence="45"/>
+
+        <!-- Move "Đội ngũ kinh doanh" menu under the new "Thống kê" menu -->
+        <menuitem id="sale.sales_team_config"
+            parent="menu_sale_statistics"
+            sequence="10"/>
+    </data>
+</odoo>

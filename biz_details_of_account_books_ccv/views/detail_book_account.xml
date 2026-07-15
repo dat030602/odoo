@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_detail_book_account_ccv" model="ir.actions.client">
+        <field name="name">Detailed of book account BTC (S38-DN) CCV</field>
+        <field name="tag">account_report</field>
+        <field name="context" eval="{'report_id': ref('biz_details_of_account_books_ccv.detail_book_report')}"/>
+    </record>
+
+    <menuitem id="menu_action_detail_book_account_ccv" name="Detailed of book account BTC (S38-DN) CCV"
+              action="action_detail_book_account_ccv"
+              parent="account_reports.account_reports_partners_reports_menu" 
+              groups="account.group_account_invoice,account.group_account_readonly"/>
+</odoo>

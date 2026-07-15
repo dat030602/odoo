@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.form.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/div[not(@name)][1]" position="after">
+                    <field name="interpretation"/>
+                </xpath>
+                <!-- Các trường chữ ký -->
+                <xpath expr="//field[@name='stock_date_receipt']" position="after">
+                    <separator string="Người ký"/>
+                    <field name="preparer_id" attrs="{'readonly': [('mrp_approval_state', '!=', 'draft')]}"/>
+                    <field name="supervisor_id" attrs="{'readonly': [('mrp_approval_state', '!=', 'draft')]}"/>
+                    <field name="user_id" attrs="{'readonly': [('mrp_approval_state', '!=', 'draft')]}"/>
+                    <field name="director_id" attrs="{'readonly': [('mrp_approval_state', '!=', 'draft')]}"/>
+                </xpath>
+                <!-- Ribbon Đã duyệt / Từ chối -->
+                <xpath expr="//div[@name='button_box']" position="before">
+                    <widget name="web_ribbon" title="ĐÃ DUYỆT" bg_color="bg-success"
+                            attrs="{'invisible': [('mrp_approval_state', '!=', 'approved')]}"/>
+                    <widget name="web_ribbon" title="TỪ CHỐI" bg_color="bg-danger"
+                            attrs="{'invisible': [('mrp_approval_state', '!=', 'refused')]}"/>
+                </xpath>
+                <!-- Thêm nút Trình duyệt vào header -->
+                <xpath expr="//header" position="inside">
+                    <button name="action_send_approve" type="object"
+                            string="Gửi duyệt" class="btn btn-primary"
+                            attrs="{'invisible': [('mrp_approval_state', '!=', 'draft')]}"/>
+                    <button name="action_confirm_approve" type="object"
+                            string="Duyệt" class="btn btn-success"
+                            attrs="{'invisible': ['|', ('is_user_current', '=', False), ('mrp_approval_state', '!=', 'waiting')]}"/>
+                    <button name="action_refuse" type="object"
+                            string="Từ chối" class="btn btn-danger"
+                            attrs="{'invisible': ['|', ('is_user_current', '=', False), ('mrp_approval_state', '!=', 'waiting')]}"/>
+                    <button name="action_cancel_approve" type="object"
+                            string="Hủy duyệt" class="btn btn-warning"
+                            groups="base.group_system"
+                            attrs="{'invisible': [('mrp_approval_state', '=', 'draft')]}"/>
+                    <button name="action_reset_approve" type="object"
+                            string="Đặt lại" class="btn btn-secondary"
+                            attrs="{'invisible': [('mrp_approval_state', 'not in', ['approved', 'refused'])]}"
+                            groups="base.group_system"/>
+                    <field name="mrp_approval_state" widget="statusbar"
+                           statusbar_visible="draft,waiting,approved"/>
+                </xpath>
+                <!-- Xóa phần div Trình duyệt bên dưới header cũ -->
+                <xpath expr="//header" position="after">
+                    <div style="display:none"/>
+                </xpath>
+                <!-- Tab Trình duyệt và Lịch sử duyệt -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Lịch sử duyệt" name="approve_history_page">
+                        <field name="is_user_current" invisible="1"/>
+                        <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Kế thừa list view để thêm cột Trạng thái duyệt -->
+        <record id="mrp_production_tree_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.tree.inherit.approval</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='state']" position="before">
+                    <field name="mrp_approval_state" string="Phê duyệt"
+                           optional="show"
+                           decoration-success="mrp_approval_state == 'approved'"
+                           decoration-warning="mrp_approval_state == 'waiting'"
+                           decoration-danger="mrp_approval_state == 'refused'"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Server action to send approve multiple MRP records -->
+        <record id="action_mrp_production_send_approve_all" model="ir.actions.server">
+            <field name="name">Gửi duyệt hàng loạt</field>
+            <field name="model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+records_to_send = records.filtered(lambda r: r.mrp_approval_state == 'draft')
+if records_to_send:
+    records_to_send.action_send_approve()
+            </field>
+        </record>
+    </data>
+</odoo>

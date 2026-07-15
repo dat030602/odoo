@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="alpha_report_form_inherit" model="ir.ui.view">
+        <field name="name">alpha.report.form.inherit</field>
+        <field name="model">alpha.report</field>
+        <field name="inherit_id" ref="ccv_sql.form_alpha_report_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_id']" position='attributes'>
+                <attribute name="attrs">{'invisible': [('type', 'in', ('bao_cao_so_du_ngan_hang','danh_sach_chi_tien_von_tu_co'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='account_id']" position='after'>
+                <field name="check_have_mount" attrs="{'invisible': [('type', 'in', ('bao_cao_so_du_ngan_hang', 'danh_sach_chi_tien_von_tu_co', 'danh_sach_chi_tiet_von_tu_co', 'giay_thanh_toan_tien_tam_ung', 'so_chi_tiet_ke_toan_quy_tien_mat'))]}"/>
+                <field name="employee_id" attrs="{'invisible':[('type','not in',('chi_tiet_cong_no_nhan_vien'))]}"/>
+                <field name="partner_payment_type" attrs="{'invisible':[('type','not in',('danh_sach_chi_tien_von_tu_co'))],'required':[('type','in',('danh_sach_chi_tien_von_tu_co'))]}"/>
+                <field name="currency_id" attrs="{'invisible':[('type','not in',('danh_sach_chi_tien_von_tu_co'))],'required':[('type','in',('danh_sach_chi_tien_von_tu_co'))]}"/>
+            </xpath>
+            <xpath expr="//field[@name='type']" position='after'>
+                <field name="is_foreign_currency" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook" position='inside'>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_thu')]}">
+                    <field name="beta_line1_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_thu')]}"/>
+                </page>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_tra')]}">
+                    <field name="beta_line2_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_tra')]}"/>
+                </page>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_thu_usd')]}">
+                    <field name="beta_line3_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_thu_usd')]}"/>
+                </page>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_tra_usd')]}">
+                    <field name="beta_line4_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'tong_hop_cong_no_phai_tra_usd')]}"/>
+                </page>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'chi_tiet_cong_no_phai_tra_usd')]}">
+                    <field name="beta_line5_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'chi_tiet_cong_no_phai_tra_usd')]}"/>
+                </page>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'chi_tiet_cong_no_phai_thu_usd')]}">
+                    <field name="beta_line6_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'chi_tiet_cong_no_phai_thu_usd')]}"/>
+                </page>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'danh_sach_chi_tien_von_tu_co')]}">
+                    <field name="beta_line7_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'danh_sach_chi_tien_von_tu_co')]}"/>
+                </page>
+                <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'chi_tiet_cong_no_nhan_vien')]}">
+                    <field name="line3_ids" nolabel="1" readonly="1" attrs="{'invisible': [('type', '!=', 'chi_tiet_cong_no_nhan_vien')]}"
+                    context="{'tree_view_ref': 'ccv_bao_cao.chi_tiet_cong_no_nhan_vien_beta_view_tree'}"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

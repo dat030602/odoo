@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard tạo Orderpoint -->
+    <record id="view_create_orderpoint_wizard_form" model="ir.ui.view">
+        <field name="name">create.orderpoint.wizard.form</field>
+        <field name="model">create.orderpoint.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Tạo Orderpoint">
+                <group>
+                    <group>
+                        <field name="warehouse_id" required="1"/>
+                        <field name="product_min_qty" required="1"/>
+                        <field name="product_max_qty" required="1"/>
+                    </group>
+                    <group>
+                        <field name="product_ids" readonly="1" invisible="1" options="{'no_create': True, 'no_edit': True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_create_orderpoint" string="Tạo" type="object" class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action cho wizard -->
+    <record id="action_create_orderpoint_wizard" model="ir.actions.act_window">
+        <field name="name">Tạo cảnh báo tồn kho</field>
+        <field name="res_model">create.orderpoint.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_warehouse_id': context.get('default_warehouse_id', False)}</field>
+    </record>
+</odoo>

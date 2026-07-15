@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_purchase_order_invoice_data_wizard_form" model="ir.ui.view">
+        <field name="name">purchase.order.invoice.data.wizard.form</field>
+        <field name="model">purchase.order.invoice.data.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Chọn hóa đơn điện tử">
+                <group>
+                    <field name="purchase_order_id"/>
+                    <field name="partner_id"/>
+                    <field name="invoice_data_id"
+                        options="{'no_create': True}"
+                        domain="[('nban_id', '=', partner_id), ('state', '!=', 'done')]"
+                    />
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Xác nhận" type="object" class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_purchase_order_invoice_data_wizard" model="ir.actions.act_window">
+        <field name="name">Chọn hóa đơn điện tử</field>
+        <field name="res_model">purchase.order.invoice.data.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

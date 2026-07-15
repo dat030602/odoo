@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="sale_order_report_image" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//table/thead/tr/th[@name='th_description']" position="before">
+            <th name="th_product_image" class="text-start"></th>
+            <th name="th_space"></th>
+        </xpath>
+        <xpath expr="//table/tbody/t/tr/t/td[@name='td_name']" position="before">
+            <td name="td_product_image">
+                <span t-field="line.product_image" class="text-start"
+                      t-options="{'widget': 'image', 'style': 'width: 160px; height: 145px; margin-top: 5px;'}"/>
+            </td>
+            <td name="td_space">
+                <span/>
+            </td>
+        </xpath>
+    </template>
+</odoo>

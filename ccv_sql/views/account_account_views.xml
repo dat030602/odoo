@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_form_ccv_sql" model="ir.ui.view">
+            <field name="name">view_account_form_ccv_sql</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="partner_bank_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

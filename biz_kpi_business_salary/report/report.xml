@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Excel Report -->
+    <report
+        id="regional_sales_report"
+        model="salary.sales.summary"
+        string="Báo cáo doanh số khu vực"
+        report_type="xlsx"
+        name="biz_kpi_business_salary.rp_regional_sales"
+        file="rp_regional_sales"
+        attachment_use="False"
+    />
+    <report
+        id="sales_commission_employee_report"
+        model="salary.sales.summary"
+        string="Tổng hợp tính hoa hồng theo sản lượng"
+        report_type="xlsx"
+        name="biz_kpi_business_salary.rp_sales_commission_employee"
+        file="rp_sales_commission_employee"
+        attachment_use="False"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+    <report
+        id="sales_bonus_by_region_report"
+        model="salary.sales.summary"
+        string="Báo cáo doanh số thưởng theo khu vực"
+        report_type="xlsx"
+        name="biz_kpi_business_salary.rp_sales_bonus_by_region"
+        file="rp_sales_bonus_by_region"
+        attachment_use="False"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+    <report
+        id="commission_summary_employee_report"
+        model="salary.sales.summary"
+        string="Bảng tổng hợp hoa hồng CBCNV"
+        report_type="xlsx"
+        name="biz_kpi_business_salary.rp_commission_summary_employee"
+        file="rp_commission_summary_employee"
+        attachment_use="False"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+    <report
+        id="humic_sales_detail_report"
+        model="salary.sales.summary"
+        string="Số chi tiết bán hàng sản phẩm Humic &amp; Phân bón lá theo khu vực"
+        report_type="xlsx"
+        name="biz_kpi_business_salary.rp_humic_sales_detail"
+        file="rp_humic_sales_detail"
+        attachment_use="False"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+    <report
+        id="customer_open_list_commission_report"
+        model="salary.sales.summary"
+        string="Bảng tính chi tiết hoa hồng mở đại lý mới"
+        report_type="xlsx"
+        name="biz_kpi_business_salary.rp_customer_open_list_commission"
+        file="rp_customer_open_list_commission"
+        attachment_use="False"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+    <report
+        id="business_salary_report"
+        model="salary.sales.summary"
+        string="Bảng lương Kinh doanh"
+        report_type="xlsx"
+        name="biz_kpi_business_salary.rp_business_salary"
+        file="Bang_luong_Kinh_doanh"
+        attachment_use="False"
+        groups="hr_payroll.group_hr_payroll_user"
+    />
+</odoo>

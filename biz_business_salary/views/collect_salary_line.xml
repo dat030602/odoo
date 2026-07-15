@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_collect_salary_line_tree" model="ir.ui.view">
+        <field name="name">collect.salary.line.tree</field>
+        <field name="model">collect.salary.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" default_order="stt" create="false">
+                <field name="stt" invisible="1"/>
+                <field name="content_id"/>
+                <field name="standard_tl" widget="percentage"/>
+                <field name="standard_points"/>
+                <field name="achieved_tl" widget="percentage"/>
+                <field name="achieved_points"/>
+                <field name="achieved_amount"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="note"/>
+                <field name="is_over"/>
+                <field name="employee_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_collect_salary_line" model="ir.actions.act_window">
+        <field name="name">Collect Salary Line</field>
+        <field name="res_model">collect.salary.line</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+</odoo>

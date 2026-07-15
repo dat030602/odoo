@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <report
+        id="bao_cao_san_luong_nhap_xuat_report"
+        model="rp.tf.vehicel.in.out.wizard"
+        string="Báo cáo sản lượng nhập xuất"
+        report_type="xlsx"
+        name="ccv_api_connector.bao_cao_san_luong_nhap_xuat"
+        file="bao_cao_san_luong_nhap_xuat"
+        attachment_use="False"
+    />
+    <report
+        id="rp_san_luong_nhap_xuat_xlsx_report"
+        model="rp.san.luong.nhap.xuat"
+        string="In Excel sản lượng nhập xuất"
+        report_type="xlsx"
+        name="ccv_api_connector.rp_san_luong_nhap_xuat_xlsx"
+        file="rp_san_luong_nhap_xuat_xlsx"
+        attachment_use="False"
+    />
+</odoo>

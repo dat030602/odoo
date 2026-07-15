@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_uom_uom_inherit" model="ir.ui.view">
+            <field name="name">uom.uom.form.inherit</field>
+            <field name="model">uom.uom</field>
+            <field name="inherit_id" ref="uom.product_uom_form_view"/>
+            <field name="arch" type="xml">
+                 <field name="rounding" position="after">
+                    <field name="product_length"/>
+                    <field name="product_width"/>
+                 </field>
+            </field>
+        </record>
+    </data>
+</odoo>

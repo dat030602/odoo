@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_order_form_ccv_payment" model="ir.ui.view">
+        <field name="name">purchase.order.form.ccv.payment</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <!-- attrs="{'invisible': ['|', ('state','not in',('purchase','done')), ('amount_total','&lt;=',0)]}" -->
+                <button name="action_open_payment_wizard" type="object" class="btn-primary" string="Đề nghị thanh toán"/>
+            </xpath>
+            
+            <xpath expr="//div/button[@name='action_view_invoice']" position="before">
+                <field name="payment_count" invisible="1"/>
+                <button class="oe_stat_button" name="action_view_purchase_payments" type="object" icon="fa-money" attrs="{'invisible': [('payment_count','=',0)]}">
+                    <div class="o_stat_info">
+                        <span class="o_stat_value" t-esc="payment_count"/>
+                        <span class="o_stat_text">Đề nghị thanh toán</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

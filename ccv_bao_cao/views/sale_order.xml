@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_tree_inherit_biz_ccv_sale" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref='biz_ccv_sale.view_order_form_sale_inherit'/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_confirm_delivered" type="object" string="Hoàn thành đơn" attrs="{'invisible':['|',('state','!=','sale'),('delivery_status','=','full')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='transportation']" position="after">
+                <field name="payment_type"/>
+                <field name="commitment_date"/>
+                <field name="contract_number"/>
+                <field name="internal_note" widget="text" string="Khuyến mãi"/>
+            </xpath>
+            <xpath expr="//field[@name='contact_total_due']" position="after">
+                <field name="credit_limit"/>
+                <field name="delay_days"/>
+                <field name="penalty_debt"/>
+                <field name="total_debt"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

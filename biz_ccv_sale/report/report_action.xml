@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Format -->
+    <record id="paperformat_rp_ccv_receipt" model="report.paperformat">
+        <field name="name">Custom Paperformat for CCV receipt</field>
+        <field name="default" eval="False"/>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">15</field>
+        <field name="header_spacing">25</field>
+        <field name="dpi">96</field>
+    </record>
+
+
+    <record id="action_report_stock_picking_new_docx" model="ir.actions.report">
+        <field name="name">Ex-warehousing slip CCV</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">stock.picking</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_stockpicking</field>
+        <field name="report_file">py3o_stockpicking</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_stock_picking"/>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">biz_ccv_sale</field>
+        <field name="py3o_template_fallback">report/phieu-xuat-kho-CCV.odt</field>
+
+    </record>
+
+    <record id="action_report_stock_picking_material_new_docx" model="ir.actions.report">
+        <field name="name">Ex-warehousing material CCV</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">stock.picking</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_stockpicking_material</field>
+        <field name="report_file">py3o_stockpicking_material</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_stock_picking"/>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">biz_ccv_sale</field>
+        <field name="py3o_template_fallback">report/phieu-xuat-kho-vat-tu-CCV.odt</field>
+    </record>
+
+    <record id="action_rp_ccv_warehouse_receipt" model="ir.actions.report">
+        <field name="name">CCV warehouse receipt</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_ccv_sale.rp_ccv_warehouse_receipt</field>
+        <field name="report_file">biz_ccv_sale.rp_ccv_warehouse_receipt</field>
+        <field name="print_report_name">'%s_%s' % (object.name, object.partner_id.name or '')</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref='paperformat_rp_ccv_receipt'/>
+    </record>
+
+    <record id="action_rp_ccv_inventory_receipt" model="ir.actions.report">
+        <field name="name">Phiếu nhập kiểm kê</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_ccv_sale.rp_ccv_inventory_receipt</field>
+        <field name="report_file">biz_ccv_sale.rp_ccv_inventory_receipt</field>
+        <field name="print_report_name">'Phiếu_nhập_kiểm_kê_%s_%s' % (object.name, object.partner_id.name or '')</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="biz_ccv_sale.paperformat_rp_ccv_receipt"/>
+    </record>
+
+    <record id="action_rp_ccv_inventory_export" model="ir.actions.report">
+        <field name="name">Phiếu xuất kiểm kê</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_ccv_sale.rp_ccv_inventory_export</field>
+        <field name="report_file">biz_ccv_sale.rp_ccv_inventory_export</field>
+        <field name="print_report_name">'Phiếu_xuất_kiểm_kê_%s_%s' % (object.name, object.partner_id.name or '')</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="biz_ccv_sale.paperformat_rp_ccv_receipt"/>
+    </record>
+
+    <record id="paperformat_ccv_warehouse_transfer_note_a4" model="report.paperformat">
+        <field name="name">CCV warehouse transfer note</field>
+        <field name="default" eval="False"/>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_spacing">25</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="action_report_stock_picking_ccv_warehouse_transfer_note" model="ir.actions.report">
+        <field name="name">CCV warehouse transfer note</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_ccv_sale.report_business_pdf</field>
+        <field name="report_file">biz_ccv_sale.report_business_pdf</field>
+        <field name="paperformat_id" ref="paperformat_ccv_warehouse_transfer_note_a4"/>
+        <field name="print_report_name">'%s %s' % (object.name,object.partner_id.name or '')</field>
+        <field name="binding_model_id" ref="model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>

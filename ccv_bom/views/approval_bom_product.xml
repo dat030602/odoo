@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="approval_bom_product_view_form" model="ir.ui.view">
+        <field name="name">approval.bom.product.form</field>
+        <field name="model">approval.bom.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Sản phẩm">
+                            <field name="product_id" />
+                            <field name="service_id" />
+                            <field name="price_unit" />
+                        </group>
+                        <group></group>
+                        <group string="Định mức chỉ may">
+                            <field name="uom_25kg_id" />
+                            <field name="uom_50kg_id" />
+                            <field name="qty_norm_25kg" />
+                            <field name="qty_norm_50kg" />
+                        </group>
+                        <group string="Định mức xăng dầu">
+                            <field name="partner_id" options="{'no_open': True, 'no_create': True}" />
+                            <field name="qty_norm_fuel" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="approval_bom_product_view_tree" model="ir.ui.view">
+        <field name="name">approval.bom.product.tree</field>
+        <field name="model">approval.bom.product</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="product_id" />
+                <field name="partner_id" />
+                <field name="service_id" />
+                <field name="price_unit" />
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="approval_bom_product_action" model="ir.actions.act_window">
+        <field name="name">Định mức sản phẩm</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">approval.bom.product</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="approval_bom_product_menu" name="Định mức sản phẩm" action="approval_bom_product_action"
+                parent="approvals.approvals_menu_config" sequence="50"/>
+</odoo>

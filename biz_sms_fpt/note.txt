@@ -1,0 +1,12 @@
+# Cấu hình:
+	+ API Gồm có 2 endpoint:
+		- Live: `http://app.sms.fpt.net`; 
+		- Sandbox: `http://sandbox.sms.fpt.net` dùng để test
+	+ Lấy client_id và client_secret tại https://developer.sms.fpt.net/document/huong-dan-dang-ky-ung-dung
+	+ Grant type: Loại authen. Hiện tại chỉ hỗ trợ: client_credentials
+	+ Scope: Quyền yêu cầu, nhiều scope thì các scope cách nhau bằng ký tự khoản trắng. Gửi tin nhắn brandname otp thì khai báo scope là send_brandname_otp
+	+ Brandname: Brandname đã đăng ký với FPT.(https://partner.sms.fpt.net/)
+	
+# Gửi tin nhắn bằng api FPT
+	+ Sử dụng hàm sent_sms_api(phone, body)
+	vd:	self.env['bizapps.fpt.sms'].sudo().sent_sms_api('84949123456','Test goi tin nhan')

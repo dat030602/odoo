@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="factory_product_default_view_tree" model="ir.ui.view">
+        <field name="name">factory_product_default.inherit.view.tree</field>
+        <field name="model">factory.product.default</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="picking_type_id"/>
+            </tree>        
+        </field>
+    </record>
+    <record id="factory_product_default_view_form" model="ir.ui.view">
+        <field name="name">factory_product_default.inherit.view.form</field>
+        <field name="model">factory.product.default</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="picking_type_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Sản phẩm" name="product_ids">
+                            <field name="product_ids">
+                                <tree>
+                                    <field name="default_code" string="Mã sản phẩm"/>
+                                    <field name="name" string="Tên sản phẩm"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>        
+        </field>
+    </record>
+</odoo>

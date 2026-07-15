@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="biz_ods.call_logs_view_form" model="ir.ui.view">
+        <field name="name">biz.ods.call.logs.form</field>
+        <field name="model">biz.ods.call.logs</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="ods_call_log_type"/>
+                        <field name="create_date"/>
+                    </group>
+                    <group>
+                        <field name="ods_status" attrs="{'invisible': [('ods_call_log_type', '!=', 'outbound')]}"/>
+                        <field name="ods_direction" attrs="{'invisible': [('ods_call_log_type', '!=', 'outbound')]}"/>
+                        <field name="ods_sync_status" attrs="{'invisible': [('ods_call_log_type', '=', 'outbound')]}"/>
+                        <field name="number_of_extension" attrs="{'invisible': [('ods_call_log_type', 'not in', ['extension'])]}"/>
+                        <field name="number_of_call_history" attrs="{'invisible': [('ods_call_log_type', 'not in', ['call_history'])]}"/>
+                        <field name="ods_message"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="biz_ods_call_logs_view_tree" model="ir.ui.view">
+        <field name="name">biz.ods.call.logs.tree</field>
+        <field name="model">biz.ods.call.logs</field>
+        <field name="arch" type="xml">
+            <tree create="0" default_order="id desc">
+                <field name="create_date"/>
+                <field name="ods_call_log_type"/>
+                <field name="ods_message"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="biz_ods_call_logs_action" model="ir.actions.act_window">
+        <field name="name">Logs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">biz.ods.call.logs</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

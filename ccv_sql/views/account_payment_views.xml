@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_payment_form_ccv_sql" model="ir.ui.view">
+            <field name="name">view_move_form_ccv_sql</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_print_giay_bao_co" string="In giấy báo Nợ" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('payment_type', 'not in', ('outbound'))]}"/>
+                    <button name="action_print_giay_bao_co" string="In giấy báo Có" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('payment_type', 'not in', ('inbound'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_bank_id']" position="after">
+                    <field name="internal_account_id" string="Đề nghị tạm ứng" domain="[('state', 'in', ('approved', 'done'))]"/>
+                    <field name="payment_slip_creator_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

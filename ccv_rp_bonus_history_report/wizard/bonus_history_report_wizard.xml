@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bonus_history_report_wizard_form" model="ir.ui.view">
+        <field name="name">bonus.history.report.wizard.form</field>
+        <field name="model">bonus.history.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Báo cáo quỹ dự phòng">
+                <group>
+                    <group>
+                        <label for="date_from_month"/>
+                        <div class="o_row">
+                            <field name="date_from_month" required="1"/>
+                            /
+                            <field name="date_from_year" required="1"/>
+                        </div>
+                        -
+                        <label for="date_to_month"/>
+                        <div class="o_row">
+                            <field name="date_to_month" required="1"/>
+                            /
+                            <field name="date_to_year" required="1"/>
+                        </div>
+                        <field name="team_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="voter_id"/>
+                        <field name="lead_sale_id"/>
+                        <field name="director_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_report" string="Tạo báo cáo" type="object" class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bonus_history_report_wizard" model="ir.actions.act_window">
+        <field name="name">Báo cáo quỹ dự phòng</field>
+        <field name="res_model">bonus.history.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

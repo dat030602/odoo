@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="view_hr_deduction_form" model="ir.ui.view">
+		<field name="name">view.hr.deduction.form</field>
+		<field name="model">hr.deduction</field>
+		<field name="arch" type="xml">
+			<form string="Deductions">
+				<sheet>
+					<group>
+						<group>
+							<field name="name" required="1"/>
+							<field name="column_import" attrs="{'invisible': [('is_fixed','=',True)]}" domain="[('deduction_id','=',False)]"
+								options="{'no_create_edit': True, 'no_create': True}"/>
+							<field name="amount" attrs="{'invisible': [('is_fixed','!=',True)]}"/>
+						</group>
+						<group>
+							<field name="code" required="1"/>
+							<field name="is_fixed"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	
+	<record id="view_hr_deduction_tree" model="ir.ui.view">
+		<field name="name">view.hr.deduction.tree</field>
+		<field name="model">hr.deduction</field>
+		<field name="arch" type="xml">
+			<tree string="Deductions">
+				<field name="name"/>
+				<field name="column_import"/>
+				<field name="is_fixed"/>
+				<field name="code"/>
+				<field name="amount"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_hr_deduction_search" model="ir.ui.view">
+		<field name="name">view.hr.deduction.search</field>
+		<field name="model">hr.deduction</field>
+		<field name="arch" type="xml">
+			<search string="Deductions">
+				<field name="name"/>
+				<field name="column_import"/>
+				<field name="is_fixed"/>
+				<field name="code"/>
+				<field name="amount"/>
+			</search>
+		</field>
+	</record>
+	
+	<record id="acction_hr_deduction" model="ir.actions.act_window">
+       <field name="name">Deductions</field>
+       <field name="res_model">hr.deduction</field>
+       
+       <field name="view_mode">tree,form</field>
+       <field name="search_view_id" ref="view_hr_deduction_search"/>
+	</record>
+	
+	<menuitem id="menu_hr_deduction" action="acction_hr_deduction" parent="hr.menu_human_resources_configuration" sequence="5" groups="base.group_user"/>
+	
+	<!-- Deductions Fixed -->
+	
+	<record id="view_payroll_deduction_fixed_tree" model="ir.ui.view">
+		<field name="name">view.hr.payroll.deduction.fixed.tree</field>
+		<field name="model">hr.payroll.deduction.fixed</field>
+		<field name="arch" type="xml">
+			<tree string="Deductions Fixed" editable="bottom">
+				<field name="deduction_id"/>
+				<field name="code"/>
+				<field name="employee_id"/>
+				<field name="contract_id"/>
+				<field name="amount"/>
+				<field name="active" invisible="1"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_payroll_deduction_fixed_search" model="ir.ui.view">
+		<field name="name">view.hr.payroll.deduction.fixed.search</field>
+		<field name="model">hr.payroll.deduction.fixed</field>
+		<field name="arch" type="xml">
+			<search string="Deductions">
+				<field name="deduction_id"/>
+				<field name="code"/>
+				<field name="contract_id"/>
+				<field name="active"/>
+				<filter name="group_active" string="Inactive" domain="[('active','=',False)]"/>
+				<group expand="0" string="Group By">
+	                <filter name="group_deduction_id" string="Deduction" context="{'group_by':'deduction_id'}"/>
+	                <filter name="group_contract_id" string="Contract" context="{'group_by':'contract_id'}"/>
+	            </group>
+			</search>
+		</field>
+	</record>
+	
+	<record id="view_payroll_deduction_fixed_pivot" model="ir.ui.view">
+	    <field name="name">hr.payroll.deduction.fixed.pivot</field>
+	    <field name="model">hr.payroll.deduction.fixed</field>
+	    <field name="arch" type="xml">
+	        <pivot string="Deduction Fixed" display_quantity="true">
+	            <field name="deduction_id" type="row"/>
+	            <field name="amount" type="measure"/>
+	        </pivot>
+	    </field>
+	</record>
+	
+	<record model="ir.ui.view" id="view_payroll_deduction_fixed_graph">
+	    <field name="name">hr.payroll.deduction.fixed.graph</field>
+	    <field name="model">hr.payroll.deduction.fixed</field>
+	    <field name="arch" type="xml">
+	        <graph string="Deduction Fixed">
+	            <field name="deduction_id"/>
+	            <field name="amount" type="measure"/>
+	        </graph>
+	    </field>
+	</record>
+	
+	<record id="acction_payroll_deduction_fixed" model="ir.actions.act_window">
+       <field name="name">Deductions Fixed</field>
+       <field name="res_model">hr.payroll.deduction.fixed</field>
+       
+       <field name="view_mode">tree,pivot,graph</field>
+       <field name="context">{'group_by': ['deduction_id', 'contract_id']}</field>
+       <field name="search_view_id" ref="view_payroll_deduction_fixed_search"/>
+	</record>
+	
+	<menuitem id="menu_payroll_deduction_fixed" action="acction_payroll_deduction_fixed" parent="menu_payroll_update_menu" sequence="4"/>
+	
+	<!-- Deductions Monthly -->
+	
+	<record id="view_payroll_deduction_monthly_tree" model="ir.ui.view">
+		<field name="name">view.hr.payroll.deduction.monthly.tree</field>
+		<field name="model">hr.payroll.deduction.monthly</field>
+		<field name="arch" type="xml">
+			<tree string="Deductions Fixed" editable="bottom">
+				<field name="deduction_id"/>
+				<field name="code"/>
+				<field name="employee_id"/>
+				<field name="contract_id"/>
+				<field name="amount"/>
+				<field name="active" invisible="1"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_payroll_deduction_monthly_search" model="ir.ui.view">
+		<field name="name">view.hr.payroll.deduction.monthly.search</field>
+		<field name="model">hr.payroll.deduction.monthly</field>
+		<field name="arch" type="xml">
+			<search string="Deductions">
+				<field name="deduction_id"/>
+				<field name="code"/>
+				<field name="contract_id"/>
+				<field name="active"/>
+				<field name="month"/>
+				<filter string="Inactive" name="active" domain="[('active','=',False)]"/>
+				<group expand="0" string="Group By">
+	                <filter string="Allowance" name="allowance" context="{'group_by':'deduction_id'}"/>
+	                <filter string="Contract" name="contract" context="{'group_by':'contract_id'}"/>
+	                <filter string="Employee" name="employee" context="{'group_by':'employee_id'}"/>
+	                <filter string="Month" name="month" context="{'group_by':'month'}"/>
+	            </group>
+			</search>
+		</field>
+	</record>
+	
+	<record id="view_payroll_deduction_monthly_pivot" model="ir.ui.view">
+	    <field name="name">hr.payroll.deduction.monthly.pivot</field>
+	    <field name="model">hr.payroll.deduction.monthly</field>
+	    <field name="arch" type="xml">
+	        <pivot string="Deduction Monthly" display_quantity="true">
+	            <field name="deduction_id" type="row"/>
+	            <field name="amount" type="measure"/>
+	        </pivot>
+	    </field>
+	</record>
+	
+	<record model="ir.ui.view" id="view_payroll_deduction_monthly_graph">
+	    <field name="name">hr.payroll.deduction.monthly.graph</field>
+	    <field name="model">hr.payroll.deduction.monthly</field>
+	    <field name="arch" type="xml">
+	        <graph string="Deduction Monthly">
+	            <field name="deduction_id"/>
+	            <field name="amount" type="measure"/>
+	        </graph>
+	    </field>
+	</record>
+	
+	<record id="acction_payroll_deduction_monthly" model="ir.actions.act_window">
+       <field name="name">Deductions Monthly</field>
+       <field name="res_model">hr.payroll.deduction.monthly</field>
+       
+       <field name="view_mode">tree,pivot,graph</field>
+       <field name="context">{'group_by': ['deduction_id', 'contract_id', 'month']}</field>
+       <field name="search_view_id" ref="view_payroll_deduction_monthly_search"/>
+	</record>
+	
+	<menuitem id="menu_payroll_deduction_monthly" action="acction_payroll_deduction_monthly" parent="menu_payroll_update_menu" sequence="5"/>
+		
+</odoo>

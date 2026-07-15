@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_receipt_sheet_ccv_tree" model="ir.ui.view">
+        <field name="name">purchase.invoices.list.ccv.tree</field>
+        <field name="model">purchase.invoices.list.ccv</field>
+        <field name="arch" type="xml">
+            <tree string="Bảng kê hóa đơn mua vào">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_purchase_receipt_sheet_ccv_form" model="ir.ui.view">
+        <field name="name">purchase.invoices.list.ccv.form</field>
+        <field name="model">purchase.invoices.list.ccv</field>
+        <field name="arch" type="xml">
+            <form string="Bảng kê hóa đơn mua vào">
+                <header>
+                    <button name="action_generate" string="Lấy dữ liệu" type="object" class="btn-primary" 
+                        attrs="{'invisible': [('state', '=', 'locked')]}"/>
+                    <button name="action_lock" string="Khóa" type="object" 
+                        attrs="{'invisible': [('state', '=', 'locked')]}"/>
+                    <button name="action_unlock" string="Mở khóa" type="object" 
+                        attrs="{'invisible': [('state', '!=', 'locked')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,locked"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_lines" string="Xem chi tiết" type="object" icon="fa-eye"
+                            attrs="{'invisible': [('line_ids', '=', [])]}"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly': [('state', '=', 'locked')]}"/>
+                            <field name="date_from" attrs="{'readonly': [('state', '=', 'locked')]}"/>
+                            <field name="date_to" attrs="{'readonly': [('state', '=', 'locked')]}"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết">
+                            <field name="line_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_purchase_receipt_sheet_ccv_search" model="ir.ui.view">
+        <field name="name">purchase.invoices.list.ccv.search</field>
+        <field name="model">purchase.invoices.list.ccv</field>
+        <field name="arch" type="xml">
+            <search string="Bảng kê hóa đơn mua vào">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <filter string="Mới" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="Đã khóa" name="locked" domain="[('state', '=', 'locked')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_purchase_invoices_list_ccv" model="ir.actions.act_window">
+        <field name="name">Bảng kê hóa đơn mua vào CCV</field>
+        <field name="res_model">purchase.invoices.list.ccv</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo mới bảng kê hóa đơn mua vào
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="biz_change_passwd_first_login.login_layout" inherit_id="web.login_layout">
+        <xpath expr="." position="inside">
+            <div id="myPopup">
+		        <div class="popup-content">
+		            <h1>Change password</h1>
+		            <div class="mb-3">
+                    	<label for="login_popup" class="form-label">Email</label>
+		            	<input type="text" placeholder="Email" name="login_popup" id="login_popup" t-attf-class="form-control"/>
+		            </div>
+		            <div class="mb-3">
+                    	<label for="password_popup" class="form-label">New Password</label>
+		            	<input type="password" placeholder="New Password" name="password_popup" id="password_popup" t-attf-class="form-control"/>
+		            </div>
+		            <div class="mb-3">
+                    	<label for="re_password_popup" class="form-label">Re-enter New Password</label>
+		            	<input type="password" placeholder="Re-enter New Password" name="re_password_popup" id="re_password_popup" t-attf-class="form-control"/>
+		            </div>
+		            <div class="notification">
+		            	<div class="raise-error alert alert-danger"/>
+		            	<div class="success alert alert-success">Password change successful. You are now redirected to the login page to log in again..</div>
+		            </div>
+		            <div class="button-popup">
+			            <button id="SubmitPopup" class="btn-primary">
+			                Submit
+			            </button>
+			            <button id="closePopup" class="btn-primary">
+			                Cancel
+			            </button>
+			        </div>
+		        </div>
+		    </div>
+        </xpath>
+    </template>
+</odoo>

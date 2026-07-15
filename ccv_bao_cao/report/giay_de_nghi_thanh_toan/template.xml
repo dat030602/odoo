@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<template id="ccv_bao_cao.giay_de_nghi_thanh_toan_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="ccv_bao_cao.giay_de_nghi_thanh_toan_document"
+                t-lang="doc.user_id.partner_id.lang" />
+        </t>
+    </t>
+</template>
+<template id="ccv_bao_cao.giay_de_nghi_thanh_toan_template_a4">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="ccv_bao_cao.giay_de_nghi_thanh_toan_document"
+                t-lang="doc.user_id.partner_id.lang" />
+        </t>
+    </t>
+</template>
+</odoo>

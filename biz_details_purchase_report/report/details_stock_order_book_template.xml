@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="details_stock_order_book_pdf_template">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <t t-set="company" t-value="o.env.company"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px;">
+                <div class="row" style="position: relative;">
+                    <div style="float: left; width: 15%;">
+                        <img t-att-src="image_data_uri(company.logo)" style="max-height: 70px;"/>
+                    </div>
+                    <div style="float: left; width: 85%;">
+                        <div style="padding-left: 20px;">
+                            <strong t-esc="company.name"/><br/>
+                            Mã số thuế: <span t-esc="company.vat"/><br/>
+                            Địa chỉ: <span t-esc="company.street"/> <span t-esc="company.street2"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" style="font-family: 'Times New Roman';font-size:11px; line-height: 18px">
+                <div class="text-center" style="margin-bottom: 10px;">
+                    <h4 class="bold">BÁO CÁO HÀNG TỒN KHO KHU VỰC</h4>
+                    <h5 class="bold italic">
+                        Ngày <span t-esc="datetime.datetime.now().strftime('%d/%m/%Y')"/> - Kho: <span t-esc="', '.join(o.warehouse_ids.mapped('name'))"/>
+                    </h5>
+                </div>
+
+                <table class="table-line">
+                    <thead>
+                        <tr style="background-color: #e9ecef;">
+                            <th class="text-center" style="width: 3%">STT</th>
+                            <th class="text-center" style="width: 8%">Mã hàng</th>
+                            <th class="text-center" style="width: 15%">Tên hàng</th>
+                            <th class="text-center" style="width: 5%">ĐVT</th>
+                            <th class="text-center" style="width: 7%">Số lượng</th>
+                            <th class="text-center" style="width: 10%">Đơn hàng</th>
+                            <th class="text-center" style="width: 12%">Khách hàng</th>
+                            <th class="text-center" style="width: 10%">Khu vực</th>
+                            <th class="text-center" style="width: 10%">Nhà máy SX</th>
+                            <th class="text-center" style="width: 8%">Ngày sản xuất</th>
+                            <th class="text-center" style="width: 12%">Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="stt" t-value="0"/>
+                        <t t-set="sum_quantity" t-value="0"/>
+                        <t t-foreach="doc_groups[o.id].items()" t-as="group">
+                            <t t-set="team" t-value="group[0]"/>
+                            <t t-set="lines" t-value="group[1]"/>
+                            
+                            <!-- Group Header -->
+                            <tr class="bold">
+                                <td colspan="11" class="text-left" style="background-color: #f8f9fa; padding-left: 5px;">
+                                    KHU VỰC: <t t-esc="(team.name if team else 'Hàng dự trữ (Không có Team)').upper()"/>
+                                </td>
+                            </tr>
+
+                            <t t-set="group_qty" t-value="0"/>
+                            <t t-foreach="lines" t-as="line">
+                                <t t-set="stt" t-value="stt + 1"/>
+                                <t t-set="group_qty" t-value="group_qty + line.quantity"/>
+                                <t t-set="sum_quantity" t-value="sum_quantity + line.quantity"/>
+                                <tr>
+                                    <td class="text-center vertical"><t t-esc="stt"/></td>
+                                    <td class="text-left vertical word"><t t-esc="line.product_id.default_code or ''"/></td>
+                                    <td class="text-left vertical word"><t t-esc="line.product_id.name or ''"/></td>
+                                    <td class="text-center vertical word"><t t-esc="line.product_uom_id.name or ''"/></td>
+                                    <td class="text-right vertical word"><t t-esc="format_float_number(line.quantity)"/></td>
+                                    <td class="text-left vertical word"><t t-esc="line.order_id.name or 'Dự trữ'"/></td>
+                                    <td class="text-left vertical word"><t t-esc="line.partner_id.name or ''"/></td>
+                                    <td class="text-left vertical word"><t t-esc="line.team_name or ''"/></td>
+                                    <td class="text-left vertical word"><t t-esc="line.factory_name or ''"/></td>
+                                    <td class="text-center vertical word"><t t-esc="line.date_proc and line.date_proc.strftime('%d/%m/%Y') or ''"/></td>
+                                    <td class="text-left vertical word"></td>
+                                </tr>
+                            </t>
+                            
+                            <!-- Subtotal for Group -->
+                            <tr class="bold" style="background-color: #fdfdfe;">
+                                <td colspan="4" class="text-center">TỔNG CỘNG KHU VỰC: <t t-esc="(team.name if team else 'Dự trữ').upper()"/></td>
+                                <td class="text-right"><t t-esc="format_float_number(group_qty)"/></td>
+                                <td colspan="6"></td>
+                            </tr>
+                        </t>
+
+                        <!-- Grand Total -->
+                        <tr class="bold" style="background-color: #dee2e6;">
+                            <td colspan="4" class="text-center">TỔNG CỘNG TẤT CẢ KHU VỰC</td>
+                            <td class="text-right"><t t-esc="format_float_number(sum_quantity)"/></td>
+                            <td colspan="6"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Phần ký tên -->
+            <div style="page-break-inside: avoid; font-family: 'Times New Roman';font-size:14px; line-height: 25px" class="mt-3">
+                <div class="row italic text-right">
+                    <div class="col-10"/>
+                    <div class="col-2 text-center">
+                        <p>Ngày <t t-esc="datetime.datetime.now().strftime('%d')"/> tháng <t t-esc="datetime.datetime.now().strftime('%m')"/> năm <t t-esc="datetime.datetime.now().strftime('%Y')"/></p>
+                    </div>
+                </div>
+                <div class="row text-center" style="page-break-inside: avoid;">
+                    <div style="width: 20%; float: left;">
+                        <strong>Người lập</strong><br/>
+                        <t t-if="o.state == 'approved' and o.sudo().voter_id.sign_signature">
+                            <br/>
+                            <img t-att-src="image_data_uri(o.sudo().voter_id.sign_signature)" style="width: 100px; height: 40px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="o.sudo().voter_id.name_without_position if o.voter_id else ''"/></strong>
+                    </div>
+                    <div style="width: 20%; float: left;">
+                        <strong>Trưởng khu vực</strong><br/>
+                        <t t-if="o.state == 'approved' and o.sudo().team_sale_id.sign_signature">
+                            <br/>
+                            <img t-att-src="image_data_uri(o.sudo().team_sale_id.sign_signature)" style="width: 100px; height: 40px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="o.sudo().team_sale_id.name_without_position if o.team_sale_id else ''"/></strong>
+                    </div>
+                    <div style="width: 20%; float: left;">
+                        <strong>Phòng Kinh doanh</strong><br/>
+                        <t t-if="o.state == 'approved' and o.sudo().lead_sale_id.sign_signature">
+                            <br/>
+                            <img t-att-src="image_data_uri(o.sudo().lead_sale_id.sign_signature)" style="width: 100px; height: 40px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="o.sudo().lead_sale_id.name_without_position if o.lead_sale_id else ''"/></strong>
+                    </div>
+                    <div style="width: 20%; float: left;">
+                        <strong>Phòng Kế toán</strong><br/>
+                        <t t-if="o.state == 'approved' and o.sudo().chief_finance_id.sign_signature">
+                            <br/>
+                            <img t-att-src="image_data_uri(o.sudo().chief_finance_id.sign_signature)" style="width: 100px; height: 40px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="o.sudo().chief_finance_id.name_without_position if o.chief_finance_id else ''"/></strong>
+                    </div>
+                    <div style="width: 20%; float: left;">
+                        <strong>Thủ trưởng đơn vị</strong><br/>
+                        <t t-if="o.state == 'approved' and o.sudo().director_id.sign_signature">
+                            <br/>
+                            <img t-att-src="image_data_uri(o.sudo().director_id.sign_signature)" style="width: 100px; height: 40px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="o.sudo().director_id.name_without_position if o.director_id else ''"/></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="row" style="font-family: 'Times New Roman'; font-size: 13px;">
+                    <div class="col-12 text-right" style="text-align: right;">
+                        <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .table-line { width: 100%; }
+                .table-line > :not(:first-child) { border-top: 0px solid currentColor; }
+                .table-line tr, th, td { border: 1px solid #000; padding: 2px; }
+                .table-line > thead > tr > th { line-height: normal; vertical-align: middle; }
+                .vertical { vertical-align: middle; }
+                .word { word-wrap: break-word; word-break: break-word; white-space: normal; }
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+                .text-left { text-align: left; }
+                .italic { font-style: italic; }
+                .bold { font-weight: bold; }
+                .margin-p { margin: 0px }
+                .page-break { page-break-before: always; }
+            </style>
+        </t>
+    </template>
+
+    <template id="stock_order_book_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="biz_details_purchase_report.details_stock_order_book_pdf_template" t-lang="o.env.user.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

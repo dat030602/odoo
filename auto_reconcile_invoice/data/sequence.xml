@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_bank_statement_line" model="ir.sequence">
+            <field name="name">Bank Statement Line Sequence</field>
+            <field name="code">bank.statement.line</field>
+            <field name="prefix">SPNH/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="seq_bank_debit_statement_line" model="ir.sequence">
+            <field name="name">Bank Debit Statement Line Sequence</field>
+            <field name="code">bank.debit.statement.line</field>
+            <field name="prefix">SDN/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="seq_bank_credit_saoke_line" model="ir.sequence">
+            <field name="name">Bank Credit Saoke Line Sequence</field>
+            <field name="code">bank.credit.saoke.line</field>
+            <field name="prefix">SDC/</field>
+            <field name="padding">7</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="seq_bank_debit_saoke_line" model="ir.sequence">
+            <field name="name">Bank Debit Saoke Line Sequence</field>
+            <field name="code">bank.debit.saoke.line</field>
+            <field name="prefix">SKN/</field>
+            <field name="padding">7</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

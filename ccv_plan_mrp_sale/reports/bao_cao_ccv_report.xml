@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Excel -->
+    <report
+        id="ccv_plan_mrp_sale_plan_mrp_report_xlsx"
+        model="ccv.mrp.plan.export"
+        string="Kế hoạch sản xuất"
+        report_type="xlsx"
+        name="ccv_plan_mrp_sale.plan_mrp"
+        file="plan_mrp"
+        attachment_use="False"
+    />
+    <report
+        id="ccv_plan_mrp_sale_plan_sale_mrp_report_xlsx"
+        model="ccv.sale.plan.export"
+        string="Kế hoạch xuất hàng"
+        report_type="xlsx"
+        name="ccv_plan_mrp_sale.plan_sale_mrp"
+        file="plan_sale_mrp"
+        attachment_use="False"
+    />
+</odoo>

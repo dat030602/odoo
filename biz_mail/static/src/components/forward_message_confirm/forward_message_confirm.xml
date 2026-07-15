@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mail.ForwardMessageConfirm" owl="1">
+        <t t-if="forwardMessageConfirmView">
+            <div class="o_ForwardMessageConfirm card bg-view overflow-auto" t-attf-class="{{ className }}" style="height: auto" t-ref="root">
+                <h4 class="m-3">Forward Message</h4>
+                <hr class="mt-0 mb-3"/>
+                <blockquote class="o_FowardMessageConfirmDialog_blockquote">
+                    <div class="o_Message_content position-relative text-break">
+                        <span class="otro-blockquote"></span>
+                        <Message record="forwardMessageConfirmView.messageView"/>
+                    </div>
+                </blockquote>
+                <div class="mx-3 my-2">
+                    <input class="o_TypeMessage" type="text" style="height: 30px;" placeholder="  Type a message here (optional)"/>
+                </div>
+                    <div class="mx-3 my-2">
+                    <input class="o_ChannelForwardForm_searchInput" type="text" placeholder="  Search" t-att-value="forwardMessageConfirmView.messageView.searchTerm" t-on-keydown="forwardMessageConfirmView.messageView._onKeydownTextarea"/>
+                </div>
+
+                <div class="d-flex flex-column flex-grow-1 mx-0 py-2 overflow-auto" style="height: 300px">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <t t-if="forwardMessageConfirmView.messageView.is_channel_tab">
+                                <a class="nav-link active" style="cursor: pointer;" id="biz_mail_channel_tab" t-on-click="forwardMessageConfirmView.messageView.onClickChannelTab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Channels</a>
+                            </t>
+                            <t t-else="">
+                                <a class="nav-link" style="cursor: pointer;" id="biz_mail_channel_tab" t-on-click="forwardMessageConfirmView.messageView.onClickChannelTab.bind(forwardMessageConfirmView.messageView)" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Channels</a>
+                            </t>
+                        </li>
+                        <li class="nav-item">
+                            <t t-if="forwardMessageConfirmView.messageView.is_channel_tab">
+                                <a class="nav-link" style="cursor: pointer;" id="biz_mail_users_tab" t-on-click="forwardMessageConfirmView.messageView.onClickUsersTab.bind(forwardMessageConfirmView.messageView)" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false">Users</a>
+                            </t>
+                            <t t-else="">
+                                <a class="nav-link active" style="cursor: pointer;" id="biz_mail_users_tab" t-on-click="forwardMessageConfirmView.messageView.onClickUsersTab.bind(forwardMessageConfirmView.messageView)" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false">Users</a>
+                            </t>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <t t-if="forwardMessageConfirmView.messageView.is_channel_tab">
+                            <!-- tab channel -->
+                            <div class="tab-pane fade show active" id="biz_mail_channels" role="tabpanel" aria-labelledby="home-tab">
+                                <t t-foreach="forwardMessageConfirmView.messageView.categoryItems" t-as="item" t-key="item.localId">
+                                    <t t-if="item.channel and item.channel.channel and item.channel.channel.channel_type == 'channel'">
+                                        <MessageForwardCategoryItem
+                                            className="'o_DiscussSidebarCategory_item'"
+                                            record="item"
+                                        />
+                                    </t>
+                                   
+                                </t>
+                            </div>
+                            <!-- tab user -->
+                            <div class="tab-pane fade" id="biz_mail_users" role="tabpanel" aria-labelledby="profile-tab">
+                                
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="tab-pane fade" id="biz_mail_channels" role="tabpanel" aria-labelledby="home-tab">
+                                
+                            </div>
+                            <div class="tab-pane fade show active" id="biz_mail_users" role="tabpanel" aria-labelledby="profile-tab">
+                                <t t-foreach="forwardMessageConfirmView.messageView.selectablePartners" t-as="selectablePartner" t-key="selectablePartner.localId">
+                                    <button class="o_DiscussSidebarCategoryItem btn d-flex align-items-center w-100 px-0 py-2 border-0 rounded-0 fw-normal text-reset bg-100 o_DiscussSidebarCategory_item"
+                                    >   
+                                        <div class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_avatar ms-4">
+                                            <div class="o_DiscussSidebarCategoryItem_imageContainer position-relative d-flex">
+                                                <img class="o_DiscussSidebarCategoryItem_image w-100 h-100 rounded-circle" t-att-src="selectablePartner.avatarUrl" alt="Avatar"/>
+                                            </div>
+                                        </div>
+                                        <span class="o_DiscussSidebarCategoryItem_item o_DiscussSidebarCategoryItem_name ms-3 me-2 text-truncate">
+                                            <t t-esc="selectablePartner.nameOrDisplayName"/>
+                                        </span>
+
+                                        <div class="o_DiscussSidebarCategoryItem_item flex-grow-1"/>
+                                        <div style="margin-right: 5px">
+                                            <button class="biz-btn-primary" t-attf-id="forward_id_{{ selectablePartner.id }}" t-on-click="forwardMessageConfirmView.messageView.onClickSendForwardToUser.bind(forwardMessageConfirmView.messageView, selectablePartner.id)">Send</button>
+                                        </div>
+                                    </button>
+
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+
+                </div>
+
+                <small t-if="!forwardMessageConfirmView.message.originThread or forwardMessageConfirmView.message.originThread.model !== 'mail.channel'" class="mx-3 mb-3">Pay attention: The followers of this document who were notified by email will still be able to read the content of this message and reply to it.</small>
+                <hr class="mt-0 mb-3"/>
+                
+            </div>
+        </t>
+    </t>
+</templates>

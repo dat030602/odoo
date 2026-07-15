@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_salary_personnel_commission_tree" model="ir.ui.view">
+        <field name="name">salary.personnel.commission.tree</field>
+        <field name="model">salary.personnel.commission</field>
+        <field name="arch" type="xml">
+            <tree string="Hoa hồng nhân sự khu vực">
+                <field name="team_id" optional="show"/>
+                <field name="employee_code" optional="show"/>
+                <field name="employee_id" optional="show"/>
+                <field name="job_title" optional="show"/>
+                <field name="planned_quantity" sum="Tổng sản lượng kế hoạch" optional="show"/>
+                <field name="actual_quantity" sum="Tổng sản lượng" optional="show"/>
+                <field name="progress_compensation_rate" widget="percentage" optional="show"/>
+                <field name="allocation_rate" widget="percentage" optional="show"/>
+                <field name="sales_discount_80" sum="Tổng 80% CK bán hàng" optional="show"/>
+                <field name="humic_discount_80" sum="Tổng 80% CK humic" optional="show"/>
+                <field name="total_amount_80" sum="Tổng nhận 80%" optional="show"/>
+                <field name="sales_discount_20" sum="Tổng giữ lại 20% bán hàng" optional="show"/>
+                <field name="humic_discount_20" sum="Tổng giữ lại 20% humic" optional="show"/>
+                <field name="total_amount_20" sum="Tổng cộng giữ lại 20%" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_personnel_commission_form" model="ir.ui.view">
+        <field name="name">salary.personnel.commission.form</field>
+        <field name="model">salary.personnel.commission</field>
+        <field name="arch" type="xml">
+            <form string="Hoa hồng nhân sự khu vực">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="summary_id"/>
+                            <field name="team_id"/>
+                            <field name="employee_code" readonly="1"/>
+                            <field name="employee_id"/>
+                            <field name="job_title"/>
+                            <field name="planned_quantity"/>
+                            <field name="actual_quantity"/>
+                            <field name="progress_compensation_rate" widget="percentage"/>
+                            <field name="allocation_rate" widget="percentage"/>
+                        </group>
+                        <group>
+                            <field name="sales_discount_80"/>
+                            <field name="humic_discount_80"/>
+                            <field name="total_amount_80"/>
+                            <field name="sales_discount_20"/>
+                            <field name="humic_discount_20"/>
+                            <field name="total_amount_20"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_salary_personnel_commission_search" model="ir.ui.view">
+        <field name="name">salary.personnel.commission.search</field>
+        <field name="model">salary.personnel.commission</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm hoa hồng nhân sự khu vực">
+                <field name="team_id"/>
+                <field name="employee_id"/>
+                <field name="job_title"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khu vực" name="group_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Nhân sự" name="group_employee" context="{'group_by':'employee_id'}"/>
+                    <filter string="Chức danh" name="group_job_title" context="{'group_by':'job_title'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

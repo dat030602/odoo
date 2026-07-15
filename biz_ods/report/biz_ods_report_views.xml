@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="biz_ods_call_history_report_view_graph" model="ir.ui.view">
+            <field name="name">biz.ods.call.history.report.graph</field>
+            <field name="model">biz.ods.call.history.report</field>
+            <field name="arch" type="xml">
+                <graph string="ODS Call History Analysis" sample="1">
+                </graph>
+            </field>
+        </record>
+
+        <record id="biz_ods_call_history_report_view_pivot" model="ir.ui.view">
+            <field name="name">biz.ods.call.history.report.pivot</field>
+            <field name="model">biz.ods.call.history.report</field>
+            <field name="arch" type="xml">
+                <pivot string="ODS Call History Analysis" sample="1">
+                    <field name="ods_total_call_time"/>
+                    <field name="ods_real_call_time"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="biz_ods_call_history_report_view_search" model="ir.ui.view">
+            <field name="name">biz.ods.call.history.report.search</field>
+            <field name="model">biz.ods.call.history.report</field>
+            <field name="arch" type="xml">
+                <search string="ODS Call History Analysis">
+                    <field name="ods_call_date" invisible="1"/>
+                    <field name="ods_type_call" invisible="1"/>
+                    <field name="ods_status" invisible="1"/>
+                    <field name="caller_user_id" invisible="1"/>
+                    <field name="receive_user_id" invisible="1"/>
+                    <field name="ods_head_number" invisible="1"/>
+                    <filter name="filter_today" string="Today" domain="[('ods_call_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('ods_call_date', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                    <filter name="filter_yesterday" string="Yesterday" domain="[('ods_call_date', '&gt;=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d 00:00:00')), ('ods_call_date', '&lt;=', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                    <filter name="filter_month" string="Month" date="ods_call_date" default_period="this_year,this_month"/>
+                    <separator/>
+                    <filter name="filter_answered" string="Answer" domain="[('ods_status', '=', 'answered')]"/>
+                    <filter name="filter_no_answer" string="No Answer" domain="[('ods_status', '=', 'no_answer')]"/>
+                    <filter name="filter_busy" string="Busy" domain="[('ods_status', '=', 'busy')]"/>
+                    <filter name="filter_failed" string="Failed" domain="[('ods_status', '=', 'failed')]"/>
+                    <separator/>
+                    <filter name="filter_inbound" string="Inbound" domain="[('ods_type_call', '=', 'inbound')]"/>
+                    <filter name="filter_outbound" string="Outbound" domain="[('ods_type_call', '=', 'outbound')]"/>
+                    <filter name="filter_local" string="Local" domain="[('ods_type_call', '=', 'local')]"/>
+                    <group expand="1" string="Group by">
+                        <filter string="Call Date" name="group_call_date" context="{'group_by':'ods_call_date'}"/>
+                        <filter string="Head Number" name="group_head_number" context="{'group_by':'ods_head_number'}"/>
+                        <filter string="Type Call" name="group_type_call" context="{'group_by':'ods_type_call'}"/>
+                        <filter string="Status" name="group_status" context="{'group_by':'ods_status'}"/>
+                        <separator/>
+                        <filter string="Saleperson Outbound" name="group_saleperson_outbound" domain="[('ods_type_call', '=', 'outbound')]" context="{'group_by':'caller_user_id'}"/>
+                        <filter string="Saleperson Inbound" name="group_saleperson_inbound" domain="[('ods_type_call', '=', 'inbound')]" context="{'group_by':'receive_user_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+       <record id="biz_ods_call_history_report_action" model="ir.actions.act_window">
+           <field name="name">ODS Call History Analysis</field>
+           <field name="res_model">biz.ods.call.history.report</field>
+           <field name="view_mode">graph,pivot</field>
+           <field name="context">{
+               'search_default_group_saleperson_outbound': 1,
+            }</field>
+           <field name="domain">[]</field>
+       </record>
+</odoo>

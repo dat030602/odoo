@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="message_head">
+        <strong>Sản phẩm bị thay đổi.</strong>
+    </template>
+
+    <template id="message_body">
+        <ul>
+            <li t-if="'product_id' not in vals">
+                <t t-esc="line.product_id.display_name"/>:
+            </li>
+            <t t-if="'service_id' in vals">
+                <li>
+                    Dịch vụ : <t t-esc="line.service_id.display_name"/> -&gt; <t t-esc="vals.get('service_id')"/>
+                </li>
+            </t>
+            <t t-if="'product_id' in vals">
+                <li>
+                    Sản phẩm : <t t-esc="line.product_id.display_name"/> -&gt; <t t-esc="vals.get('product_id')"/>
+                </li>
+            </t>
+            <t t-if="'descripton' in vals and 'product_id' in vals">
+                <li>
+                    Mô tả : <t t-esc="line.descripton"/> -&gt; <t t-esc="vals.get('descripton')"/>
+                </li>
+            </t>
+            <t t-if="'quantity' in vals">
+                <li>
+                    Số lượng : <t t-esc="line.quantity"/> -&gt; <t t-esc="float(vals.get('quantity'))"/>
+                </li>
+            </t>
+            <t t-if="'note' in vals">
+                <li>
+                    Ghi chú : <t t-esc="line.note"/> -&gt; <t t-esc="vals.get('note')"/>
+                </li>
+            </t>
+        </ul>
+    </template>
+
+    <template id="track_product_line_approvals_template">
+        <div>
+            <t t-call="ccv_custom_field.message_head"/>
+            <t t-call="ccv_custom_field.message_body"/>
+        </div>
+    </template>
+</odoo>

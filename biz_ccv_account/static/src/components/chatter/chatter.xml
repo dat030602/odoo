@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+     <t t-name="biz_ccv_account.CustomChatter" t-inherit="mail.Chatter" t-inherit-mode="extension" owl="1">
+         <xpath expr="//div[hasclass('o_Chatter_fixedPanel')]" position="replace">
+             <t t-if="hideFields.check"></t>
+             <t t-else="">
+                <div class="o_Chatter_fixedPanel">
+                    <ChatterTopbar
+                        t-if="chatter.topbar"
+                        className="'o_Chatter_topbar'"
+                        record="chatter.topbar"
+                    />
+                    <t t-if="chatter.composerView">
+                        <Composer
+                            className="'o_Chatter_composer border-bottom'"
+                            classNameObj="{ 'o-bordered': chatter.hasExternalBorder }"
+                            record="chatter.composerView"
+                        />
+                    </t>
+                </div>
+             </t>
+         </xpath>
+          <xpath expr="//div[@t-ref='scrollPanel']" position="replace">
+             <t t-if="hideFields.check">
+                 <div class="o_Chatter_scrollPanel overflow-auto" t-on-scroll="chatter.onScrollScrollPanel" t-ref="scrollPanel"></div>
+             </t>
+             <t t-else="">
+                <div class="o_Chatter_scrollPanel overflow-auto" t-on-scroll="chatter.onScrollScrollPanel" t-ref="scrollPanel">
+                    <t t-if="chatter.attachmentBoxView">
+                        <AttachmentBox
+                            className="'o_Chatter_attachmentBox'"
+                            record="chatter.attachmentBoxView"
+                        />
+                    </t>
+                    <t t-if="chatter.activityBoxView">
+                        <ActivityBox
+                            className="'o_Chatter_activityBox'"
+                            record="chatter.activityBoxView"
+                        />
+                    </t>
+                    <t t-if="chatter.threadView">
+                        <ThreadView
+                            className="'o_Chatter_thread'"
+                            record="chatter.threadView"
+                        />
+                    </t>
+                </div>
+             </t>
+         </xpath>
+    </t>
+</templates>

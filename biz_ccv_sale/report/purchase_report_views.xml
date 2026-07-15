@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_purchase_order_search" model="ir.ui.view">
+        <field name="name">report.purchase.order.search</field>
+        <field name="model">purchase.report</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <filter string="Purchase Order Type" name="filter_purchase_order_type" domain="[('purchase_order_type_id', '!=', False)]"/>
+                <field name="purchase_order_type_id"/>
+            </xpath>
+            <xpath expr="//filter[@name='status']" position="after">
+                <filter string="Purchase Order Type" name="group_purchase_order_type" domain="[]" context="{'group_by': 'purchase_order_type_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

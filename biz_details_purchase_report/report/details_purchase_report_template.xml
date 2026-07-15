@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="details_purchase_report_pdf_template">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <t t-set="company" t-value="o.env.company"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px;">
+                <div class="row" style="position: relative;">
+                    <div style="justify-content: left; align-items: center;position: absolute">
+                        <img t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%"/>
+                    </div>
+                    <div class="col-12" style="height: 0px;">
+                        <div class="" style="padding: 30px 0px 0 130px !important;">
+                            <span/><span t-esc="company.name"/> - Mã số thuế: <span t-esc="company.vat"/>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <t t-set="get_lines" t-value="get_lines(o)"/>
+            <t t-set="sum_quantity" t-value="0"/>
+            <t t-set="sum_purchase_value_nt" t-value="0"/>
+            <t t-set="sum_purchase_value" t-value="0"/>
+            <t t-foreach="get_lines.items()" t-as="data">
+                <div class="page" style="font-family: 'Times New Roman';font-size:14px; line-height: 25px">
+                    <t t-if="data_first">
+                        <div class="text-center">
+                            <h5 class="bold">SỔ CHI TIẾT MUA HÀNG</h5> 
+                            <h6 class="bold italic">Từ ngày <span t-esc="o.date_from and o.date_from.strftime('%d/%m/%Y')or ''"/> đến ngày <span t-esc="o.date_to and o.date_to.strftime('%d/%m/%Y')or ''"/></h6> 
+                        </div>
+                    </t>
+                    <table class="table-line">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 3%">STT</th>
+                                <th class="text-center" style="width: 4%">Ngày chứng từ</th>
+                                <th class="text-center" style="width: 6%">Số chứng từ</th>
+                                <th class="text-center" style="width: 10%">Tên nhà cung cấp</th>
+                                <th class="text-center" style="width: 6%">Mã hàng</th>
+                                <th class="text-center" style="width: 10%">Tên hàng</th>
+                                <th class="text-center" style="width: 4%">ĐVT</th>
+                                <th class="text-center" style="width: 4%">Số lượng mua</th>
+                                <th class="text-center" style="width: 4%">Tỷ giá</th>
+                                <th class="text-center" style="width: 4%">Đơn giá NT</th>
+                                <th class="text-center" style="width: 4%">Đơn giá</th>
+                                <th class="text-center" style="width: 4%">Giá trị mua NT</th>
+                                <th class="text-center" style="width: 4%">Giá trị mua</th>
+                                <th class="text-center" style="width: 3%">Mã kho</th>
+                                <th class="text-center" style="width: 3%">TK Nợ</th>
+                                <th class="text-center" style="width: 3%">TK Có</th>
+                                <th class="text-center" style="width: 3%">Đơn mua hàng</th>
+                            </tr>
+                            <t t-if="not data_first">
+                                <tr>
+                                    <th colspan="7" class="text-left  vertical bold">Số trang trước chuyển sang</th>
+                                    <th class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_quantity)"/>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_purchase_value_nt)"/>
+                                    </th>
+                                    <th class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_purchase_value)"/>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </t>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="data[1]['lines']" t-as="line">
+                                <tr>
+                                    <td class="text-center vertical"><span t-esc="line.get('stt')"/></td>
+                                    <td class="text-center vertical word"><span t-esc="line.get('date').strftime('%d/%m/%Y') if line.get('date') else ''"/></td>
+                                    <td class="text-left vertical word" style="color: #0000FF;"><span t-esc="line.get('name')"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('partner_name')"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('product_code')"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('product_name')"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('product_uom_id')"/></td>
+                                    <td class="text-right vertical word"><span t-esc="format_float_number(line.get('quantity'))"/></td>
+                                    <td class="text-right vertical word"><span t-esc="format_float_number(line.get('exchange_rate'))"/></td>
+                                    <td class="text-right vertical word"><span t-esc="format_float_number(line.get('unit_price_nt'))"/></td>
+                                    <td class="text-right vertical word"><span t-esc="format_float_number(line.get('unit_price'))"/></td>
+                                    <td class="text-right vertical word"><span t-esc="format_float_number(line.get('purchase_value_nt'))"/></td>
+                                    <td class="text-right vertical word"><span t-esc="format_float_number(line.get('purchase_value'))"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('location_dest_id')"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('account_debit')"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('account_credit')"/></td>
+                                    <td class="text-left vertical word"><span t-esc="line.get('order_name')"/></td>
+                                </tr>
+                            </t>
+                            <t t-set="sum_quantity" t-value="sum_quantity + data[1]['sum_quantity']"/>
+                            <t t-set="sum_purchase_value_nt" t-value="sum_purchase_value_nt + data[1]['sum_purchase_value_nt']"/>
+                            <t t-set="sum_purchase_value" t-value="sum_purchase_value + data[1]['sum_purchase_value']"/> 
+                        </tbody>
+
+                        <t t-if="data_last">
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" class="text-left vertical bold">Tổng cộng</td>
+                                    <td class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_quantity)"/>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_purchase_value_nt)"/>
+                                    </td>
+                                    <td class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_purchase_value)"/>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </t>
+                        <t t-else="">
+                            <tfoot class="tfoot">
+                                <tr>
+                                    <td colspan="7" class="text-left vertical bold">Cộng chuyển sang trang sau</td>
+                                    <td class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_quantity)"/>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_purchase_value_nt)"/>
+                                    </td>
+                                    <td class="text-right bold word">
+                                        <span t-esc="format_float_number(sum_purchase_value)"/>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </t>
+                    </table>
+                </div>
+                <div t-if="data_last" style="page-break-inside: avoid; font-family: 'Times New Roman';font-size:14px; line-height: 25px" class="mt-3">
+                    <div class="row italic text-right">
+                        <div class="col-10"/>
+                        <div class="col-2 text-center">
+                            <p>Ngày...tháng...năm......</p>
+                        </div>
+                    </div>
+                    <div class="row text-center" style="page-break-inside: avoid;">
+                        <div class="col-4">
+                            <p class="bold margin-p">Người lập biểu</p>
+                            <p class="italic">(Ký, họ tên)</p>
+                            <div class="name-user">
+                                <span t-esc="o.creator_id.name_without_position or ''"/>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <p class="bold margin-p">Kế Toán Trưởng</p>
+                            <p class="italic">(Ký, họ tên)</p>
+                            <div class="name-user">
+                                <span t-esc="o.accountant_chief_id.name_without_position"/>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <p class="bold margin-p">Thủ trưởng đơn vị</p>
+                            <p class="italic">(Ký, họ tên, đóng dấu)</p>
+                            <div class="name-user">
+                                <span t-esc="o.unit_head_id.name_without_position or ''"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-break"/>
+            </t>
+            <div class="footer">
+                <div class="row" style="font-family: 'Times New Roman'; font-size: 13px;">
+                    <div class="col-12 text-right" style="text-align: right;">
+                        <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+            <style> 
+                .table-line {
+                    width: 100%;
+                }
+                .table-line > :not(:first-child) {
+                    border-top: 0px solid currentColor;
+                }
+                .table-line tr , th,  td{
+                    border: 1px solid #000;
+                    padding: 2px;
+                    
+                }
+                .table-line > thead > tr > th {
+                    line-height: normal;
+                    vertical-align: middle;
+                }
+                .vertical {
+                    vertical-align: middle;
+                }
+                <!-- Tự cắt dòng khi max width -->
+                .word { 
+                    sword-wrap: break-word; 
+                    word-break: break-word; 
+                    white-space: normal;
+                }
+
+                .text-center {
+                    text-align: center;
+                }
+                .text-right {
+                    text-align: right;
+                }
+                .text-left {
+                    text-align: left;
+                }
+                .italic {
+                    font-style: italic;
+                }
+                .bold {
+                    font-weight: bold;
+                }
+                .margin-p {
+                    margin: 0px
+                }
+                .page-break {
+                    page-break-before: always;
+                }
+                .page-no-break {
+                    page-break-before: none !important;
+                }
+                .tfoot > tr > td {
+                    border: 0px solid #fff !important;
+                    padding: 15px 0 0 0;
+                }
+                .tfoot > tr {
+                    border: 0px solid #fff !important;
+                }
+                .name-user {
+                    margin-top: 100px;
+                    font-weight: bold;
+                }
+            </style>
+        </t>
+    </template>
+    <template id="details_purchase_report_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="biz_details_purchase_report.details_purchase_report_pdf_template" t-lang="o.env.user.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

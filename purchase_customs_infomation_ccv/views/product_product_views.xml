@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_customs_information" model="ir.ui.view">
+        <field name="name">product.template.form.customs.information</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Cảng hạ" name="unload_container_ids">
+                    <field name="unload_container_ids" options="{'no_open': True, 'no_create': True}">
+                        <tree editable="bottom" create="0" edit="1">
+                            <field name="default_code"/>
+                            <field name="name"/>
+                            <field name="standard_price"/>
+                            <field name="supplier_taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase')]"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

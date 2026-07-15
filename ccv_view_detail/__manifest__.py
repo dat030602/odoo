@@ -1,0 +1,20 @@
+{
+    'name': 'CCV View Detail',
+    'version': '16.0.1.0.0',
+    'summary': 'Xem nhanh chi tiết đơn hàng khi hover tree view Sale/Purchase',
+    'author': 'Your Company',
+    'category': 'Extra Tools',
+    'depends': ['sale', 'purchase', 'web', 'base', 'auto_reconcile_invoice'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/sale_order_views.xml',
+        'views/purchase_order_views.xml',
+        'views/sale_order_detail_wizard_view.xml',
+        'views/purchase_order_detail_wizard_view.xml',
+        'views/stock_picking_views.xml',
+        'views/stock_picking_detail_wizard_view.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+} 

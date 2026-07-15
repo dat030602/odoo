@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="giay_thanh_toan_tien_tam_ung_ccv_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.giay_thanh_toan_tien_tam_ung_ccv_document"
+                       t-lang="doc.user_id.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="giay_thanh_toan_tien_tam_ung_ccv_document">
+            <t t-call="ccv_sql.ccv_header4">
+                <div class="page" style="font-size: 16px;font-family: Times New Roman">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong>
+                            GIẤY THANH TOÁN TIỀN TẠM ỨNG
+                        </strong>
+                    </div>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-6" style="text-align: right">Ngày chứng từ:</div>
+                                <div class="col-6" style="text-align: left">
+                                    <span style="font-weight: bold;" t-if="doc.account_move_id.sudo()" t-esc="doc.account_move_id.sudo().date.strftime('%d/%m/%Y')"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-2"></div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6" style="text-align: right">Sổ chứng từ:</div>
+                                <div class="col-6" style="text-align: left">
+                                    <span style="font-weight: bold;" t-if="doc.account_move_id.sudo()" t-esc="doc.account_move_id.sudo().name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row" style="padding-top: 10px;">
+                                <div class="col-4">Họ tên người thanh toán:</div>
+                                <div class="col-8">
+                                    <span style="font-weight: bold;" t-esc="doc.employee_id.name"/>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 10px;">
+                                <div class="col-4">Bộ phận (Hoặc địa chỉ):</div>
+                                <div class="col-8">
+                                    <t t-if="doc.employee_id.department_id">
+                                        <span style="font-weight: bold;" t-esc="doc.employee_id.department_id.name"/>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 10px; margin-left: 2px">
+                                Số tiền tạm ứng được thanh toán theo bảng dưới đây:
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <span>Nợ: <span style="font-weight: bold;" t-esc="', '.join(doc.account_move_id.sudo().line_ids.filtered(lambda x: x.debit > 0).mapped('account_id.code'))"/></span>
+                            <br/>
+                            <span>Có: <span style="font-weight: bold;" t-esc="', '.join(doc.account_move_id.sudo().line_ids.filtered(lambda x: x.credit > 0).mapped('account_id.code'))"/></span>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        I/ Số tiền tạm ứng: &amp;nbsp;&amp;nbsp;
+                        <strong>
+                            <t t-set="total_amount_internal" t-value="doc.internal_account_id.total_amount if doc.internal_account_id else 0"/>
+                            <t t-set="total_amount_internal" t-value="total_amount_internal + sum(doc.internal_account_ids.mapped('total_amount'))"/>
+                            <t t-if="total_amount_internal > 0" t-esc="doc.convert_vnd(total_amount_internal)"/>
+                        </strong>
+                    </div>
+                    <t t-set="total_amount" t-value="doc.account_move_id.sudo().amount_total if doc.account_move_id.sudo() else doc.total_amount"/>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        <div class="col-3">II/ Số tiền đã chi:</div>
+                        <div class="col-9">
+                            <span style="font-weight: bold;" t-esc="doc.convert_vnd(total_amount)"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                            <tr>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>STT</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Số hoá đơn</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Ngày hoá đơn</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Số tiền</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Diễn giải</strong>
+                                </td>
+                            </tr>
+                            <t t-set="number" t-value="0"/>
+                            <t t-if="doc.account_move_id.sudo()">
+                                <t t-set="line_ids" t-value="doc.account_move_id.sudo().line_ids.filtered(lambda x: x.debit > 0)"/>
+                                <t t-foreach="line_ids" t-as="line">
+                                    <t t-set="number" t-value="number + 1"/>
+                                    <tr>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span style="text-align: center; vertical-align: middle;" t-esc="number"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="'%s%s' % (line.invoice_code if line.invoice_code else '', line.invoice_number if line.invoice_number else '')"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle">
+                                            <span t-esc="line.date_invoice.strftime('%d/%m/%Y') if line.date_invoice else ''"/>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle">
+                                            <span t-esc="doc.convert_vnd(line.debit)"/>
+                                        </td>
+                                        <td style="text-align: left; vertical-align: middle;">
+                                            <span t-esc="line.name"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="doc.expense_line_ids" t-as="line">
+                                    <t t-set="number" t-value="number + 1"/>
+                                    <tr>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span style="text-align: center; vertical-align: middle;" t-esc="number"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;" />
+                                        <td style="text-align: center; vertical-align: middle;" />
+                                        <td style="text-align: right; vertical-align: middle">
+                                            <span t-esc="doc.convert_vnd(line.total_amount_company)"/>
+                                        </td>
+                                        <td style="text-align: left; vertical-align: middle;">
+                                            <span t-esc="line.name"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                            <tr>
+                                <td colspan="3" style="text-align: left;">
+                                    <strong>Tổng cộng</strong>
+                                </td>
+                                <td style="text-align: right;">
+                                    <strong>
+                                        <span t-esc="doc.convert_vnd(total_amount)"/>
+                                    </strong>
+                                </td>
+                                <td style="text-align: right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--                    <t t-if="doc.page_break">-->
+                    <!--                        <p style="page-break-after:always;"></p>-->
+                    <!--                    </t>-->
+                    <div class="row" style="margin-left: 2px">
+                        III/ Chênh lệch:
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 4px">
+                        1 Số tạm ứng chi không hết ( I - II): &amp;nbsp;&amp;nbsp;
+                        <t t-if="total_amount_internal - total_amount > 0">
+                            <t t-esc="doc.convert_vnd(total_amount_internal - total_amount)"/>
+                        </t>
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 4px">
+                        2 Chi quá số tạm ứng (II - I): &amp;nbsp;&amp;nbsp;
+                        <t t-if="total_amount - total_amount_internal > 0">
+                            <t t-esc="doc.convert_vnd(total_amount - total_amount_internal)"/>
+                        </t>
+                    </div>
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span>
+                                <strong>Thủ trưởng đơn vị</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Kế toán trưởng</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Kế toán thanh toán</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Người đề nghị thanh toán</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </t>
+        </template>
+
+        <record id="giay_thanh_toan_tien_tam_ung_report" model="ir.actions.report">
+            <field name="name">Giấy thanh toán tiền tạm ứng</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.giay_thanh_toan_tien_tam_ung_ccv_template</field>
+            <field name="report_file">ccv_sql.giay_thanh_toan_tien_tam_ung_ccv_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a4_doc"/>
+            <field name="print_report_name">'Giấy thanh toán tiền tạm ứng'</field>
+            <field name="binding_model_id" ref="hr_expense.model_hr_expense_sheet"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="sign_template_view_kanban_inherit">
+        <field name="name">sign.template.kanban</field>
+        <field name="model">sign.template</field>
+        <field name="inherit_id" ref="sign.sign_template_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('mobile-xs-hide')]/button[2]" position="replace">
+                <!-- <button name="action_sign_send_request" type="object" class="btn btn-primary btn-sm dropdown-item" context="{'sign_directly_without_mail': 1}">Sign Now 111</button> -->
+                <button name="action_sign_send_request" type="object" class="btn btn-primary btn-sm mt8" context="{'sign_directly_without_mail': 1}">Sign Now</button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

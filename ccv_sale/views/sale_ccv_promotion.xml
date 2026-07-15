@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_sale_ccv_promotion_tree" model="ir.ui.view">
+        <field name="name">sale.ccv.promotion.tree</field>
+        <field name="model">sale.ccv.promotion</field>
+        <field name="arch" type="xml">
+            <tree string="Khuyến mãi bán hàng CCV" create="true" edit="true" delete="true">
+                <field name="name"/>
+                <field name="team_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="type"/>
+                <field name="amount" attrs="{'invisible': [('type', '=', 'percentage')]}"/>
+                <field name="amount_percentage" attrs="{'invisible': [('type', '=', 'fixed')]}"/>
+                <field name="is_default"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_sale_ccv_promotion_form" model="ir.ui.view">
+        <field name="name">sale.ccv.promotion.form</field>
+        <field name="model">sale.ccv.promotion</field>
+        <field name="arch" type="xml">
+            <form string="Khuyến mãi bán hàng CCV" create="false" edit="true" delete="true" copy="false">
+                <sheet>
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Lưu trữ" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Tên khuyến mãi" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <label for="date_from"/>
+                            <div class="o_row">
+                                <field name="date_from" required="1"/>
+                                -
+                                <field name="date_to" required="1"/>
+                            </div>
+                            <field name="team_id"/>
+                        </group>
+                        <group>
+                            <field name="type" required="1"/>
+                            <field name="amount" attrs="{'required': ['|', ('type', '=', 'fixed'), ('type', '=', 'gift')], 'invisible': [('type', '=', 'percentage')]}"/>
+                            <field name="amount_percentage" widget="percent" attrs="{'required': [('type', '=', 'percentage')], 'invisible': [('type', '!=', 'percentage')]}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="is_default"/>
+                        </group>
+                        <group string="Cấu hình quà tặng" attrs="{'invisible': [('type', '!=', 'gift')]}">
+                            <field name="gift_product_id" attrs="{'required': [('type', '=', 'gift')], 'invisible': [('type', '!=', 'gift')]}"/>
+                            <field name="gift_quantity" attrs="{'required': [('type', '=', 'gift')], 'invisible': [('type', '!=', 'gift')]}"/>
+                        </group>
+                        <group string="Điều kiện áp dụng">
+                            <field name="min_amount_total"/>
+                            <label for="min_quantity_total"/>
+                            <div class="o_row">
+                                <field name="min_quantity_total"/>
+                                Tấn
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Đối tác áp dụng" name="partner_domain">
+                            <field name="partner_domain" widget="domain" options="{'model': 'res.partner'}" placeholder="[('is_company', '=', True)]"/>
+                        </page>
+                        <page string="Sản phẩm áp dụng" name="product_domain">
+                            <field name="product_domain" widget="domain" options="{'model': 'product.product'}" placeholder="[('sale_ok', '=', True)]"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_sale_ccv_promotion_search" model="ir.ui.view">
+        <field name="name">sale.ccv.promotion.search</field>
+        <field name="model">sale.ccv.promotion</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm khuyến mãi CCV">
+                <field name="name"/>
+                <field name="team_id"/>
+                <field name="type"/>
+                <filter string="Phần trăm" name="percentage" domain="[('type', '=', 'percentage')]"/>
+                <filter string="Cố định" name="fixed" domain="[('type', '=', 'fixed')]"/>
+                <filter string="Quà tặng" name="gift" domain="[('type', '=', 'gift')]"/>
+                <filter string="Đang hoạt động" name="active" domain="[('date_from', '&lt;=', context_today()), ('date_to', '&gt;=', context_today())]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Đội ngũ" name="group_team" context="{'group_by': 'team_id'}"/>
+                    <filter string="Loại" name="group_type" context="{'group_by': 'type'}"/>
+                    <filter string="Ngày bắt đầu" name="group_date_from" context="{'group_by': 'date_from'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sale_ccv_promotion" model="ir.actions.act_window">
+        <field name="name">Khuyến mãi CCV</field>
+        <field name="res_model">sale.ccv.promotion</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_sale_ccv_promotion_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo khuyến mãi CCV mới
+            </p>
+            <p>
+                Định nghĩa quy tắc khuyến mãi cho đội ngũ bán hàng với khoảng thời gian cụ thể, 
+                miền đối tác và sản phẩm, và các loại giảm giá.
+            </p>
+        </field>
+    </record>
+
+</odoo>

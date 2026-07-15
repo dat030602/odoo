@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Customer Open List Views -->
+    <record id="view_salary_customer_open_list_tree" model="ir.ui.view">
+        <field name="name">salary.customer.open.list.tree</field>
+        <field name="model">salary.customer.open.list</field>
+        <field name="arch" type="xml">
+            <tree string="Danh sách khách hàng mở" decoration-danger="achievement_rate &lt; 0.9">
+                <field name="team_name" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="quantity" sum="Tổng số lượng" optional="show"/>
+                <field name="unit_price" optional="show"/>
+                <field name="commission_amount" sum="Tổng hoa hồng" optional="show"/>
+                <field name="achievement_rate" widget="percentage" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_customer_open_list_form" model="ir.ui.view">
+        <field name="name">salary.customer.open.list.form</field>
+        <field name="model">salary.customer.open.list</field>
+        <field name="arch" type="xml">
+            <form string="Danh sách khách hàng mở">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_customer_orders" type="object" class="oe_stat_button" icon="fa-shopping-cart">
+                            <field name="partner_id" widget="statinfo" string="Đơn hàng"/>
+                        </button>
+                        <button name="action_view_customer_summary_lines" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="commission_amount" widget="statinfo" string="Chi tiết"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="summary_id"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="unit_price"/>
+                            <field name="achievement_rate" widget="percentage"/>
+                            <field name="commission_amount"/>
+                            <field name="first_order_date"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

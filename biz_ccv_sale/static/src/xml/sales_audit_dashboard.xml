@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="ccv_sale.SalesAuditDashboard" owl="1">
+        <div class="o_sales_audit_dashboard container-fluid py-4">
+            <!-- Header & Filters -->
+            <div class="row mb-4 align-items-center">
+                <div class="col-12 col-md-6">
+                    <h2 class="fw-bold mb-0">Sales Audit Dashboard</h2>
+                </div>
+                <div class="col-12 col-md-6 d-flex justify-content-end gap-2">
+                    <input type="date" class="form-control w-auto" t-model="state.date_from" t-on-change="_fetchData"/>
+                    <input type="date" class="form-control w-auto" t-model="state.date_to" t-on-change="_fetchData"/>
+                    <button class="btn btn-primary" t-on-click="_fetchData">Làm mới</button>
+                </div>
+            </div>
+
+            <!-- KPI Cards Grid -->
+            <!-- Row 1: Overview -->
+            <h5 class="fw-bold text-muted mb-3">TỔNG QUAN KINH DOANH</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('total_orders')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">TỔNG SỐ ĐƠN</h6>
+                            <h3 class="mb-0 fw-bold"><t t-esc="state.data.overview.total_orders"/></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('total_ordered_amount')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">DOANH SỐ ĐẶT HÀNG</h6>
+                            <h3 class="mb-0 fw-bold text-success"><t t-esc="_formatCurrency(state.data.overview.total_ordered_amount)"/></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('total_delivered_amount')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">DOANH SỐ ĐÃ GIAO</h6>
+                            <h3 class="mb-0 fw-bold text-info"><t t-esc="_formatCurrency(state.data.overview.total_delivered_amount)"/></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('total_invoiced_amount')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">DOANH SỐ ĐÃ XUẤT HĐ</h6>
+                            <h3 class="mb-0 fw-bold text-primary"><t t-esc="_formatCurrency(state.data.overview.total_invoiced_amount)"/></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Warehouse Alerts -->
+            <h5 class="fw-bold text-danger mb-3">CẢNH BÁO LỖI KỸ THUẬT (AUDIT)</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card alert-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('qty_delivered_zero')">
+                        <div class="card-body">
+                            <h6 class="card-title text-danger fw-bold">LỆCH QTY DELIVERED</h6>
+                            <h3 class="mb-0 fw-bold"><t t-esc="state.data.warehouse_alerts.qty_delivered_zero"/></h3>
+                            <small class="text-muted">Đã giao kho nhưng Qty = 0</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card alert-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('price_unauthorized')">
+                        <div class="card-body">
+                            <h6 class="card-title text-danger fw-bold">SAI QUYỀN SỬA GIÁ</h6>
+                            <h3 class="mb-0 fw-bold"><t t-esc="state.data.warehouse_alerts.price_unauthorized"/></h3>
+                            <small class="text-muted">Sai giá niêm yết không quyền</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card alert-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('missing_picking')">
+                        <div class="card-body">
+                            <h6 class="card-title text-warning fw-bold">MẤT LIÊN KẾT PICKING</h6>
+                            <h3 class="mb-0 fw-bold"><t t-esc="state.data.warehouse_alerts.missing_picking"/></h3>
+                            <small class="text-muted">SO không tìm thấy phiếu kho</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Operations -->
+            <h5 class="fw-bold text-muted mb-3">TÌNH TRẠNG VẬN HÀNH</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('to_deliver')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">ĐƠN CHỜ GIAO</h6>
+                            <h3 class="mb-0 fw-bold text-warning"><t t-esc="state.data.operations.to_deliver"/></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('fully_delivered')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">ĐƠN HOÀN TẤT GIAO</h6>
+                            <h3 class="mb-0 fw-bold text-success"><t t-esc="state.data.operations.fully_delivered"/></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('to_invoice')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">ĐƠN CHỜ XUẤT HĐ</h6>
+                            <h3 class="mb-0 fw-bold text-primary"><t t-esc="state.data.operations.to_invoice"/></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="card kpi-card border-0 shadow-sm h-100" t-on-click="() => this._openListView('returns')">
+                        <div class="card-body">
+                            <h6 class="card-title text-muted fw-bold">ĐƠN TRẢ HÀNG</h6>
+                            <h3 class="mb-0 fw-bold text-danger"><t t-esc="state.data.operations.returns"/></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

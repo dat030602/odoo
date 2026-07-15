@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Rules for sale.sign.requests -->
+        <record id="sale_sign_requests_personal_rule" model="ir.rule">
+            <field name="name">Yêu cầu ký cá nhân</field>
+            <field name="model_id" ref="model_sale_sign_requests"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                ['|',
+                    '&amp;', ('sale_order_id.partner_id.user_id', '=', False), ('sale_order_id.user_id', '=', False),
+                    '|', '|',
+                    ('sale_order_id.user_id', '=', user.id),
+                    ('sale_order_id.partner_id.user_id', '=', user.id),
+                    ('sale_order_id.user_id', '=', False)
+                ]
+            </field>
+        </record>
+
+        <record id="sale_sign_requests_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả yêu cầu ký</field>
+            <field name="model_id" ref="model_sale_sign_requests"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="sale_sign_requests_team_rule" model="ir.rule">
+            <field name="name">Yêu cầu ký theo đội bán hàng</field>
+            <field name="model_id" ref="model_sale_sign_requests"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|','|',
+                    ('sale_order_id', '=', False),
+                    ('sale_order_id.sales_assistant_ids', 'in', [user.id]),
+                    ('sale_order_id.sales_team_captain_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+    </data>
+</odoo>

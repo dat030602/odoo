@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="biz_mail.EmojiGridMessageSeenIndicatorView" owl="1">
+        <div class="d-flex flex-column biz_message_seen_indicator" t-on-scroll="emojiGridMessageSeenIndicatorView.onScroll" t-ref="containerRef">
+            <span style="padding: 2px 5px 2px 5px; color: #FDFCFC; padding-bottom: 10px;">
+                Read by
+            </span>
+
+            <t t-set="partners" t-value="emojiGridMessageSeenIndicatorView.emojiPickerMessageSeenIndicatorViewOwner.popoverViewOwner.messageSeenIndicatorViewOwnerAsReaction.messageSeenIndicator.thread.partnerSeenChannel"/>
+            <t t-set="partnersAndTime" t-value="emojiGridMessageSeenIndicatorView.emojiPickerMessageSeenIndicatorViewOwner.popoverViewOwner.messageSeenIndicatorViewOwnerAsReaction.messageSeenIndicator.thread.timePartnerSeenChannel"/>
+            
+            <t t-foreach="partnersAndTime" t-as="tpartner" t-key="tpartner.localId">
+                <t t-foreach="partners" t-as="partner" t-key="partner.localId">
+                    <t t-if="partner.id==tpartner.partner_id and partner!=messaging.currentPartner">
+                        <div style="padding-top: 3px;">
+                            <span style="padding: 0px 5px 0px 5px; color: darkgrey">
+                                
+                                <b style="color: #FDFCFC; padding-right: 5px"><t t-esc="partner.nameOrDisplayName"/></b> <t t-esc="tpartner.time_seen"/>
+                            </span>
+                            <img class="o_ChannelInvitationForm_selectablePartnerAvatar biz-img-icon rounded-circle biz_o_Message_authorAvatarContainer" style="cursor: pointer; margin-left: 2px !important; float: left !important;"  t-att-src="partner.avatarUrl" alt="Avatar"/> 
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </div>
+    </t>
+
+</templates>

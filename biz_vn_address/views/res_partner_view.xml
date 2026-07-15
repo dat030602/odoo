@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="view_partner_short_form_address">
+        <field name="name">res.partner.short.form.address</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_address_form"/>
+        <field name="arch" type="xml">
+            <field name="street" position="replace">
+                <field name="street" placeholder="Street..." class="o_address_street" 
+                attrs="{'required': [('type', 'not in', ('contact','invoice'))]}"/>
+            </field>
+            <field name="street2" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="city" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="state_id" position="replace">
+                <field name="type" />
+                <field name="state_id" placeholder="Province/City" options="{&quot;no_open&quot;: True}" class="o_address_street" 
+                domain="[('country_id', '=', country_id)]" context="{'country_id': country_id, 'zip': zip}" 
+                attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+                <field name="district_id" placeholder="District..." class="o_address_street" domain="[('state_id', '=', state_id)]" 
+                attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+                <field name="wards_id" placeholder="Ward..." class="o_address_street" domain="[('district_id', '=', district_id)]" 
+                attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_partner_form_client">
+        <field name="name">res.partner.form.client.address</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="street" position="replace">
+                <field name="street" placeholder="Street..." class="o_address_street" 
+                attrs="{'required': [('type', 'not in', ('contact','invoice'))]}"/>
+            </field>
+            <field name="street2" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="city" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="state_id" position="replace">
+                <field name="state_id" placeholder="Province/City" options="{&quot;no_open&quot;: True}" class="o_address_street" domain="[('country_id', '=', country_id)]" 
+                    context="{'country_id': country_id, 'zip': zip}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+                <field name="district_id" placeholder="District..." options="{&quot;no_open&quot;: True}" class="o_address_street" domain="[('state_id', '=', state_id)]" 
+                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+                <field name="wards_id" placeholder="Ward..." options="{&quot;no_open&quot;: True}" class="o_address_street" domain="[('district_id', '=', district_id)]" 
+                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+            </field>
+            <xpath expr="//sheet/group/group/div/field[@name='street']" position="attributes">
+                <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group/div/field[@name='wards_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group/div/field[@name='state_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group/div/div/field[@name='country_id']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group/div/field[@name='zip']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group/div/field[@name='city']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//sheet/group/group/div/field[@name='street2']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group/div/div/field[@name='street']" position="attributes">
+                <attribute name="attrs">{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', '!=', 'contact')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group/div/div/field[@name='street']" position="after">
+                <field name="wards_id" placeholder="Wards" domain="[('district_id', '=', district_id)]" 
+                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+                <field name="district_id" placeholder="District" domain="[('state_id', '=', state_id)]" 
+                    attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group/div/div/field[@name='state_id']" position="replace">
+                <field name="state_id" placeholder="Province/City" options="{&quot;no_open&quot;: True}" domain="[('country_id', '=', country_id)]" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)], 'required': [('type', 'not in', ('contact','invoice'))]}"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group/div/div/field[@name='country_id']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group/div/div/field[@name='zip']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group/div/div/field[@name='city']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group/div/div/field[@name='street2']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/kanban/field[@name='city']" position="after">
+                <field name="state_id"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/kanban/templates/t/div/div/div/div/field[@name='city']" position="replace">
+                <field name="state_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_partner_tree_address">
+        <field name="name">res.partner.tree.address</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="display_name" position="after">
+                <field name="full_address_vi"/>
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_res_partner_filter_address">
+        <field name="name">res.partner.tree.address</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="state_id"/>
+                <field name="district_id"/>
+                <field name="wards_id"/>
+            </field>
+            <filter name="salesperson" position="after">
+                <filter name="state_id" string="State" domain="[]" context="{'group_by' : 'state_id'}"/>
+                <filter name="district_id" string="District" domain="[]" context="{'group_by' : 'district_id'}"/>
+                <filter name="wards_id" string="Wards" domain="[]" context="{'group_by' : 'wards_id'}"/>
+            </filter>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="res_partner_kanban_view_address">
+        <field name="name">res.partner.kanban.address</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]/div/ul/li/t/field[@name='city']" position="replace">
+                <field name="state_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_country_state_form_vn">
+        <field name="name">res.country.state.form.vn</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_form"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="accents"/>
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_country_state_tree_vn">
+        <field name="name">res.country.state.tree.vn</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_tree"/>
+        <field name="arch" type="xml">
+            <field name="country_id" position="after">
+                <field name="name_extension"/>
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="res_country_district_tree">
+        <field name="name">res.country.district.tree</field>
+        <field name="model">res.country.district</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state_id"/>
+                <field name="name_extension"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_district" model="ir.actions.act_window">
+        <field name="name">District</field>
+        <field name="res_model">res.country.district</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_action_district" action="action_district" parent="contacts.menu_localisation" sequence="4"/>
+    <record model="ir.ui.view" id="res_country_wards_tree">
+        <field name="name">res.country.wards.tree</field>
+        <field name="model">res.country.wards</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="district_id"/>
+                <field name="state_id"/>
+                <field name="name_extension"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_wards" model="ir.actions.act_window">
+        <field name="name">Wards</field>
+        <field name="res_model">res.country.wards</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_action_wards" action="action_wards" parent="contacts.menu_localisation" sequence="3"/>
+</odoo>

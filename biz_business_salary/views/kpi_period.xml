@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="kpi_period_view_form_inherit" model="ir.ui.view">
+        <field name="name">kpi.period.view.form.inherit</field>
+        <field name="model">kpi.period</field>
+        <field name="inherit_id" ref="biz_kpi_scorecard.kpi_period_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/tree" position="inside">
+                <field name="kpi_config_id" invisible="1"/>
+                <button name="action_open_kpi_config" string="KPI" type="object" icon="fa-cog"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

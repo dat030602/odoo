@@ -1,0 +1,56 @@
+<odoo>
+    <record id="view_check_request_api_wizard" model="ir.ui.view">
+        <field name="name">check.request.api.wizard.form</field>
+        <field name="model">check.request.api.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Kiểm tra trạng thái cân" edit="0">
+                <widget name="web_ribbon" title="Hoàn thành" bg_color="bg-success" attrs="{'invisible': [('IsFinished', '=', False)]}"/>
+                <widget name="web_ribbon" title="Hủy" bg_color="bg-danger" attrs="{'invisible': [('IsDeleted', '=', False)]}"/>
+                <group>
+                    <group string="Thông tin phiếu">
+                        <field name="Id"/>
+                        <field name="Stt"/>
+                        <field name="SoPhieu"/>
+                        <field name="PhuongTien"/>
+                        <field name="KhachHang"/>
+                        <field name="SanPham"/>
+                        <field name="GhiChu"/>
+                    </group>
+                    <group string="Thông tin cân">
+                        <field name="Idnm" attrs="{'invisible': [('Factory', '!=', False)]}"/>
+                        <field name="Factory"/>
+                        <field name="IdCan" attrs="{'invisible': [('Machine', '!=', False)]}"/>
+                        <field name="Machine"/>
+                        <field name="SLBatDau"/>
+                        <field name="PlanCounter"/>
+                        <field name="Counter"/>
+                        <field name="Total"/>
+                    </group>
+                </group>
+                <group string="Thông tin thời gian">
+                    <field name="CreateTime"/>
+                    <field name="StartTime"/>
+                    <field name="StopTime"/>
+                    <field name="LastTime"/>
+                </group>
+                <group string="Trạng thái">
+                    <field name="Solo"/>
+                    <field name="DonGia"/>
+                    <field name="IsFinished" invisible="1"/>
+                    <field name="IsDeleted" invisible="1"/>
+                </group>
+                <footer>
+                    <button string="Đóng" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_check_request_api_wizard"
+        name="Kiểm tra trạng thái"
+        res_model="check.request.api.wizard"
+        view_mode="form"
+        target="new"
+        binding_model="check.request.api.wizard"
+    />
+</odoo>

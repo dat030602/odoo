@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_quant_tree_inventory_editable_ccv_sql" model="ir.ui.view">
+            <field name="name">view_stock_quant_tree_inventory_editable_ccv_sql</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree_inventory_editable"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class"></attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='stock.action_stock_inventory_adjustement_name']" position="before">
+                    <button name="print_inventory_report" type="object" string="Inventory Report"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

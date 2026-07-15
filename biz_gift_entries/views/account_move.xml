@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="account_move_form_biz_gift_entries" model="ir.ui.view">
+		<field name="name">account.move.form.biz_gift_entries</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_move_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='invoice_vendor_bill_id']" position="after">
+				<!-- <field name="gift_entries" attrs="{'readonly':[('state','!=','draft')]}"/> -->
+			</xpath>
+		</field>
+	</record>
+
+	<record id="vsi_account_invoice_inherit_form_view_biz_gift_entries" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.biz_gift_entries</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="biz_viettel_sinvoice_v2.vsi_account_invoice_inherit_form_view"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//button[@name='action_create_data_sinvoice']" position="after">
+        		<field name="gift_entries" invisible="1"/>
+        		<button name="action_create_data_sinvoice" string="Create S-Invoice" type="object" class="oe_highlight" attrs="{'invisible': [('gift_entries','!=',True)]}"/>
+        	</xpath>
+        	<xpath expr="//button[@name='action_create_data_sinvoice']" position="attributes">
+        		<attribute name="attrs">{'invisible': ['|',('gift_entries','=',True),'|','|',('sinvoice_count','>', 0),('state', '!=', 'posted'),('move_type','=', 'in_invoice')]}</attribute>
+        	</xpath>
+        </field>
+    </record>
+
+</odoo>

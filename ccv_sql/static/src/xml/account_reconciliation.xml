@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="reconciliation.line.match">
+        <t t-jquery="input.filter" t-operation="before">
+            <div class="d-inline-block mr-2" style="margin-right: 5px;">
+                <input type="date" class="filter_date_from o_input" style="width: 140px; display: inline-block;" placeholder="Từ ngày" title="Từ ngày"/>
+                <span class="mx-1" style="margin: 0 4px;">-</span>
+                <input type="date" class="filter_date_to o_input" style="width: 140px; display: inline-block;" placeholder="Đến ngày" title="Đến ngày"/>
+            </div>
+        </t>
+        <t t-jquery="input.filter" t-operation="attributes">
+            <attribute name="placeholder">Lọc tài khoản, nhãn, đối tác, số tiền,...</attribute>
+        </t>
+        <t t-jquery="div.match_controls button.fa-search" t-operation="after">
+            <button class="btn btn-secondary btn-sm btn_add_all_filtered ml-2" type="button" style="margin-left: 5px;">Lấy hết đã lọc</button>
+        </t>
+    </t>
+</templates>

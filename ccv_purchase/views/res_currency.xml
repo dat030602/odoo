@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_currency_form_inherit" model="ir.ui.view">
+            <field name="name">res.currency.form.inherit</field>
+            <field name="model">res.currency</field>
+            <field name="inherit_id" ref="base.view_currency_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='decimal_places']" position="after">
+                    <field name="rounding_method"/>
+                    <field name="rounding_threshold" attrs="{'invisible': [('rounding_method', '=', 'HALF-UP')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_move_line_tree" model="ir.ui.view">
+        <field name="name">stock.move.line.view.tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref='stock.view_move_line_tree'/>
+        <field name="arch" type="xml">
+            <field name='qty_done' position="before">
+                <field name="internal_transfer_price"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_move_action_create_internal_transfer_layer" model="ir.actions.server">
+        <field name="name">Tạo định giá bình quân giá thành nội bộ</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+        <field name="binding_model_id" ref="stock.model_stock_move_line"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.create_internal_transfer_layer()</field>
+    </record>
+</odoo>

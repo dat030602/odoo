@@ -1,0 +1,24 @@
+<odoo>
+    <data noupdate="0">
+        <record id="npk_weighing_api_host_parameter" model="ir.config_parameter">
+            <field name="key">npk_weighing.api_host</field>
+            <field name="value">http://192.168.1.5:8000</field>
+        </record>
+        <function
+            model="ir.config_parameter"
+            name="set_param"
+            eval="('smartweight.ip', '192.168.1.48')" />
+        <function
+            model="ir.config_parameter"
+            name="set_param"
+            eval="('smartweight.port', '8765')" />
+        <record id="ccv_api_connector_loading_id_parameter" model="ir.config_parameter">
+            <field name="key">ccv_api_connector.loading_id</field>
+            <field name="value">0</field>
+        </record>
+        <record id="ccv_api_connector_stocker_id_parameter" model="ir.config_parameter">
+            <field name="key">ccv_api_connector.stocker_id</field>
+            <field name="value">0</field>
+        </record>
+    </data>
+</odoo>

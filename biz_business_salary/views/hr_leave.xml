@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_leave_view_form" model="ir.ui.view">
+        <field name="name">hr.leave.view.form.inherit</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <field name="is_warning_hr_leave_message" invisible="1"/>
+                <div class="alert alert-warning" role="alert" attrs="{'invisible': [('is_warning_hr_leave_message', '=', False)]}">
+                    <i class="fa fa-exclamation-triangle" role="img" aria-label="Warning" title="Warning"/>
+                    <span>
+                        Cảnh báo: Tổng số giờ nghỉ trong tháng của nhân viên này đã vượt quá 8 giờ.
+                        Theo quy định, nhân viên chỉ được nghỉ 1 ngày phép trong tháng, nếu nghỉ quá sẽ bị đánh giá xếp loại và chuyên cần.
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

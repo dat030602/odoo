@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="accounting_balance_sheet_search" model="ir.ui.view">
+            <field name="name">accounting.balance.sheet.search</field>
+            <field name="model">accounting.balance.sheet</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="categ_name"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="view_accounting_balance_sheet_tree" model="ir.ui.view">
+            <field name="name">accounting.balance.sheet.tree</field>
+            <field name="model">accounting.balance.sheet</field>
+            <field name="arch" type="xml">
+                <tree default_order="code">
+                    <field name="categ_name"/>
+                    <field name="code"/>
+                    <field name="parent_level_id"/>
+                    <field name="apply_by"/>
+                    <field name="account_ids" widget="many2many_tags"/>
+                    <field name="total_categ_ids" widget="many2many_tags"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_accounting_balance_sheet_form" model="ir.ui.view">
+            <field name="name">accounting.balance.sheet.form</field>
+            <field name="model">accounting.balance.sheet</field>
+            <field name="arch" type="xml">
+              	<form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="categ_name"/>
+                                <field name="report_type"/>
+                                <field name="code"/>                                
+                                <field name="parent_level_id"/>
+                                <field name="apply_by"/>   
+                                <field name="stt_calculate"/>                         
+                            </group>
+                            <group>
+                                <field name="account_ids" widget="many2many_tags" attrs="{'readonly': [('apply_by','=', 'total_categ')]}"/>
+                                <field name="total_categ_ids" widget="many2many_tags" attrs="{'readonly': [('apply_by','=', 'total_debit_credit')]}"/>
+                                <field name="in_business_cycle"/>
+                                <field name="is_bold_report" groups="base.group_no_one"/>
+                                <field name="value_on_report"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+      	</record>
+
+        <record id="action_accounting_balance_sheet" model="ir.actions.act_window">
+            <field name="name">Accounting balance sheet</field>
+            <field name="res_model">accounting.balance.sheet</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

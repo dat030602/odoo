@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!--    <record id="res_users_view_form_preferences" model="ir.ui.view">-->
+<!--        <field name="name">res.users.preferences.form.inherit</field>-->
+<!--        <field name="model">res.users</field>-->
+<!--        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <group name="signature" position="after">-->
+<!--                <group name="Warehouses">-->
+<!--                    <field name="property_warehouse_id" groups="stock.group_stock_multi_warehouses"/>-->
+<!--                </group>-->
+<!--            </group>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="res_users_view_simple_form" model="ir.ui.view">-->
+<!--        <field name="name">res.users.simple.form.inherit</field>-->
+<!--        <field name="model">res.users</field>-->
+<!--        <field name="inherit_id" ref="base.view_users_simple_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <group name="phone_numbers" position="after">-->
+<!--                <group name="Warehouses">-->
+<!--                    <field name="property_warehouse_id" groups="stock.group_stock_multi_warehouses"/>-->
+<!--                </group>-->
+<!--            </group>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id="res_users_view_form_inherit_biz_client_ccv" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.biz.client.ccv</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <group name="Warehouses" position="inside">
+                <field name="stock_warehouse_ids" widget="many2many_tags" groups="base.group_system" options="{'no_create': True}"/>
+            </group>
+            <xpath expr="//div[@class='oe_title']//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

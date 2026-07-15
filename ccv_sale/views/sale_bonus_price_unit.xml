@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_bonus_price_unit_tree_view" model="ir.ui.view">
+        <field name="name">sale.bonus.price.unit.tree</field>
+        <field name="model">sale.bonus.price.unit</field>
+        <field name="arch" type="xml">
+            <tree string="Quỹ dự phòng">
+                <field name="name"/>
+                <field name="team_id"/>
+                <field name="amount"/>
+                <field name="currency_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sale_bonus_price_unit_form_view" model="ir.ui.view">
+        <field name="name">sale.bonus.price.unit.form</field>
+        <field name="model">sale.bonus.price.unit</field>
+        <field name="arch" type="xml">
+            <form string="Quỹ dự phòng">
+                <header/>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="team_id"/>
+                            <field name="amount" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="bonus_default_id"/>
+                        </group>
+                        <group>
+                            <label for="date_from"/>
+                            <div class="o_row">
+                                <field name="date_from" required="1"/>
+                                -
+                                <field name="date_to" required="1"/>
+                            </div>
+                        </group>
+                        <notebook>
+                            <page string="Lịch sử quỹ dự phòng" name="bonus_history_line_ids">
+                                <field name="bonus_history_line_ids" readonly="1">
+                                    <tree limit="12">
+                                        <field name="date_month"/>
+                                        <field name="date_year"/>
+                                        <field name="amount" sum="amount"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <button name="view_detail" string="Xem chi tiết" type="object" icon="fa-eye" attrs="{'invisible': [('amount', '=', 0)]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Danh mục sản phẩm" name="categ_ids">
+                                <field name="categ_ids">
+                                    <tree create="0" delete="0" edit="0">
+                                        <field name="parent_id"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Khách hàng" name="partner_ids">
+                                <field name="partner_ids">
+                                    <tree create="0" delete="0" edit="0">
+                                        <field name="code_contact"/>
+                                        <field name="name"/>
+                                        <field name="full_address_vi"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_bonus_price_unit_action" model="ir.actions.act_window">
+        <field name="name">Quỹ dự phòng</field>
+        <field name="res_model">sale.bonus.price.unit</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo mới Quỹ dự phòng
+            </p><p>
+                Quản lý các khoản Quỹ dự phòng theo đội bán hàng và danh mục sản phẩm.
+            </p>
+        </field>
+    </record>
+
+    <record id="sale_bonus_price_unit_action_manager" model="ir.actions.act_window">
+        <field name="name">Quỹ dự phòng</field>
+        <field name="res_model">sale.bonus.price.unit</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo mới Quỹ dự phòng
+            </p><p>
+                Quản lý các khoản Quỹ dự phòng theo đội bán hàng và danh mục sản phẩm.
+            </p>
+        </field>
+    </record>
+    
+</odoo>

@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+
+from . import sale_order_line_image
+from . import invoice_inherit
+

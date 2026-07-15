@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+   <t t-name="ccv_sql.ListView.Buttons" t-inherit="web.ListView.Buttons" t-inherit-mode="extension">
+        <xpath expr="//button[contains(@class, 'o_list_button_add')]" position="after">
+            <t t-if="env.searchModel.resModel === 'account.move'">
+                <!-- Dropdown Button Bút toán con -->
+                <div class="dropdown d-inline-block ms-2">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Bút toán công nợ
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#" t-on-click.prevent="createChildMoveDebit">
+                                Tạo bút toán nợ
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" t-on-click.prevent="createChildMoveCredit">
+                                Tạo bút toán có
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

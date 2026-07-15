@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inventory_header">
+        <div class="header">
+            <div class="row" style="report_header_style">
+                <div class="col-2">
+                    <img t-if="user.company_id.logo" t-att-src="image_data_uri(user.company_id.logo)" style="width: auto; max-height: 40px;" class="float-left" alt="Logo"/>
+                </div>
+                <div class="col-4">
+                    <div class="col-xs-12">
+                        <div style="margin-right: 25px;font-size: 12px; text-align: left;font-family: Times New Roman">CÔNG TY TNHH
+                                Con Cò Vàng - Mã Số Thuế: 0305995751
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="col-xs-12">
+                        <div style="padding-top: 2px;text-align: center;font-size: 16px; font-family: Times New Roman">
+                            <strong>Mẫu số: 05-VT</strong>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding-top: 2px;text-align: center; font-size: 12px;font-family: Times New Roman">
+                            (Ban hành theo Thông Tư số 200/2014/TT-BTC
+                    </div>
+                    <div class="col-xs-12" style="text-align: center; font-size: 12px;font-family: Times New Roman">
+                            Ngày 22/12/2014 của Bộ Tài Chính)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="article o_report_layout_standard">
+            <t t-out="0"/>
+        </div>
+    </template>
+
+    <template id="inventory_report_pdf_template">
+        <div class="page" style="font-size: 10px;font-family: Times New Roman">
+            <div class="row" style="padding-top: 10px; margin-left: 2px">
+                - Thời điểm kiểm kê: <t t-esc="get_inventory_time(docs)"/>
+            </div>
+            <div class="row" style="padding-top: 10px; margin-left: 2px">
+                - Biên bản kiểm kê gồm:
+            </div>
+            <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: left;">
+                <div class="col-4">
+                    <span>+ Ông / bà:</span>
+                </div>
+                <div class="col-4">
+                    <span>Chức vụ: Phó phòng HCNS</span>
+                </div>
+                <div class="col-4">
+                    <span>Đại diện:..................................................................</span>
+                </div>
+            </div>
+            <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: left;">
+                <div class="col-4">
+                    <span>+ Ông / bà:</span>
+                </div>
+                <div class="col-4">
+                    <span>Chức vụ: Kế toán trưởng</span>
+                </div>
+                <div class="col-4">
+                    <span>Đại diện:..................................................................</span>
+                </div>
+            </div>
+            <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: left;">
+                <div class="col-4">
+                    <span>+ Ông / bà:</span>
+                </div>
+                <div class="col-4">
+                    <span>Chức vụ: Nhân viên kế toán kho</span>
+                </div>
+                <div class="col-4">
+                    <span>Đại diện:..................................................................</span>
+                </div>
+            </div>
+            <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: left;">
+                <div class="col-4">
+                    <span>+ Ông / bà:</span>
+                </div>
+                <div class="col-4">
+                    <span>Chức vụ: Thủ kho</span>
+                </div>
+                <div class="col-4">
+                    <span>Đại diện:..................................................................</span>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-sm" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                    <tr>
+                        <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                            <strong>STT</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                            <strong>Mã hàng</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                            <strong>Tên hàng</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                            <strong>Đơn vị tính</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;" colspan="3">
+                            <strong>Số lượng</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;" colspan="3">
+                            <strong>Giá trị</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <strong>Theo số kế toán</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <strong>Theo kiểm kê</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <strong>Chênh lệch</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <strong>Theo số kế toán</strong>
+                        </td>
+                        <td style="text-align: left; vertical-align: middle;">
+                            <strong>Theo kiểm kê</strong>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <strong>Chênh lệch</strong>
+                        </td>
+                    </tr>
+                    <t t-set="number" t-value="0"/>
+                    <t t-set="sum_quantity" t-value="0" />
+                    <t t-set="sum_inventory_quantity" t-value="0" />
+                    <t t-set="sum_inventory_diff_quantity" t-value="0" />
+                    <t t-foreach="docs" t-as="doc">
+                        <t t-set="number" t-value="number + 1"/>
+                        <tr>
+                            <td style="text-align: center; vertical-align: middle;">
+                                <span style="text-align: center; vertical-align: middle;" t-esc="number"/>
+                            </td>
+                            <td style="text-align: left; vertical-align: middle;">
+                                <span t-esc="doc.product_id.default_code"/>
+                            </td>
+                            <td style="text-align: left; vertical-align: middle">
+                                <span t-esc="doc.product_id.name"/>
+                            </td>
+                            <td style="text-align: left; vertical-align: middle">
+                                <span t-esc="doc.product_tmpl_id.uom_id.name"/>
+                            </td>
+                            <td style="text-align: right; vertical-align: middle;">
+                                <span t-esc="convert_number(doc.quantity)"/>
+                                <t t-set="sum_quantity" t-value="sum_quantity + doc.quantity" />
+                            </td>
+                            <td style="text-align: right; vertical-align: middle;">
+                                <span t-esc="convert_number(doc.inventory_quantity)"/>
+                                <t t-set="sum_inventory_quantity" t-value="sum_inventory_quantity + doc.inventory_quantity" />
+                            </td>
+                            <td style="text-align: right; vertical-align: middle;">
+                                <span t-esc="convert_number(doc.inventory_diff_quantity)"/>
+                                <t t-set="sum_inventory_diff_quantity" t-value="sum_inventory_diff_quantity + doc.inventory_diff_quantity" />
+                            </td>
+                            <td style="text-align: right; vertical-align: middle;">
+                            </td>
+                            <td style="text-align: right; vertical-align: middle;">
+                            </td>
+                            <td style="text-align: right; vertical-align: middle;">
+                            </td>
+                        </tr>
+                    </t>
+                    <tr>
+                        <td colspan="4" style="text-align: left;">
+                            <strong>Tổng cộng</strong>
+                        </td>
+                        <td style="text-align: right;">
+                            <strong><t t-esc="convert_number(sum_quantity)"/></strong>
+                        </td>
+                        <td style="text-align: right;">
+                            <strong><t t-esc="convert_number(sum_inventory_quantity)"/></strong>
+                        </td>
+                        <td style="text-align: right;">
+                            <strong><t t-esc="convert_number(sum_inventory_diff_quantity)"/></strong>
+                        </td>
+                        <td style="text-align: right;">
+                        </td>
+                        <td style="text-align: right;">
+                        </td>
+                        <td style="text-align: right;">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                <div class="col-3">
+                </div>
+                <div class="col-3">
+                </div>
+                <div class="col-3">
+                </div>
+                <div class="col-3">
+                    <span>Ngày .... tháng .... năm ....</span>
+                    <br/>
+                </div>
+            </div>
+            <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                <div class="col-3">
+                    <span>
+                        <strong>Thủ trưởng đơn vị</strong>
+                    </span>
+                    <br/>
+                    <span>Ý kiến giải quyết số chênh lệch</span>
+                    <br/>
+                    <span>(Ký, họ tên)</span>
+                </div>
+                <div class="col-3">
+                    <span>
+                        <strong>Kế toán trưởng</strong>
+                    </span>
+                    <br/>
+                    <span>(Ký, họ tên)</span>
+                </div>
+                <div class="col-3">
+                    <span>
+                        <strong>Thủ kho</strong>
+                    </span>
+                    <br/>
+                    <span>(Ký, họ tên)</span>
+                </div>
+                <div class="col-3">
+                    <span>
+                        <strong>Trưởng ban kiểm kê</strong>
+                    </span>
+                    <br/>
+                    <span>(Ký, họ tên)</span>
+                </div>
+            </div>
+
+
+        </div>
+
+    </template>
+
+    <template id="inventory_report_pdf">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-call="biz_inventory_report.inventory_header"/>
+
+                <t t-call="biz_inventory_report.inventory_report_pdf_template"/>
+            </t>
+        </t>
+    </template>
+</odoo>

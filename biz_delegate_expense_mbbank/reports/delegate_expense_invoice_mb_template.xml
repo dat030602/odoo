@@ -1,0 +1,515 @@
+<odoo>
+    <template id="delegate_expense_invoice_mb_template_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+            <t t-set="doc" t-value="doc.sudo().with_context(lang=doc.env.user.lang)" />
+            <t t-set="company" t-value="doc.env.company"/>
+                <div class="page" style="font-family: Times New Roman;font-size:14px">
+                    <div class="page-one">
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col-3" style="display: flex; justify-content: left; align-items: center; padding: 0 0 0 30px;">
+                                <img src="/biz_delegate_expense_mbbank/static/src/img/logo_mb.png"  style="max-height: 80px; max-width: 80px;"/>
+                            </div>
+                            <div class="col-3 text-center" style="position: relative;">
+                                <span style="margin-bottom: 0px; font-weight: bold;font-size: 18px">ỦY NHIỆM CHI</span><br/>
+                                    <i>(Payment Order)</i>
+                            </div>
+                            <div class="col-6" style="padding: 0 0 0 30px;"> 
+                                Liên <i>(Slip): 1 Ngày (Date):</i> <span t-esc="doc.date.strftime('%d/%m/%Y')"/><br/>
+                                Giờ giao nhận <i>(Time):</i> <span style="margin-left: 60px">Số Seq <i>(Ref.No):</i></span>
+                            </div>
+                        </div>   
+                        <div class="row bg-tr">
+                            <div class="col-7 padding-col">
+                                <p class="content-p"><b>THÔNG TIN NGƯỜI CHUYỂN <i>(Applicant)</i></b></p>
+                            </div>
+                            <div class="col-5">
+                                <p class="content-p" style="padding-left: 5px;"><b>SỐ TIỀN <i>(With Amount)</i></b></p>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-7 padding-col">
+                                <p class="content-p">Đơn vị/Người chuyển <i style="padding-left: 5px;">(Applicant):</i> <b style="padding-left: 5px;">Công ty TNHH Con Cò Vàng</b></p>
+                                <p class="content-p">Số tài khoản <i>(A/C No.):</i> <b style="padding-left: 5px;">1104102532008</b></p>
+                                <p class="content-p">Tại Ngân hàng <i>(At Bank):</i> <span style="padding-left: 5px;">Ngân hàng TMCP Quân đội - CN Sài Gòn</span></p>
+                            </div>
+                            <div class="col-5" style="padding: 0px;">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="content-p" style="padding-left: 5px; border-right: 1px solid #000;"><b>Bằng số</b> <i>(in figures)</i>:</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="content-p" style="padding-left: 5px;"><b>Loại tiền</b> <i>(Currency):</i>:</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="border: 1px solid #000;">
+                                    <div class="col-6">
+                                        <p class="content-p text-right" style="padding: 0 5px 0 0;border-right: 1px solid #000;"><b><span t-esc="format_float_number(docs.amount_total)"/></b></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="content-p text-center"><b><span t-esc="doc.currency_id.name or ''"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row" style="border: 1px solid #000; border-top: 0px solid #fff;">
+                                    <div class="col-3" style="border-right: 1px solid #000;">
+                                        <p style="padding-left: 5px;margin-bottom: 0px"><b>Bằng chữ</b></p><i style="padding-left: 5px;">(in words):</i>
+                                    </div>
+                                    <div class="col-9">
+                                        <p class="content-p" style="padding-left: 5px;"><b><i><span t-esc="amount2text(docs.amount_total)"/></i></b></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7 bg-tr padding-col">
+                                <p class="content-p"><b>THÔNG TIN NGƯỜI HƯỞNG <i> (Beneficiary)</i></b></p>
+                            </div>
+                            <div class="col-5">
+                                <p class="content-p"><b>Hình thức thanh toán phí <i> (Charges)</i></b></p>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-7 padding-col">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Đơn vị/Người hưởng:</p>
+                                        <p style="margin-bottom: 0px;"><i>(Beneficiary)</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><b><span t-esc="doc.partner_id.name or ''"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Số tài khoản/CMT/HC:</p>
+                                        <p style="margin-bottom: 0px;"><i>(A/c No./ID/PP No.)</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <t t-set="number_bank_partner" t-value="doc.partner_bank_id.acc_number if doc.partner_bank_id else ''"/>
+                                        <p class="content-p"><b><t t-esc="number_bank_partner"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Ngày cấp <i>(Date of Issue):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Nơi cấp <i>(Place of Issue):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <t t-set="name_bank_partner" t-value="doc.partner_bank_id.bank_id.name if doc.partner_bank_id else ''"/>
+                                        <p class="content-p">Tại Ngân hàng <i>(At Bank):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><t t-esc="name_bank_partner"/></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Nội dung <i>(Details):</i> </p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><span t-esc="doc.ref"/><br/><br/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <p class="content-p"><input type="radio"/> Người chuyển chịu <i>(Including)</i></p>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <p class="content-p"><input type="radio"/> Người hưởng chịu <i>(Excluding)</i></p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <p style="margin-bottom: 0px"><b>Kế toán trưởng</b></p>
+                                            <i>Chief Accountant</i>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <p style="margin-bottom: 0px"><b>Chủ tài khoản</b></p>
+                                            <i>A/c Holder</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-12 bg-tr padding-col">
+                                <p class="content-p"><b>PHẦN DÀNH CHO NGÂN HÀNG (For Bank use Only)</b></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 padding-col">
+                                Ngày giờ hạch toán<i>(Settlement date time)</i>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p style="margin-bottom: 0px;"><b>Giao dịch viên</b></p><i>Teller</i>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p style="margin-bottom: 0px;"><b>Kiểm soát</b></p><i>Suppervisor</i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="page-two" style="page-break-inside: avoid;">
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col-3" style="display: flex; justify-content: left; align-items: center; padding: 0 0 0 30px;">
+                                <img src="/biz_delegate_expense_mbbank/static/src/img/logo_mb.png"  style="max-height: 80px; max-width: 80px;"/>
+                            </div>
+                            <div class="col-3 text-center" style="position: relative;">
+                                <span style="margin-bottom: 0px; font-weight: bold;font-size: 18px">ỦY NHIỆM CHI</span><br/>
+                                    <i>(Payment Order)</i>
+                            </div>
+                            <div class="col-6" style="padding: 0 0 0 30px;"> 
+                                Liên <i>(Slip): 2 Ngày (Date):</i> <span t-esc="doc.date.strftime('%d/%m/%Y')"/><br/>
+                                Giờ giao nhận <i>(Time):</i> <span style="margin-left: 60px">Số Seq <i>(Ref.No):</i></span>
+                            </div>
+                        </div>   
+                        <div class="row bg-tr">
+                            <div class="col-7 padding-col">
+                                <p class="content-p"><b>THÔNG TIN NGƯỜI CHUYỂN <i>(Applicant)</i></b></p>
+                            </div>
+                            <div class="col-5">
+                                <p class="content-p" style="padding-left: 5px;"><b>SỐ TIỀN <i>(With Amount)</i></b></p>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-7 padding-col">
+                                <p class="content-p">Đơn vị/Người chuyển <i style="padding-left: 5px;">(Applicant):</i> <b style="padding-left: 5px;">Công ty TNHH Con Cò Vàng</b></p>
+                                <p class="content-p">Số tài khoản <i>(A/C No.):</i> <b style="padding-left: 5px;">1104102532008</b></p>
+                                <p class="content-p">Tại Ngân hàng <i>(At Bank):</i> <span style="padding-left: 5px;">Ngân hàng TMCP Quân đội - CN Sài Gòn</span></p>
+                            </div>
+                            <div class="col-5" style="padding: 0px;">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="content-p" style="padding-left: 5px; border-right: 1px solid #000;"><b>Bằng số</b> <i>(in figures)</i>:</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="content-p" style="padding-left: 5px;"><b>Loại tiền</b> <i>(Currency):</i>:</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="border: 1px solid #000;">
+                                    <div class="col-6">
+                                        <p class="content-p text-right" style="padding: 0 5px 0 0;border-right: 1px solid #000;"><b><span t-esc="format_float_number(docs.amount_total)"/></b></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="content-p text-center"><b><span t-esc="doc.currency_id.name or ''"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row" style="border: 1px solid #000; border-top: 0px solid #fff;">
+                                    <div class="col-3" style="border-right: 1px solid #000;">
+                                        <p style="padding-left: 5px;margin-bottom: 0px"><b>Bằng chữ</b></p><i style="padding-left: 5px;">(in words):</i>
+                                    </div>
+                                    <div class="col-9">
+                                        <p class="content-p" style="padding-left: 5px;"><b><i><span t-esc="amount2text(docs.amount_total)"/></i></b></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7 bg-tr padding-col">
+                                <p class="content-p"><b>THÔNG TIN NGƯỜI HƯỞNG <i> (Beneficiary)</i></b></p>
+                            </div>
+                            <div class="col-5">
+                                <p class="content-p"><b>Hình thức thanh toán phí <i> (Charges)</i></b></p>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-7 padding-col">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Đơn vị/Người hưởng:</p>
+                                        <p style="margin-bottom: 0px;"><i>(Beneficiary)</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><b><span t-esc="doc.partner_id.name or ''"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Số tài khoản/CMT/HC:</p>
+                                        <p style="margin-bottom: 0px;"><i>(A/c No./ID/PP No.)</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <t t-set="number_bank_partner" t-value="doc.partner_bank_id.acc_number if doc.partner_bank_id else ''"/>
+                                        <p class="content-p"><b><t t-esc="number_bank_partner"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Ngày cấp <i>(Date of Issue):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Nơi cấp <i>(Place of Issue):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <t t-set="name_bank_partner" t-value="doc.partner_bank_id.bank_id.name if doc.partner_bank_id else ''"/>
+                                        <p class="content-p">Tại Ngân hàng <i>(At Bank):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><t t-esc="name_bank_partner"/></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Nội dung <i>(Details):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><span t-esc="doc.ref"/><br/><br/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <p class="content-p"><input type="radio"/> Người chuyển chịu <i>(Including)</i></p>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <p class="content-p"><input type="radio"/> Người hưởng chịu <i>(Excluding)</i></p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <p style="margin-bottom: 0px"><b>Kế toán trưởng</b></p>
+                                            <i>Chief Accountant</i>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <p style="margin-bottom: 0px"><b>Chủ tài khoản</b></p>
+                                            <i>A/c Holder</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-12 bg-tr padding-col">
+                                <p class="content-p"><b>PHẦN DÀNH CHO NGÂN HÀNG (For Bank use Only)</b></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 padding-col">
+                                Ngày giờ hạch toán<i>(Settlement date time)</i>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p style="margin-bottom: 0px;"><b>Giao dịch viên</b></p><i>Teller</i>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p style="margin-bottom: 0px;"><b>Kiểm soát</b></p><i>Suppervisor</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page-three" style="page-break-inside: avoid;">
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col-3" style="display: flex; justify-content: left; align-items: center; padding: 0 0 0 30px;">
+                                <img src="/biz_delegate_expense_mbbank/static/src/img/logo_mb.png"  style="max-height: 80px; max-width: 80px;"/>
+                            </div>
+                            <div class="col-3 text-center" style="position: relative;">
+                                <span style="margin-bottom: 0px; font-weight: bold;font-size: 18px">ỦY NHIỆM CHI</span><br/>
+                                    <i>(Payment Order)</i>
+                            </div>
+                            <div class="col-6" style="padding: 0 0 0 30px;"> 
+                                Liên <i>(Slip): 3 Ngày (Date):</i> <span t-esc="doc.date.strftime('%d/%m/%Y')"/><br/>
+                                Giờ giao nhận <i>(Time):</i> <span style="margin-left: 60px">Số Seq <i>(Ref.No):</i></span>
+                            </div>
+                        </div>   
+                        <div class="row bg-tr">
+                            <div class="col-7 padding-col">
+                                <p class="content-p"><b>THÔNG TIN NGƯỜI CHUYỂN <i>(Applicant)</i></b></p>
+                            </div>
+                            <div class="col-5">
+                                <p class="content-p" style="padding-left: 5px;"><b>SỐ TIỀN <i>(With Amount)</i></b></p>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-7 padding-col">
+                                <p class="content-p">Đơn vị/Người chuyển <i style="padding-left: 5px;">(Applicant):</i> <b style="padding-left: 5px;">Công ty TNHH Con Cò Vàng</b></p>
+                                <p class="content-p">Số tài khoản <i>(A/C No.):</i> <b style="padding-left: 5px;">1104102532008</b></p>
+                                <p class="content-p">Tại Ngân hàng <i>(At Bank):</i> <span style="padding-left: 5px;">Ngân hàng TMCP Quân đội - CN Sài Gòn</span></p>
+                            </div>
+                            <div class="col-5" style="padding: 0px;">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="content-p" style="padding-left: 5px; border-right: 1px solid #000;"><b>Bằng số</b> <i>(in figures)</i>:</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="content-p" style="padding-left: 5px;"><b>Loại tiền</b> <i>(Currency):</i>:</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="border: 1px solid #000;">
+                                    <div class="col-6">
+                                        <p class="content-p text-right" style="padding: 0 5px 0 0;border-right: 1px solid #000;"><b><span t-esc="format_float_number(docs.amount_total)"/></b></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="content-p text-center"><b><span t-esc="doc.currency_id.name or ''"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row" style="border: 1px solid #000; border-top: 0px solid #fff;">
+                                    <div class="col-3" style="border-right: 1px solid #000;">
+                                        <p style="padding-left: 5px;margin-bottom: 0px"><b>Bằng chữ</b></p><i style="padding-left: 5px;">(in words):</i>
+                                    </div>
+                                    <div class="col-9">
+                                        <p class="content-p" style="padding-left: 5px;"><b><i><span t-esc="amount2text(docs.amount_total)"/></i></b></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7 bg-tr padding-col">
+                                <p class="content-p"><b>THÔNG TIN NGƯỜI HƯỞNG <i> (Beneficiary)</i></b></p>
+                            </div>
+                            <div class="col-5">
+                                <p class="content-p"><b>Hình thức thanh toán phí <i> (Charges)</i></b></p>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-7 padding-col">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Đơn vị/Người hưởng:</p>
+                                        <p style="margin-bottom: 0px;"><i>(Beneficiary)</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><b><span t-esc="doc.partner_id.name or ''"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Số tài khoản/CMT/HC:</p>
+                                        <p style="margin-bottom: 0px;"><i>(A/c No./ID/PP No.)</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <t t-set="number_bank_partner" t-value="doc.partner_bank_id.acc_number if doc.partner_bank_id else ''"/>
+                                        <p class="content-p"><b><t t-esc="number_bank_partner"/></b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Ngày cấp <i>(Date of Issue):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Nơi cấp <i>(Place of Issue):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <t t-set="name_bank_partner" t-value="doc.partner_bank_id.bank_id.name if doc.partner_bank_id else ''"/>
+                                        <p class="content-p">Tại Ngân hàng <i>(At Bank):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><t t-esc="name_bank_partner"/></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="content-p">Nội dung <i>(Details):</i></p>
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="content-p"><span t-esc="doc.ref"/><br/><br/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <p class="content-p"><input type="radio"/> Người chuyển chịu <i>(Including)</i></p>
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <p class="content-p"><input type="radio"/> Người hưởng chịu <i>(Excluding)</i></p>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <p style="margin-bottom: 0px"><b>Kế toán trưởng</b></p>
+                                            <i>Chief Accountant</i>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <p style="margin-bottom: 0px"><b>Chủ tài khoản</b></p>
+                                            <i>A/c Holder</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-12 bg-tr padding-col">
+                                <p class="content-p"><b>PHẦN DÀNH CHO NGÂN HÀNG (For Bank use Only)</b></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 padding-col">
+                                Ngày giờ hạch toán<i>(Settlement date time)</i>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p style="margin-bottom: 0px;"><b>Giao dịch viên</b></p><i>Teller</i>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p style="margin-bottom: 0px;"><b>Kiểm soát</b></p><i>Suppervisor</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .text-right {
+                        text-align: right;
+                    }
+                    .content-p {
+                        margin-bottom: 0px;
+                        padding: 1px;
+                    }
+                    .bg-tr {
+                        background: #548ed4;
+                    }
+                    .row {
+                        --bs-gutter-x: 0;
+                        --bs-gutter-y: 0;
+                    }
+                    .padding-col {
+                        padding-left: 5px;
+                    }
+                </style>
+            </t>
+        </t>
+    </template>
+    <template id="i_d_e_mb_template">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="biz_delegate_expense_mbbank.delegate_expense_invoice_mb_template_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </template>
+</odoo>

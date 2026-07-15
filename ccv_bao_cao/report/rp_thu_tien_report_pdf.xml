@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Paper format A4 ngang -->
+    <record id="format_a4_rp_thu_tien_report" model="report.paperformat">
+        <field name="name">CCV A4 ngang - Báo cáo thu tiền PKD</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">15</field>
+        <field name="dpi">96</field>
+        <field name="disable_shrinking" eval="True"/>
+    </record>
+
+    <!-- Wrapper -->
+    <template id="report_rp_thu_tien_report_pdf_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ccv_bao_cao.report_rp_thu_tien_report_pdf_document"/>
+            </t>
+        </t>
+    </template>
+
+    <!-- Document -->
+    <template id="report_rp_thu_tien_report_pdf_document">
+        <t t-call="ccv_bao_cao.ccv_header_img">
+            <style>
+                .page * { font-size: 12px; line-height: 16px; }
+            </style>
+            <div class="page" style="font-size: 12px; font-family: Times New Roman; padding-top: 20px;">
+                <!-- Tiêu đề -->
+                <div style="text-align: center; margin-bottom: 4px;">
+                    <strong style="font-size: 16px;">
+                        BÁO CÁO THU TIỀN KHỐI KINH DOANH
+                    </strong>
+                </div>
+                <div style="text-align: center; margin-bottom: 2px;">
+                    <t t-if="doc.date_from and doc.date_to and doc.date_from != doc.date_to">
+                        <span>Từ ngày <strong><t t-esc="doc.date_from.strftime('%d/%m/%Y')"/></strong> đến ngày <strong><t t-esc="doc.date_to.strftime('%d/%m/%Y')"/></strong></span>
+                    </t>
+                    <t t-elif="doc.date_from">
+                        <span>Ngày <strong><t t-esc="doc.date_from.strftime('%d/%m/%Y')"/></strong></span>
+                    </t>
+                </div>
+
+                <!-- Bảng dữ liệu -->
+                <table class="table table-sm table-bordered o_main_table" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+                    <thead>
+                        <tr style="background-color: #d9e1f2; text-align: center; vertical-align: middle;">
+                            <th style="border: 1px solid #000; padding: 3px; width: 4%;">STT</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 10%;">Mã khách hàng</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 22%;">Tên khách hàng</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 18%;">Nội dung</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 8%;">Ngày</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 10%;">Số phiếu</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 10%;">Số tiền thanh toán</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 6%;">Tiền tệ</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 12%;">PKD ký xác nhận</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.line_ids.sorted(lambda l: (l.pkd_sign or '', l.no or 0))" t-as="line">
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line_index + 1"/></td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.partner_code"/></td>
+                                <td style="border: 1px solid #000; padding: 2px;"><t t-esc="line.partner_name"/></td>
+                                <td style="border: 1px solid #000; padding: 2px;"><t t-esc="line.reference"/></td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;">
+                                    <t t-if="line.date" t-esc="line.date.strftime('%d/%m/%Y')"/>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.note"/></td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: right;">
+                                    <span t-esc="line.amount" t-options='{"widget": "monetary", "display_currency": line.currency_id}'/>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.currency_id.name"/></td>
+                                <td style="border: 1px solid #000; padding: 2px;"><t t-esc="line.pkd_sign"/></td>
+                            </tr>
+                        </t>
+                        <tr style="font-weight: bold; background-color: #f2f2f2;">
+                            <td colspan="6" style="border: 1px solid #000; padding: 2px; text-align: right;">TỔNG CỘNG</td>
+                            <td style="border: 1px solid #000; padding: 2px; text-align: right;">
+                                <span t-esc="sum(doc.line_ids.mapped('amount'))" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                            </td>
+                            <td style="border: 1px solid #000; padding: 2px;"/>
+                            <td style="border: 1px solid #000; padding: 2px;"/>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Ngày tháng -->
+                <div class="row" style="padding-top: 20px;">
+                    <div class="col-12" style="text-align: right;">
+                        <span><t t-esc="'Đồng Nai, Ngày %s Tháng %s năm %s' % (doc.create_date.strftime('%d'), doc.create_date.strftime('%m'), doc.create_date.strftime('%Y'))"/></span>
+                    </div>
+                </div>
+
+                <!-- Ký tên -->
+                <div class="row" style="margin-top: 20px; text-align: center;">
+                    <div class="col-3">
+                        <strong t-esc="doc.sudo()._fields['voter_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.voter_id and doc.voter_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.voter_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.voter_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.voter_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.voter_id.name_without_position"/>
+                        </t>
+                    </div>
+                    <div class="col-3">
+                        <strong t-esc="doc.sudo()._fields['sales_chief_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.sales_chief_id and doc.sales_chief_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.sales_chief_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.sales_chief_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.sales_chief_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.sales_chief_id.name_without_position"/>
+                        </t>
+                    </div>
+                    <div class="col-3">
+                        <strong t-esc="doc.sudo()._fields['chief_acc_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.chief_acc_id and doc.chief_acc_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.chief_acc_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.chief_acc_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.chief_acc_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.chief_acc_id.name_without_position"/>
+                        </t>
+                    </div>
+                    <div class="col-3">
+                        <strong t-esc="doc.sudo()._fields['unit_heads_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên, đóng dấu)</span>
+                        <t t-if="doc.state == 'approved' and doc.unit_heads_id and doc.unit_heads_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.unit_heads_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.unit_heads_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.unit_heads_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.unit_heads_id.name_without_position"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Report action -->
+    <record id="report_rp_thu_tien_report_pdf" model="ir.actions.report">
+        <field name="name">Báo cáo thu tiền PKD (PDF)</field>
+        <field name="model">rp.thu.tien.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao.report_rp_thu_tien_report_pdf_template</field>
+        <field name="report_file">ccv_bao_cao.report_rp_thu_tien_report_pdf_template</field>
+        <field name="print_report_name">'Báo cáo thu tiền phòng kinh doanh'</field>
+        <field name="paperformat_id" ref="format_a4_rp_thu_tien_report"/>
+        <field name="binding_model_id" eval="False"/>
+        <field name="attachment_use" eval="False"/>
+    </record>
+</odoo>

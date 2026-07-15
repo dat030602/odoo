@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="biz_ods_history_call_rule_operator" model="ir.rule">
+        <field name="name">ODS Operator</field>
+        <field name="model_id" ref="model_biz_ods_call_history"/>
+        <field name="domain_force">['|', ('caller_user_id', '=', user.id), ('receive_user_id', '=', user.id)]</field>
+        <field name="groups" eval="[Command.link(ref('biz_ods_group_operator'))]"/>
+    </record>
+
+    <record id="biz_ods_history_call_rule_administrator" model="ir.rule">
+        <field name="name">ODS Administrator</field>
+        <field name="model_id" ref="model_biz_ods_call_history"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[Command.link(ref('biz_ods_group_administrator'))]"/>
+    </record>
+</odoo>

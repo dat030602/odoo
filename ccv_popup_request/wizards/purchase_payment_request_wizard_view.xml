@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_payment_request_wizard" model="ir.ui.view">
+        <field name="name">purchase.payment.request.wizard.form</field>
+        <field name="model">purchase.payment.request.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Đề nghị thanh toán" create="false" edit="true">
+                <group>
+                    <group>
+                        <field name="purchase_id"/>
+                        <!-- <field name="partner_id"/> -->
+                        <field name="journal_id"/>
+                        <field name="payment_type_selector"/>
+                        <field name="bank_account_id" attrs="{'invisible': [('payment_type_selector', '=', 'cash')]}"/>
+                        <field name="beneficiary_name" attrs="{'readonly': [('bank_account_id', '!=', False)]}"/>
+                    </group>
+                    <group>
+                        <field name="payment_date"/>
+                        <field name="currency_id"/>
+                        <field name="amount"/>
+                        <field name="note"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="attachment_ids" widget="many2many_binary" options="{'no_create': True}" required="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" type="object" class="btn-primary" string="Xác nhận"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

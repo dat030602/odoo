@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="export_delivery_report_ccv_pdf_template">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="docs[0].with_context(lang=lang)"/>
+            <t t-set="company" t-value="o.env.company"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px;">
+                <div class="row" style="position: relative;">
+                    <div style="justify-content: left; align-items: center;position: absolute">
+                        <img t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%"/>
+                    </div>
+                    <div class="col-12" style="height: 0px;">
+                        <div class="" style="padding: 30px 0px 0 130px !important;">
+                            <span/>Công ty Cổ phần Tập đoàn Con Cò Vàng - Mã số thuế: 0305995751
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" style="font-family: 'Times New Roman';font-size:14px; line-height: 24px">
+                <div class="text-center" style="margin-top: 20px;">
+                    <h4 class="bold" style="font-weight: bold; font-size: 24px;">BÁO CÁO CHỐT LÔ NGUYÊN LIỆU</h4>
+                </div>
+                
+                <div class="mt-4 mb-4" style="font-size: 15px;">
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Đơn mua hàng:</strong> <span t-esc="o.purchase_id.name"/>
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Nhà cung cấp:</strong> <span t-esc="o.purchase_id.partner_id.name"/>
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Sản phẩm:</strong> <span t-esc="', '.join(o.purchase_id.order_line.mapped('product_id.name'))"/>
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Trọng lượng bao:</strong> <span t-esc="', '.join([n for n in o.purchase_id.order_line.mapped('product_id.default_specification_id.name') if n])"/>
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Định mức bao bì:</strong> <span t-esc="', '.join([n for n in o.purchase_id.order_line.mapped('product_id.packaging_specification_id.name') if n])"/>
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Số lượng:</strong> <span t-esc="sum(o.purchase_id.order_line.mapped('product_uom_qty'))" t-options='{"widget": "float", "precision": 3}'/> Tấn
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Số hợp đồng:</strong> <span t-esc="o.purchase_id.partner_ref or ''"/>
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Số tờ khai hải quan:</strong> <span t-esc="o.purchase_id.custom_declaration_number or ''"/>
+                    </div>
+                    <div style="text-align: left; margin-top: 2px;">
+                        <strong>Ngày tờ khai:</strong> <span t-esc="o.purchase_id.custom_declaration_date and o.purchase_id.custom_declaration_date.strftime('%d/%m/%Y') or ''"/>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-sm" style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 20px;">
+                    <thead style="background-color: #f2f2f2;">
+                        <tr>
+                            <th class="text-center" style="width: 3%; border: 1px solid black; padding: 4px;">STT</th>
+                            <th class="text-center" style="width: 9%; border: 1px solid black; padding: 4px;">Phiếu nhập kho</th>
+                            <th class="text-center" style="width: 6%; border: 1px solid black; padding: 4px;">Ngày</th>
+                            <th class="text-center" style="width: 6%; border: 1px solid black; padding: 4px;">Số xe</th>
+                            <th class="text-center" style="width: 7%; border: 1px solid black; padding: 4px;">Số Cont</th>
+                            <th class="text-center" style="width: 7%; border: 1px solid black; padding: 4px;">Số Seal</th>
+                            <th class="text-center" style="width: 7%; border: 1px solid black; padding: 4px;">Kho / Khách hàng</th>
+                            <th class="text-center" style="width: 7%; border: 1px solid black; padding: 4px;">Số lượng List cont</th>
+                            <th class="text-center" style="width: 9%; border: 1px solid black; padding: 4px;">Số lượng theo chứng từ</th>
+                            <th class="text-center" style="width: 6%; border: 1px solid black; padding: 4px;">Cân CCV</th>
+                            <th class="text-center" style="width: 6%; border: 1px solid black; padding: 4px;">Cân Cảng</th>
+                            <th class="text-center" style="width: 7%; border: 1px solid black; padding: 4px;">Số lượng bao</th>
+                            <th class="text-center" style="width: 10%; border: 1px solid black; padding: 4px;">Số lượng cân CCV trừ bì</th>
+                            <th class="text-center" style="width: 10%; border: 1px solid black; padding: 4px;">Số lượng cân Cảng trừ bì</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="total_qty_list_cont" t-value="0"/>
+                        <t t-set="total_receipt" t-value="0"/>
+                        <t t-set="total_ccv" t-value="0"/>
+                        <t t-set="total_port" t-value="0"/>
+                        <t t-set="total_bag" t-value="0"/>
+                        <t t-set="total_ccv_net" t-value="0"/>
+                        <t t-set="total_port_net" t-value="0"/>
+                        
+                        <t t-set="qty_list_cont" t-value="sum(o.purchase_id.order_line.mapped('product_uom_qty')) / (len(o.purchase_id.stock_input_ids) or 1)"/>
+                        
+                        <t t-foreach="o.delivery_picking_ids" t-as="line">
+                            <t t-set="stock_partner" t-value="line.location_dest_id.warehouse_id.code if line.location_dest_id.warehouse_id.code else ''"/>
+                            <t t-if="line.location_dest_id.usage == 'customer'">
+                                <t t-set="stock_partner" t-value="line.partner_id.name if line.partner_id.name else ''"/>
+                            </t>
+                            
+                            <t t-set="total_qty_list_cont" t-value="total_qty_list_cont + qty_list_cont"/>
+                            <t t-set="total_receipt" t-value="total_receipt + line.weight_receipt"/>
+                            <t t-set="total_ccv" t-value="total_ccv + line.weight_ccv"/>
+                            <t t-set="total_port" t-value="total_port + line.weight_port"/>
+                            <t t-set="total_bag" t-value="total_bag + line.bag_number"/>
+                            <t t-set="total_ccv_net" t-value="total_ccv_net + line.weight_ccv_net"/>
+                            <t t-set="total_port_net" t-value="total_port_net + line.weight_port_net"/>
+                            
+                            <tr>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line_index + 1"/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.name"/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.stock_date_receipt and line.stock_date_receipt.strftime('%d/%m/%Y') or ''"/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.vehicle_license_plate or ''"/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.container_number or ''"/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.seal_number or ''"/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="stock_partner"/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="qty_list_cont" t-options='{"widget": "float", "precision": 3}'/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.weight_receipt" t-options='{"widget": "float", "precision": 3}'/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.weight_ccv" t-options='{"widget": "float", "precision": 3}'/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.weight_port" t-options='{"widget": "float", "precision": 3}'/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.bag_number" t-options='{"widget": "float", "precision": 0}'/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.weight_ccv_net" t-options='{"widget": "float", "precision": 3}'/></td>
+                                <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="line.weight_port_net" t-options='{"widget": "float", "precision": 3}'/></td>
+                            </tr>
+                        </t>
+                        <tr style="font-weight: bold; background-color: #e6e6e6;">
+                            <td colspan="7" class="text-center" style="border: 1px solid black; padding: 4px;">Tổng cộng:</td>
+                            <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="total_qty_list_cont" t-options='{"widget": "float", "precision": 3}'/></td>
+                            <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="total_receipt" t-options='{"widget": "float", "precision": 3}'/></td>
+                            <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="total_ccv" t-options='{"widget": "float", "precision": 3}'/></td>
+                            <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="total_port" t-options='{"widget": "float", "precision": 3}'/></td>
+                            <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="total_bag" t-options='{"widget": "float", "precision": 0}'/></td>
+                            <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="total_ccv_net" t-options='{"widget": "float", "precision": 3}'/></td>
+                            <td class="text-center" style="border: 1px solid black; padding: 4px;"><span t-esc="total_port_net" t-options='{"widget": "float", "precision": 3}'/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="clearfix mt-4" style="page-break-inside: avoid;">
+                    <div class="text-end" style="text-align: right; font-size: 14px; font-style: italic; margin-bottom: 10px; padding-right: 30px;">
+                        Đồng Nai, ngày <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/> tháng <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%m')"/> năm <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
+                    </div>
+                    <div class="clearfix" style="width: 100%; text-align: center; font-size: 15px; margin-top: 10px;">
+                        <div style="width: 16.66%; float: left;">
+                            <strong>Người Lập Phiếu</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="o.state == 'approved' and o.sudo().voter_id.sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(o.sudo().voter_id.sign_signature)" style="width: 100px; height: 60px; object-fit: contain;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="(o.sudo().voter_id.name_without_position or o.sudo().voter_id.name) if o.voter_id else ''"/></strong>
+                        </div>
+                        <div style="width: 16.66%; float: left;">
+                            <strong>Phòng kế toán</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="o.state == 'approved' and o.sudo().accounting_department_id.sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(o.sudo().accounting_department_id.sign_signature)" style="width: 100px; height: 60px; object-fit: contain;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="(o.sudo().accounting_department_id.name_without_position or o.sudo().accounting_department_id.name) if o.accounting_department_id else ''"/></strong>
+                        </div>
+                        <div style="width: 16.66%; float: left;">
+                            <strong>Nhà máy</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="o.state == 'approved' and o.sudo().factory_ids">
+                                <t t-foreach="o.sudo().factory_ids" t-as="factory">
+                                    <t t-if="factory.sign_signature">
+                                        <br/><br/>
+                                        <img t-att-src="image_data_uri(factory.sign_signature)" style="width: 100px; height: 60px; object-fit: contain;"/>
+                                    </t>
+                                    <t t-else=""><br/><br/><br/><br/></t>
+                                    <br/>
+                                    <strong><t t-esc="(factory.name_without_position or factory.name)"/></strong>
+                                </t>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                        </div>
+                        <div style="width: 16.66%; float: left;">
+                            <strong>Kế Toán Trưởng</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="o.state == 'approved' and o.sudo().chief_accountant_id.sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(o.sudo().chief_accountant_id.sign_signature)" style="width: 100px; height: 60px; object-fit: contain;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="(o.sudo().chief_accountant_id.name_without_position or o.sudo().chief_accountant_id.name) if o.chief_accountant_id else ''"/></strong>
+                        </div>
+                        <div style="width: 16.66%; float: left;">
+                            <strong>Trưởng Phòng Thương mại</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="o.state == 'approved' and o.sudo().trade_department_id.sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(o.sudo().trade_department_id.sign_signature)" style="width: 100px; height: 60px; object-fit: contain;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="(o.sudo().trade_department_id.name_without_position or o.sudo().trade_department_id.name) if o.trade_department_id else ''"/></strong>
+                        </div>
+                        <div style="width: 16.66%; float: left;">
+                            <strong>Thủ trưởng đơn vị</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="o.state == 'approved' and o.sudo().unit_heads_id.sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(o.sudo().unit_heads_id.sign_signature)" style="width: 100px; height: 60px; object-fit: contain;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="(o.sudo().unit_heads_id.name_without_position or o.sudo().unit_heads_id.name) if o.unit_heads_id else ''"/></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

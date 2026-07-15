@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="trp_approve_config_reason_form" model="ir.ui.view">
+            <field name="name">trp.approve.config.reason.form</field>
+            <field name="model">trp.approve.config.reason</field>
+            <field name="arch" type="xml">
+                <form string="Approve Config Reason">
+                    <sheet>
+                        <group>
+                            <field name="res_model" invisible="1"/>
+                            <field name="reason_id" domain="[('res_model', '=', res_model)]" context="{'default_res_model': res_model}" required="1"/>
+                            <field name="reason"/>
+                        </group>
+                        <footer>
+                        <button name="action_confirm" string="Xác nhận" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Hủy" class="oe_link" special="cancel" />
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+         <record id="action_trp_approve_config_reason" model="ir.actions.act_window">
+            <field name="name">Lý do</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">trp.approve.config.reason</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+	</data>
+</odoo>

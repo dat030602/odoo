@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_account_selection_wizard_form" model="ir.ui.view">
+        <field name="name">account.selection.wizard.form</field>
+        <field name="model">account.selection.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Accounts">
+                <group>
+                    <field name="mass_period_id" invisible="1"/>
+                    <field name="journal_id"/>
+                    <field name="debit_account_id"/>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="confirm_selection" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_selection_wizard" model="ir.actions.act_window">
+        <field name="name">Select Accounts</field>
+        <field name="res_model">account.selection.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

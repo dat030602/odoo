@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_fetch_conveyor" model="ir.cron">
+        <field name="name">Conveyor: Fetch data</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="code">model._cron_fetch_conveyor()</field>
+        <field name="state">code</field>
+    </record>
+    <record id="ir_cron_get_realtime_conveyor_data" model="ir.cron">
+        <field name="name">Conveyor: Get realtime data</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="code">model._cron_get_realtime_conveyor_data()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

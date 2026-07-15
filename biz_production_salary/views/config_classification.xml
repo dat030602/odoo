@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_config_classification" model="ir.ui.view">
+        <field name="name">config.classification.tree</field>
+        <field name="model">config.classification</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="classification_id"/>
+                <field name="proportion"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_config_classification" model="ir.actions.act_window">
+        <field name="name">Classification</field>
+        <field name="res_model">config.classification</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+            id="menu_config_classification"
+            action="action_config_classification"
+            parent="hr_payroll.menu_hr_salary_configuration"
+            sequence="7"/>
+    
+</odoo>

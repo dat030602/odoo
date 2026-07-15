@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="module_category_productivity_ods" model="ir.module.category">
+            <field name="name">Call Center ODS</field>
+            <field name="sequence">99</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
+        <record id="module_category_ods" model="ir.module.category">
+            <field name="name">ODS</field>
+            <field name="parent_id" eval="module_category_productivity_ods"/>
+        </record>
+
+        <record id="biz_ods_group_operator" model="res.groups">
+            <field name="name">Operator</field>
+            <field name="category_id" ref="module_category_ods"/>
+        </record>
+
+        <record id="biz_ods_group_administrator" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="module_category_ods"/>
+            <field name="implied_ids" eval="[(4, ref('biz_ods_group_operator'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+    </data>
+</odoo>

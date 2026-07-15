@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="sign_send_request_view_form_inherit">
+        <field name="name">sign.send.request.form.inherit</field>
+        <field name="model">sign.send.request</field>
+        <field name="inherit_id" ref="sign.sign_send_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="options">{'force_email':True, 'show_email': True, 'no_create': True}</attribute>
+            </xpath>
+            <field name="signer_id" position="before">
+                <group>
+                    <field name="sale_order_id" placeholder="Order ID" colspan="2" options="{'no_create': True}" />
+                </group>
+            </field>
+        </field>
+    </record>
+</odoo>

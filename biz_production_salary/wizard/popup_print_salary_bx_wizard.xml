@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="popup_print_salary_bx_wizard_form" model="ir.ui.view">
+        <field name="name">popup.print.salary.bx.wizard.form</field>
+        <field name="model">popup.print.salary.bx.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="month"/>
+                        <field name="year"/>
+                        <field name="department_ids" widget="many2many_tags"/>
+                        <field name="founder_id"/>
+                        <field name="hcns_department_id"/>
+                        <field name="tckt_department_id"/>
+                        <field name="unit_head_id"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_print_excel" string="Print Excel" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="popup_print_salary_bx_wizard_action" model="ir.actions.act_window">
+        <field name="name">SX Payroll</field>
+        <field name="res_model">popup.print.salary.bx.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="popup_print_salary_bx_wizard_menu" name="SX Payroll" action="popup_print_salary_bx_wizard_action" parent="hr_payroll.menu_hr_payroll_payslips" sequence="0"/>
+</odoo>

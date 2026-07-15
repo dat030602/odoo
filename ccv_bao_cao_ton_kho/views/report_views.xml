@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_report_view_tree" model="ir.ui.view">
+        <field name="name">stock.report.view.tree</field>
+        <field name="model">stock.ccv.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="location_ids"/>
+                <field name="type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="stock_report_view_form" model="ir.ui.view">
+        <field name="name">stock.report.view.form</field>
+        <field name="model">stock.ccv.report</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button type="object" string="Lấy dữ liệu" name="action_query" class="oe_highlight" attrs="{'invisible': [('type', 'not in', ('bao_cao_xuat_nhap_ton'))]}"/>
+                    <button type="object" string="In báo cáo" name="action_print" attrs="{'invisible': [('type', 'not in', ('bao_cao_xuat_nhap_ton'))]}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_detail" type="object"
+                                class="oe_stat_button" icon="fa-list">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_text">Chi tiết</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" required="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="type"/>
+                            <field name="stock_move_state" attrs="{'invisible': [('type', 'not in', ('bao_cao_xuat_nhap_ton'))]}"/>
+                        </group>
+                        <group attrs="{'invisible': [('type', 'not in', ('bao_cao_xuat_nhap_ton'))]}">
+                            <label for="date_from"/>
+                            <div class="o_row">
+                                <field name="date_from" attrs="{'required': [('type', 'in', ('bao_cao_xuat_nhap_ton'))]}"/>
+                                -
+                                <field name="date_to" attrs="{'required': [('type', 'in', ('bao_cao_xuat_nhap_ton'))]}"/>
+                            </div>
+                            <field name="location_ids" widget="many2many_tags"/>
+                            <field name="product_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết" attrs="{'invisible': [('type', '!=', 'bao_cao_xuat_nhap_ton')]}">
+                            <field name="line1_ids" nolabel="1" readonly="1"
+                                    attrs="{'invisible': [('type', '!=', 'bao_cao_xuat_nhap_ton')]}">
+                                <tree action="action_open_reference" type="object">
+                                    <field name="is_in" invisible="1"/>
+                                    <field name="name" invisible="1"/>
+                                    <field name="date"/>
+                                    <field name="product_id" optional="show"/>
+                                    <field name="picking_id" optional="show"/>
+                                    <field name="ref" optional="show"/>
+                                    <field name="location_id" optional="show"/>
+                                    <field name="location_dest_id" optional="show"/>
+                                    <field name="qty" sum="total_qty" optional="show"/>
+                                    <field name="qty_done" sum="total_qty_done" optional="show" decoration-success="is_in=='in'" decoration-danger="is_in=='out'"/>
+                                    <field name="stock_quant_qty" optional="show" decoration-danger="stock_quant_qty &lt; 0"/>
+                                    <field name="origin" optional="show"/>
+                                    <field name="state" widget="badge" optional="show" decoration-danger="state=='cancel'" decoration-info="state== 'assigned'" decoration-muted="state == 'draft'" decoration-success="state == 'done'" decoration-warning="state not in ('draft','cancel','done','assigned')"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lịch sử" attrs="{'invisible': [('type', '!=', 'bien_ban_kiem_ke')]}">
+                            <field name="line2_ids" nolabel="1" readonly="1"
+                                    attrs="{'invisible': [('type', '!=', 'bien_ban_kiem_ke')]}">
+                                <tree>
+                                    <field name="report_name"/>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name='user_ids' string="Người tham dự" attrs="{'invisible': [('type', '!=', 'bien_ban_kiem_ke')]}">
+                            <field name="user_ids" attrs="{'invisible': [('type', '!=', 'bien_ban_kiem_ke')]}">
+                                <tree edit="1" create="1" delete="1">
+                                    <field name="user_id"/>
+                                    <field name="name"/>
+                                    <field name="job"/>
+                                    <field name="representative"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- stock_report action window -->
+    <record id="stock_report_action" model="ir.actions.act_window">
+        <field name="name">Báo cáo tồn kho CCV</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.ccv.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

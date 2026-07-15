@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="bank_statement_line_personal_rule" model="ir.rule">
+            <field name="name">Dòng sổ phụ cá nhân</field>
+            <field name="model_id" ref="model_bank_statement_line"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                ['|',
+                    '&amp;', ('partner_ids', '=', False), ('sale_ids', '=', False),
+                    '|', '|',
+                    ('sale_ids.user_id', '=', user.id),
+                    ('partner_ids.user_id', '=', user.id),
+                    ('sale_ids.user_id', '=', False)
+                ]
+            </field>
+        </record>
+
+        <record id="bank_statement_line_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả dòng sổ phụ</field>
+            <field name="model_id" ref="model_bank_statement_line"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_manager')),(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="bank_statement_line_team_rule" model="ir.rule">
+            <field name="name">Dòng sổ phụ theo đội bán hàng</field>
+            <field name="model_id" ref="model_bank_statement_line"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|','|',
+                    ('sale_ids', '=', False),
+                    ('sale_ids.sales_assistant_ids', 'in', [user.id]),
+                    ('sale_ids.sales_team_captain_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+        <record id="vietqr_bank_transaction_personal_rule" model="ir.rule">
+            <field name="name">Giao dịch VietQR cá nhân</field>
+            <field name="model_id" ref="model_vietqr_bank_transaction"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                ['|',
+                    '&amp;', ('partner_ids', '=', False), ('sale_ids', '=', False),
+                    '|', '|',
+                    ('sale_ids.user_id', '=', user.id),
+                    ('partner_ids.user_id', '=', user.id),
+                    ('sale_ids.user_id', '=', False)
+                ]
+            </field>
+        </record>
+
+        <record id="vietqr_bank_transaction_see_all_rule" model="ir.rule">
+            <field name="name">Tất cả giao dịch VietQR</field>
+            <field name="model_id" ref="model_vietqr_bank_transaction"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_manager')),(4, ref('sales_team.group_sale_salesman_all_leads'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="vietqr_bank_transaction_team_rule" model="ir.rule">
+            <field name="name">Giao dịch VietQR theo đội bán hàng</field>
+            <field name="model_id" ref="model_vietqr_bank_transaction"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">
+                [
+                    '|','|',
+                    ('sale_ids', '=', False),
+                    ('sale_ids.sales_assistant_ids', 'in', [user.id]),
+                    ('sale_ids.sales_team_captain_id', '=', user.id)
+                ]
+            </field>
+        </record>
+
+    </data>
+</odoo>

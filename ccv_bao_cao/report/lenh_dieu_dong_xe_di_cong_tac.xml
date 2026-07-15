@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="lenh_dieu_dong_xe_di_cong_tac_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_bao_cao.lenh_dieu_dong_xe_di_cong_tac_document"
+                       t-lang="user.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="lenh_dieu_dong_xe_di_cong_tac_document">
+            <t t-call="ccv_bao_cao.ccv_no_header">
+                 <div class="page" style="font-size: 14px;font-family: Times New Roman; padding-top: 20px;">
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-6" style="text-align: center;">
+                                <span><strong>Công ty TNHH Con Cò Vàng</strong></span>
+                                <br/>
+                                <span>Số:.............../LĐĐ/CCV - 2025</span>
+                                <br/>
+                        </div>
+                        <div class="col-6" style="text-align: center;">
+                           <span><strong>Cộng hòa Xã hội Chủ nghĩa Việt Nam</strong></span>
+                           <br/>
+                           <span><strong>Độc lập - Tự do - Hạnh phúc</strong></span>
+                           <br/>
+                           <span><strong>-----------------&amp;---------------</strong></span>
+                           <br/>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12" style="text-align: center; font-size: 20px">
+                            <strong>LỆNH ĐIỀU ĐỘNG XE ĐI CÔNG TÁC</strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12" style="text-align: right; font-size: 14px;">
+                            Số: <t t-esc="doc.name"/>
+                        </div>
+                    </div>
+                    <t t-set="employee_id" t-value="doc.env['hr.employee'].search([('user_id.partner_id', '=', doc.request_owner_id.partner_id.id)])"/>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Người đề nghị:
+                        </div>
+                        <div class="col-9">
+                            <strong><t t-esc="doc.request_owner_id.name"/></strong> &amp;nbsp;&amp;nbsp;&amp;nbsp; Bộ phận: <strong><t t-esc="employee_id[0].department_id.name"/></strong> &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Chức vụ: <!-- <strong><t t-esc="employee_id[0].department_id.name"/></strong> -->
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Nội dung công tác:
+                        </div>
+                        <div class="col-9">
+                            <t t-if="doc.request_note_ids is False">
+                                ................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="', '.join([i for i in doc.request_note_ids.mapped('description') if i])"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                        <t t-if="doc.type_car == '2'">
+                            Địa điểm nhận hàng/giao hàng
+                        </t>
+                        <t t-else="doc.type_car == '1'">
+                            Được cử đi công tác tại:
+                        </t>
+                        </div>
+                        <div class="col-9">
+                            <strong><t t-esc="doc.location"/></strong>
+                        </div>
+                    </div>
+                    <t t-if="doc.type_car == '2'">
+                        <div class="row" style="padding-top: 4px;">
+                            <div class="col-3">
+                                Người liên hệ:
+                            </div>
+                            <div class="col-9">
+                                <t t-esc="doc.contact_name"/>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 4px;">
+                            <div class="col-3">
+                                Điện thoại liên hệ:
+                            </div>
+                            <div class="col-9">
+                                <t t-esc="doc.phone_contact"/>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Nhân sự đi cùng:
+                        </div>
+                        <div class="col-9">
+                            <t t-if="len(doc.user_ids) == 0">
+                                .................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="', '.join(doc.sudo().user_ids.mapped('name'))"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Thời gian khởi hành:
+                        </div>
+                        <div class="col-9">
+                            <strong><t t-esc="(doc.date_start+ datetime.timedelta(hours=7)).strftime('Lúc %H giờ %M phút , ngày %d tháng %m năm %Y')"/></strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Địa điểm khởi hành:
+                        </div>
+                        <div class="col-9">
+                            <t t-if="doc.location_start == '' or doc.location_start is False">
+                                .................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.location_start"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Thời gian về:
+                        </div>
+                        <div class="col-9">
+                            <strong><t t-esc="(doc.date_end+ datetime.timedelta(hours=7)).strftime('Lúc %H giờ %M phút , ngày %d tháng %m năm %Y')"/></strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Địa điểm kết thúc:
+                        </div>
+                        <div class="col-9">
+                            <t t-if="doc.location_end == '' or doc.location_end is False">
+                                .................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.location_end"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Chỉ số Km lúc đi:
+                        </div>
+                        <div class="col-9">
+                            <t t-if="doc.km_start == 0">
+                                .................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.km_start"/> KM</strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Chỉ số Km lúc về:
+                        </div>
+                        <div class="col-9">
+                            <t t-if="doc.km_end == 0">
+                                .................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.km_end"/> KM</strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Tổng số Km:
+                        </div>
+                        <div class="col-9">
+                            <t t-if="doc.total_km == 0">
+                                .................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.total_km"/> KM</strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Tình trạng xăng/ dầu lúc đi (đổ đầy hoặc còn bao nhiêu lít): &amp;nbsp;
+                            <t t-if="doc.fuel_start == 'Đổ đầy' or doc.fuel_start == '' or doc.fuel_start is False">
+                                ................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.fuel_start"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Tình trạng xăng/ dầu lúc về (đổ đầy hoặc còn bao nhiêu lít): &amp;nbsp;
+                            <t t-if="doc.fuel_end == 'Đổ đầy' or doc.fuel_end == '' or doc.fuel_end is False">
+                                ................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.fuel_end"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Tổng số xăng/ dầu tiêu thụ trong chuyến công tác (lít): 
+                            <t t-if="doc.fuel_consumed == 0">
+                                ........................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.fuel_consumed"/></strong>
+                            </t>, Định mức: 
+                            <t t-if="doc.fuel_rate == 0">
+                                ..............................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.fuel_rate"/></strong>
+                            </t>/100 Km.
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Họ tên lái xe: 
+                            <t t-if="len(doc.driver_id) == 0">
+                                ..................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.sudo().driver_id.name"/></strong>
+                            </t>
+                            , Loại xe: 
+                            <t t-if="doc.vehicle_type == '' or doc.vehicle_type is False">
+                                ............................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.vehicle_type"/></strong>
+                            </t>, Biển số: 
+                            <t t-if="doc.vehicle_plate == '' or doc.vehicle_plate is False">
+                                ............................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.vehicle_plate"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Tình trạng xe lúc đi:  &amp;nbsp;
+                            <t t-if="doc.vehicle_condition_start == '' or doc.vehicle_condition_start is False">
+                                ...............................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.vehicle_condition_start"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Tình trạng xe lúc về:  &amp;nbsp;<strong><t t-esc="doc.vehicle_condition_end"/></strong>
+                            <t t-if="doc.vehicle_condition_end == '' or doc.vehicle_condition_end is False">
+                                ...............................................................................................................................................................
+                            </t>
+                            <t t-else="">
+                                <strong><t t-esc="doc.vehicle_condition_end"/></strong>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12" style="text-align: right;">
+                            Ngày ...... tháng ..... năm .....&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                        </div>
+                    </div>
+                    <div class="row rowp" style="text-align: center;">
+                        <div class="col-4">
+                            <span>
+                                <strong>Người đề nghị</strong>
+                            </span>
+                            <br/>
+                            <t t-if="doc.sudo().request_owner_id.sign_signature is not False">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().request_owner_id.sign_signature)" width='120px' height="50px"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <span><strong t-esc="doc.sudo().request_owner_id.name"/></span>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                <strong>Phòng HCNS</strong>
+                            </span>
+                            <br/>
+                            <t t-if="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).user_id.sign_signature is not False and doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).status == 'approved'">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).user_id.sign_signature)" width='120px' height="50px"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <span><strong t-esc="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).user_id.name"/></span>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                <strong>Thủ trưởng đơn vị</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên, đóng dấu)</span>
+                            <br/>
+                            <t t-if="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==61).user_id.sign_signature is not False and doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==61).status == 'approved'">
+                                <img t-att-src="image_data_uri(doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==61).user_id.sign_signature)" width='120px' height="50px"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/></t>
+                            <br/>
+                            <span><strong t-esc="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==61).user_id.name"/></span>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="text-align: center;">
+                        <div class="col-12">
+                            <span>
+                                <strong>Ký xác nhận:</strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="text-align: center;">
+                        <div class="col-3">
+                            <span>
+                                <strong>Cán bộ đi công tác</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, ghi rõ họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Tài xế</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, ghi rõ họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Bảo vệ (lúc đi)</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, ghi rõ họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Tổ trưởng kiểm tra</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, ghi rõ họ tên)</span>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="row rowp" style="text-align: center;">
+                        <div class="col-3"/>
+                        <div class="col-3"/>
+                        <div class="col-3">
+                            <span>
+                                <strong>Bảo vệ (lúc về)</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, ghi rõ họ tên)</span>
+                        </div>
+                        <div class="col-3"/>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="text-muted" style="font-size:10px;">
+                        <div class="container">
+                            <strong>Ghi chú:</strong>
+                            <ul>
+                            <li>Trước khi đi công tác, cán bộ đề nghị điều xe phải làm lệnh trình lãnh đạo duyệt, sau đó photo 01 bản nộp cho Bảo vệ để các bên ghi chép chỉ số Km lúc đi, tình trạng xăng lúc đi.</li>
+                            <li>Khi về các bên ghi chỉ số Km lúc về, quãng đường đi, lái xe đề xuất đổ đầy xăng/ dầu để tính lượng nhiên liệu tiêu thụ (cộng cả lượng nhiên liệu đổ thêm trên đường đi).</li>
+                            <li>Các bên chịu trách nhiệm trước lãnh đạo về thông tin xác thực trong lệnh điều động, những ai không chấp hành sẽ bị xử lý theo quy chế Công ty và không được quyết toán nhiên liệu cho chuyến đi.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

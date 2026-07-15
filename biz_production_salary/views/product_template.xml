@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_form_view_biz_production_salary" model="ir.ui.view">
+        <field name="name">product.template.form.biz_production_salary</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='properties']" position="after">
+                <group name="calculate_output_for_workers" string="Calculate output for workers">
+                    <field name="unit_price_cal_out_worker"/>
+                    <field name="unit_price_export"/>
+                    <field name="unit_price_import"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

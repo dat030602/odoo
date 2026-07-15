@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- UOM Commission Price Views -->
+    <record id="view_uom_uom_form_commission_price" model="ir.ui.view">
+        <field name="name">uom.uom.form.commission.price</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_form_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="commission_price" string="Đơn giá hoa hồng"/>
+                <field name="currency_id" invisible="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

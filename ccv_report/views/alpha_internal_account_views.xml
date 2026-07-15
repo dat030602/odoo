@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="alpha_internal_account_form_ccv_report" model="ir.ui.view">
+            <field name="name">alpha_internal_account_form_ccv_report</field>
+            <field name="model">alpha.internal.account</field>
+            <field name="inherit_id" ref="trp_approve.alpha_internal_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='destination_account_id']" position="after">
+                    <field name="type"/>
+                    <field name="partner_bank_id" domain="[('partner_id', '=', partner_id)]" attrs="{'invisible': [('type', '=', 'cash')]}"/>
+                    <field name="partner_name"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

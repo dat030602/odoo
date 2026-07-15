@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- MRP Production Rules -->
+        
+        <!-- Manager MRP: thấy tất cả MO -->
+        <record id="rule_mrp_production_manager" model="ir.rule">
+            <field name="name">MRP Manager can see all MO</field>
+            <field name="model_id" ref="mrp.model_mrp_production"/>
+            <field name="groups" eval="[(4, ref('mrp.group_mrp_manager'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+        <!-- User khác: chỉ thấy MO chưa Done -->
+        <record id="rule_mrp_production_hide_done_for_users" model="ir.rule">
+            <field name="name">Hide Done MO for non-managers</field>
+            <field name="model_id" ref="mrp.model_mrp_production"/>
+            <field name="groups" eval="[(6, 0, [ref('mrp.group_mrp_user')])]"/>
+            <field name="domain_force">[('user_id', '=', user.id), ('picking_type_id.warehouse_id', 'in', user.stock_warehouse_ids.ids),('state','!=','done')]</field>
+        </record>
+        <record id="rule_mrp_production_hide_done_for_managers" model="ir.rule">
+            <field name="name">Hide Done MO for managers</field>
+            <field name="model_id" ref="mrp.model_mrp_production"/>
+            <field name="groups" eval="[(6, 0, [ref('biz_client_ccv.group_mrp_manager_production')])]"/>
+            <field name="domain_force">[('picking_type_id.warehouse_id', 'in', user.stock_warehouse_ids.ids),('state','!=','done')]</field>
+        </record>
+        
+        <!-- BOM Rules -->
+        
+        <!-- Chỉ Quản trị viên SX mới được xem và sửa BOM -->
+        <record id="rule_mrp_bom_admin_only" model="ir.rule">
+            <field name="name">Only MRP Admin can access BOM</field>
+            <field name="model_id" ref="mrp.model_mrp_bom"/>
+            <field name="groups" eval="[(4, ref('mrp.group_mrp_manager'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+        <!-- Purchase Order Rules -->
+        
+        <!-- Manager Purchase: thấy tất cả PO -->
+        <!-- <record id="rule_purchase_order_manager" model="ir.rule">
+            <field name="name">Purchase Manager can see all PO</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="groups" eval="[(4, ref('purchase.group_purchase_manager'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record> -->
+
+        <!-- User Purchase: chỉ thấy PO của mình -->
+        <!-- <record id="rule_purchase_order_user" model="ir.rule">
+            <field name="name">Purchase User can see own PO</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="groups" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+        </record> -->
+        
+        <!-- Sale Order Rules -->
+        
+        <!-- Manager Sale: thấy tất cả SO -->
+        <!-- <record id="rule_sale_order_manager" model="ir.rule">
+            <field name="name">Sale Manager can see all SO</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_manager'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record> -->
+
+        <!-- User Sale: chỉ thấy SO của team mình -->
+        <!-- <record id="rule_sale_order_user" model="ir.rule">
+            <field name="name">Sale User can see team SO</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="groups" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="domain_force">[('team_id','in',user.sale_team_id.ids)]</field>
+        </record> -->
+        
+        <!-- Account Move Rules -->
+        
+        <!-- Manager Account: thấy tất cả Journal Entry -->
+        <!-- <record id="rule_account_move_manager" model="ir.rule">
+            <field name="name">Account Manager can see all Journal Entry</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="groups" eval="[(4, ref('account.group_account_manager'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record> -->
+
+        <!-- User Account: chỉ thấy Journal Entry của company mình -->
+        <!-- <record id="rule_account_move_user" model="ir.rule">
+            <field name="name">Account User can see company Journal Entry</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="groups" eval="[(4, ref('account.group_account_user'))]"/>
+            <field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+        </record> -->
+        
+    </data>
+</odoo>

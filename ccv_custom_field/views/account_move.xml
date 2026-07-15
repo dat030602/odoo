@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sale_invoice_product_image_app_view_invoice_line_product_image_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="sale_invoice_product_image_app.view_invoice_line_product_image"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='products_image']" position="attributes">
+                <attribute name="name">products_image_128</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="biz_client_ccv_view_move_form_inherit_ccv_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="biz_client_ccv.view_move_form_inherit_ccv"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='exchange_rate']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='create_new_exchange_rate']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', '=', 'posted')]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <record id="hr_employee_view_general_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.view.general.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="after">
+                	<div>
+	                	<label for="code" class="oe_edit_only"/>
+						<h1>
+						    <field name="code" placeholder="Employee's Code" required="True"/>
+						</h1>
+					</div>
+                </div>
+         </field>
+    </record>
+   
+    <record id="hr_employee_inherit_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.tree.view.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="code"/>
+                <field name="address_home_id" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+            </field>
+        </field>
+    </record>
+    
+    <record id="hr_employee_inherit_kanban_view" model="ir.ui.view">
+        <field name="name">hr.employee.kanban.view.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//templates" position="before">
+                <field name="code"/>
+            </xpath>
+
+            <li id="last_login" position="after">
+                <li t-if="record.code.raw_value">
+                    <field name="code"/>
+                </li>
+            </li>
+        </field>
+    </record>
+    
+    <record id="view_employee_filter_inherit" model="ir.ui.view">
+        <field name="name">view.employee.filter.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="code"/>
+            </field>
+        </field>
+    </record>
+</odoo>
+   

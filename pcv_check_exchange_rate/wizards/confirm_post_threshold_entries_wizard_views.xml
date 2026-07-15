@@ -1,0 +1,29 @@
+<odoo>
+    <record id="view_confirm_post_threshold_entries_wizard_form" model="ir.ui.view">
+        <field name="name">confirm.post.threshold.entries.wizard.form</field>
+        <field name="model">confirm.post.threshold.entries.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Large Amount Warning">
+                <group>
+                    <field name="move_id" invisible="1" />
+                </group>
+                <h3>You are recording a transaction with a large amount. Press "Confirm" to
+                    continue</h3>
+                <footer>
+                    <button name="action_confirm_post_entry" string="Confirm" type="object"
+                        class="btn-primary" data-hotkey="q" />
+                    <button string="Close" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to Open Wizard -->
+    <record id="action_confirm_post_threshold_entries_wizard" model="ir.actions.act_window">
+        <field name="name">Large Amount Warning</field>
+        <field name="res_model">confirm.post.threshold.entries.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_confirm_post_threshold_entries_wizard_form" />
+        <field name="target">new</field>
+    </record>
+</odoo>

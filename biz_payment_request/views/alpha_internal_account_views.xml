@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="alpha_internal_account_form_inherit" model="ir.ui.view">
+            <field name="name">alpha_internal_account_form_inherit</field>
+            <field name="model">alpha.internal.account</field>
+            <field name="inherit_id" ref="ccv_report.alpha_internal_account_form_ccv_report"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_bank_transfer" string="Chuyển khoản"
+                            attrs="{'invisible':['|', ('type','!=', 'transfer'), ('state','!=', 'approved')]}"
+                            type="object"/>
+                    <button name="action_bank_transfer_tk_name" string="Cập Nhật ngân hàng"
+                            attrs="{'invisible':['|', ('type','!=', 'transfer'), ('state','=', 'done')]}"
+                            type="object"/>
+                </xpath>
+                <xpath expr="//field[@name='date']" position="replace"/>
+                <xpath expr="//label[@for='total_amount']" position="replace"/>
+                <xpath expr="//div[hasclass('o_row')]" position="replace"/>
+                <xpath expr="//field[@name='journal_id']" position="replace"/>
+                <xpath expr="//field[@name='type']" position="replace"/>
+                <xpath expr="//field[@name='note']" position="replace"/>
+                
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="currency_name" invisible="1"/>
+                    <field name="date"/>
+                    <label for="total_amount"/>
+                    <div class="o_row">
+                        <field name="total_amount" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                        <field name="company_currency_id" required="1"
+                               attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                    </div>
+                    <field name="journal_id" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                    <field name="type"/>
+                    <field name="note" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_bank_id']" position="replace"/>
+                <xpath expr="//field[@name='partner_name']" position="replace">
+                    <group string="TÀI KHOẢN GỬI" attrs="{'invisible': [('type', '!=', 'transfer')]}" colspan="2">
+                        <field name="fixed_sender_tk" domain="[('is_unc_sender', '=', True)]" readonly="1"/>                                       
+                        <field name="fixed_sender_tk_name" readonly="1"/>
+                    </group>
+                    <group string="THÔNG TIN THỤ HƯỞNG" colspan="2">
+                        <field name="partner_bank_id" attrs="{'invisible': [('type', '!=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="partner_napas_code" attrs="{'invisible': [('type', '!=', 'transfer')], 'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="partner_tk_name" string="Chủ số tài khoản thụ hưởng (ngân hàng)" attrs="{'invisible': [('type', '!=', 'transfer')]}" readonly="1"/>
+                        <field name="partner_name"/>
+                        <field name="note_chuyen_khoan" attrs="{'invisible': [('type', '!=', 'transfer')],'required': [('type', '=', 'transfer')]}"/>
+                    </group>
+                </xpath>
+                <xpath expr="//page" position="before">
+                    <page string="Chi tiết">
+                        <field name="payment_note_ids" attrs="{'readonly': [('state', '!=', 'draft')]}" context="{'default_currency_id': company_currency_id, 'default_company_currency_id': company_currency_id}"/>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group class="oe_subtotal_footer oe_right" colspan="6" name="sale_total">
+                                <field name="amount_untax_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="amount_tax_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="amount_total"/>
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <div class="clearfix"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

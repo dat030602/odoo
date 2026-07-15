@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report
+        id="action_import_report_xlsx"
+        model="export.delivery.report.wizard"
+        string="Import Delivery Report"
+        report_type="xlsx"
+        name="purchase_to_delivery_report_ccv.import_report_xlsx"
+        file="import_report_xlsx"
+        attachment_use="False"
+    />
+
+    <report
+        id="action_import_report_ccv_xlsx"
+        model="export.delivery.report.ccv"
+        string="Import Delivery Report"
+        report_type="xlsx"
+        name="purchase_to_delivery_report_ccv.import_report_ccv_xlsx"
+        file="import_report_ccv_xlsx"
+        print_report_name="(object.name or 'Báo cáo chốt lô').replace('/', '_')"
+        attachment_use="False"
+    />
+
+    <record id="paperformat_ccv_report" model="report.paperformat">
+        <field name="name">CCV Report Landscape</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="action_import_report_ccv_pdf"
+        model="export.delivery.report.ccv"
+        string="In Báo Cáo Chốt Lô (PDF)"
+        report_type="qweb-pdf"
+        name="purchase_to_delivery_report_ccv.export_delivery_report_ccv_pdf_template"
+        file="purchase_to_delivery_report_ccv.export_delivery_report_ccv_pdf_template"
+        print_report_name="(object.name or 'Báo cáo chốt lô').replace('/', '_')"
+        paperformat="purchase_to_delivery_report_ccv.paperformat_ccv_report"
+    />
+
+</odoo>

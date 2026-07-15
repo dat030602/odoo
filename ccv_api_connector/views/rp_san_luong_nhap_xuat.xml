@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree view -->
+        <record id="tree_rp_san_luong_nhap_xuat" model="ir.ui.view">
+            <field name="name">rp.san.luong.nhap.xuat.tree</field>
+            <field name="model">rp.san.luong.nhap.xuat</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="date_to"/>
+                    <field name="department_id"/>
+                    <field name="type"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'approved'"
+                           decoration-danger="state in ('cancel','refuse')"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form view -->
+        <record id="form_rp_san_luong_nhap_xuat" model="ir.ui.view">
+            <field name="name">rp.san.luong.nhap.xuat.form</field>
+            <field name="model">rp.san.luong.nhap.xuat</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="is_user_current" invisible="1"/>
+                        <button name="action_confirm" string="Lấy dữ liệu" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_refuse" type="object" string="Từ chối"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_cancel" type="object" string="Hủy"
+                                attrs="{'invisible': [('state','not in', ('approve',))]}"/>
+                        <button name="action_undo" type="object" string="Đặt về nháp"
+                                attrs="{'invisible': [('state','not in', ('refuse','cancel'))]}"/>
+                        <button name="action_generate_report" string="In PDF" type="object"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,approve,approved"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Đã duyệt"
+                                attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                        <widget name="web_ribbon" title="Hủy"
+                                attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                        <widget name="web_ribbon" title="Từ chối"
+                                attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" required="1"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Dữ liệu">
+                                <label for="date"/>
+                                <div class="o_row">
+                                    <field name="date" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                    -
+                                    <field name="date_to" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                </div>
+                                <field name="department_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="type"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="is_next_day_fall_vehicle"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group string="Ký tên">
+                                <field name="voter_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="loading_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="stocker_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="hr_admin_department_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="chief_finance_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="director_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết" name="line_ids">
+                                <field name="line_ids" readonly="1">
+                                    <tree>
+                                        <field name="no" string="STT"/>
+                                        <field name="date" string="Ngày"/>
+                                        <field name="type" string="Loại"/>
+                                        <field name="partner_name" string="Đại lý/NCC"/>
+                                        <field name="order" string="Đơn hàng"/>
+                                        <field name="vehicle_num" string="Số xe"/>
+                                        <field name="vehicle_driver" string="Tài xế"/>
+                                        <field name="uom_name" string="ĐVT"/>
+                                        <field name="quantity" string="SL phiếu kho" sum="Tổng" digits="[16,3]"/>
+                                        <field name="gate" string="Cửa nhập/xuất"/>
+                                        <field name="loading" string="Bốc xếp"/>
+                                        <field name="weighing_tl_hang" string="TL hàng" digits="[16,3]"/>
+                                        <field name="weighing_tl_bao_bi" string="TL bao bì" digits="[16,3]"/>
+                                        <field name="weighing_tl_sau_tru_bao_bi" string="TL sau trừ bao bì" digits="[16,3]"/>
+                                        <field name="stocker" string="Thủ kho"/>
+                                        <field name="note" string="Ghi chú"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="trp_approve_history" string="Lịch sử duyệt">
+                                <group>
+                                    <field name="trp_approve_config_line_id" invisible="1"/>
+                                    <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                    <field name="delegate_approver_ids" widget="many2many_tags"
+                                           domain="[('id','not in',current_approve_user_ids)]"
+                                           groups="base.group_system"/>
+                                </group>
+                                <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" groups="base.group_user"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_rp_san_luong_nhap_xuat" model="ir.actions.act_window">
+            <field name="name">Báo cáo sản lượng nhập xuất</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rp.san.luong.nhap.xuat</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="menu_rp_san_luong_nhap_xuat"
+                  name="Báo cáo sản lượng nhập xuất"
+                  parent="sale.menu_sale_report"
+                  action="action_rp_san_luong_nhap_xuat"
+                  sequence="22"/>
+
+    </data>
+</odoo>

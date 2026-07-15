@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template inherit_id="biz_ccv_approvals.proposal_form_template_document">
+        <div class="row text-center" style="page-break-inside: avoid;">
+                <div class="col-3">
+                    <strong>Người đề nghị</strong>
+                    <t t-if="doc.create_uid.sign_signature is not False">
+                        <img t-att-src="image_data_uri(doc.create_uid.sign_signature)" width="120px" height="80px"/>
+                        <br/>
+                        <strong><span t-esc="doc.create_uid.name_without_position"/></strong>
+                    </t>
+                    <t t-else="">
+                        <div class="name-user">
+                            <span t-esc="doc.create_uid.name_without_position"/>
+                        </div>
+                    </t>
+                </div>
+                <div class="col-3">
+                    <strong>Trưởng Bộ Phận</strong>
+                    <t t-if="doc.request_owner_id.department_id.manager_id.user_id.sign_signature is not False and doc.approver_ids.filtered(lambda l:l.user_id.id==doc.request_owner_id.department_id.manager_id.user_id.id).status == 'approved'">
+                        <img t-att-src="image_data_uri(doc.request_owner_id.department_id.manager_id.user_id.sign_signature)" width="120px" height="80px"/>
+                        <br/>
+                        <strong><span t-esc="doc.request_owner_id.department_id.manager_id.user_id.name_without_position"/></strong>
+                    </t>
+                    <t t-else="">
+                        <div class="name-user">
+                            <span t-esc="doc.request_owner_id.department_id.manager_id.user_id.name_without_position"/>
+                        </div>
+                    </t>
+                </div>
+                <div class="col-3">
+                    <strong>Phó CTHĐTV</strong>
+                    <t t-if="doc.env['res.users'].sudo().browse(43).sign_signature is not False and doc.approver_ids.filtered(lambda l:l.user_id.id==43).status == 'approved'">
+                        <img t-att-src="image_data_uri(doc.env['res.users'].sudo().browse(43).sign_signature)" width="120px" height="80px"/>
+                        <br/>
+                        <strong><span t-esc="get_name_CTHĐTV()"/></strong>
+                    </t>
+                    <t t-else="">
+                        <div class="name-user">
+                            <span t-esc="get_name_CTHĐTV()"/>
+                        </div>
+                    </t>
+                </div> 
+                <div class="col-3">
+                    <strong>Ban Lãnh Đạo</strong>
+                    <t t-if="doc.env['res.users'].sudo().browse(62).sign_signature is not False and doc.approver_ids.filtered(lambda l:l.user_id.id==62).status == 'approved'">
+                        <img t-att-src="image_data_uri(doc.env['res.users'].sudo().browse(62).sign_signature)" width="120px" height="80px"/>
+                        <br/>
+                        <strong><span t-esc="get_name_BLĐ()"/></strong>
+                    </t>
+                    <t t-else="">
+                        <div class="name-user">
+                            <span t-esc="get_name_BLĐ()"/>
+                        </div>
+                    </t>
+                    
+                </div>
+                
+            </div>
+    </template>
+</odoo>

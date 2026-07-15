@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_config_telesale_tree" model="ir.ui.view">
+        <field name="name">config.telesale.tree</field>
+        <field name="model">config.telesale</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="target"/>
+                <field name="kpi_item_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_config_telesale_form" model="ir.ui.view">
+        <field name="name">config.telesale.form</field>
+        <field name="model">config.telesale</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                    <group>
+                        <field name="target"/>
+                        <field name="code"/>
+                        <field name="stt"/>
+                        <field name="how_to_calculate"/>
+                        <field name="total_indicator_ids" widget="many2many_tags"/>
+                        <field name="note"/>
+                        <field name="standard_tl" widget="percentage" attrs="{'invisible': [('how_to_calculate','!=','kpi_workload')]}"/>
+                        <field name="standard_points" attrs="{'invisible': [('how_to_calculate','!=','kpi_workload')]}"/>
+                        <field name="employee_ids" widget="many2many_tags" attrs="{'required': [('how_to_calculate','=','kpi_workload')]}"/>
+                        <field name="kpi_item_ids" widget="many2many_tags"/>
+                        <field name="calculate_kpis_by" attrs="{'invisible': [('how_to_calculate','!=','kpi_workload')]}"/>
+                        <field name="configure_related_output_kpis" attrs="{'invisible': ['|',('how_to_calculate','!=','kpi_workload'),('calculate_kpis_by','!=','by_revenue')]}"/>
+                        <field name="calculate_the_amount_earned" attrs="{'invisible': [('how_to_calculate','!=','config_telesale')]}"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                    </group>
+                    <notebook>
+                        <page string="Config Telesale" name="config_telesale" attrs="{'invisible': ['|','|',('how_to_calculate','!=','config_telesale'),('total_indicator_ids','!=',[]),('calculate_the_amount_earned','!=','config_telesale')],'required': [('how_to_calculate','=','config_telesale')]}">
+                            <field name="line_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_config_telesale" model="ir.actions.act_window">
+        <field name="name">Config</field>
+        <field name="res_model">config.telesale</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_config_telesale"
+        name="Config"
+        parent="menu_common_telesale"
+        sequence="30"
+        action="action_config_telesale"
+        groups="biz_kpi_scorecard.group_kpi_admin,biz_kpi_scorecard.group_kpi_user_see_all_kpi"
+        />
+
+</odoo>

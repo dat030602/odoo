@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <openerp> -->
+<odoo>
+	<data>
+		<template id="costing_rp_pdf_template">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-family: 'Times New Roman';font-size:16px; line-height: 1.5;">
+                        <div class="text-center font-bold">BẢNG TÍNH GIÁ THÀNH</div>
+                        <div class="text-center font-bold">Kỳ tính giá thành: Kỳ tính giá thành TP từ ngày <span t-esc="o.from_date" /> đến ngày <span t-esc="o.to_date" /></div>
+        
+                        <table class="table table-sm table-bordered" style="width:100%; border-collapse: collapse; font-size: 12px; ">
+                            <thead class="font-bold table-header">
+                                <tr>
+                                    <th rowspan="2">STT</th>
+                                    <th rowspan="2">Mã NVL</th>
+                                    <th rowspan="2">Tên NVL</th>
+                                    <th rowspan="2">Mã thành phẩm</th>
+                                    <th rowspan="2">Tên thành phẩm</th>
+                                    <th rowspan="2">Đơn vị tính</th>
+                                    <th rowspan="2">Số lượng NVL</th>
+                                    <th rowspan="2">Giá trị NVL</th>
+                                    <th colspan="8">Giá thành</th>
+                                    <th rowspan="2">Số lượng thành phẩm</th>
+                                    <th rowspan="2">Giá thành đơn vị</th>
+                                    <th rowspan="2">Tỷ lệ thu hồi</th>
+                                </tr>
+                                <tr>
+                                    <th>NVL trực tiếp (TK 6211)</th>
+                                    <th>NVL gián tiếp (TK 6272)</th>
+                                    <th>Nhân công trực tiếp (TK 622)</th>
+                                    <th>Nhân công gián tiếp (TK 6271)</th>
+                                    <th>Khấu hao (TK 6274)</th>
+                                    <th>Chi phí mua ngoài (Những TK 627 còn lại)</th>
+                                    <th>Chi phí khác (TK 6278)</th>
+                                    <th>Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- gọi get_lines -->
+                                <t t-set="lines_sums" t-value="get_lines(o)"/>
+                                <t t-set="lines" t-value="lines_sums[0]"/>
+                                <t t-set="sums" t-value="lines_sums[1]"/>
+                                <t t-set="i" t-value="1"/>
+                        
+                                <!-- chi tiết từng dòng -->
+                                <t t-foreach="lines" t-as="line">
+                                    <t t-set='nvl_ids' t-value="get_nvl_ids(o, line['product_id'])"/>
+                                    <tr>
+                                        <td><t t-esc="i"/></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><t t-esc="line['product_code']"/></td>
+                                        <td><t t-esc="line['product_name']"/></td>
+                                        <td><t t-esc="line['uom']"/></td>
+                                        <td><t t-esc="format_float_number(nvl_ids[1])"/></td>
+                                        <td><t t-esc="format_float_number(nvl_ids[2])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['direct_material_6211'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['indirect_material_6272'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['direct_labor_622'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['indirect_labor_6271'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['depreciation_6274'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['outsourcing_cost_627'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['other_cost_6278'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['total'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['material_quantity'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(line['uom_cost'])"/></td>
+                                        <td><t t-esc="format_float_number(line['material_quantity'] *100/ nvl_ids[1]) if nvl_ids[1] != 0 else 0"/>%</td>
+                                    </tr>
+                                    <tr t-foreach="nvl_ids[0]" t-as="nvl">
+                                        <td></td>
+                                        <td><t t-esc="nvl['nvl_code']"/></td>
+                                        <td><t t-esc="nvl['nvl_name']"/></td>
+                                        <td><t t-esc="line['product_code']"/></td>
+                                        <td><t t-esc="line['product_name']"/></td>
+                                        <td><t t-esc="nvl['uom']"/></td>
+                                        <td class="number"><t t-esc="format_float_number(nvl['sl_nvl'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(nvl['value_nvl'])"/></td>
+                                        <td class="number"><t t-esc="format_float_number(nvl['direct_material_6211'])"/></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                        <td class="number"></td>
+                                    </tr>
+                                    <t t-set="i" t-value="i+1"/>
+                                </t>
+                        
+                                <!-- dòng tổng -->
+                                <tr class="bold sums">
+                                    <td colspan="7">Tổng</td>
+                                    <td></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['direct_material_6211'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['6272'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['6221'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['6271'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['6274'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['627'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['6278'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['total'])"/></td>
+                                    <td class="number"><t t-esc="format_float_number(sums['material_quantity'])"/> </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                        </table>
+                        
+                        <div class="sign-section">
+                            <table >
+                                <tr>
+                                    <th>Người lập</th>
+                                    <th>Kế toán trường</th>
+                                    <th>Thứ trưởng đơn vị</th>
+                                </tr>
+
+                                <tr>
+                                    <td><span t-esc="o.env.user.name_without_position or o.env.user.name" /></td>
+                                    <td><span t-esc="get_chief_accountant()" /></td>
+                                    <td><span t-esc="get_unit_head()" /></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <style>
+                        .table-header {
+                            color: red;
+                            background-color: #ADC7E7;
+                        }
+                        .table-header th {
+                            vertical-align: middle;
+                        }
+                        p {
+                            margin: 0 !important;
+                        }
+                        .bold {
+                            font-weight: bold;
+                        }
+                        .border-1 {
+                            border: 1px solid black;
+                        }
+                        .sum-line{
+                            padding: 0 5px;
+                            display: inline-block;
+                            height: 100%;
+                            vertical-align: middle;
+                            width: 45%;
+                        }
+                        .border-left{
+                            border-left: 1px solid;
+                        }
+                        .font-italic {
+                            font-style: italic;
+                        }
+                        .font-bold {
+                            font-weight: bold;
+                        }
+                        .table-bordered {
+                            border: 1px solid #000000;
+                        }
+                        .table-bordered tbody .table-foreach{
+                            border-bottom: 1px solid white;
+                        }
+                        .number {
+                            text-align: right;
+                        }
+                        .sums td {
+                            text-align: right;
+                        }
+                        .sign-section {
+                            margin-top: 64px;
+                            text-align: center;
+                        }
+                        .sign-section table {
+                            font-size: 13px;
+                            width:90%;
+                            border-collapse: collapse;
+                            margin: 0 auto;
+                            table-layout: fixed;
+                            border: 0px;
+                        }
+                        .sign-section table tr,
+                        .sign-section table th,
+                        .sign-section table td,
+                        .sign-section table tbody {
+                            border: 0px;
+                        }
+                    </style>
+                </t>
+            </t>
+		</template>
+		
+		<template id="costing_rp_pdf">
+			<t t-foreach="docs" t-as="o">
+                <t t-if="o.is_finished_products">
+                    <t t-call="biz_capital_price.costing_rp_pdf_template"/>
+                </t>
+                <t t-else="">
+                    <t t-call="web.html_container">
+                        <t t-call="web.basic_layout">
+                            <div class="page" style="font-family: 'Times New Roman';font-size:16px; line-height: 1.5;">
+                            </div>
+                        </t>
+                    </t>
+                </t>
+			</t>
+		</template>  
+
+	</data>
+</odoo>

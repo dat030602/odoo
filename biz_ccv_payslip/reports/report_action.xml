@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+        <record id="paperformat_hr_payslip_pdf" model="report.paperformat">
+            <field name="name">Bảng lương A4</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="rp_payslip_salary_payment_xlsx" model="ir.actions.report">
+            <field name="name">Salary payment (excel)</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">biz_ccv_payslip.rp_payslip_salary_payment</field>
+            <field name="report_file">biz_ccv_payslip.rp_payslip_salary_payment</field>
+            <field name="print_report_name">"Salary payment (excel)"</field>
+            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip_run"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="action_hr_payslip_pdf" model="ir.actions.report">
+            <field name="name">Bảng lương (PDF)</field>
+            <field name="model">hr.payslip</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">biz_ccv_payslip.hr_payslip_pdf_template</field>
+            <field name="report_file">biz_ccv_payslip.hr_payslip_pdf_template</field>
+            <field name="print_report_name">'Bảng lương (PDF)'</field>
+            <field name="binding_type">report</field>
+            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="paperformat_id" ref="paperformat_hr_payslip_pdf"/>
+        </record>
+	</data>
+</odoo>

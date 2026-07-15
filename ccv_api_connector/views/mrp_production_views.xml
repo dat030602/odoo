@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Inherit mrp.production form view to add NPK weighing fields -->
+    <record id="view_mrp_production_form_npk" model="ir.ui.view">
+        <field name="name">mrp.production.form.npk</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add NPK weighing tab -->
+            <div class="oe_button_box" name="button_box" position="before">
+                <widget name="web_ribbon" title="Đã cân" bg_color="bg-success" attrs="{'invisible': [('state_weighing', '!=', 'finished')]}"/>
+                <widget name="web_ribbon" title="Hủy Cân" bg_color="bg-danger" attrs="{'invisible': [('state_weighing', '!=', 'cancel')]}"/>
+            </div>
+            <xpath expr="//sheet/group/group" position="inside">
+                <field name="bag_number"/>
+                <field name="npk_weighing_history_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_post_npk" type="object" string="Đẩy lên cân NPK" class="btn btn-primary" attrs="{'invisible': ['|',('state', '=', 'done'),('state_weighing', '=', 'finished')]}"/>
+                <button name="action_check_status_weighing" type="object" string="Kiểm tra cân" class="btn btn-info" attrs="{'invisible': [('npk_weighing_history_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Cân NPK">
+                    <field name="state_weighing" widget="statusbar" statusbar_visible="draft,running,finished" readonly="1"/>
+                    <group>
+                        <field name="machine_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': ['|',('state_weighing', '=', 'finished'),'&amp;',('state', '=', 'done'),('state_weighing', '=', 'finished')]}"/>
+                        <field name="weighing_ticket_name" readonly="1"/>
+                        <field name="odoo_ticket_name" readonly="1"/>
+                        <field name="weighing_total" readonly="1"/>
+                        <field name="weighing_counter" readonly="1"/>
+                        <field name="bag_number" readonly="1" string="Số bao kế hoạch"/>
+                        <field name="state_weighing" widget="badge" readonly="1" attrs="{'decoration-success': 'state_weighing == finished', 'decoration-danger': 'state_weighing == cancel'}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_mrp_production_tree_npk" model="ir.ui.view">
+        <field name="name">mrp.production.tree.npk</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <!-- Add NPK weighing tab -->
+            <xpath expr="//tree" position="inside">
+                <field name="state_weighing" widget="badge" optional="hide" decoration-success="state_weighing == 'finished'" decoration-danger="state_weighing == 'cancel'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

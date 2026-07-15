@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="form_ccv_bao_cao_sale_report_view">
+            <field name="name">form_alpha_report_view</field>
+            <field name="model">alpha.report</field>
+            <field name="priority">10</field>
+            <field name="inherit_id" ref="ccv_sql.form_alpha_report_view"/>
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <field name="is_sale" invisible="1"/>
+                </header>
+                <field name="team_id" position="attributes">
+                    <attribute name="attrs">{'invisible': [('report_type', 'not in', ('team'))]}</attribute>
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </field>
+                <field name="line_ids" position="attributes">
+                    <attribute name="attrs">{'invisible':[('is_sale','=',True)]}</attribute>
+                </field>
+                <field name="line4_ids" position="attributes">
+                    <attribute name="attrs">{'invisible':[('is_sale','=',True)]}</attribute>
+                </field>
+                <field name="line5_ids" position="attributes">
+                    <attribute name="attrs">{'invisible':[('is_sale','=',True)]}</attribute>
+                </field>
+                <field name="line6_ids" position="attributes">
+                    <attribute name="attrs">{'invisible':[('is_sale','=',True)]}</attribute>
+                </field>
+                <field name="line7_ids" position="attributes">
+                    <attribute name="attrs">{'invisible':[('is_sale','=',True)]}</attribute>
+                </field>
+                <group name="report_type" position="attributes">
+                    <attribute name="attrs">{'invisible':[('type','not in',(
+                        'chi_tiet_cong_no_phai_tra',
+                        'chi_tiet_cong_no_phai_thu',
+                        'chi_tiet_cong_no_phai_tra_usd',
+                        'chi_tiet_cong_no_phai_thu_usd',
+                        'tong_hop_cong_no_phai_thu',
+                        'tong_hop_cong_no_phai_tra',
+                        'tong_hop_cong_no_phai_thu_usd',
+                        'tong_hop_cong_no_phai_tra_usd',
+                        'danh_sach_chi_tien_von_tu_co',
+                    ))]}</attribute>
+                </group>
+                <button name="action_confirm" position="attributes">
+                    <attribute name="attrs">{'invisible':
+                    [('is_sale','=',True),
+                    ('type','not in',(
+                        'chi_tiet_cong_no_phai_tra',
+                        'chi_tiet_cong_no_phai_thu',
+                        'tong_hop_cong_no_phai_thu',
+                        'tong_hop_cong_no_phai_tra',
+                        'tong_hop_cong_no_phai_thu_usd',
+                        'tong_hop_cong_no_phai_tra_usd',
+                        'chi_tiet_cong_no_phai_tra_usd',
+                        'chi_tiet_cong_no_phai_thu_usd',
+                        'danh_sach_chi_tien_von_tu_co',
+                    ))]}</attribute>
+                </button>
+                <button name="action_view_tree" position="attributes">
+                    <attribute name="attrs">{'invisible':
+                    [('is_sale','=',True),
+                    ('type','not in',(
+                        'chi_tiet_cong_no_phai_tra',
+                        'chi_tiet_cong_no_phai_thu',
+                        'tong_hop_cong_no_phai_thu',
+                        'tong_hop_cong_no_phai_tra',
+                        'tong_hop_cong_no_phai_thu_usd',
+                        'tong_hop_cong_no_phai_tra_usd',
+                        'chi_tiet_cong_no_phai_tra_usd',
+                        'chi_tiet_cong_no_phai_thu_usd',
+                        'danh_sach_chi_tien_von_tu_co',
+                    ))]}</attribute>
+                </button>
+            </field>
+        </record>
+        <!-- <record id="action_alpha_report" model="ir.actions.server">
+            <field name="name">Báo Cáo CCV</field>
+            <field name="model_id" ref="model_alpha_report"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_open_alpha_sale_report()</field>
+        </record> -->
+        <record id="res_partner_ccv_bao_cao_action" model="ir.actions.act_window">
+            <field name="name">Báo cáo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">alpha.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="form_ccv_bao_cao_sale_report_view"/>
+            <field name="context">{"default_type": "chi_tiet_cong_no_phai_thu","default_is_sale": True}</field>
+        </record>
+        <record id="action_alpha_sale_report" model="ir.actions.server">
+            <field name="name">Báo Cáo CCV</field>
+            <field name="model_id" ref="model_alpha_report"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_open_alpha_sale_report()</field>
+        </record>
+        <menuitem id="menu_sale_report"
+            name="Báo cáo"
+            action="sale.action_order_report_all"
+            parent="sale.menu_sale_report"
+            sequence="40"/>
+        <menuitem id="menu_main_alpha_report_ccv_sale_report" name="Báo Cáo Công nợ" action="action_alpha_sale_report"
+                  parent="sale.menu_sale_report" sequence="-1100"/>
+    </data>
+</odoo>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_partner_tree_inherit_biz_ccv_account" model="ir.ui.view">
+        <field name="name">res.partner.tree.inherit.biz.ccv.account</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="multi_edit">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="is_hide_fields" invisible="1"/>
+            </xpath>
+<!--            <xpath expr="//field[@name='code_contact']" position="attributes">-->
+<!--                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//field[@name='display_name']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='full_address_vi']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='email']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='activity_ids']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='city']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='country_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_view_inherit_hide_group_see_internal_contact" model="ir.ui.view">
+        <field name="name">res.partner.view.inherit.hide.group.see.internal.contact</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="active" position="after">
+                <field name="is_hide_fields" invisible="1"/>
+            </field>
+            <field name="image_1920" position="attributes">
+                <attribute name="attrs">{"invisible": [('is_hide_fields', '=', True)]}</attribute>
+            </field>
+            <xpath expr="//div[hasclass('oe_title')]/h1/field[@id='company']" position="attributes">
+                <attribute name="attrs">{'required' : [('type', '=', 'contact')], 'invisible': ['|', ('is_company','=', False), ('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]/h1/field[@id='individual']" position="attributes">
+                <attribute name="attrs">{'required' : [('type', '=', 'contact')], 'invisible': ['|', ('is_company','=', True), ('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="attributes">
+                <attribute name="attrs">{"invisible": [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                <attribute name="attrs">{"invisible": [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='parent_id']/.." position="attributes">
+                <attribute name="attrs">{"invisible": [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//span[@name='address_name']/../.." position="attributes">
+                <attribute name="attrs">{"invisible": [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+
+            <xpath expr="//notebook" position="attributes">
+                <attribute name="attrs">{"invisible": [('is_hide_fields', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

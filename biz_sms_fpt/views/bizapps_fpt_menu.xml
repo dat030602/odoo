@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem sequence="309" id="menu_sms_fpt_manager" name="SMS FPT" groups="base.group_system"
+              web_icon="biz_sms_fpt,static/description/icon.png"/>
+    <menuitem action="action_bizapps_fpt_sms"
+              id="menu_bizapps_fpt_sms" parent="biz_sms_fpt.menu_sms_fpt_manager" sequence="5"/>
+    <menuitem id="sms_vi_hat_sms_template_menu" sequence="10" parent="menu_sms_fpt_manager" action="sms.sms_template_action"/>
+    <menuitem action="action_bizapps_fpt_sms_token" id="menu_bizapps_fpt_sms_token" parent="menu_sms_fpt_manager"
+              sequence="15" active="False"/>
+    <menuitem action="action_bizapps_fpt_sms_config" id="menu_bizapps_fpt_sms_config" parent="menu_sms_fpt_manager"
+              sequence="20"/>
+    <menuitem id="sms_fpt_log_menu" parent="biz_sms_fpt.menu_sms_fpt_manager" action="sms_fpt_log_act_window"
+              sequence="25"/>
+</odoo>

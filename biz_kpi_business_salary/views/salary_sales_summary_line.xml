@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View for salary.sales.summary.line -->
+    <record id="view_salary_sales_summary_line_tree" model="ir.ui.view">
+        <field name="name">salary.sales.summary.line.tree</field>
+        <field name="model">salary.sales.summary.line</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết tổng hợp doanh thu" decoration-muted="not active">
+                <field name="name" optional="show"/>
+                <field name="team_id" invisible="1"/>
+                <field name="state_id"/>
+                <field name="planned_quantity" digits="[16,3]" sum="Tổng kế hoạch" optional="show"/>
+                <field name="production_quantity" digits="[16,3]" sum="Tổng sản lượng" optional="show"/>
+                <field name="total_revenue" options="{'currency_field': 'currency_id'}" sum="Tổng doanh thu" optional="show"/>
+                <button name="action_view_revenue_lines" string="Xem" type="object" class="oe_stat_button" icon="fa-bar-chart" attrs="{'invisible': [('total_revenue', '=', 0)]}"/>
+                <field name="total_payment_received" options="{'currency_field': 'currency_id'}" sum="Tổng thu tiền" optional="show"/>
+                <button name="action_view_payment_lines" string="Xem" type="object" class="oe_stat_button" icon="fa-money" attrs="{'invisible': [('total_payment_received', '=', 0)]}"/>
+                <field name="total_invoice_quantity" digits="[16,3]" sum="Tổng số lượng xuất hóa đơn trước" optional="show"/>
+                <field name="total_invoice_amount" options="{'currency_field': 'currency_id'}" sum="Tổng xuất hóa đơn" optional="show"/>
+                <button name="action_view_invoice_lines" string="Xem" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible': [('total_invoice_amount', '=', 0)]}"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for salary.sales.summary.line -->
+    <record id="view_salary_sales_summary_line_form" model="ir.ui.view">
+        <field name="name">salary.sales.summary.line.form</field>
+        <field name="model">salary.sales.summary.line</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết dòng tổng hợp">
+                <header>
+                    <button name="action_view_revenue_lines" string="Xem doanh thu" type="object" class="oe_stat_button" icon="fa-bar-chart"/>
+                    <button name="action_view_payment_lines" string="Xem tiền về" type="object" class="oe_stat_button" icon="fa-money"/>
+                    <button name="action_view_invoice_lines" string="Xem hóa đơn trước" type="object" class="oe_stat_button" icon="fa-file-text-o"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="summary_id" readonly="1"/>
+                            <field name="team_id"/>
+                            <field name="state_id"/>
+                        </group>
+                        <group>
+                            <field name="planned_quantity" digits="[16,3]"/>
+                            <field name="production_quantity" digits="[16,3]" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="total_revenue" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="total_payment_received" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="total_invoice_amount" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View for salary.sales.summary.line -->
+    <record id="view_salary_sales_summary_line_search" model="ir.ui.view">
+        <field name="name">salary.sales.summary.line.search</field>
+        <field name="model">salary.sales.summary.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm chi tiết tổng hợp">
+                <field name="summary_id"/>
+                <field name="name" string="Khu vực"/>
+                <field name="state_id"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khu vực" name="group_team" context="{'group_by': 'team_id'}"/>
+                    <filter string="Tỉnh" name="group_state" context="{'group_by': 'state_id'}"/>
+                    <filter string="Tổng hợp" name="group_summary" context="{'group_by': 'summary_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

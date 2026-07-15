@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Excel -->
+    <report
+        id="chi_tiet_cong_no_phai_thu_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Chi tiết công nợ phải thu"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu"
+        file="chi_tiet_cong_no_phai_thu"
+        attachment_use="False"
+    />
+    <report
+        id="chi_tiet_cong_no_phai_tra_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Chi tiết công nợ phải trả"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra"
+        file="chi_tiet_cong_no_phai_tra"
+        attachment_use="False"
+    />
+    <report
+        id="tong_hop_cong_no_phai_tra_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Tổng hợp công nợ phải trả"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra"
+        file="tong_hop_cong_no_phai_tra"
+        attachment_use="False"
+    />
+    <report
+        id="tong_hop_cong_no_phai_thu_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Tổng hợp công nợ phải thu"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu"
+        file="tong_hop_cong_no_phai_thu"
+        attachment_use="False"
+    />
+    <report
+        id="chi_tiet_cong_no_phai_thu_nt_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Chi tiết công nợ phải thu (Ngoại Tệ)"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu_nt"
+        file="chi_tiet_cong_no_phai_thu_nt"
+        attachment_use="False"
+    />
+    <report
+        id="chi_tiet_cong_no_phai_tra_nt_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Chi tiết công nợ phải trả (Ngoại Tệ)"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_nt"
+        file="chi_tiet_cong_no_phai_tra_nt"
+        attachment_use="False"
+    />
+    <report
+        id="tong_hop_cong_no_phai_tra_nt_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Tổng hợp công nợ phải trả (Ngoại Tệ)"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra_nt"
+        file="tong_hop_cong_no_phai_tra_nt"
+        attachment_use="False"
+    />
+    <report
+        id="tong_hop_cong_no_phai_thu_nt_report_xlsx"
+        model="ccv.debt.report"
+        string="Excel: Tổng hợp công nợ phải thu (Ngoại Tệ)"
+        report_type="xlsx"
+        name="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu_nt"
+        file="tong_hop_cong_no_phai_thu_nt"
+        attachment_use="False"
+    />
+
+    <!-- PDF -->
+
+    <record id="chi_tiet_cong_no_phai_thu_report_pdf" model="ir.actions.report">
+        <field name="name">PDF: Chi Tiết Công Nợ Phải Thu</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu_template</field>
+        <field name="report_file">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu_template</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Chi Tiết Công Nợ Phải Thu'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="tong_hop_cong_no_phai_thu_report_pdf" model="ir.actions.report">
+        <field name="name">PDF: Tổng hợp Công Nợ Phải Thu</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu_template</field>
+        <field name="report_file">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu_template</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Tổng hợp Công Nợ Phải Thu'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="chi_tiet_cong_no_phai_tra_report_ccv_report" model="ir.actions.report">
+        <field name="name">PDF: Chi Tiết Công Nợ Phải Trả</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_template_ccv_report</field>
+        <field name="report_file">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_template_ccv_report</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Chi Tiết Công Nợ Phải Trả'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="tong_hop_cong_no_phai_tra_report_pdf" model="ir.actions.report">
+        <field name="name">PDF: Tổng hợp Công Nợ Phải Trả</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra_template</field>
+        <field name="report_file">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra_template</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Tổng hợp Công Nợ Phải Trả'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="chi_tiet_cong_no_phai_thu_nt_report_pdf" model="ir.actions.report">
+        <field name="name">PDF: Chi Tiết Công Nợ Phải Thu (Ngoại Tệ)</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu_nt_template</field>
+        <field name="report_file">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu_nt_template</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Chi Tiết Công Nợ Phải Thu Ngoại Tệ'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="chi_tiet_cong_no_phai_tra_nt_report_pdf" model="ir.actions.report">
+        <field name="name">PDF: Chi Tiết Công Nợ Phải Trả (Ngoại Tệ)</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_nt_template</field>
+        <field name="report_file">ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_nt_template</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Chi Tiết Công Nợ Phải Trả Ngoại Tệ'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="tong_hop_cong_no_phai_thu_nt_report_pdf" model="ir.actions.report">
+        <field name="name">PDF: Tổng hợp Công Nợ Phải Thu (Ngoại Tệ)</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu_nt_template</field>
+        <field name="report_file">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu_nt_template</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Tổng hợp Công Nợ Phải Thu Ngoại Tệ'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="tong_hop_cong_no_phai_tra_nt_report_pdf" model="ir.actions.report">
+        <field name="name">PDF: Tổng hợp Công Nợ Phải Trả (Ngoại Tệ)</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra_nt_template</field>
+        <field name="report_file">ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra_nt_template</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+        <field name="print_report_name">'Tổng hợp Công Nợ Phải Trả Ngoại Tệ'</field>
+        <field name="binding_model_id" ref="model_ccv_debt_report"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

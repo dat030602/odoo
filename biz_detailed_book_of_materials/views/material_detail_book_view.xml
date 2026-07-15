@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_material_detail_book_form" model="ir.ui.view">
+            <field name="name">material.detail.book.form</field>
+            <field name="model">material.detail.book</field>
+            <field name="arch" type="xml">
+                <form string="Material detail book">
+                    <header>
+                        <field name="is_user_current" invisible="1"/>
+                        <button name="action_general" string="Summary" type="object" class="btn-primary"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="%(biz_detailed_book_of_materials.action_rp_material_detail_book_xlsx)d" string="Export Excel" type="action" />
+                        <button name="%(biz_detailed_book_of_materials.action_material_detail_book_pdf)d" string="In PDF" type="action" />
+                        <button name="action_view_detail" string="Xem chi tiết" type="object"/>
+                        <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_refuse" type="object" string="Từ chối"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_cancel" type="object" string="Hủy"
+                                attrs="{'invisible': [('state','not in', ('approve',))]}"/>
+                        <button name="action_undo" type="object" string="Đặt về nháp"
+                                attrs="{'invisible': [('state','not in', ('refuse','cancel'))]}"/>
+                        <button name="action_undo" type="object" string="Đặt về nháp"
+                                groups="base.group_system"
+                                attrs="{'invisible': [('state','!=','approved')]}"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,approve,approved"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Đã duyệt"
+                                attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                        <widget name="web_ribbon" title="Hủy"
+                                attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                        <widget name="web_ribbon" title="Từ chối"
+                                attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                        <group>
+                            <field name="name" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="from_date"/>
+                                <field name="to_date"/>
+                            </group>
+                            <group>
+                                <field name="warehouse_ids" options="{'no_open': True, 'no_create': True}" widget="many2many_tags"/>
+                                <field name="product_ids" options="{'no_open': True, 'no_create': True}" widget="many2many_tags"/>
+                                <field name="previous_period_id" domain="[('id','!=', id)]"/>
+                            </group>
+                        </group>
+                        <group string="Ký tên">
+                        <group>
+                            <field name="voter_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="warehouse_manager_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="stock_controller_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="chief_acc_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="hcns_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="unit_heads_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Material detail book">
+                            <field name="line_ids" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                        </page>
+                        <page string="Select excel export column">
+                            <field name="export_fields_ids">
+                                <tree create="0" delete="0" editable="bottom">
+                                    <field name='sequence' widget="handle"/>
+                                    <field name="material_id" invisible="1"/>
+                                    <field name="field_id"/>
+                                    <field name="is_selected"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="trp_approve_history" string="Lịch sử duyệt">
+                            <group>
+                                <field name="trp_approve_config_line_id" invisible="1"/>
+                                <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                <field name="delegate_approver_ids" widget="many2many_tags"
+                                       domain="[('id','not in',current_approve_user_ids)]"
+                                       groups="base.group_system"/>
+                            </group>
+                            <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_material_detail_book_tree" model="ir.ui.view">
+            <field name="name">material.detail.book.tree</field>
+            <field name="model">material.detail.book</field>
+            <field name="arch" type="xml">
+                <tree string="Material detail book">
+                    <field name="name"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="previous_period_id"/>
+                    <field name="warehouse_ids" widget="many2many_tags"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'approved'"
+                           decoration-danger="state in ('cancel','refuse')"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_material_detail_book" model="ir.actions.act_window">
+            <field name="name">Material detail book (S10-DN)</field>
+            <field name="res_model">material.detail.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+        <menuitem action="action_material_detail_book" 
+            id="menu_material_detail_book" 
+            parent="account_reports.account_reports_audit_reports_menu" 
+            sequence="20"
+        />
+    </data>
+</odoo>

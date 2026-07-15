@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="mail.Message" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='messageView.messageSeenIndicatorView']" position="replace">
+            <t t-if="messageView.isDirectMessages and messageView.messageSeenIndicatorView">
+                <MessageSeenIndicator className="'o_Message_seenIndicator ms-1'" record="messageView.messageSeenIndicatorView"/>
+            </t>
+         </xpath>
+        <xpath expr="//div[hasclass('o_Message_bubbleWrap')]" position="after">
+            <t t-if="!messageView.isDirectMessages and messageView and messageView.messageSeenIndicatorView">
+                <MessageSeenIndicator className="'o_Message_seenIndicator me-1'" record="messageView.messageSeenIndicatorView"/>
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('o_Message_core')]" position="attributes">
+            <attribute name="t-on-click">messageView.onClickLoadSeenMessage</attribute>
+        </xpath>
+    </t>
+</templates>

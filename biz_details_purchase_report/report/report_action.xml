@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paper_format_details_purchase_report_pdf" model="report.paperformat">
+        <field name="name">Details Purchase Report (PDF)</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="action_details_purchase_report_xlsx"
+        string="Details purchase report(Excel)"
+        model="wz.select.time.report"
+        report_type="xlsx"
+        name="biz_details_purchase_report.details_purchase_report_xlsx"
+        file="biz_details_purchase_report.details_purchase_report_xlsx"
+        print_report_name="'Details purchase report (Excel)'"
+        menu="False"
+    />
+    <record id="action_details_purchase_report_pdf" model="ir.actions.report">
+        <field name="name">Details purchase report(PDF)</field>
+        <field name="model">wz.select.time.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_details_purchase_report.details_purchase_report_pdf</field>
+        <field name="report_file">biz_details_purchase_report.details_purchase_report_pdf</field>
+        <field name="print_report_name">'Details purchase report (PDF)'</field>
+        <field name="paperformat_id" ref='paper_format_details_purchase_report_pdf'/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <report
+        id="action_details_purchase_book_xlsx"
+        string="Sổ chi tiết mua hàng (Excel)"
+        model="details.purchase.book"
+        report_type="xlsx"
+        name="biz_details_purchase_report.details_purchase_book_xlsx"
+        file="biz_details_purchase_report.details_purchase_book_xlsx"
+        print_report_name="'Sổ chi tiết mua hàng (Excel)'"
+        menu="False"
+    />
+    <record id="action_details_purchase_book_pdf" model="ir.actions.report">
+        <field name="name">Sổ chi tiết mua hàng (PDF)</field>
+        <field name="model">details.purchase.book</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_details_purchase_report.details_purchase_book_pdf</field>
+        <field name="report_file">biz_details_purchase_report.details_purchase_book_pdf</field>
+        <field name="print_report_name">'Sổ chi tiết mua hàng (PDF)'</field>
+        <field name="paperformat_id" ref='paper_format_details_purchase_report_pdf'/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report actions cho Sổ chi tiết nhập hàng tại cảng -->
+    <report
+        id="action_details_internal_tf_book_xlsx"
+        string="Sổ chi tiết nhập hàng tại cảng (Excel)"
+        model="details.internal.tf.book"
+        report_type="xlsx"
+        name="biz_details_purchase_report.int_tf_xlsx"
+        file="biz_details_purchase_report.int_tf_xlsx"
+        print_report_name="'Sổ chi tiết nhập hàng tại cảng (Excel)'"
+        menu="False"
+    />
+    <record id="action_details_internal_tf_book_pdf" model="ir.actions.report">
+        <field name="name">Sổ chi tiết nhập hàng tại cảng (PDF)</field>
+        <field name="model">details.internal.tf.book</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_details_purchase_report.int_tf_pdf</field>
+        <field name="report_file">biz_details_purchase_report.int_tf_pdf</field>
+        <field name="print_report_name">'Sổ chi tiết nhập hàng tại cảng (PDF)'</field>
+        <field name="paperformat_id" ref='paper_format_details_purchase_report_pdf'/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report actions cho Báo cáo hàng tồn kho khu vực -->
+    <record id="action_details_stock_order_book_pdf" model="ir.actions.report">
+        <field name="name">Báo cáo hàng tồn kho khu vực (PDF)</field>
+        <field name="model">details.stock.order.book</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_details_purchase_report.stock_order_book_pdf</field>
+        <field name="report_file">biz_details_purchase_report.stock_order_book_pdf</field>
+        <field name="print_report_name">'Báo cáo hàng tồn kho khu vực'</field>
+        <field name="paperformat_id" ref='paper_format_details_purchase_report_pdf'/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <report
+        id="action_details_stock_order_book_xlsx"
+        string="Báo cáo hàng tồn kho khu vực (Excel)"
+        model="details.stock.order.book"
+        report_type="xlsx"
+        name="biz_details_purchase_report.stock_order_book_xlsx"
+        file="biz_details_purchase_report.stock_order_book_xlsx"
+        print_report_name="'Báo cáo hàng tồn kho khu vực'"
+        menu="False"
+    />
+
+
+    <report
+        id="action_details_accounts_payable_book_xlsx"
+        string="Chi Tiết Công Nợ Phải Trả (Excel)"
+        model="details.accounts.payable.book"
+        report_type="xlsx"
+        name="biz_details_purchase_report.ac_payable_xlsx"
+        file="biz_details_purchase_report.ac_payable_xlsx"
+        print_report_name="'Chi Tiết Công Nợ Phải Trả'"
+        menu="False"
+    />
+
+    <report
+        id="action_summary_accounts_payable_book_xlsx"
+        string="Tổng Hợp Công Nợ Phải Trả (Excel)"
+        model="summary.accounts.payable.book"
+        report_type="xlsx"
+        name="biz_details_purchase_report.summary_ac_payable_xlsx"
+        file="biz_details_purchase_report.summary_ac_payable_xlsx"
+        print_report_name="'Tổng Hợp Công Nợ Phải Trả'"
+        menu="False"
+    />
+
+</odoo>

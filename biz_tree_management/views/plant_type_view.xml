@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="tree_management_plant_type_view_form" model="ir.ui.view">
+            <field name="name">tree.management.plant.type.form</field>
+            <field name="model">tree.management.plant.type</field>
+            <field name="arch" type="xml">
+                <form string="Plant Type">
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="note" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="tree_management_plant_type_view_tree" model="ir.ui.view">
+            <field name="name">tree.management.plant.type.tree</field>
+            <field name="model">tree.management.plant.type</field>
+            <field name="arch" type="xml">
+                <tree string="Plant Type">
+                    <field name="name" />
+                    <field name="note" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="tree_management_plant_type_action" model="ir.actions.act_window">
+            <field name="name">Plant Type</field>
+            <field name="res_model">tree.management.plant.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_tree_management_plant_type" name="Plant Type" action="tree_management_plant_type_action" sequence="14" groups="base.group_user" parent="plant_management_menu"/>
+    </data>
+</odoo>

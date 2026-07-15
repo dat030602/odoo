@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="de_xuat_thue_xe_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_bao_cao.de_xuat_thue_xe_document"
+                       t-lang="user.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="de_xuat_thue_xe_document">
+            <t t-call="ccv_bao_cao.ccv_header_img">
+                 <div class="page" style="font-size: 14px;font-family: Times New Roman; padding-top: 20px;">
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-6" style="text-align: center;">
+                                <span><strong>Công ty TNHH Con Cò Vàng</strong></span>
+                                <br/>
+                                <span>Số:<t t-esc="doc.name"/></span>
+                                <br/>
+                        </div>
+                        <div class="col-6" style="text-align: center;">
+                           <span><strong>Cộng hòa Xã hội Chủ nghĩa Việt Nam</strong></span>
+                           <br/>
+                           <span><strong>Độc lập - Tự do - Hạnh phúc</strong></span>
+                           <br/>
+                           <span><strong>-----------------&amp;---------------</strong></span>
+                           <br/>
+                           <span>Con Cò Vàng, ngày tháng năm</span>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12" style="text-align: center; font-size: 20px">
+                            <strong>ĐỀ XUẤT THUÊ XE</strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-3">
+                            Kính gửi:
+                        </div>
+                        <div class="col-9">
+                            <strong>Tổng Giám Đốc</strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Căn cứ vào nhu cầu thực tế;
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Căn cứ vào quy định của Tập đoàn Con Cò Vàng;
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Căn cứ vào lệnh điều động xe của Phòng Kinh Doanh;
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Phòng Thương mại, kính trình Ban Tổng Giám Đốc phê duyệt cho thuê xe chở hàng từ Kho BourBon về Cảng Gò Dầu;
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            <strong>1. Thông tin đơn hàng</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm" style="padding:0px;border: solid 1px; width: 100%; margin-top: 4px;">
+                            <thead>
+                                <tr>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <strong>STT</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <strong>Tên khách hàng</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <strong>Số lượng (tấn)</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <strong>Cước phí (đồng)</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <strong>Thành tiền (đồng)</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <strong>Đơn vị vận chuyển</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <strong>Lộ trình</strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="number" t-value="0"/>
+                                <t t-set="number" t-value="number + 1"/>
+                                <tr>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;">
+                                        <span style="padding:0 6px;text-align: center; vertical-align: middle;" t-esc="number"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle;"/>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: center; vertical-align: middle"/>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: left; vertical-align: middle">
+                                        <span t-esc="doc.note"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: right; vertical-align: middle">
+                                        <span t-esc="doc.company_currency_id.sudo().format(doc.total_amount)"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-dark" colspan="2" style="padding:0 6px;text-align: left;">
+                                        <strong>Tổng cộng</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: right;">
+                                        <strong>
+                                            <span style="padding:0 6px;text-decoration: underline;" t-esc="doc.company_currency_id.sudo().format(doc.total_amount)"/>
+                                        </strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: right;">
+                                        <strong>
+                                            <span style="padding:0 6px;text-decoration: underline;" t-esc="doc.company_currency_id.sudo().format(doc.total_amount)"/>
+                                        </strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: right;"/>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: right;">
+                                        <strong>
+                                            <span style="padding:0 6px;text-decoration: underline;" t-esc="doc.company_currency_id.sudo().format(doc.total_amount)"/>
+                                        </strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: right;"/>
+                                    <td class="border border-dark" style="padding:0 6px;text-align: right;"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            <span>Bằng chữ: </span>
+                            <span>Bằng chữ: </span>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Lưu ý: Chưa bao gồm VAT 8%, đã bao gồm bốc xếp kho NCC, không thu bốc xếp tại kho CCV.
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            <strong>2. Thời gian giao hàng</strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            -Phòng Thương mại kính trình Ban Tổng Giám Đốc phê duyệt giá để tiến hành thuê xe chở hàng kịp tiến độ.
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            Trân trọng!
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12" style="text-align: right;">
+                            Ngày ...... tháng ..... năm .....&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                        </div>
+                    </div>
+                    <div class="row rowp" style="text-align: center;">
+                        <div class="col-6">
+                            <span>
+                                <strong>PHÊ DUYỆT</strong>
+                            </span>
+                            <br/>
+                            <!-- <t t-if="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).user_id.sign_signature is not False and doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).status == 'approved'">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).user_id.sign_signature)" width='120px' height="50px"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <span><strong t-esc="doc.sudo().approver_ids.filtered(lambda l:l.user_id.id==24).user_id.name"/></span> -->
+                        </div>
+                        <div class="col-6">
+                            <span>
+                                <strong>NGƯỜI LẬP</strong>
+                            </span>
+                            <br/>
+                            <t t-if="doc.sudo().request_owner_id.sign_signature is not False">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().request_owner_id.sign_signature)" width='120px' height="50px"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <span><strong t-esc="doc.sudo().request_owner_id.name"/></span>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

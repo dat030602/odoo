@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mrp_production_form_view_inherit_client_ccv" model="ir.ui.view">
+        <field name="name">mrp.production.form.inherit.client.ccv</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='miscellaneous']//field[@name='date_deadline']/.." position="inside">
+                <field name="sale_order_partner_id" readonly="1"/>
+                <field name="sale_order_id" invisible="1"/>
+                <field name="is_hide_mrp_production_childs" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_mrp_production_childs']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('mrp_production_child_count', '=', 0), ('is_hide_mrp_production_childs', '=', True)]}</attribute>
+            </xpath>
+            <field name="product_id" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}</attribute>
+            </field>
+            <field name="bom_id" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}</attribute>
+            </field>
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='product_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('parent.state', 'not in', ['draft', 'confirmed'])]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='product_uom'][2]" position="attributes">
+                <attribute name="attrs">{'readonly': [('parent.state', 'not in', ['draft', 'confirmed'])]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='quantity_done']" position="attributes">
+                <attribute name="attrs">{'column_invisible': [('parent.state', '=', 'draft')], 'readonly': ['|',('parent.state', 'not in', ['draft', 'confirmed']), ('has_tracking', '=', True)]}</attribute>
+            </xpath>
+            <field name="move_raw_ids" position="attributes">
+                <attribute name="options">{'delete': [('state', 'in', ['draft', 'confirmed'])]}</attribute>
+            </field>
+            <field name="move_byproduct_ids" position="attributes">
+                <attribute name="options">{'delete': [('state', 'in', ['draft', 'confirmed'])]}</attribute>
+            </field>
+            <xpath expr="//page[@name='miscellaneous']//group//group//field[@name='picking_type_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='miscellaneous']//group//group//field[@name='location_src_id'][1]" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}</attribute>
+            </xpath>
+            <xpath expr="//page[@name='miscellaneous']//group//group//field[@name='location_dest_id'][1]" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="mrp.menu_mrp_root"
+        name="Manufacturing"
+        groups="mrp.group_mrp_user,biz_client_ccv.group_mrp_manager_production,mrp.group_mrp_manager"
+        web_icon="mrp,static/description/icon.svg"
+        sequence="145"/>
+</odoo>

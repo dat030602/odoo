@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="tree_management_area_view_form" model="ir.ui.view">
+            <field name="name">tree.management.area.form</field>
+            <field name="model">tree.management.area</field>
+            <field name="arch" type="xml">
+                <form string="Areas">
+                    <sheet>
+                        <group>
+                            <field name="name" required="1"/>
+                            <field name="area" />
+                            <field name="address" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="tree_management_area_view_tree" model="ir.ui.view">
+            <field name="name">tree.management.area.tree</field>
+            <field name="model">tree.management.area</field>
+            <field name="arch" type="xml">
+                <tree string="Areas">
+                    <field name="name" />
+                    <field name="area" />
+                    <field name="address" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="tree_management_area_action" model="ir.actions.act_window">
+            <field name="name">Areas</field>
+            <field name="res_model">tree.management.area</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_tree_management_area" name="Areas" action="tree_management_area_action" sequence="15" groups="base.group_user" parent="plant_management_menu"/>
+    </data>
+</odoo>

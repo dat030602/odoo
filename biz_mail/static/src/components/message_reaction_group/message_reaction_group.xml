@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="mail.MessageReactionGroup" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('o_MessageReactionGroup')]" position="attributes">
+            <attribute name="t-on-mouseover">messageReactionGroup and messageReactionGroup.showUsersReaction</attribute>
+            <attribute name="t-on-mouseleave">messageReactionGroup and messageReactionGroup.unShowUsersReaction</attribute>
+            <attribute name="t-ref">action</attribute>
+        </xpath>
+    </t>
+</templates>

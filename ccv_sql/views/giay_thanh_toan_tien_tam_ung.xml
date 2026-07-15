@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="search_giay_thanh_toan_tien_tam_ung" model="ir.ui.view">
+            <field name="name">search_giay_thanh_toan_tien_tam_ung</field>
+            <field name="model">alpha.report.line5</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Chi tiết công nợ phải thu">
+                    <field name="account_id" string="Ghi nợ"/>
+                    <field name="account_dest_id" string="Ghi có"/>
+                    <field name="note"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_account_id" string="Ghi nợ" context="{'group_by': 'account_id'}"/>
+                        <filter name="group_by_account_dest_id" string="Ghi có" context="{'group_by': 'account_dest_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_giay_thanh_toan_tien_tam_ung">
+            <field name="name">tree_giay_thanh_toan_tien_tam_ung</field>
+            <field name="model">alpha.report.line5</field>
+            <field name="arch" type="xml">
+                <tree default_order="move_id,date,product_id desc">
+                    <field name="move_id" invisible="1"/>
+                    <field name="account_id" string="Ghi nợ"/>
+                    <field name="account_dest_id" string="Ghi có"/>
+                    <field name="credit" sum="total_credit" string="Số tiền"/>
+                    <field name="note" string="Diễn giải"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

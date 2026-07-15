@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="rp_summary_ie_inv_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.env.user.lang)" />
+                    <div class="header" style="font-family: 'Times New Roman'">
+                        <t t-set="company" t-value="o.env.company"/>
+                        <div>
+                            <b><span t-esc="company.name"/></b><br/>
+                            <b><span t-esc="get_company_address(company)"/></b><br/>
+                            <b><span t-esc="company.phone"/></b>
+                        </div>
+                    </div>
+                    <div class="page" style="font-family: 'Times New Roman'">
+                        <div class="title text-center">
+                            <h4 style="font-weight: bold">BẢNG TỔNG HỢP NHẬP - XUẤT - TỒN KHO HÀNG HÓA</h4>
+                            <p>Tháng <span t-esc="o.from_date.strftime('%m')"/> Năm <span t-esc="o.from_date.strftime('%Y')" /></p>
+                        </div>
+
+                        <table class="table table-condensed mt-2">
+                            <t t-set='view_tt' t-value="0"/>
+
+                            <t groups="biz_stock_summary_report.group_ie_view_quant_and_tt">
+                                <t t-set='view_tt' t-value="1"/>
+                            </t>
+
+                            <thead>
+                                <tr>
+                                    <th rowspan='2'>Mã hàng</th>
+                                    <th rowspan='2'>Tên hàng</th>
+                                    <th rowspan='2'>ĐVT</th>
+                                    <th t-att-colspan='view_tt + 1'>Đầu kỳ</th>
+                                    <th t-att-colspan="view_tt + 1 ">Nhập kho</th>
+                                    <th t-att-colspan="view_tt + 1">Xuất kho</th>
+                                    <th t-att-colspan="view_tt + 1">Cuối kỳ</th>
+                                </tr>
+                                <tr>
+                                    <th>Số lượng</th>
+                                    <th groups="biz_stock_summary_report.group_ie_view_quant_and_tt">Giá trị</th>
+                                    <th>Số lượng</th>
+                                    <th groups="biz_stock_summary_report.group_ie_view_quant_and_tt">Giá trị</th>
+                                    <th>Số lượng</th>
+                                    <th groups="biz_stock_summary_report.group_ie_view_quant_and_tt">Giá trị</th>
+                                    <th>Số lượng</th>
+                                    <th groups="biz_stock_summary_report.group_ie_view_quant_and_tt">Giá trị</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids" t-as="line">
+                                    <td class="text-left"><span t-esc="line.product_code" /></td>
+                                    <td class="text-left"><span t-esc="line.product_id.name" /></td>
+                                    <td><span t-esc="line.uom_id.name" /></td>
+                                    <td><span t-esc="format_float_number(line.qty_begin)" /></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(line.value_begin)" /></td>
+                                    <td><span t-esc="format_float_number(line.qty_import)" /></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(line.value_import)" /></td>
+                                    <td><span t-esc="format_float_number(line.qty_export)" /></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt" class="text-right"><span t-esc="format_float_number(line.value_export)" /></td>
+                                    <td><span t-esc="format_float_number(line.qty_end)" /></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(line.value_end)" /></td>
+                                </tr>
+                                <t t-set="sum_all" t-value="sum_qty(o)"/>
+                                <tr>
+                                    <td></td>
+                                    <td>Tổng cộng</td>
+                                    <td></td>
+                                    <td><span t-esc="format_float_number(sum_all['qty_begin'])"/></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(sum_all['value_begin'])"/></td>
+                                    <td><span t-esc="format_float_number(sum_all['qty_import'])"/></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(sum_all['value_import'])"/></td>
+                                    <td><span t-esc="format_float_number(sum_all['qty_export'])"/></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt" class="text-right"><span t-esc="format_float_number(sum_all['value_export'])"/></td>
+                                    <td><span t-esc="format_float_number(sum_all['qty_end'])"/></td>
+                                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(sum_all['value_end'])"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="signature">
+                            <div class="row text-center ">
+                                <div class="col-4">
+                                    <b>Người lập biểu</b>
+                                    <p><i>Ký, họ tên</i></p>
+                                </div>  
+                                <div class="col-4">
+                                    <b>Kế toán trưởng</b>
+                                    <p><i>Ký, họ tên</i></p>
+                                </div>
+                                <div class="col-4">
+                                    <p><b>Người phê duyệt</b></p>
+                                    <p><i>Ký, họ tên, đóng dấu</i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <style>
+                        p {
+                            margin: 0px 0px 0px 0px !important;
+                        }
+                        thead, tr {
+                            page-break-inside: avoid;
+                        }
+                        td, th{
+                            text-align: center;
+                            page-break-inside: avoid;
+                            vertical-align: middle;
+                        }
+                        .text-right{
+                            text-align: right !important;
+                        }
+                        .text-left{
+                            text-align: left !important;
+                        }
+                        .signature {
+                            page-break-inside: avoid; 
+                        }
+                    </style>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

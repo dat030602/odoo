@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payslip_report_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <t t-set="o" t-value="o.with_context(lang='vi_VN')" />
+                    <t t-set="company" t-value="o.env.company"/>
+                    <div class="page" style="font-family: 'Times New Roman';font-size:12pt; line-height: 1.5;">
+                        <div class="row">
+                            <div class="col-5 text-left">
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="width:150px;"/>
+                            </div>
+                            <div class="col-7 text-right">
+                                <h4 style="font-weight:bold;"><span t-esc="company.name"/></h4>
+                                <p style="margin-bottom:0px !important;">Địa chỉ: <span t-esc="self1.get_company_address(company)"/></p>
+                                <p>Điện thoại: <span t-esc="company.phone"/><span t-esc="company.website"/></p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <table class="table-bordered" width="100%">
+                                <tr class="header-table">
+                                    <th colspan="5">BẢNG LƯƠNG CHI TIẾT/PAY SLIP<br/>
+                                        THÁNG: <span t-esc="o.date_from and o.date_from.strftime('%m/%Y') or ''"/> / MONTH: <span style="text-transform: uppercase;" t-esc="o.date_from and o.date_from.strftime('%B/%Y') or ''"/></th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:left;">
+                                        <p><span>Họ và tên/Full Name: </span><span t-field="o.employee_id.name"/></p>
+                                        <p><span>Mã nhân viên/Employee code: </span><span t-field="o.employee_id.barcode"/></p>
+                                        <p><span>Ngày bắt đầu của HĐLĐ/<br/>Start date of Labor Contract: </span><span t-field="o.contract_id.date_start"/></p>
+                                    </td>
+                                    <td colspan="3" style="text-align:left;">
+                                        <p><span>Mã số TNCN/PIT code: </span><span t-esc="self1.encode_code(o.employee_id.code_tncn)"/></p>
+                                        <p><span>Số sổ BHXH/SI book No.: </span><span t-esc="self1.encode_code(o.employee_id.code_bhxh)"/></p>
+                                        <p><span>Phòng ban/Department: </span><span t-field="o.employee_id.department_id.name"/></p>
+                                    </td>
+                                </tr>
+                                <t t-if="'Kinh Doanh' in o.struct_id.name or 'KDVP' in o.struct_id.name">
+                                    <t t-foreach="o.get_kd_custom_report_lines()" t-as="line">
+                                        <tr t-att-style="line.get('is_bold') and 'font-weight:bold' or ''">
+                                            <td colspan="1" style="text-align:center;"><span t-esc="line['index_display']"/></td>
+                                            <td colspan="2"><span t-esc="line['name']"/></td>
+                                            <td colspan="1"><span t-esc="line['unit']"/></td>
+                                            <td colspan="1" class="price-total"><span t-esc="'{:,.0f}'.format(line['total'])"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <t t-foreach="o.line_ids.sorted(key=lambda m: m.salary_rule_id.payslip_no)" t-as="lines_1">
+                                        <t t-set="is_bold" t-value="lines_1.salary_rule_id.is_bold"/>
+                                        <t t-if="not lines_1.category_id.print_payslip and not lines_1.category_id.print_scale and not lines_1.check_first">
+                                            <tr t-att-style="is_bold and 'font-weight:bold' or ''">
+                                                <td colspan="1" style="text-align:center;"><span t-field="lines_1.salary_rule_id.index_display"/></td>
+                                                <td colspan="2"><span t-field="lines_1.salary_rule_id.name"/></td>
+                                                <td colspan="1"><span t-field="lines_1.salary_rule_id.unit"/></td>
+                                                <td colspan="1" class="price-total"><span t-esc="'{:,.0f}'.format(lines_1.total)"/></td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="lines_1.category_id.print_payslip and lines_1.category_id.print_scale and not lines_1.check_first">
+                                            <tr class="title" t-if="lines_1.salary_rule_id.is_display_title">
+                                                <td colspan="2"><span t-field="lines_1.category_id.name"/></td>
+                                                <td colspan="1">Tỷ lệ đóng</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr t-att-style="is_bold and 'font-weight:bold' or ''">
+                                                <td width="5%" style="text-align:center;"><span t-field="lines_1.salary_rule_id.index_display"/></td>
+                                                <td width="60%"><span t-field="lines_1.salary_rule_id.name"/></td>
+                                                <td width="15%"><span t-esc="lines_1.rate"/>%</td>
+                                                <td width="5%"><span t-field="lines_1.salary_rule_id.unit"/></td>
+                                                <td width="20%" class="price-total"><span t-esc="'{:,.0f}'.format(lines_1.total)"/></td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="lines_1.category_id.print_payslip and not lines_1.category_id.print_scale and not lines_1.check_first">
+                                            <tr class="title" t-if="lines_1.salary_rule_id.is_display_title">
+                                                <td colspan="3"><span t-field="lines_1.category_id.name"/></td>
+    <!--                                            <td></td>-->
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr t-att-style="is_bold and 'font-weight:bold' or ''">
+                                                <td colspan="1" style="text-align:center;"><span t-field="lines_1.salary_rule_id.index_display"/></td>
+                                                <td colspan="2"><span t-field="lines_1.salary_rule_id.name"/></td>
+    <!--                                            <td width="15%"><span t-esc="lines_1.rate"/>%</td>-->
+                                                <td colspan="1"><span t-field="lines_1.salary_rule_id.unit"/></td>
+                                                <td colspan="1" class="price-total"><span t-esc="'{:,.0f}'.format(lines_1.total)"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                            </table>
+                        </div>
+                        <div>
+                            <p><span t-raw="self1.get_notice()"/></p>
+                        </div>
+                    </div>
+                    <style>
+                        .header-table {
+                            text-align: center;
+                        }
+                        .title {
+                            background: #d4d4d4;
+                        }
+                        .table-bordered {
+                            width: 100%;
+                        }
+                        .table-bordered thead tr{
+                            text-align: center;
+                            padding: 5px;
+                            font-weight: bold;
+                        }
+                        .table-bordered tr th, .table-bordered tr, .table-bordered td {
+                            border: 1px solid #000;
+                            padding: 5px;
+                            line-height: 1.5;
+                        }
+                        td p{
+                            font-family: 'Times New Roman' !important;
+                        }
+                        .price-total {
+                            text-align: right;
+                        }
+                    </style>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

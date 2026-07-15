@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_a4_contract" model="report.paperformat">
+            <field name="name">A4 Portrait Contract</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">14.20</field>
+            <field name="margin_left">7.05</field>
+            <field name="margin_right">7.50</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_payslip_pdf" model="ir.actions.report">
+            <field name="name">Print PDF</field>
+            <field name="model">hr.payslip</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">biz_payslip_pdf_report.payslip_report_pdf</field>
+            <field name="report_file">biz_payslip_pdf_report.payslip_report_pdf</field>
+            <field name="print_report_name">'%s' % object.display_name</field>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="paperformat_a4_contract"/>
+            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        </record>
+    </data>
+</odoo>

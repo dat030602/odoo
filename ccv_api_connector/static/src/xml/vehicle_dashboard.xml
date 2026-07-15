@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="ccv_api_connector.VehicleDashboard" owl="1">
+        <div class="ccv-dashboard-container">
+            <div class="ccv-table-wrapper">
+                <table class="ccv-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">CCV</th>
+                            <th colspan="2">LOẠI HÀNG</th>
+                            <th rowspan="2">SỐ XE</th>
+                            <th rowspan="2">ĐẠI LÝ<br/>NHÀ CUNG CẤP</th>
+                            <th rowspan="2">SỐ LƯỢNG</th>
+                            <th rowspan="2">GIỜ ĐẾN</th>
+                            <th rowspan="2" style="max-width: 100px;">CHƯA ĐỦ HÀNG</th>
+                            <th rowspan="2">ĐỦ HÀNG</th>
+                            <th rowspan="2" style="max-width: 80px;">CỬA<br/>XUẤT<br/>NHẬP</th>
+                            <th rowspan="2" style="width: 160px;">ĐỘI BỐC XẾP</th>
+                            <th rowspan="2">THỦ KHO</th>
+                            <!-- <th rowspan="2">TỔNG XUẤT</th>
+                            <th rowspan="2">TỔNG NHẬP</th> -->
+                        </tr>
+                        <tr>
+                            <th>XUẤT</th>
+                            <th>NHẬP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dang Ky -->
+                        <t t-if="state.data.dang_ky.length > 0">
+                            <t t-foreach="getDisplayedLines('dang_ky')" t-as="line" t-key="line.id">
+                                <tr class="ccv-row-bg-dangky">
+                                    <t t-if="line_index === 0">
+                                        <td t-att-rowspan="getRowSpan('dang_ky')" class="ccv-row-header-dangky">XE ĐĂNG KÝ</td>
+                                    </t>
+                                    <td><t t-if="line.type === 'out'">X</t></td>
+                                    <td><t t-if="line.type === 'in'">X</t></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.vehicle_num"/></td>
+                                    <td><div class="ccv-partner-name"><t t-esc="line.partner_name"/></div></td>
+                                    <td><t t-esc="line.quantity == 0 ? '' : line.quantity"/></td>
+                                    <td><t t-esc="line.date_in"/></td>
+                                    <td style="max-width: 90px;"><t t-esc="line.chua_du_hang == 0 ? '' : line.chua_du_hang"/></td>
+                                    <td><t t-esc="line.du_hang == 0 ? '' : line.du_hang"/></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.gate"/></td>
+                                    <td><t t-esc="line.loading"/></td>
+                                    <td><t t-esc="line.stocker"/></td>
+                                    <!-- <td><t t-if="line.type === 'out'"><t t-esc="line.quantity"/></t></td>
+                                    <td><t t-if="line.type === 'in'"><t t-esc="line.quantity"/></t></td> -->
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr class="ccv-row-bg-dangky">
+                                <td class="ccv-row-header-dangky">XE ĐĂNG KÝ</td>
+                                <td colspan="13">Không có dữ liệu</td>
+                            </tr>
+                        </t>
+
+                        <!-- Dang Cho -->
+                        <t t-if="state.data.dang_cho.length > 0">
+                            <t t-foreach="getDisplayedLines('dang_cho')" t-as="line" t-key="line.id">
+                                <tr class="ccv-row-bg-dangcho">
+                                    <t t-if="line_index === 0">
+                                        <td t-att-rowspan="getRowSpan('dang_cho')" class="ccv-row-header-dangcho">XE CHỜ XUẤT NHẬP</td>
+                                    </t>
+                                    <td><t t-if="line.type === 'out'">X</t></td>
+                                    <td><t t-if="line.type === 'in'">X</t></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.vehicle_num"/></td>
+                                    <td><div class="ccv-partner-name"><t t-esc="line.partner_name"/></div></td>
+                                    <td><t t-esc="line.quantity == 0 ? '' : line.quantity"/></td>
+                                    <td><t t-esc="line.date_in"/></td>
+                                    <td style="max-width: 90px;"><t t-esc="line.chua_du_hang == 0 ? '' : line.chua_du_hang"/></td>
+                                    <td><t t-esc="line.du_hang == 0 ? '' : line.du_hang"/></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.gate"/></td>
+                                    <td><t t-esc="line.loading"/></td>
+                                    <td><t t-esc="line.stocker"/></td>
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr class="ccv-row-bg-dangcho">
+                                <td class="ccv-row-header-dangcho">XE CHỜ XUẤT NHẬP</td>
+                                <td colspan="13">Không có dữ liệu</td>
+                            </tr>
+                        </t>
+
+
+                        <!-- Xuat Nhap -->
+                        <t t-if="state.data.xuat_nhap.length > 0">
+                            <t t-foreach="getDisplayedLines('xuat_nhap')" t-as="line" t-key="line.id">
+                                <tr class="ccv-row-bg-xuatnhap">
+                                    <t t-if="line_index === 0">
+                                        <td t-att-rowspan="getRowSpan('xuat_nhap')" class="ccv-row-header-xuatnhap">XE XUẤT NHẬP</td>
+                                    </t>
+                                    <td><t t-if="line.type === 'out'">X</t></td>
+                                    <td><t t-if="line.type === 'in'">X</t></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.vehicle_num"/></td>
+                                    <td><div class="ccv-partner-name"><t t-esc="line.partner_name"/></div></td>
+                                    <td><t t-esc="line.quantity == 0 ? '' : line.quantity"/></td>
+                                    <td><t t-esc="line.date_in"/></td>
+                                    <td style="max-width: 90px;"><t t-esc="line.chua_du_hang == 0 ? '' : line.chua_du_hang"/></td>
+                                    <td><t t-esc="line.du_hang == 0 ? '' : line.du_hang"/></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.gate"/></td>
+                                    <td><t t-esc="line.loading"/></td>
+                                    <td><t t-esc="line.stocker"/></td>
+                                    <!-- <td><t t-if="line.type === 'out'"><t t-esc="line.quantity"/></t></td>
+                                    <td><t t-if="line.type === 'in'"><t t-esc="line.quantity"/></t></td> -->
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr class="ccv-row-bg-xuatnhap">
+                                <td class="ccv-row-header-xuatnhap">XE XUẤT NHẬP</td>
+                                <td colspan="13">Không có dữ liệu</td>
+                            </tr>
+                        </t>
+
+                        <!-- Cho Ra -->
+                        <t t-if="state.data.cho_ra.length > 0">
+                            <t t-foreach="getDisplayedLines('cho_ra')" t-as="line" t-key="line.id">
+                                <tr class="ccv-row-bg-chora">
+                                    <t t-if="line_index === 0">
+                                        <td t-att-rowspan="getRowSpan('cho_ra')" class="ccv-row-header-chora">XE CHỜ RA CỔNG</td>
+                                    </t>
+                                    <td><t t-if="line.type === 'out'">X</t></td>
+                                    <td><t t-if="line.type === 'in'">X</t></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.vehicle_num"/></td>
+                                    <td><div class="ccv-partner-name"><t t-esc="line.partner_name"/></div></td>
+                                    <td><t t-esc="line.quantity == 0 ? '' : line.quantity"/></td>
+                                    <td><t t-esc="line.date_in"/></td>
+                                    <td style="max-width: 90px;"><t t-esc="line.chua_du_hang == 0 ? '' : line.chua_du_hang"/></td>
+                                    <td><t t-esc="line.du_hang == 0 ? '' : line.du_hang"/></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.gate"/></td>
+                                    <td><t t-esc="line.loading"/></td>
+                                    <td><t t-esc="line.stocker"/></td>
+                                    <!-- <td><t t-if="line.type === 'out'"><t t-esc="line.quantity"/></t></td>
+                                    <td><t t-if="line.type === 'in'"><t t-esc="line.quantity"/></t></td> -->
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr class="ccv-row-bg-chora">
+                                <td class="ccv-row-header-chora">XE CHỜ RA CỔNG</td>
+                                <td colspan="13">Không có dữ liệu</td>
+                            </tr>
+                        </t>
+
+                        <!-- Hoan Thanh -->
+                        <t t-if="state.data.hoan_thanh.length > 0">
+                            <t t-foreach="getDisplayedLines('hoan_thanh')" t-as="line" t-key="line.id">
+                                <tr class="ccv-row-bg-hoanthanh">
+                                    <t t-if="line_index === 0">
+                                        <td t-att-rowspan="getRowSpan('hoan_thanh')" class="ccv-row-header-hoanthanh">XE ĐÃ RA CỔNG</td>
+                                    </t>
+                                    <td><t t-if="line.type === 'out'">X</t></td>
+                                    <td><t t-if="line.type === 'in'">X</t></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.vehicle_num"/></td>
+                                    <td><div class="ccv-partner-name"><t t-esc="line.partner_name"/></div></td>
+                                    <td><t t-esc="line.quantity == 0 ? '' : line.quantity"/></td>
+                                    <td><t t-esc="line.date_in"/></td>
+                                    <td style="max-width: 90px;"><t t-esc="line.chua_du_hang == 0 ? '' : line.chua_du_hang"/></td>
+                                    <td><t t-esc="line.du_hang == 0 ? '' : line.du_hang"/></td>
+                                    <td style="font-weight: bold;"><t t-esc="line.gate"/></td>
+                                    <td><t t-esc="line.loading"/></td>
+                                    <td><t t-esc="line.stocker"/></td>
+                                    <!-- <td><t t-if="line.type === 'out'"><t t-esc="line.quantity"/></t></td>
+                                    <td><t t-if="line.type === 'in'"><t t-esc="line.quantity"/></t></td> -->
+                                </tr>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <tr class="ccv-row-bg-hoanthanh">
+                                <td class="ccv-row-header-hoanthanh">XE ĐÃ RA CỔNG</td>
+                                <td colspan="13">Không có dữ liệu</td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Summary right panel -->
+            <div class="ccv-summary-wrapper">
+                <div class="ccv-summary-box">
+                    <div class="ccv-summary-header" style="background-color: #17a2b8;">TỔNG XE ĐĂNG KÝ</div>
+                    <div class="ccv-summary-value"><t t-esc="state.data.summary.tong_xe_dang_ky"/></div>
+                    <div class="ccv-summary-subbox" style="margin-top: 5px; font-weight: normal; font-size: 14px;">
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.dang_ky_so_xe_nhap"/></span> - Nhập: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.dang_ky_tong_nhap || 0).toFixed(1)"/></span></div>
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.dang_ky_so_xe_xuat"/></span> - Xuất: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.dang_ky_tong_xuat || 0).toFixed(1)"/></span></div>
+                    </div>
+                </div>
+
+                <div class="ccv-summary-box">
+                    <div class="ccv-summary-header green">TỔNG XE ĐÃ VÀO</div>
+                    <div class="ccv-summary-value"><t t-esc="state.data.summary.tong_xe_vao"/></div>
+                    <div class="ccv-summary-subbox">
+                        <div>SỐ %<br/>KH/TH</div>
+                        <div><t t-esc="state.data.summary.phu_hop"/>%</div>
+                    </div>
+                    <div class="ccv-summary-subbox" style="margin-top: 5px; font-weight: normal; font-size: 14px;">
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.vao_so_xe_nhap"/></span> - Nhập: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.vao_tong_nhap || 0).toFixed(1)"/></span></div>
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.vao_so_xe_xuat"/></span> - Xuất: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.vao_tong_xuat || 0).toFixed(1)"/></span></div>
+                    </div>
+                </div>
+
+                <div class="ccv-summary-box">
+                    <div class="ccv-summary-header red">TỔNG XE CHỜ RA CỔNG</div>
+                    <div class="ccv-summary-value"><t t-esc="state.data.summary.tong_xe_chua_ra"/></div>
+                    <div class="ccv-summary-subbox" style="margin-top: 5px; font-weight: normal; font-size: 14px;">
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.chua_ra_so_xe_nhap"/></span> - Nhập: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.chua_ra_tong_nhap || 0).toFixed(1)"/></span></div>
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.chua_ra_so_xe_xuat"/></span> - Xuất: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.chua_ra_tong_xuat || 0).toFixed(1)"/></span></div>
+                    </div>
+                </div>
+
+                <div class="ccv-summary-box">
+                    <div class="ccv-summary-header">TỔNG XE ĐÃ RA CỔNG</div>
+                    <div class="ccv-summary-value"><t t-esc="state.data.summary.tong_xe_da_ra"/></div>
+                    <div class="ccv-summary-subbox" style="margin-top: 5px; font-weight: normal; font-size: 14px;">
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.da_ra_so_xe_nhap"/></span> - Nhập: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.da_ra_tong_nhap || 0).toFixed(1)"/></span></div>
+                        <div><span style="font-size: 25px; font-weight: bold;"><t t-esc="state.data.summary.da_ra_so_xe_xuat"/></span> - Xuất: <span style="font-size: 25px; font-weight: bold;"><t t-esc="(state.data.summary.da_ra_tong_xuat || 0).toFixed(1)"/></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

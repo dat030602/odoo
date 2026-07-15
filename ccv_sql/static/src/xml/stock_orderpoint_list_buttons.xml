@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ccv_sql.StockOrderpoint.Buttons" t-inherit="stock.StockOrderpoint.Buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[hasclass('o_button_snooze')]" position="after">
+            <button t-if="nbSelected" type="button" t-on-click="onClickRecommendPackaging"
+                    class="btn btn-secondary text-info o_button_recommend_packaging me-1">
+                Đề xuất bao bì
+            </button>
+        </xpath>
+    </t>
+</templates>

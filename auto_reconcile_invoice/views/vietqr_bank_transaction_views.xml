@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vietqr_bank_transaction_form" model="ir.ui.view">
+        <field name="name">vietqr.bank.transaction.form</field>
+        <field name="model">vietqr.bank.transaction</field>
+        <field name="arch" type="xml">
+            <form string="Giao dịch VietQR Ngân hàng">
+                <header>
+                    <button name="action_create_bank_statement_line" string="Tạo Sổ phụ ngân hàng" type="object" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'draft')]}"/>
+                    <button name="action_generate_ref_code" string="Tạo Code" type="object" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,partial,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" readonly="1"/>
+                            <field name="amount" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="reference" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="1"/>
+                            <field name="qr_url" readonly="1"/>
+                            <field name="qr_image" widget="image" class="oe_avatar" attrs="{'invisible': [('qr_image', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Đơn hàng">
+                            <field name="sale_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="user_id"/>
+                                    <field name="team_id"/>
+                                    <field name="amount_total"/>
+                                    <field name="delivery_status" widget="badge" decoration-success="delivery_status == 'delivered'" decoration-info="delivery_status == 'in_transit'" decoration-warning="delivery_status == 'to_deliver'"/>
+                                    <field name="payment_state" widget="badge" decoration-success="payment_state == 'paid'" decoration-info="payment_state == 'partial'" decoration-danger="payment_state == 'not_paid'"/>
+                                    <field name="state" widget="badge" decoration-success="state in ('sale','done')" decoration-info="state == 'draft'"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Sổ phụ ngân hàng">
+                            <field name="bank_statement_line_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vietqr_bank_transaction_tree" model="ir.ui.view">
+        <field name="name">vietqr.bank.transaction.tree</field>
+        <field name="model">vietqr.bank.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Giao dịch VietQR Ngân hàng" decoration-info="state == 'draft'" decoration-danger="state == 'cancelled'" decoration-success="state == 'paid'">
+                <field name="name" optional="show"/>
+                <field name="date" optional="show"/>
+                <field name="code" optional="show"/>
+                <field name="reference" optional="show"/>
+                <field name="amount" sum="Total Amount" optional="show"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="sale_ids" widget="many2many_tags" optional="show"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vietqr_bank_transaction_search" model="ir.ui.view">
+        <field name="name">vietqr.bank.transaction.search</field>
+        <field name="model">vietqr.bank.transaction</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm Giao dịch VietQR">
+                <field name="name" string="Tên/Mã/Tham chiếu" filter_domain="['|', '|', ('name', 'ilike', self), ('code', 'ilike', self), ('reference', 'ilike', self)]"/>
+                <field name="sale_ids"/>
+                <separator/>
+                <filter string="Nháp" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Thanh toán một phần" name="filter_partial" domain="[('state', '=', 'partial')]"/>
+                <filter string="Đã thanh toán" name="filter_paid" domain="[('state', '=', 'paid')]"/>
+                <filter string="Đã hủy" name="filter_cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Tháng này" name="this_month" domain="[('date','&gt;=',context_today().strftime('%Y-%m-01'))]"/>
+                <filter string="Năm nay" name="this_year" domain="[('date','&gt;=',context_today().strftime('%Y-01-01'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Trạng thái" name="group_by_state" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Ngày giao dịch" name="groupby_date" domain="[]" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vietqr_bank_transaction" model="ir.actions.act_window">
+        <field name="name">Giao dịch VietQR Ngân hàng</field>
+        <field name="res_model">vietqr.bank.transaction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_vietqr_bank_transaction_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Chưa có dữ liệu giao dịch VietQR.
+            </p><p>
+            Bắt đầu bằng cách tạo một bản ghi mới.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_sale_vietqr_bank_transaction"
+        name="Giao dịch VietQR"
+        parent="sale.sale_order_menu"
+        action="action_vietqr_bank_transaction"
+        sequence="26"/>
+
+    <menuitem
+        id="menu_account_vietqr_bank_transaction"
+        name="Giao dịch VietQR"
+        parent="account.menu_finance_receivables"
+        action="action_vietqr_bank_transaction"
+        sequence="21"/>
+</odoo>

@@ -1,0 +1,11 @@
+<!-- custom_module/data/ir_action_server.xml -->
+<odoo noupdate="1">
+    <!-- Define the IR Action Server -->
+    <record id="action_server_reset_to_draft_picking" model="ir.actions.server">
+        <field name="name">Trở lại bản nháp</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">records.action_reset_to_draft()</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+    </record>
+</odoo>

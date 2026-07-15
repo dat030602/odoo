@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="hr_contract_view_form_inherit" model="ir.ui.view">
+		<field name="name">hr.contract.view.form.inherit</field>
+		<field name="model">hr.contract</field>
+		<field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>			
+       	<field name="arch" type="xml">
+       		<field name="hr_responsible_id" position="after">
+       			<field name="probation_date"/>
+       			<field name="probation_end_date"/>
+       		</field>
+          	<xpath expr="//page[@name='information']" position="after">
+            	<page string="Allowances">
+              		<separator string="Fixed Allowances"/>
+              		<field name="allowance_fix_ids" nolabel="1">
+	               		<tree editable="bottom">
+	               			<field name="allowance_id" domain="[('is_fixed','=',True)]"/>
+	               			<field name="code"/>
+	               			<field name="amount"/>
+	               		</tree>
+               		</field>
+               		<separator string="Monthly Allowances"/>
+               		<field name="allowance_month_ids" nolabel="1">
+               			<tree editable="bottom">
+               				<field name="year"/>
+               				<field name="month"/>
+               				<field name="allowance_id" domain="[('is_fixed','!=',True)]"/>
+               				<field name="code"/>
+               				<field name="amount"/>
+               			</tree>
+               		</field>
+              	</page>
+              	<page string="Deductible">
+               		<separator string="Fixed Deductible"/>
+               		<field name="deduction_fix_ids" nolabel="1">
+               			<tree editable="bottom">
+               				<field name="deduction_id" domain="[('is_fixed','=',True)]"/>
+               				<field name="code"/>
+               				<field name="amount"/>
+               			</tree>
+               		</field>
+               		<separator string="Monthly Deductible"/>
+               		<field name="deduction_month_ids" nolabel="1">
+               			<tree editable="bottom">
+               				<field name="year"/>
+               				<field name="month"/>
+               				<field name="deduction_id" domain="[('is_fixed','!=',True)]"/>
+               				<field name="code"/>
+               				<field name="amount"/>
+               			</tree>
+               		</field>
+              	</page>
+              	<page string="Workday">
+               		<field name="workday_ids" nolabel="1">
+               			<tree editable="bottom">
+               				<field name="month"/>
+               				<field name="year"/>
+               				<field name="code"/>
+               				<field name="name"/>
+               				<field name="totay_days"/>
+               				<field name="totay_hours"/>
+               			</tree>
+               		</field>
+				</page>
+			</xpath>
+          	
+        </field>
+   	</record>
+   	
+   	<record id="hr_contract.action_hr_contract" model="ir.actions.act_window">
+	    <field name="name">Contracts</field>
+	    <field name="res_model">hr.contract</field>
+	    <field name="domain">[]</field>
+	</record>
+	
+	<menuitem id="hr_contract.hr_menu_contract" name="Contracts" action="" parent="hr.menu_hr_root" sequence="4" groups="hr.group_hr_manager"/>
+	<menuitem id="hr_menu_contract_current" name="Contracts" action="hr_contract.action_hr_contract" parent="hr_contract.hr_menu_contract" sequence="1"/>
+</odoo>

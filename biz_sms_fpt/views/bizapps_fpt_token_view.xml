@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_bizapps_fpt_sms_token_form" model="ir.ui.view">
+            <field name="name">bizapps.fpt.token.form</field>
+            <field name="model">bizapps.fpt.token</field>
+            <field name="arch" type="xml">
+                <form string="SMS FPT Token Form" class="o_sale_order" create="false">
+                    
+                    <sheet string="SMS FPT Token Form">
+                        <group>
+                            <field name="scope" readonly="1"/>
+                            <field name="access_token" readonly="1"/>
+                            <field name="expires_in" readonly="1"/>
+                            <field name="token_type" readonly="1"/>
+                            <field name="validity_date" readonly="1"/>
+                            <field name="active" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_bizapps_fpt_sms_token_tree" forcecreate="False" model="ir.ui.view">
+            <field name="name">bizapps.fpt.token.tree</field>
+            <field name="model">bizapps.fpt.token</field>
+            <field name="arch" type="xml">
+                <tree string="SMS FPT Token Tree" create="false">
+                    <field name="active" readonly="1"/>
+                    <field name="validity_date" readonly="1"/>
+                    <field name="access_token" readonly="1"/>
+                    <field name="scope" readonly="1"/>
+                    <field name="expires_in" readonly="1"/>
+                    <field name="token_type" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+         <record id="action_bizapps_fpt_sms_token" model="ir.actions.act_window">
+            <field name="name">Token</field>
+            <field name="res_model">bizapps.fpt.token</field>
+
+            <field name="view_mode">tree</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="biz_notify_mail_channel.ChatWindowMuteNotifyMailChannel" owl="1">
+        <t t-if="chatWindowMuteNotifyMailChannel">
+            <div class="o_ChatWindowMuteNotifyMailChannel modal-dialog" t-attf-class="{{ className }}" t-ref="root">
+                <div class="modal-content">
+                    <header class="modal-header">
+                        <h4 class="modal-title">
+                            Mute this conversation
+                        </h4>
+                    </header>
+                    <main class="modal-body">
+                        <div class="o_ChatWindowMuteNotifyMailChannel_items flex-column d-flex">
+                            <t t-foreach="items" t-as="item" t-key="item.key">
+                                <div class="o_ChatWindowMuteNotifyMailChannel o_ChatWindowMuteNotifyMailChannel_item">
+                                    <label class="o_ChatWindowMuteNotifyMailChannel_label flex-grow-1 align-items-center d-flex mb-0 p-2 cursor-pointer">
+                                        <input class="o_ChatWindowMuteNotifyMailChannel_checkbox form-check-input me-2"
+                                               type="radio"
+                                               t-att-checked="item.checked === true"
+                                               t-on-change="(ev) => chatWindowMuteNotifyMailChannel.onChangeRadio(item, ev)"/>
+                                        <t t-esc="item.name"/>
+                                    </label>
+                                </div>
+
+                            </t>
+                        </div>
+                    </main>
+                    <div class="modal-footer">
+                        <button class="o-apply btn btn-primary" t-on-click="chatWindowMuteNotifyMailChannel.onClickApply">
+                            Apply
+                        </button>
+                        <button class="o-cancel btn btn-secondary" t-on-click="chatWindowMuteNotifyMailChannel.onClickCancel">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+</templates>

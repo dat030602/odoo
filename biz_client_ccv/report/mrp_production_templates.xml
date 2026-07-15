@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_mrporder_inherit_biz_client_ccv" inherit_id="mrp.report_mrporder">
+        <xpath expr="//div[@t-if='o.origin']/.." position="before">
+            <div class="row" t-if="o.sale_order_partner_id">
+                <div class="col-7">
+                    <strong>Partner:</strong><span t-field="o.sale_order_partner_id"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

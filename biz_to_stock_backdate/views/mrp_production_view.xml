@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="mrp_production_ccv_form_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.ccv.form.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='group_extra_info']" position="inside">
+                    <field name="stock_date_receipt"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="model_mrp_production_action_confirm_multi" model="ir.actions.server">
+            <field name="name">Confirm mrp production multi</field>
+            <field name="model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_confirm_multi()</field>
+        </record>
+        <record id="model_mrp_production_button_mark_done_multi" model="ir.actions.server">
+            <field name="name">Confirm mark done multi</field>
+            <field name="model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.button_mark_done_multi()</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="sale_route_form" model="ir.ui.view">
+        <field name="name">sale.route.form</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <form string="Sale route">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary" states="draft"/>
+                    <button name="action_done" string="Done" type="object" class="btn-primary" states="draft,processing"/>
+                    <button name="action_cancel" string="Cancel" type="object" states="draft,processing,done"/>
+                    <button name="action_draft" string="Set to Draft" type="object" states="cancel"/>
+                    <field name="state"  widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_partner" type="object" class="oe_stat_button" icon="fa-address-book">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="partner_count"/></span>
+                                <span class="o_stat_text">Contract</span>
+                            </div>
+                        </button>
+
+                        <button name="action_view_check_in" type="object" class="oe_stat_button" icon="fa-users">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="checkin_count"/></span>
+                                <span class="o_stat_text">Check-In</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name sale route" attrs="{'readonly': [('state','in',['processing','done','cancel'])]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" readonly="True"/>
+                            <field name="user_id" attrs="{'readonly': [('state','in',['processing','done','cancel'])]}" options="{'no_open': 1, 'no_create': 1}"/>
+                            <field name="user_phone" attrs="{'readonly': [('state','in',['processing','done','cancel'])]}"/>
+                            <field name="team_id" />
+                            <field name="sales_team_captain_id" />
+                            <field name="sales_assistant_ids" widget="many2many_tags" />
+                        </group>
+                        <group>
+                            <field name="user_company_id" invisible="1"/>
+                            <field name="customer_care_day" attrs="{'readonly': [('state','in',['processing','done','cancel'])]}"/>
+                            <field name="sale_route_group_ids" widget="many2many_tags" attrs="{'readonly': [('state','in',['processing','done','cancel'])]}" context="{'default_company_id': user_company_id, 'form_view_ref': 'biz_ccv_sale.sale_route_group_form_popup'}" options="{'no_open': 1, 'no_create': 1}">
+                            </field>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Partner detail">
+                            <field name="line_ids" attrs="{'readonly': [('state','in',['processing','done','cancel'])]}">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="stt" widget="sequence_vt" class="text-center"/>
+                                    <field name="is_done_check" readonly="1"/>
+                                    <widget name="camera_widget" type='checkin' attrs="{'invisible': ['|',('parent.state','=', 'cancel'),('sale_route_report_id','!=', False)]}"/>
+                                    <widget name="camera_widget" type='checkout'/>
+                                    <field name="partner_id" optional="show" options="{'no_open': 1, 'no_create': 1}"/>
+                                    <field name="address" optional="show"/>
+                                    <field name="phone" optional="show"/>
+                                    <field name="time" widget="float_time" optional="show" readonly="1"/>
+                                    <field name="sale_route_report_id" invisible="1"/>
+                                    <field name="parent_state" invisible="1"/>
+                                    <field name="is_valid_check" invisible="1"/>
+                                    <field name="valid_partner" invisible="1"/>
+                                </tree>
+                            </field>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group colspan="4">
+                                    <field colspan="2" name="note" nolabel="1" placeholder="Note..."/>
+                                </group>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" >
+                                    <field name="total_number_store"/>
+                                    <field name="total_check_in_out"/>
+                                </group>
+                                <div class="clearfix"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <record id="sale_route_search" model="ir.ui.view">
+        <field name="name">sale.route.search</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <search string="Sale route">
+                <field name="name" />
+                <field name="code" />
+                <field name="customer_care_day" />
+                <field name="user_id" />
+                <field name="team_id" />
+                <field name="sales_team_captain_id" />
+                <field name="line_ids" filter_domain="[('line_ids.partner_id','ilike', self)]" />
+
+                <filter string="Saleperson" name="user_id_ft" domain="[('user_id','=', uid)]" />
+                <filter string="Sale route today" name="customer_care_day" domain="[('customer_care_day','=', context_today().strftime('%Y-%m-%d'))]" />
+                <filter string="Sale route draft" name="state_draft" domain="[('state','=','draft')]"/>
+                <filter string="Sale route processing" name="state_processing" domain="[('state','=','processing')]"/>
+                <filter string="Sale route cancel" name="state_cancel" domain="[('state','=','cancel')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Salesperson" name="user_id_gr" context="{'group_by':'user_id'}"/>
+                    <filter string="Sale team" name="team_id_gr" context="{'group_by':'team_id'}"/>
+                    <filter string="Date perform" name="customer_care_day_gr" context="{'group_by':'customer_care_day'}"/>
+                    <filter string="Sale route group" name="sale_route_group_ids_gr" context="{'group_by':'sale_route_group_ids'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="sale_route_calendar" model="ir.ui.view">
+        <field name="name">sale.route.calendar</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <calendar string="Rules for Deposit"
+                date_start="customer_care_day"
+                date_stop="customer_care_day">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="user_id"/>
+                <field name="team_id" />
+            </calendar>
+        </field>
+    </record>
+
+    <record id="sale_route_gantt" model="ir.ui.view">
+        <field name="name">sale.route.view.gantt</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <gantt date_start="customer_care_day"
+                form_view_id="%(sale_route_form)d"
+                date_stop="customer_care_day"
+                default_scale="month"
+                scales="day,week,month,year"
+                pill_label="True">
+                <templates>
+                    <div t-name="gantt-popover">
+                        <div name="name">
+                            <t t-esc="name"/>
+                        </div>
+                        <div name="code">
+                            <t t-esc="code"/>
+                        </div>
+                    </div>
+                </templates>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="user_id"/>
+                <field name="team_id" />
+            </gantt>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="sale_route_kanban_view">
+        <field name="name">sale.route.kanban</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <kanban sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="user_id"/>
+                <field name="total_number_store"/>
+                <field name="total_check_in_out"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details d-flex flex-column justify-content-between">
+                                <div>
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                    <div class="o_kanban_tags_section"/>
+                                    <ul>
+                                        <li>Code: <field name="code"/></li>
+                                        <li>Total number of stores: <field name="total_number_store"/></li>
+                                        <li>Total check in-out: <field name="total_check_in_out"/></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="sale_route_graph_view" model="ir.ui.view">
+        <field name="name">sale.route.view.graph</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <graph sample="1">
+                <field name="name"/>
+                <field name="total_check_in_out"/>
+                <field name="total_number_store"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="sale_route_pivot_view" model="ir.ui.view">
+        <field name="name">sale.route.view.pivot</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <pivot sample="1">
+                <field name="name" type="col"/>
+                <field name="user_id" type="row"/>
+                <field name="total_check_in_out" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="sale_route_tree" model="ir.ui.view">
+        <field name="name">sale.route.tree</field>
+        <field name="model">sale.route</field>
+        <field name="arch" type="xml">
+            <tree string="Sale route" default_order="code desc">
+                <field name="code" optional="show"/>
+                <field name="name" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="team_id" optional="show"/>
+                <field name="customer_care_day" optional="show"/>
+                <field name="total_number_store" optional="show"/>
+                <field name="total_check_in_out" optional="show"/>
+                <field name="state" optional="show"/>
+                <field name="sale_route_group_ids" widget="many2many_tags" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+   
+
+    <record id="sale_route_form_popup" model="ir.ui.view">
+        <field name="name">sale.route.form.popup</field>
+        <field name="model">sale.route</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="sale_route_form"/>
+        <field name="arch" type="xml">
+            <div class="oe_chatter" position="replace"/>
+            <field name="line_ids" position="replace">
+                <field name="line_ids" attrs="{'readonly': [('state','in',['processing','done','cancel'])]}">
+                    <tree editable="bottom" >
+                        <field name="sequence" widget="handle" attrs="{'column_invisible': [('parent.state','in',['processing','done','cancel'])]}"/>
+                        <field name="stt" widget="sequence_vt" class="text-center" readonly="1"/>
+                        <field name="is_done_check" readonly="1"/>
+                        <widget name="camera_widget" type="checkin" attrs="{'invisible': ['|',('parent.state','!=', 'processing'),('sale_route_report_id','!=', False)]}"/>
+                        <widget name="camera_widget" type="checkout" attrs="{'invisible': ['|',('parent.state','!=', 'processing'),('sale_route_report_id','!=', False)]}"/>
+<!--                        <widget name="legacy_camera_widget_checkin" attrs="{'invisible': ['|',('parent.state','!=', 'processing'),('sale_route_report_id','!=', False)]}"/>-->
+<!--                        <widget name="legacy_camera_widget_checkout" type_check="checkout" attrs="{'invisible': [('parent.state','!=', 'processing')]}"/>-->
+                        <field name="partner_id" optional="show" attrs="{'readonly': [('parent.state','in',['processing','done','cancel'])]}"/>
+                        <field name="address" optional="show" attrs="{'readonly': [('parent.state','in',['processing','done','cancel'])]}"/>
+                        <field name="phone" optional="show" attrs="{'readonly': [('parent.state','in',['processing','done','cancel'])]}"/>
+                        <field name="time" widget="float_time" optional="show" readonly="1"/>
+                        <field name="sale_route_report_id" invisible="1"/>
+                        <field name="parent_state" invisible="1"/>
+                        <field name="is_valid_check" invisible="1"/>
+                        <field name="valid_partner" invisible="1"/>
+                    </tree>
+                </field>
+            </field>
+        </field>
+    </record>
+
+    <record id="action_sale_route" model="ir.actions.act_window">
+        <field name="name">Sale route</field>
+        <field name="res_model">sale.route</field>
+        <field name="view_mode">tree,form,calendar,gantt,kanban,pivot,graph</field>
+        <field name="context">{'search_default_user_id_ft': 1}</field>
+    </record>
+
+    <menuitem id="sale_route_menu_crm" name="Sale route" parent="crm.crm_menu_root"
+              action="action_sale_route" sequence="-3"/>
+
+
+    <!-- Hàng loạt -->
+
+    <record model="ir.actions.server" id="action_server_confirm_mass">
+        <field name="name">Confirm</field>
+        <field name="model_id" ref="model_sale_route"/>
+        <field name="binding_model_id" ref="model_sale_route"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_confirm_mass()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_server_done_mass">
+        <field name="name">Done</field>
+        <field name="model_id" ref="model_sale_route"/>
+        <field name="binding_model_id" ref="model_sale_route"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_done_mass()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_server_cancel_mass">
+        <field name="name">Cancel</field>
+        <field name="model_id" ref="model_sale_route"/>
+        <field name="binding_model_id" ref="model_sale_route"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_cancel_mass()
+        </field>
+    </record>
+</odoo>

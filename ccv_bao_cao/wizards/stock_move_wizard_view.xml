@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_stock_move_report_wizard" model="ir.ui.view">
+        <field name="name">stock.move.report.wizard.form</field>
+        <field name="model">stock.move.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Stock Move Report">
+                <group>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="team_id"/>
+                </group>
+                <footer>
+                    <button string="In" type="object" name="action_generate_report" class="oe_highlight"/>
+                    <button string="Hủy" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_stock_move_report_wizard_action" model="ir.actions.act_window">
+        <field name="name">Doanh số</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.move.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_stock_move_report_wizard"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_stock_move_report_wizard" name="Doanh số" action="view_stock_move_report_wizard_action"
+                  parent="sale.menu_sale_report" sequence="20"/>
+</odoo>

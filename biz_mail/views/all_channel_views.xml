@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="all_channel_view_tree" model="ir.ui.view">
+        <field name="name">all.channel.tree</field>
+        <field name="model">all.channel</field>
+        <field name="arch" type="xml">
+            <tree editable="top" multi_edit="1" create="0" edit="1" delete="0" js_class="all_channel_view_tree">
+                <field name="partner_id" readonly="1" optional="show"/>
+                <field name="is_add_all_channel" optional="show"/>
+                <field name="mail_channel_has_joined_ids" readonly="1" widget="many2many_tags" optional="show"/>
+                <field name="mail_channel_just_joined_ids" readonly="1" widget="many2many_tags" optional="show"/>
+                <field name="company_id" readonly="1" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="all_channel_action" model="ir.actions.act_window">
+        <field name="name">All Channel</field>
+        <field name="res_model">all.channel</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="all_event_menu" action="biz_mail.all_channel_action" parent="mail.menu_root_discuss" sequence="10" groups="base.group_system,biz_mail.group_admin_all_channel"/>
+</odoo>

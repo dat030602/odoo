@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_inherit_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                <field name="qty_to_export" optional="show"/>
+            </xpath> -->
+            
+            <xpath expr="//button[@id='create_invoice']" position="after">
+                <!-- <button name="%(action_sale_order_to_invoice)d" type="action"
+                        string="Chọn dòng tạo hóa đơn" class="oe_highlight"
+                        context="{'default_sale_order_id': active_id}"
+                        /> -->
+                <button name="action_create_invoice_f_so" string="Tạo hóa đơn"
+                    type="object" class="btn-primary"
+                    attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_launch_stock_rule" string="Tạo phiếu xuất hàng"
+                    type="object"
+                    attrs="{'invisible': [('state', 'not in', ('sale'))]}"/>
+            </xpath>
+            <xpath expr="//button[@id='create_invoice_percentage']" position="after">
+                <button name="action_create_invoice_f_so" string="Tạo hóa đơn"
+                    type="object"
+                    attrs="{'invisible': ['|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}"/>
+            </xpath>
+            <xpath expr="//button[@id='create_invoice']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@id='create_invoice_percentage']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

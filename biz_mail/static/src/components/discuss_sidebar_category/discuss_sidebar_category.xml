@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="mail.DiscussSidebarCategory" t-inherit-mode="extension">
+        <xpath expr="//div[@class='o_DiscussSidebarCategory_content']/t[1]/t[@t-foreach]" position="replace">
+            <t t-foreach="category.filteredCategoryItems" t-as="item" t-key="item.localId">
+                <t t-if="item.is_forward">
+                    <DiscussSidebarCategoryItem
+                        className="'o_DiscussSidebarCategory_item'"
+                        record="item"
+                    />
+                </t>
+            </t>
+        </xpath>
+        <xpath expr="//div[@class='o_DiscussSidebarCategory_content']/t[2]" position="replace">
+            <t t-if="!category.isOpen">
+                <t t-foreach="category.filteredCategoryItems" t-as="item" t-key="item.localId">
+                    <t t-if="item.is_forward">
+                        <t t-if="item.channel.isPinnedChannel">
+                            <DiscussSidebarCategoryItem
+                                className="'o_DiscussSidebarCategory_item'"
+                                record="item"
+                            />
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+    </t>
+
+</templates>

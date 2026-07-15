@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    	<template id="ccv_warehouse_transfer_note">
+	        <t t-call="web.basic_layout">
+		    	<t t-set="company" t-value="doc.company_id"/>
+		    	<div class="header" style="font-family:Times New Roman; font-size:14px;">
+		    		<div class="row">
+		    			<div class="col-2">
+		    				<img t-if="company.logo" alt="Company LOGO" t-att-src="image_data_uri(company.logo)" style="margin: 0 auto;max-width: 100px;max-height: 100px;"/>
+		    			</div>
+		    			<div class="col-10">
+		    				<div style="padding-top:20px;font-size:16px">
+		    					<t t-esc="company.name"/> - Mã số thuế: <t t-esc="company.vat"/>
+		    				</div>
+		    			</div>
+		    		</div>
+	        	</div>
+		        <div class="page" style="font-family: Times New Roman;font-size:14px">
+		        	<div class="text-center" style="padding-top:10px">
+		        		<div style="margin: 0 !important" class="title">Phiếu xuất chuyển kho</div>
+						<p style="margin: 8px 0 0 0 !important" t-if="doc.stock_date_receipt" class="bold"><i t-esc="context_timestamp(doc.stock_date_receipt).strftime('Ngày %d tháng %m năm %Y')"/></p>
+						<p style="margin: 0 !important" t-else=""><span t-esc="'Ngày.....tháng.....năm....'"/></p>
+						<p style="margin: 0 !important">Số: <span t-esc="doc.name"/></p>
+						<p style="margin: 0 !important" t-if="doc.origin">Chứng từ gốc: <span t-esc="doc.origin"/></p>
+		        	</div>
+					<div class="delirery-info mt-3">
+						<p style="margin: 0 !important">- Họ vào tên người giao hàng: <span t-esc="doc.partner_id.name"/></p>
+						<p style="margin: 0 !important">- Nội dung nhập: <span t-esc="doc.description_export_import"/></p>
+						<p style="margin: 0 !important">- Nhập tại kho: <span t-esc="doc.location_dest_id.warehouse_id.name"/> <span style="margin-left: 80px;"> Địa điểm: <span t-esc="doc.location_dest_id.name"/></span></p>
+						<p style="margin: 0 !important">- Biển số xe: <span t-esc="doc.vehicle_license_plate"/> - Tài xế: <span t-esc="doc.vehicle_driver_name"/></p>
+						<p style="margin: 0 !important">- Đơn vị thực hiện: <span t-esc="doc.implementing_unit"/></p>
+						<p style="margin: 0 !important">- Kiểu hoạt động: <span t-esc="doc.picking_type_id.name"/></p>
+						<p style="margin: 0 !important">Bộ phận thực hiện:.....................  Số lượng người thực hiện: ................. Người     Địa điểm cửa số: ...........................</p>
+						<p style="margin: 0 !important">Thời gian tổng nhập/xe : ................. Phút   Thời gian bắt đầu : ......................... Thời gian kết thúc : ...............................</p>
+					</div>
+		        	<table class="table table-bordered" style="margin-top:30px;">
+	                    <thead class="text-center">
+	                        <tr>
+	                            <th style="width: 15%">Ảnh sản phẩm</th>
+	                            <th style="width: 15%">Mã hàng</th>
+	                            <th style="width: 20%">Tên hàng</th>
+	                            <th style="width: 10%">Xuất tại kho</th>
+	                            <th style="width: 10%">Nhập tại kho</th>
+	                            <th style="width: 10%">ĐVT</th>
+	                            <th style="width: 10%">Số lượng</th>
+	                            <th style="width: 15%">Số lượng thực nhập</th>
+	                            <th style="width: 10%">Số bao</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody style="border-top:  0 !important">
+	                        <tr t-foreach="doc.move_ids_without_package" t-as="line">
+	                            <td><img t-if="line.product_id.image_512" alt="Product Image" t-att-src="image_data_uri(line.product_id.image_512)" style="max-width: 100px;max-height: 100px;"/></td>
+	                            <td><span t-esc="line.product_id.product_tmpl_id.split_default_code"/></td>
+	                            <td t-esc="line.product_id.name or ''"/>
+	                            <td t-esc="line.location_id.display_name or ''"/>
+	                            <td t-esc="line.location_dest_id.display_name or ''"/>
+	                            <td t-esc="line.product_uom.name or ''"/>
+	                            <td t-esc="format_decimal(line.product_uom_qty) or ''"/>
+	                            <td t-esc="format_decimal(line.quantity_done) or ''"/>
+	                            <td t-esc="line.bag_number or ''"/>
+	                        </tr>
+	                        <tr>
+	                        	<td t-esc="''"/>
+	                        	<td t-esc="''"/>
+	                        	<td class="bold-css" t-esc="'Cộng'"/>
+	                        	<td t-esc="''"/>
+	                        	<td t-esc="''"/>
+	                        	<td t-esc="''"/>
+	                        	<td class="bold-css" t-esc="format_decimal(sum(doc.move_ids_without_package.mapped('product_uom_qty')))"/>
+	                        	<td class="bold-css" t-esc="format_decimal(sum(doc.move_ids_without_package.mapped('quantity_done')))"/>
+	                        	<td class="bold-css" t-esc="sum(doc.move_ids_without_package.mapped('bag_number'))"/>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	                <table class="table table-borderless text-center" style="table-layout: fixed;border:0">
+	                    <tr>
+	                        <td>
+	                            <b>Người lập phiếu</b><br/>
+	                            <i>(Ký, họ tên)</i><br/>
+	                            <div style="height:60px;text-align:center;">
+	                                <img t-if="doc.voter_id and doc.voter_id.sudo().sign_signature and (not doc.purchase_id or doc.purchase_id.purchase_sign_requests_state == 'approved')" t-att-src="image_data_uri(doc.voter_id.sudo().sign_signature)" style="max-height:60px;"/>
+	                            </div>
+	                            <p class="bold-css"><span t-esc="doc.voter_id.name"/></p>
+	                        </td>
+	                        <td>
+	                            <b>Người giao hàng</b><br/>
+	                            <i>(Ký, họ tên)</i>
+	                            <p class="bold-css" style="margin-top: 75px"><span t-esc="doc.delivery_person_id.name"/></p>
+	                        </td>
+	                        <td>
+	                            <b>Thủ kho</b><br/>
+	                            <i>(Ký, họ tên)</i>
+	                            <p class="bold-css" style="margin-top: 75px"><span t-esc="doc.stocker_id.name"/></p>
+	                        </td>
+	                        <td>
+	                            <b>Kế toán trưởng</b><br/>
+	                            <i>(Ký, họ tên)</i><br/>
+	                            <div style="height:60px;text-align:center;">
+	                                <img t-if="doc.chief_acc_id and doc.chief_acc_id.sudo().sign_signature and (not doc.purchase_id or doc.purchase_id.purchase_sign_requests_state == 'approved')" t-att-src="image_data_uri(doc.chief_acc_id.sudo().sign_signature)" style="max-height:60px;"/>
+	                            </div>
+	                            <p class="bold-css"><span t-esc="doc.chief_acc_id.name"/></p>
+	                        </td>
+	                        <td>
+	                            <b>Thủ trưởng đơn vị</b><br/>
+	                            <i>(Ký, họ tên, đóng dấu)</i><br/>
+	                            <div style="height:60px;text-align:center;">
+	                                <img t-if="doc.unit_heads_id and doc.unit_heads_id.sudo().sign_signature and (not doc.purchase_id or doc.purchase_id.purchase_sign_requests_state == 'approved')" t-att-src="image_data_uri(doc.unit_heads_id.sudo().sign_signature)" style="max-height:60px;"/>
+	                            </div>
+	                            <p class="bold-css"><span t-esc="doc.unit_heads_id.name"/></p>
+	                        </td>
+	                    </tr>
+	                </table>
+		        </div>
+		        <style>
+		        	.title {
+		        		font-size: 25px;
+		        		font-weight: bold;
+		        		text-transform:uppercase;
+		        		margin-bottom: 30px;
+		        	}
+		        	.bold-css , th {
+		        		font-weight: bold;
+		        	}
+		        	th {
+		        		text-align: center;
+		        	}
+		        	i {
+		        		font-size: 13px;
+		        	}
+		        	th,td {
+		        		margin: 10px;
+		        	}
+		        	div {
+		        		line-height: 18px;
+		        	}
+		        	.table-bordered {
+		        		border: 1px solid #000 !important;
+		        	}
+		        </style>
+		    </t>
+		</template>
+		<template id="report_business_pdf">
+	        <t t-call="web.html_container">
+	            <t t-foreach="docs" t-as="o">
+	                <t t-set="doc" t-value="o"/>
+	                <t t-call="biz_ccv_sale.ccv_warehouse_transfer_note" t-lang="doc.env.user.lang"/>
+	            </t>
+	        </t>
+	    </template>
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="stock_warehouse_form_view_biz_production_salary" model="ir.ui.view">
+        <field name="name">stock.warehouse.form.biz_production_salary</field>
+        <field name="model">stock.warehouse</field>
+        <field name="inherit_id" ref="stock.view_warehouse"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='technical_info']/group/group[last()]" position="inside">
+                <field name="department_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

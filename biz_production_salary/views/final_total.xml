@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_final_total_tree" model="ir.ui.view">
+        <field name="name">final.total.tree</field>
+        <field name="model">final.total</field>
+        <field name="arch" type="xml">
+            <tree edit="0" create="0" delete="0">
+                <field name="employee_id"/>
+                <field name="amount_received"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_final_total_search" model="ir.ui.view">
+        <field name="name">final.total.search</field>
+        <field name="model">final.total</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <filter string="Employee" name="filter_employee" domain="[]" context="{'group_by': 'employee_id'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_final_total" model="ir.actions.act_window">
+        <field name="name">Final Total</field>
+        <field name="res_model">final.total</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

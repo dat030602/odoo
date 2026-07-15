@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_report_line2_view_tree" model="ir.ui.view">
+        <field name="name">stock.report.line.view.tree</field>
+        <field name="model">stock.ccv.report.line2</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="report_name"/>
+                <field name="name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="stock_report_line2_view_form" model="ir.ui.view">
+        <field name="name">stock.report.line.view.form</field>
+        <field name="model">stock.ccv.report.line2</field>
+        <field name="arch" type="xml">
+            <form>
+            <header>
+                <button name="action_print_excel" type="object" string="In Excel" class="oe_highlight"/>
+                <button name="action_print_pdf" type="object" string="In PDF"/>
+                <button name="action_create_picking" type="object" string="Tạo phiếu kho"/>
+            </header>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_pk" type="object" icon="fa-truck" attrs="{'invisible':[('picking_count','=',0)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text"><field name="picking_count"/></span>
+                            <span class="o_stat_text">Điều chuyển</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="oe_title">
+                    <label for="name"/>
+                    <h1><field name="name" required="1"/></h1>
+                </div>
+                <group>
+                    <field name="parent_id"/>
+                    <field name="report_name"/>
+                    <field name="date"/>
+                    <field name="location_id"/>
+                    <field name="description"/>
+                </group>
+                
+                <notebook>
+                    <page name='line_ids' string="Sản phẩm">
+                        <field name="line_ids">
+                            <tree edit="1" create="0">
+                                <field name="default_code"/>
+                                <field name="location_id"/>
+                                <field name="location_dest_id"/>
+                                <field name="product_id"/>
+                                <field name="uom_id"/>
+                                <field name="quantity"/>
+                                <field name="inventory_quantity"/>
+                                <field name="diff_quantity"/>
+                            </tree>
+                            <form>
+                                <sheet>
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="location_id"/>
+                                            <field name="location_dest_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="default_code"/>
+                                            <field name="product_id"/>
+                                            <field name="uom_id"/>
+                                            <field name="quantity"/>
+                                            <field name="inventory_quantity"/>
+                                            <field name="diff_quantity"/>
+                                        </group>
+                                    </group>
+                                </sheet>
+                            </form>
+                        </field>
+                    </page>
+                    <page name='user_ids' string="Người tham dự">
+                        <field name="user_ids">
+                            <tree edit="1" create="1" delete="1">
+                                <field name="user_id"/>
+                                <field name="name"/>
+                                <field name="job"/>
+                                <field name="representative"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- stock.ccv.report.line2 search view -->
+    <record id="stock_ccv_report_line2_view_search" model="ir.ui.view">
+        <field name="name">stock.ccv.report.line2.view.search</field>
+        <field name="model">stock.ccv.report.line2</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="report_name"/>
+                <field name="name" string="Sản phẩm" filter_domain="['|', ('line_ids.name', 'ilike', self), ('line_ids.default_code', 'ilike', self)]"/>
+                <filter string="Ngày" name="group_by_date" context="{'group_by':'date'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>

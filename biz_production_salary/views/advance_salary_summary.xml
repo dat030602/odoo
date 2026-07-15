@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_advance_salary_summary_form" model="ir.ui.view">
+            <field name="name">advance.salary.summary.form</field>
+            <field name="model">advance.salary.summary</field>
+            <field name="arch" type="xml">
+                <form string="Tổng hợp tạm ứng lương">
+                    <header>
+                        <button name="action_compute_advance" type="object" string="Tính tạm ứng tự động" class="btn-success" attrs="{'invisible': [('state', '!=', 'draft')]}" />
+                        <button name="%(biz_production_salary.action_report_advance_salary_payment_xlsx)d" string="IN BẢNG LƯƠNG" type="action" class="btn-primary" attrs="{'invisible': [('state', '!=', 'lock')]}" />
+                        <button name="action_lock" type="object" string="Khóa" class="btn-primary" attrs="{'invisible': [('state', '=', 'lock')]}" />
+                        <button name="action_unlock" type="object" string="Mở khóa" attrs="{'invisible': [('state', '=', 'draft')]}" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,lock"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly': [('state', '=', 'lock')]}" />
+                                <field name="month" attrs="{'readonly': [('state', '=', 'lock')]}" />
+                                <field name="year" attrs="{'readonly': [('state', '=', 'lock')]}" />
+                                <field name="advance_date" attrs="{'readonly': [('state', '=', 'lock')]}" />
+                            </group>
+                            <group>
+                                <field name="payroll_type" attrs="{'readonly': [('state', '=', 'lock')]}" />
+                                <field name="department_id" attrs="{'readonly': [('state', '=', 'lock')]}" />
+                                <field name="standard_working_days_default" attrs="{'readonly': [('state', '=', 'lock')]}" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết tạm ứng">
+                                <field name="line_ids" attrs="{'readonly': [('state', '=', 'lock')]}" >
+                                    <tree editable="bottom">
+                                        <field name="employee_code" readonly="1" force_save="1"/>
+                                        <field name="employee_id"/>
+                                        <field name="bank_account_number" readonly="1" force_save="1" optional="hide"/>
+                                        <field name="bank_name" readonly="1" force_save="1" optional="hide"/>
+                                        <field name="wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="standard_working_days"/>
+                                        <field name="actual_working_days"/>
+                                        <field name="amount" currency_field="currency_id" sum="Tổng tiền"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="advance_total">
+                                        <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </group>
+                                    <div class="oe_clear"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_advance_salary_summary_tree" model="ir.ui.view">
+            <field name="name">advance.salary.summary.tree</field>
+            <field name="model">advance.salary.summary</field>
+            <field name="arch" type="xml">
+                <tree string="Tổng hợp tạm ứng lương">
+                    <field name="name"/>
+                    <field name="month"/>
+                    <field name="year"/>
+                    <field name="advance_date"/>
+                    <field name="department_id"/>
+                    <field name="total_amount" sum="Tổng cộng" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_advance_salary_summary_search" model="ir.ui.view">
+            <field name="name">advance.salary.summary.search</field>
+            <field name="model">advance.salary.summary</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm tổng hợp tạm ứng lương">
+                    <field name="name"/>
+                    <field name="month"/>
+                    <field name="year"/>
+                    <field name="department_id"/>
+                    <separator/>
+                    <filter string="Năm hiện tại" name="current_year" domain="[('year', '=', str(context_today().year))]"/>
+                    <filter string="Tháng hiện tại" name="current_month" domain="[('month', '=', str(context_today().month))]"/>
+                    <group expand="0" string="Nhóm theo">
+                        <filter string="Tháng" name="month" context="{'group_by': 'month'}"/>
+                        <filter string="Năm" name="year" context="{'group_by': 'year'}"/>
+                        <filter string="Phòng ban" name="department" context="{'group_by': 'department_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_advance_salary_summary" model="ir.actions.act_window">
+            <field name="name">Tổng hợp tạm ứng lương</field>
+            <field name="res_model">advance.salary.summary</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo tổng hợp tạm ứng lương đầu tiên!
+                </p>
+                <p>
+                    Điều này sẽ giúp bạn theo dõi các khoản tạm ứng lương cho nhân viên theo ngày công.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_advance_salary_summary"
+                  name="Tạm ứng lương"
+                  parent="hr_payroll.menu_hr_payroll_payslips"
+                  action="action_advance_salary_summary"
+                  sequence="20"/>
+    </data>
+</odoo>

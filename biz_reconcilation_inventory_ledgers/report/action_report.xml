@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+		<record id="action_report_reconcilation_xlsx" model="ir.actions.report">
+	        <field name="name">Inventory and Ledger Reconciliation Reports</field>
+	        <field name="model">reconcilation.inventory.legers.wizard</field>
+	        <field name="report_type">xlsx</field>
+	        <field name="report_name">biz_reconcilation_inventory_legers.rp_reconcilation_xlsx</field>
+	        <field name="report_file">biz_reconcilation_inventory_legers.rp_reconcilation_xlsx</field>
+			<field name="print_report_name">'Inventory and Ledger Reconciliation Reports Month %s - %s' % (object.from_date.strftime('%m'), object.from_date.year)</field>
+	        <field name="binding_model_id" ref="model_reconcilation_inventory_legers_wizard"/>
+	        <field name="binding_type">report</field>
+	    </record>
+		
+</odoo>

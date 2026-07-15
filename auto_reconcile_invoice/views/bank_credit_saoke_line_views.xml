@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bank_credit_saoke_line_form" model="ir.ui.view">
+        <field name="name">bank.credit.saoke.line.form</field>
+        <field name="model">bank.credit.saoke.line</field>
+        <field name="arch" type="xml">
+            <form string="Sao kê có ngân hàng" duplicate="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="accounting_date"/>
+                            <field name="transaction_description"/>
+                            <field name="credit"/>
+                            <field name="account_balance"/>
+                            <field name="transaction_number"/>
+                        </group>
+                        <group>
+                            <field name="corresponsive_account"/>
+                            <field name="corresponsive_name"/>
+                            <field name="mtid_citad"/>
+                            <field name="to_virtual_account"/>
+                            <field name="transaction_date"/>
+                            <field name="bank_code"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bank_credit_saoke_line_tree" model="ir.ui.view">
+        <field name="name">bank.credit.saoke.line.tree</field>
+        <field name="model">bank.credit.saoke.line</field>
+        <field name="arch" type="xml">
+            <tree string="Sao kê có ngân hàng">
+                <field name="name" optional="hide"/>
+                <field name="accounting_date" optional="show"/>
+                <field name="transaction_date" optional="show"/>
+                <field name="transaction_number" optional="show"/>
+                <field name="transaction_description" optional="show"/>
+                <field name="corresponsive_account" optional="show"/>
+                <field name="corresponsive_name" optional="show"/>
+                <field name="mtid_citad" optional="hide"/>
+                <field name="to_virtual_account" optional="hide"/>
+                <field name="bank_code" optional="show"/>
+                <field name="credit" sum="Total Credit"/>
+                <field name="account_balance" optional="hide"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_bank_credit_saoke_line_search" model="ir.ui.view">
+        <field name="name">bank.credit.saoke.line.search</field>
+        <field name="model">bank.credit.saoke.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm Sao kê có ngân hàng">
+                <field name="transaction_description" string="Mô tả giao dịch" filter_domain="[('transaction_description', 'ilike', self)]"/>
+                <field name="transaction_number" string="Số giao dịch" filter_domain="[('transaction_number', 'ilike', self)]"/>
+                <field name="corresponsive_account" string="Tài khoản đối ứng" filter_domain="['|', ('corresponsive_account', 'ilike', self), ('corresponsive_name', 'ilike', self)]"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('transaction_date', 'ilike', context_today().strftime('%d/%m/%Y'))]"/>
+                <filter string="Tháng này" name="this_month" domain="[('transaction_date','ilike',context_today().strftime('/%m/%Y'))]"/>
+                <filter string="Năm nay" name="this_year" domain="[('transaction_date','ilike',context_today().strftime('/%Y'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Tài khoản đối ứng" name="group_by_account" domain="[]" context="{'group_by': 'corresponsive_account'}"/>
+                    <filter string="Ngày giao dịch" name="groupby_date" domain="[]" context="{'group_by': 'transaction_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_bank_credit_saoke_line" model="ir.actions.act_window">
+        <field name="name">Sao kê có ngân hàng</field>
+        <field name="res_model">bank.credit.saoke.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_bank_credit_saoke_line_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Chưa có dữ liệu Sao kê có ngân hàng.
+            </p><p>
+            Bắt đầu bằng cách tạo một bản ghi mới.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_account_bank_credit_saoke_line"
+        name="Sao kê có ngân hàng"
+        parent="account.menu_finance_receivables"
+        action="action_bank_credit_saoke_line"
+        sequence="20"/>
+</odoo>

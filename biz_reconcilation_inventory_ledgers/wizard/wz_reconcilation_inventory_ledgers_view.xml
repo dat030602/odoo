@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="reconcilation_inventory_legers_wizard_form" model="ir.ui.view">
+        <field name="name">reconcilation.inventory.legers.wizard.form</field>
+        <field name="model">reconcilation.inventory.legers.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="from_date" required="True"/>
+                            <field name="to_date"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_print" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="reconcilation_inventory_legers_action" model="ir.actions.act_window">
+        <field name="name">Inventory and Ledger Reconciliation Reports</field>
+        <field name="res_model">reconcilation.inventory.legers.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem 
+        id="reconcilation_inventory_legers_menu" 
+        name="Inventory and Ledger Reconciliation Reports" 
+        action="reconcilation_inventory_legers_action" 
+        parent="account.account_reports_legal_statements_menu" 
+        groups="account.group_account_invoice" 
+        sequence="20"/>
+</odoo>

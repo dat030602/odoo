@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="biz_ods_sync_wizard_view_form" model="ir.ui.view">
+        <field name="name">biz.ods.sync.wizard.form</field>
+        <field name="model">biz.ods.sync.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="ods_status"/>
+                        <field name="ods_type_get" attrs="{'invisible': [('ods_status', '!=', 'get_call_history')], 'required': [('ods_status', '=', 'get_call_history')]}"/>
+                        <field name="ods_from_date" attrs="{'invisible': [('ods_status', '!=', 'get_call_history')], 'required': [('ods_status', '=', 'get_call_history')]}"/>
+                        <field name="ods_to_date" attrs="{'invisible': [('ods_status', '!=', 'get_call_history')], 'required': [('ods_status', '=', 'get_call_history')]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Apply" name="apply" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="biz_ods_sync_wizard_action" model="ir.actions.act_window">
+        <field name="name">ODS Sync</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">biz.ods.sync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

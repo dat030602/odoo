@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <record id="edit_account_move_exchange_wizard_form_view" model="ir.ui.view">
+            <field name="name">edit.account.move.exchange.wizard.form</field>
+            <field name="model">edit.account.move.exchange.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Điều chỉnh phiếu điều chuyển">
+                    <p>Nhập số tiền để tạo phiếu điều chuyển.</p>
+                    <group>
+                        <field name="account_move_id" invisible="0"/>
+                    </group>
+                    <field name="line_ids">
+                        <tree editable="bottom" create="0">
+                            <field name="line_id" invisible="1"/>
+                            <field name="account_id"/>
+                            <field name="debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="action_confirm" string="Xác nhận" type="object" class="oe_highlight"/>
+                        <button string="Hủy" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_edit_account_move_exchange" model="ir.actions.act_window">
+            <field name="name">Điều chỉnh bút toán</field>
+            <field name="res_model">edit.account.move.exchange.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+    <record id="server_action_open_edit_account_move_exchange_wizard" model="ir.actions.server">
+        <field name="name">Điều chỉnh bút toán</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'res_model': 'edit.account.move.exchange.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'default_account_move_id': record.id,
+                }
+            }
+        </field>
+    </record>
+</odoo>

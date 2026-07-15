@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	    <record id="action_report_invoice_list_xlsx_from_model_ccv" model="ir.actions.report">
+	        <field name="name">Excel</field>
+	        <field name="model">sale.invoices.list.ccv</field>
+	        <field name="report_type">xlsx</field>
+	        <field name="report_name">biz_sales_invoice_list_ccv.report_invoice_list_xlsx</field>
+	        <field name="report_file">biz_sales_invoice_list_ccv.report_invoice_list_xlsx</field>
+	        <field name="print_report_name">'BẢNG KÊ HÓA ĐƠN, CHỨNG TỪ HÀNG HÓA, DỊCH VỤ BÁN RA'</field>
+	        <field name="binding_model_id" ref="model_sale_invoices_list_ccv"/>
+	        <field name="binding_type">report</field>
+	    </record>
+</odoo>

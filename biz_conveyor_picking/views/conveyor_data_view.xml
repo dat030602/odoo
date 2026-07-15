@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_conveyor_data_tree" model="ir.ui.view">
+        <field name="name">conveyor.data.tree</field>
+        <field name="model">conveyor.data</field>
+        <field name="arch" type="xml">
+            <tree string="Dữ liệu băng tải" create="false">
+                <field name="mo_code_odoo"/>
+                <field name="picking_id"/>
+                <field name="sale_order_id"/>
+                <field name="mo_customer"/>
+                <field name="mo_tranz"/>
+                <field name="mo_start_time"/>
+                <field name="mo_close_time"/>
+                <field name="mo_note"/>
+                <field name="queue"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_conveyor_data_form" model="ir.ui.view">
+        <field name="name">conveyor.data.form</field>
+        <field name="model">conveyor.data</field>
+        <field name="arch" type="xml">
+            <form string="Dữ liệu băng tải" create="false" edit="false">
+                <header>
+                    <button name="action_view_picking" type="object" string="Xem phiếu kho" 
+                            icon="fa-external-link" attrs="{'invisible': [('picking_id', '=', False)]}"/>
+                    <button name="action_view_products" type="object" string="Xem sản phẩm" 
+                            icon="fa-list" attrs="{'invisible': [('product_data_ids', '=', [])]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Thông tin đơn hàng">
+                            <field name="mo_code_odoo"/>
+                            <field name="mo_customer"/>
+                            <field name="mo_tranz"/>
+                            <field name="picking_id"/>
+                            <field name="sale_order_id"/>
+                            <field name="queue"/>
+                            <field name="product_ids" widget="many2many_tags" invisible="1"/>
+                            <field name="mo_note"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Thời gian">
+                            <field name="mo_start_time"/>
+                            <field name="mo_close_time"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Dữ liệu sản phẩm chi tiết">
+                            <field name="product_data_ids" readonly="1">
+                                <tree>
+                                    <field name="pro_code"/>
+                                    <field name="pro_name"/>
+                                    <field name="product_id"/>
+                                    <field name="mo_plan_num"/>
+                                    <field name="mo_real_num"/>
+                                    <field name="mo_start_num"/>
+                                    <field name="difference"/>
+                                    <field name="completion_rate" widget="percentage"/>
+                                    <field name="index_0"/>
+                                    <field name="index_1"/>
+                                    <field name="index_2"/>
+                                    <field name="index_3"/>
+                                    <field name="index_4"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_conveyor_data_search" model="ir.ui.view">
+        <field name="name">conveyor.data.search</field>
+        <field name="model">conveyor.data</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm dữ liệu băng tải">
+                <field name="mo_code_odoo"/>
+                <field name="mo_customer"/>
+                <field name="picking_id"/>
+                <field name="product_ids"/>
+                <field name="queue"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('create_date', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Tuần này" name="this_week" domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="Tháng này" name="this_month" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Mã đơn hàng" name="group_mo_code" context="{'group_by': 'mo_code_odoo'}"/>
+                    <filter string="Khách hàng" name="group_customer" context="{'group_by': 'mo_customer'}"/>
+                    <filter string="Queue" name="group_queue" context="{'group_by': 'queue'}"/>
+                    <filter string="Ngày tạo" name="group_create_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_conveyor_data" model="ir.actions.act_window">
+        <field name="name">Dữ liệu băng tải</field>
+        <field name="res_model">conveyor.data</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có dữ liệu băng tải nào
+            </p>
+            <p>
+                Dữ liệu băng tải sẽ được tạo tự động khi có hoạt động trên băng tải.
+                <br/>
+                <strong>Lưu ý:</strong> Không thể tạo bản ghi thủ công từ giao diện này.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_conveyor_data"
+              name="Dữ liệu băng tải"
+              parent="stock.menu_stock_warehouse_mgmt"
+              action="action_conveyor_data"
+              sequence="100"/>
+</odoo> 

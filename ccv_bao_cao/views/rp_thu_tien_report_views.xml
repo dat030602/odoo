@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree view line -->
+        <record id="tree_rp_thu_tien_report_line" model="ir.ui.view">
+            <field name="name">rp.thu.tien.report.line.tree</field>
+            <field name="model">rp.thu.tien.report.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="no"/>
+                    <field name="date"/>
+                    <field name="partner_id"/>
+                    <field name="partner_code"/>
+                    <field name="reference"/>
+                    <field name="note"/>
+                    <field name="amount" sum="Tổng số tiền"/>
+                    <field name="currency_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Tree view phiếu -->
+        <record id="tree_rp_thu_tien_report" model="ir.ui.view">
+            <field name="name">rp.thu.tien.report.tree</field>
+            <field name="model">rp.thu.tien.report</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="team_ids" widget="many2many_tags"/>
+                    <field name="voter_id"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'approved'"
+                           decoration-info="state == 'approve'"
+                           decoration-danger="state in ('cancel','refuse')"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form view phiếu -->
+        <record id="form_rp_thu_tien_report" model="ir.ui.view">
+            <field name="name">rp.thu.tien.report.form</field>
+            <field name="model">rp.thu.tien.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="is_user_current" invisible="1"/>
+                        <button name="action_confirm" string="Lấy dữ liệu" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_view_tree" string="Xem chi tiết" type="object"/>
+                        <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_refuse" type="object" string="Từ chối"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_cancel" type="object" string="Hủy"
+                                attrs="{'invisible': [('state','not in', ('approve',))]}"/>
+                        <button name="action_undo" type="object" string="Đặt về nháp"
+                                attrs="{'invisible': [('state','not in', ('refuse','cancel'))]}"/>
+                        <button name="action_print_pdf_report" string="In PDF" type="object"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,approve,approved"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Đã duyệt"
+                                attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                        <widget name="web_ribbon" title="Hủy"
+                                attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                        <widget name="web_ribbon" title="Từ chối"
+                                attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" required="1"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Dữ liệu">
+                                <label for="date_from"/>
+                                <div class="o_row">
+                                    <field name="date_from" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                    -
+                                    <field name="date_to" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                </div>
+                                <field name="team_ids" widget="many2many_tags" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="currency_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group string="Ký tên">
+                                <field name="voter_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="sales_chief_id" string="Kế toán công nợ" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="chief_acc_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="unit_heads_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết" name="line_ids">
+                                <field name="line_ids" readonly="1">
+                                    <tree create="false" delete="false" edit="false">
+                                        <field name="no"/>
+                                        <field name="date"/>
+                                        <field name="partner_id"/>
+                                        <field name="partner_code"/>
+                                        <field name="reference"/>
+                                        <field name="note"/>
+                                        <field name="amount" sum="Tổng số tiền"/>
+                                        <field name="currency_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="trp_approve_history" string="Lịch sử duyệt">
+                                <group>
+                                    <field name="trp_approve_config_line_id" invisible="1"/>
+                                    <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                    <field name="delegate_approver_ids" widget="many2many_tags"
+                                           domain="[('id','not in',current_approve_user_ids)]"
+                                           groups="base.group_system"/>
+                                </group>
+                                <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_rp_thu_tien_report" model="ir.actions.act_window">
+            <field name="name">Báo cáo thu tiền khối kinh doanh</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rp.thu.tien.report</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="menu_rp_thu_tien_report"
+                  name="Báo cáo thu tiền khối kinh doanh"
+                  parent="sale.menu_sale_report"
+                  action="action_rp_thu_tien_report"
+                  sequence="30"/>
+    </data>
+</odoo>

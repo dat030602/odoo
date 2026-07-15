@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="hr_employee_form_view_biz_production_salary" model="ir.ui.view">
+        <field name="name">hr.employee.form.biz_production_salary</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <field name="work_location_id" position="after">
+                <field name="worker_coefficient"/>
+            </field>
+        </field>
+    </record>
+</odoo>

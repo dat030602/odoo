@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="conveyor_log_tree" model="ir.ui.view">
+            <field name="name">conveyor.log.tree</field>
+            <field name="model">conveyor.log</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="response"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_conveyor_log" model="ir.actions.act_window">
+            <field name="name">Conveyor log</field>
+            <field name="res_model">conveyor.log</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_conveyor_log" name="Conveyor log" action="action_conveyor_log" parent="sale.menu_sale_config" sequence="99"/>
+    </data>
+</odoo>

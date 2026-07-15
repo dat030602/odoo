@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="search_chi_tiet_cong_no_phai_tra" model="ir.ui.view">
+            <field name="name">search_chi_tiet_cong_no_phai_tra</field>
+            <field name="model">alpha.report.line2</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Chi tiết công nợ phải trả">
+                    <field name="partner_code"/>
+                    <field name="move_id"/>
+                    <field name="account_id"/>
+                    <field name="account_dest_id"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_partner_code" context="{'group_by': 'partner_code'}"/>
+                        <filter name="group_by_move_id" context="{'group_by': 'move_id'}"/>
+                        <filter name="group_by_partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_chi_tiet_cong_no_phai_tra">
+            <field name="name">tree_chi_tiet_cong_no_phai_tra</field>
+            <field name="model">alpha.report.line2</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="1"/>
+                    <field name="partner_id"/>
+                    <field name="partner_type" invisible="1"/>
+                    <field name="partner_code"
+                            attrs="{'column_invisible': [('parent.partner_type', '!=', 'out')]}"/>
+                    <field name="invoice_date" string="Ngày hạch toán"
+                            attrs="{'column_invisible': [('parent.partner_type', '!=', 'in')]}"/>
+                    <field name="date" string="Ngày chứng từ"/>
+                    <field name="move_id"/>
+                    <field name="invoice_date" string="Ngày hóa đơn"
+                            attrs="{'column_invisible': [('parent.partner_type', '!=', 'out')]}"/>
+                    <field name="reference"/>
+                    <field name="product_uom_qty" sum="total_product_uom_qty"
+                            attrs="{'column_invisible': [('parent.partner_type', '!=', 'out')]}"/>
+                    <field name="price_unit" sum="total_price_unit"
+                            attrs="{'column_invisible': [('parent.partner_type', '!=', 'out')]}"/>
+                    <field name="note"/>
+                    <field name="account_id" string="TK công nợ"/>
+                    <field name="account_dest_id" string="TK đối ứng"/>
+                    <field name="amount_tax" sum="total_amount_tax"/>
+                    <field name="debit" sum="total_debit"/>
+                    <field name="credit" sum="total_credit"/>
+                    <field name="end_debit" string="SD nợ"/>
+                    <field name="end_credit" string="SD có"/>
+                    <field name="uom_id"
+                            attrs="{'column_invisible': [('parent.partner_type', '!=', 'out')]}"/>
+                    <field name="product_uom_qty" sum="total_product_uom_qty"
+                            attrs="{'column_invisible': [('parent.partner_type', '!=', 'in')]}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_chi_tiet_cong_no_phai_tra_trong_nuoc">
+            <field name="name">tree_chi_tiet_cong_no_phai_tra_trong_nuoc</field>
+            <field name="model">alpha.report.line2</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="1"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="partner_type"/>
+                    <field name="invoice_date" string="Ngày hạch toán"/>
+                    <field name="date" string="Ngày chứng từ"/>
+                    <field name="move_id"/>
+                    <field name="reference"/>
+                    <field name="note"/>
+                    <field name="debit" sum="total_debit"/>
+                    <field name="credit" sum="total_credit"/>
+                    <field name="end_debit" string="SD nợ"/>
+                    <field name="end_credit" string="SD có"/>
+                    <field name="product_uom_qty" sum="total_product_uom_qty"
+                           attrs="{'column_invisible': [('parent.partner_type', '!=', 'in')]}"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

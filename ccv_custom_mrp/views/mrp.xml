@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- mrp.production inherit form view -->
+    <record id="mrp_production_inherit_view_form" model="ir.ui.view">
+        <field name="name">mrp.production.inherit.view.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_consignment_wizard" string="Chuyển Kho Ký gửi" type="object" class="btn-secondary"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_account_moves" string="Bút toán" type="object" class="oe_stat_button" icon="fa-money" attrs="{'invisible': [('state', 'not in', ['done', 'cancel'])]}"/>
+            </xpath>
+            <xpath expr="//page[@name='miscellaneous']//field[@name='location_dest_id']" position="after">
+                <field name="finished_stock_qty" attrs="{'invisible': [('consignment_location_id', '=', False)]}"/>
+                <field name="consignment_location_id" attrs="{'invisible': [('consignment_location_id', '=', False)]}"/>
+                <field name="consignment_stock_qty" attrs="{'invisible': [('consignment_location_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='location_id']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

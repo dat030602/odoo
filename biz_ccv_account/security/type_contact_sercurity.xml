@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<odoo>
+<data noupdate="0">
+
+    <record model="ir.module.category" id="module_category_account_ccv">
+        <field name="name">Quyền xóa đối tượng</field>
+        <field name="sequence">200</field>
+    </record>
+
+    <!-- ===================== Res Group ==================================-->
+    <record id="group_sales_team_leader" model="res.groups">
+        <field name="name">Sales team leader</field>
+        <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="category_id" ref="base.module_category_sales_sales"/>
+    </record>
+
+    <record id="group_sales_admin_sales_team_leader" model="res.groups">
+        <field name="name">Sales Assistant</field>
+        <field name="implied_ids" eval="[(4, ref('group_sales_team_leader'))]"/>
+        <field name="category_id" ref="base.module_category_sales_sales"/>
+    </record>
+
+    <record id="sales_team.group_sale_salesman_all_leads" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_sales_admin_sales_team_leader'))]"/>
+    </record>
+
+    <record id="group_delete_customer_supplier" model="res.groups">
+        <field name="name">Delete Customer/Supplier</field>
+        <field name="category_id" ref="module_category_account_ccv"/>
+    </record>
+
+    <record id="group_delete_employee" model="res.groups">
+        <field name="name">Delete Employee</field>
+        <field name="category_id" ref="module_category_account_ccv"/>
+    </record>
+
+    <record id="group_delete_confirmed_order" model="res.groups">
+        <field name="name">Delete Confirmed Order</field>
+        <field name="category_id" ref="module_category_account_ccv"/>
+    </record>
+
+    <!-- ====================================================================-->
+
+    <!-- ========================= IR RULE ==================================-->
+    <record id="sale.sale_order_personal_rule" model="ir.rule">
+        <field name="domain_force">['&amp;','|',('partner_id.user_id','=',False),('partner_id.user_id','=',user.id),'|',('user_id','=',user.id),('user_id','=',False)]</field>
+    </record>
+
+    <!-- ******* Res Partner  ********-->
+    <record id="group_view_contacts_by_contact_type" model="res.groups">
+        <field name="name">Xem liên hệ theo loại liên hệ</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+
+    <record id="group_see_internal_contact" model="res.groups">
+        <field name="name">See internal contact</field>
+    </record>
+
+    <!-- ******* Crm lead **************-->
+        <!-- Personal Leads -->
+    <record id="crm.crm_rule_personal_lead" model="ir.rule">
+        <field name="domain_force">['&amp;' ,'|','|',('partner_id','=',False),('partner_id.user_id','=',False),('partner_id.user_id','=',user.id),'|',('user_id','=',user.id),('user_id','=',False)]</field>
+    </record>
+        <!-- All Leads -->
+    <record id="crm.crm_rule_all_lead" model="ir.rule">
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(6,0,[ref('sales_team.group_sale_salesman_all_leads'), ref('sales_team.group_sale_manager')])]"/>
+    </record>
+
+    <!-- Res Partner -->
+        <!-- res.partner.rule.private.group -->
+    <record id="base.res_partner_rule_private_group" model="ir.rule">
+        <field name="domain_force"> ['|',('is_user_contact', '=', True),('type_contact_ids.code_type_contact','=','NVNB')]</field>
+         <field name="groups" eval="[(6,0,[ref('base.group_private_addresses')])]"/>
+    </record>
+        <!-- res.partner company -->
+    <record id="base.res_partner_rule" model="ir.rule">
+        <field name="domain_force">['&amp;','|', ('company_id', 'in', company_ids), ('company_id', '=', False),'|', ('type_contact_ids', '=', False), ('type_contact_ids', 'in', user.type_contact_user_ids.ids)]</field>
+        <field name="groups" eval="[(6,0,[ref('group_view_contacts_by_contact_type')])]"/>
+    </record>
+
+    <!-- Sale Order -->
+        <!-- All Orders -->
+    <record id="sale.sale_order_see_all" model="ir.rule">
+        <field name="groups" eval="[(6,0,[ref('sales_team.group_sale_salesman_all_leads'), ref('sales_team.group_sale_manager')])]"/>
+    </record>
+
+    <!-- Sale Report -->
+
+    <!--  TH1:  group_sale_manager or group_sale_salesman_all_leads = (1=1) -->
+    <!--  TH2:  group_sale_salesman = (user_id = user.id) -->
+    <!--  TH3:  group_sales_team_leader = (team_id.user_id = user.id) -->
+    <!--  TH4:  group_sales_admin_sales_team_leader = (team_id.sales_assistant_ids 'in' user.id) -->
+
+<!--    <record id="sale_order_report_comp_rule" model="ir.rule">-->
+<!--        <field name="name">Sales Order Analysis multi-company</field>-->
+<!--        <field name="model_id" ref="model_sale_report"/>-->
+<!--        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>-->
+<!--    </record>-->
+<!--    -->
+
+    <record id="sale_order_report_admin_sales_team_leader" model="ir.rule">
+        <field name="name">Assistant Orders Analysis</field>
+        <field ref="sale.model_sale_report" name="model_id"/>
+        <field name="domain_force">[('team_id.sales_assistant_ids', 'in',user.id)]</field>
+        <field name="groups" eval="[(4, ref('biz_ccv_account.group_sales_admin_sales_team_leader'))]"/>
+    </record>
+
+    <record id="sale_order_report_team_leader" model="ir.rule">
+        <field name="name">Team leader Orders Analysis</field>
+        <field ref="sale.model_sale_report" name="model_id"/>
+        <field name="domain_force">[('team_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('biz_ccv_account.group_sales_team_leader'))]"/>
+    </record>
+
+    <record id="sale.sale_order_report_personal_rule" model="ir.rule">
+<!--        <field name="name">Personal Orders Analysis</field>-->
+<!--        <field ref="model_sale_report" name="model_id"/>-->
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+<!--        <field name="groups" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>-->
+    </record>
+
+    <record id="sale.sale_order_report_see_all" model="ir.rule">
+<!--        <field name="name">All Orders Analysis</field>-->
+<!--        <field ref="model_sale_report" name="model_id"/>-->
+<!--        <field name="domain_force">[(1,'=',1)]</field>-->
+        <field name="groups" eval="[(6, 0, [ref('sales_team.group_sale_salesman_all_leads'), ref('sales_team.group_sale_manager')])]"/>
+    </record>
+
+    <!-- ====================================================================-->
+</data>
+
+<data noupdate="1">
+    <!-- Ir Rule -->
+    <!-- res.parrtner -->
+        <!-- res.partner.rule.user -->
+    <record id="res_partner_rule_user" model="ir.rule">
+        <field name="name">res.partner.rule.user</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">
+            ['&amp;','&amp;','&amp;','|', ('type_contact_ids', '=', False), ('type_contact_ids', 'in', user.type_contact_user_ids.ids),('type_contact_ids.code_type_contact','=', 'KH'),'|',('user_id', '=', False),('user_id', '=', user.id),'|', ('company_id', 'in', company_ids), ('company_id', '=', False)]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('sales_team.group_sale_salesman')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="res_partner_rule_lien_he" model="ir.rule">
+        <field name="name">Liên hệ</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">
+            ['&amp;','|', ('company_id', 'in', company_ids), ('company_id', '=', False),'|','&amp;', ('type_contact_ids', '=', False), ('type_contact_ids', 'in', user.type_contact_user_ids.ids),('type_contact_ids.code_type_contact', '=', 'NCC')]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('purchase.group_purchase_user')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+        <!-- res.partner.rule.user.lead -->
+    <record id="res_partner_rule_user_lead" model="ir.rule">
+        <field name="name">res.partner.rule.user.lead</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">
+                ['&amp;','&amp;', '|', ('type_contact_ids', '=', False), ('type_contact_ids', 'in', user.type_contact_user_ids.ids), '|',('sales_team_captain_id', '=', False),('sales_team_captain_id', '=', user.id),'|', ('company_id', 'in', company_ids), ('company_id', '=', False)]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('group_sales_team_leader')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+        <!-- res.partner.rule.sales.assistant -->
+    <record id="res_partner_rule_sales_assistant" model="ir.rule">
+        <field name="name">res.partner.rule.sales.assistant</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">
+
+            ['&amp;','&amp;', '|', ('type_contact_ids', '=', False), ('type_contact_ids', 'in', user.type_contact_user_ids.ids), '|',('sales_assistant_ids', '=', False),('sales_assistant_ids', 'in', user.ids),'|', ('company_id', 'in', company_ids), ('company_id', '=', False)]
+
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('group_sales_admin_sales_team_leader')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+        <!-- Saleadmin -->
+    <record id="res_partner_rule_sales_assistant_admin" model="ir.rule">
+        <field name="name">Saleadmin</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">
+            ['|', ('company_id', 'in', company_ids), ('company_id', '=', False)]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('sales_team.group_sale_salesman_all_leads')),Command.link(ref('sales_team.group_sale_manager'))
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Sale Order -->
+        <!-- sale.order.rule.team.lead -->
+    <record id="sale_order_rule_team_lead" model="ir.rule">
+        <field name="name">sale.order.rule.team.lead</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">
+
+            ['&amp;','|',('partner_id.sales_team_captain_id', '=', False),('partner_id.sales_team_captain_id', '=', user.id),
+'|',('sales_team_captain_id', '=', False),('sales_team_captain_id', '=', user.id)]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('group_sales_team_leader')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+        <!-- sale.order.rule.team.assistant -->
+    <record id="sale_order_rule_team_assistant" model="ir.rule">
+        <field name="name">sale.order.rule.team.assistant</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">
+
+            ['&amp;','|',('partner_id.sales_assistant_ids', '=',False ),('partner_id.sales_assistant_ids', 'in', [user.id]),
+'|',('sales_assistant_ids', '=', False),('sales_assistant_ids', 'in', [user.id])]
+
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('group_sales_admin_sales_team_leader')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Sale Order line -->
+
+        <!-- Personal Order Lines1 -->
+    <record id="sale_order_line_personal_1_rule" model="ir.rule">
+        <field name="name">Personal Order Lines1</field>
+        <field ref="sale.model_sale_order_line" name="model_id"/>
+        <field name="domain_force"> ['|',('order_id.sales_assistant_ids', '=', False),('order_id.sales_assistant_ids', 'in', [user.id])]</field>
+        <field name="groups" eval="[(4, ref('group_sales_admin_sales_team_leader'))]"/>
+    </record>
+
+        <!-- Personal Order Lines team lead -->
+    <record id="sale_order_line_team_lead" model="ir.rule">
+        <field name="name">Personal Order Lines team lead</field>
+        <field ref="sale.model_sale_order_line" name="model_id"/>
+        <field name="domain_force">['|',('order_id.sales_team_captain_id', '=', False),('order_id.sales_team_captain_id', '=', user.id)]   </field>
+        <field name="groups" eval="[(4, ref('group_sales_team_leader'))]"/>
+    </record>
+
+
+    <!-- Crm lead -->
+
+    <record id="crm_lead_rule_team_lead" model="ir.rule">
+        <field name="name">crm.lead.rule.team.lead</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain_force">
+            ['&amp;',('partner_id.sales_team_captain_id', '=', user.id),
+'|',('team_id.user_id', '=', False),('team_id.user_id', '=', user.id)]
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('group_sales_team_leader')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="crm_lead_rule_team_assistant" model="ir.rule">
+        <field name="name">crm.lead.rule.team.assistant</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain_force">
+            ['&amp;',('partner_id.sales_assistant_ids', 'in', [user.id]),
+'|',('team_id.sales_assistant_ids', '=', False),('team_id.sales_assistant_ids', 'in', [user.id])]
+
+        </field>
+        <field name="groups" eval="[
+            Command.link(ref('group_sales_admin_sales_team_leader')),
+        ]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="base.res_partner_rule_private_employee" model="ir.rule">
+        <field name="active">False</field>
+    </record>
+
+        <record id="base.res_partner_rule" model="ir.rule">
+        <field name="active">False</field>
+    </record>
+
+    <!--    Product Template    -->
+    <record id="product_distributor_allowed_rule" model="ir.rule">
+        <field name="name">Product distributor allowed multi-company</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="domain_force"> ['|', ('distributor_allowed_company_ids', 'in', user.company_ids.ids), ('distributor_allowed_company_ids', '=', False)]</field>
+    </record>
+</data>
+</odoo>

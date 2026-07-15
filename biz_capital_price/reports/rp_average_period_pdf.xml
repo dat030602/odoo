@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <openerp> -->
+<odoo>
+	<data>
+		<template id="rp_average_period_pdf_document">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="web.html_container">
+					<t t-call="web.basic_layout">
+						<div class="page" style="font-family: 'Times New Roman';font-size:16px; line-height: 1.5;">
+                            <div class="text-center bold mb-2">
+                                <h4 class="mb-0 p-0">BẢNG CHI PHÍ PHÂN BỔ MUA HÀNG</h4>
+                                <p>Từ ngày: <t t-esc="get_date(o.from_date)"/> Đến ngày: <t t-esc="get_date(o.to_date)"/></p>
+                            </div>
+                            
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã hàng</th>
+                                        <th>Tên hàng</th>
+                                        <th>Đvt</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng CP Nhân Công TK 622</th>
+                                        <th>Tổng CP SXC TK 627</th>
+                                        <th>Chi phí khác</th>
+                                        <th>Tỷ lệ phân bổ</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="get_lines(o)['lines']" t-as="line">
+                                        <td><t t-esc="line_index + 1"/></td>
+                                        <td><t t-esc="line['code']"/></td>
+                                        <td><t t-esc="line['name']"/></td>
+                                        <td><t t-esc="line['uom']"/></td>
+                                        <td class="text-right"><t t-esc="format_float_number(line['quantity'])"/></td>
+                                        <td class="text-right"><t t-esc="format_float_number(line['622'])"/></td>
+                                        <td class="text-right"><t t-esc="format_float_number(line['627'])"/></td>
+                                        <td class="text-right"><t t-esc="format_float_number(line['other_cost'])"/></td>
+                                        <td class="text-right"><t t-esc="format_float_number(line['allocation_ratio']) + '%'"/></td>
+                                        <td class="text-right"><t t-esc="format_float_number(line['price_total'])"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center bold" colspan="4"></td>
+                                        <td class="bold text-right"><t t-esc="format_float_number(get_lines(o)['sum_quantity'])"/></td>
+                                        <td class="bold text-right"><t t-esc="format_float_number(get_lines(o)['sum_622'])"/></td>
+                                        <td class="bold text-right"><t t-esc="format_float_number(get_lines(o)['sum_627'])"/></td>
+                                        <td class="bold text-right"><t t-esc="format_float_number(get_lines(o)['sum_other_cost'])"/></td>
+                                        <td class="bold text-right"><t t-esc="'100 %'"/></td>
+                                        <td class="bold text-right"><t t-esc="format_float_number(get_lines(o)['sum_total'])"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+						<style>
+                            p {
+                                margin: 0 !important;
+                            }
+                            .bold {
+                                font-weight: bold;
+                            }
+                            .border-1 {
+                                border: 1px solid black;
+                            }
+                            .sum-line{
+                                padding: 0 5px;
+                                display: inline-block;
+                                height: 100%;
+                                vertical-align: middle;
+                                width: 45%;
+                            }
+                            .border-left{
+                                border-left: 1px solid;
+                            }
+							.font-italic {
+								font-style: italic;
+							}
+							.text-uppercase {
+								font-weight: bold;
+							}
+							.table-bordered {
+								border: 1px solid #000000;
+							}
+							.table-bordered tbody .table-foreach{
+								border-bottom: 1px solid white;
+							}
+							.table-bordered tbody .stt-td{
+								text-align: center;
+								border-top: 1px solid white;
+							}
+							.certificate {
+								text-align: left;
+								margin-left: -15px;
+							}
+							.table-bordered tbody .tr-last{
+								border-top: 1px solid black;
+							}
+						</style>
+					</t>
+				</t>
+			</t>
+		</template>
+		
+		<template id="rp_average_period_pdf">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="biz_capital_price.rp_average_period_pdf_document"/>
+			</t>
+		</template>  
+
+	</data>
+</odoo>

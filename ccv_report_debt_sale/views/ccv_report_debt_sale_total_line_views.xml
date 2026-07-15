@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Total Line Tree View -->
+    <record id="view_ccv_report_debt_sale_total_line_tree" model="ir.ui.view">
+        <field name="name">ccv.report.debt.sale.total.line.tree</field>
+        <field name="model">ccv.report.debt.sale.total.line</field>
+        <field name="arch" type="xml">
+            <tree string="Tổng hợp sổ tổng hợp bán hàng" edit="0" create="0" delete="0" decoration-success="debt_end &lt; 0" action="action_view_move" type="object">
+                <field name="parent_id" invisible="1"/>
+                <field name="partner_id"/>
+                <field name="team_id"/>
+                <field name="user_id"/>
+                <field name="price_subtotal" sum="Tổng"/>
+                <field name="price_tax" sum="Tổng"/>
+                <field name="price_total" sum="Tổng"/>
+                <field name="debt_old" sum="Tổng"/>
+                <field name="debt_in" sum="Tổng"/>
+                <field name="debt_end" sum="Tổng"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Total Line Form View -->
+    <record id="view_ccv_report_debt_sale_total_line_form" model="ir.ui.view">
+        <field name="name">ccv.report.debt.sale.total.line.form</field>
+        <field name="model">ccv.report.debt.sale.total.line</field>
+        <field name="arch" type="xml">
+            <form string="Tổng hợp sổ tổng hợp bán hàng" edit="0" create="0" delete="0">
+                <header>
+                    <button name="action_view_move" type="object" string="Hoá đơn" icon="fa-file-text" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="parent_id" invisible="1"/>
+                            <field name="partner_id"/>
+                            <field name="team_id"/>
+                            <field name="user_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="price_subtotal"/>
+                            <field name="price_tax"/>
+                            <field name="price_total"/>
+                            <field name="debt_old"/>
+                            <field name="debt_in"/>
+                            <field name="debt_end"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Total Line Search View -->
+    <record id="view_ccv_report_debt_sale_total_line_search" model="ir.ui.view">
+        <field name="name">ccv.report.debt.sale.total.line.search</field>
+        <field name="model">ccv.report.debt.sale.total.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm tổng hợp sổ tổng hợp bán hàng">
+                <field name="partner_id" string="Khách hàng"/>
+                <field name="team_id" string="Khu vực"/>
+                <field name="user_id" string="NV bán hàng"/>
+                <separator/>
+                <filter string="Có khách hàng" name="has_partner" domain="[('partner_id', '!=', False)]"/>
+                <filter string="Có nợ cũ" name="has_debt_old" domain="[('debt_old', '>', 0)]"/>
+                <filter string="Có thu nợ" name="has_debt_in" domain="[('debt_in', '!=', 0)]"/>
+                <group expand="0" string="Nhóm">
+                    <filter string="Theo khách hàng" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Theo khu vực" name="group_team" context="{'group_by': 'team_id'}"/>
+                    <filter string="Theo NV bán hàng" name="group_user" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Total Line Action -->
+    <record id="action_ccv_report_debt_sale_total_line" model="ir.actions.act_window">
+        <field name="name">Tổng hợp sổ tổng hợp bán hàng</field>
+        <field name="res_model">ccv.report.debt.sale.total.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_ccv_report_debt_sale_total_line_search"/>
+        <field name="domain">[('parent_id', '=', active_id)]</field>
+    </record>
+</odoo>

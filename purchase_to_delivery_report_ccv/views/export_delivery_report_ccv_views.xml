@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="export_delivery_report_ccv_form" model="ir.ui.view">
+        <field name="name">export.delivery.report.ccv.form</field>
+        <field name="model">export.delivery.report.ccv</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="is_user_current" invisible="1"/>
+                    <button name="action_confirm" string="Lấy dữ liệu" type="object" class="btn-primary"
+                            attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                            attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                            attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_refuse" type="object" string="Từ chối"
+                            attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_cancel" type="object" string="Hủy"
+                            attrs="{'invisible': [('state', 'not in', ('approve'))]}"/>
+                    <button name="action_undo" type="object" string="Đặt về Nháp"
+                            attrs="{'invisible': [('state', 'not in', ('refuse', 'cancel'))]}"/>
+                    <button name="action_undo" type="object" string="Đặt về Nháp "
+                            attrs="{'invisible': [('state', '=', 'draft')]}"
+                            groups="base.group_system" class="btn-danger"
+                            confirm="Bạn có chắc muốn đưa phiếu này về Nháp không?"/>
+                    <button string="Xuất Excel" name="action_print_excel" type="object" class="btn-secondary"/>
+                    <button string="In PDF" name="action_print_pdf" type="object" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approve,approved"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Đã duyệt" attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                    <widget name="web_ribbon" title="Hủy" attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                    <widget name="web_ribbon" title="Từ chối" attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Lệnh chuyển hàng sẽ xuất">
+                            <field name="purchase_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="supplier_name" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                            <field name="product_names" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                            <field name="bag_weights" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                            <field name="tare_weights" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                            <field name="total_qty" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                            <field name="contract_number" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                            <field name="customs_number" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                            <field name="customs_date" attrs="{'invisible': [('purchase_id','=',False)]}"/>
+                        </group>
+                        <group string="Chữ ký">
+                            <field name="voter_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="accounting_department_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="factory_ids" widget="many2many_tags" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="chief_accountant_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="trade_department_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="unit_heads_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết" name="details">
+                            <field name="delivery_picking_ids" nolabel="1" attrs="{'readonly': [('state','=','approved')]}">
+                                <tree string="Delivery Orders" editable="bottom">
+                                    <field name="name" string="Phiếu nhập kho" readonly="1"/>
+                                    <field name="stock_date_receipt" string="Ngày dùng tồn" readonly="1"/>
+                                    <field name="vehicle_license_plate" string="Số xe" readonly="1"/>
+                                    <field name="container_number" string="Số Cont" readonly="1"/>
+                                    <field name="seal_number" string="Số Seal" readonly="1"/>
+                                    <field name="partner_id" string="Kho / Khách hàng" readonly="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="location_dest_id" string="Vị trí đích" readonly="1"/>
+                                    <field name="weight_receipt" string="SL theo chứng từ" sum="Tổng cộng" digits="[16,3]" readonly="1"/>
+                                    <field name="weight_ccv" string="Cân CCV" sum="Tổng cộng" digits="[16,3]" readonly="1"/>
+                                    <field name="weight_port" string="Cân Cảng" sum="Tổng cộng" digits="[16,3]" readonly="1"/>
+                                    <field name="weight_ccv_net" string="Cân CCV trừ bì" sum="Tổng cộng" digits="[16,3]"/>
+                                    <field name="weight_port_net" string="Cân Cảng trừ bì" sum="Tổng cộng" digits="[16,3]"/>
+                                    <field name="bag_number" string="Số lượng bao" sum="Tổng cộng" readonly="1"/>
+                                    <field name="sale_id" string="Đơn bán hàng" invisible="1"/>
+                                    <field name="state" string="Trạng thái" widget="badge" decoration-success="state == 'done'" decoration-danger="state == 'cancel'" decoration-warning="state == 'draft'" readonly="1"/>
+                                    <button name="action_open_picking_form" type="object" string="Mở chi tiết" icon="fa-external-link" title="Mở đầy đủ (để xem Chatter)"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Trình duyệt" name="approve">
+                            <field name="trp_approve_config_line_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </page>
+                        <page string="Lịch sử duyệt" name="approve_history">
+                            <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="export_delivery_report_ccv_tree" model="ir.ui.view">
+        <field name="name">export.delivery.report.ccv.tree</field>
+        <field name="model">export.delivery.report.ccv</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'draft'" decoration-success="state == 'approved'" decoration-danger="state == 'cancel'">
+                <field name="name"/>
+                <field name="purchase_id"/>
+                <field name="product_names"/>
+                <field name="voter_id"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'approve'" decoration-success="state == 'approved'" decoration-danger="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="export_delivery_report_ccv_search" model="ir.ui.view">
+        <field name="name">export.delivery.report.ccv.search</field>
+        <field name="model">export.delivery.report.ccv</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="purchase_id"/>
+                <filter string="Nháp" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Đang duyệt" name="approve" domain="[('state', '=', 'approve')]"/>
+                <filter string="Đã duyệt" name="approved" domain="[('state', '=', 'approved')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_export_delivery_report_ccv" model="ir.actions.act_window">
+        <field name="name">Báo cáo chốt lô nguyên liệu</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">export.delivery.report.ccv</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu item -->
+    <menuitem id="menu_export_delivery_report_ccv"
+              name="Báo cáo chốt lô nguyên liệu"
+              action="action_export_delivery_report_ccv"
+              parent="purchase.purchase_report_main"
+              sequence="140"/>
+</odoo>

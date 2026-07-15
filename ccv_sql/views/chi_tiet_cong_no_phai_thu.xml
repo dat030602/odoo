@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="search_chi_tiet_cong_no_phai_thu" model="ir.ui.view">
+            <field name="name">search_chi_tiet_cong_no_phai_thu</field>
+            <field name="model">alpha.report.line3</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Chi tiết công nợ phải thu">
+                    <field name="move_id"/>
+                    <field name="account_dest_id"/>
+                    <field name="default_code"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_move_id" context="{'group_by': 'move_id'}"/>
+                        <filter name="group_by_account_dest_id" context="{'group_by': 'account_dest_id'}"/>
+                        <filter name="group_by_default_code" context="{'group_by': 'default_code'}"/>
+                        <filter name="group_by_partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_chi_tiet_cong_no_phai_thu">
+            <field name="name">tree_chi_tiet_cong_no_phai_thu</field>
+            <field name="model">alpha.report.line3</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="1"/>
+                    <field name="partner_id"/>
+                    <field name="team_id" string="Khu vực"/>
+                    <field name="partner_code" invisible="1"/>
+                    <field name="date" string="Ngày chứng từ"/>
+                    <field name="move_id"/>
+                    <field name="reference"/>
+                    <field name="note"/>
+                    <field name="account_dest_id" string="TK đối ứng"/>
+                    <field name="uom_id"/>
+                    <field name="product_uom_qty" sum="total_product_uom_qty" digits="[16,3]"/>
+                    <field name="price_unit"/>
+                    <field name="amount_tax" sum="total_amount_tax"/>
+                    <field name="debit" sum="total_debit"/>
+                    <field name="credit" sum="total_credit"/>
+                    <field name="end_debit" string="SD nợ"/>
+                    <field name="end_credit" string="SD có"/>
+                    <field name="default_code"/>
+                    <field name="product_id" invisible="1"/>
+                    <field name="order_id"/>
+                </tree>
+            </field>
+        </record>
+        <!-- ====================================================== -->
+        <!-- Phiếu Chi tiết công nợ phải thu (có quy trình duyệt) -->
+        <!-- ====================================================== -->
+        <record id="tree_ccv_chi_tiet_cong_no_phai_thu_line" model="ir.ui.view">
+            <field name="name">ccv.chi.tiet.cong.no.phai.thu.line.tree</field>
+            <field name="model">ccv.chi.tiet.cong.no.phai.thu.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="1"/>
+                    <field name="partner_id"/>
+                    <field name="team_id" string="Khu vực"/>
+                    <field name="partner_code" invisible="1"/>
+                    <field name="date" string="Ngày chứng từ"/>
+                    <field name="move_id"/>
+                    <field name="reference"/>
+                    <field name="note"/>
+                    <field name="account_dest_id" string="TK đối ứng"/>
+                    <field name="uom_id"/>
+                    <field name="product_uom_qty" sum="total_product_uom_qty" digits="[16,3]"/>
+                    <field name="price_unit"/>
+                    <field name="amount_tax" sum="total_amount_tax"/>
+                    <field name="debit" sum="total_debit"/>
+                    <field name="credit" sum="total_credit"/>
+                    <field name="end_debit" string="SD nợ"/>
+                    <field name="end_credit" string="SD có"/>
+                    <field name="default_code"/>
+                    <field name="product_id" invisible="1"/>
+                    <field name="order_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="tree_ccv_chi_tiet_cong_no_phai_thu" model="ir.ui.view">
+            <field name="name">ccv.chi.tiet.cong.no.phai.thu.tree</field>
+            <field name="model">ccv.chi.tiet.cong.no.phai.thu</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="partner_id"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'approved'"
+                           decoration-danger="state in ('cancel','refuse')"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="form_ccv_chi_tiet_cong_no_phai_thu" model="ir.ui.view">
+            <field name="name">ccv.chi.tiet.cong.no.phai.thu.form</field>
+            <field name="model">ccv.chi.tiet.cong.no.phai.thu</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="is_user_current" invisible="1"/>
+                        <button name="action_confirm" string="Lấy dữ liệu" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_view_tree" string="Xem chi tiết" type="object"/>
+                        <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_refuse" type="object" string="Từ chối"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_cancel" type="object" string="Hủy"
+                                attrs="{'invisible': [('state','not in', ('approve',))]}"/>
+                        <button name="action_undo" type="object" string="Đặt về nháp"
+                                attrs="{'invisible': [('state','not in', ('refuse','cancel'))]}"/>
+                        <button name="action_print_pdf_report" string="In PDF" type="object"/>
+                        <button name="action_print_report_tax" string="Mẫu in bỏ tax" type="object"/>
+                        <button name="action_print_xlsx_report" string="Xuất Excel" type="object"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,approve,approved"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Đã duyệt"
+                                attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                        <widget name="web_ribbon" title="Hủy"
+                                attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                        <widget name="web_ribbon" title="Từ chối"
+                                attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" required="1"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="date_from"/>
+                                <div class="o_row">
+                                    <field name="date_from" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                    -
+                                    <field name="date_to" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                </div>
+                                <field name="page_break"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group string="Nhóm khách hàng">
+                                <field name="report_type"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="account_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="partner_state" invisible="1"/>
+                                <field name="partner_id"
+                                       attrs="{'invisible': [('partner_state','!=','1')],
+                                               'required': [('partner_state','=','1')],
+                                               'readonly': [('state','!=','draft')]}"/>
+                                <field name="partner_ids" widget="many2many_tags"
+                                       attrs="{'invisible': [('partner_state','!=','2')],
+                                               'required': [('partner_state','=','2')],
+                                               'readonly': [('state','!=','draft')]}"/>
+                                <field name="team_id" widget="many2many_tags"
+                                       attrs="{'invisible': [('report_type','!=','team')],
+                                               'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Lập phiếu">
+                                <field name="voter_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="chief_dept_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="debt_accountant_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="chief_acc_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="unit_heads_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết" name="line_ids">
+                                <field name="line_ids" readonly="1">
+                                    <tree>
+                                        <field name="partner_id"/>
+                                        <field name="team_id" string="Khu vực"/>
+                                        <field name="date" string="Ngày chứng từ"/>
+                                        <field name="move_id"/>
+                                        <field name="reference"/>
+                                        <field name="note"/>
+                                        <field name="account_dest_id" string="TK đối ứng"/>
+                                        <field name="uom_id"/>
+                                        <field name="product_uom_qty" sum="total_product_uom_qty" digits="[16,3]"/>
+                                        <field name="price_unit" digits="[16,3]"/>
+                                        <field name="debit" sum="total_debit" digits="[16,3]"/>
+                                        <field name="credit" sum="total_credit" digits="[16,3]"/>
+                                        <field name="end_debit" string="SD nợ" digits="[16,3]"/>
+                                        <field name="end_credit" string="SD có" digits="[16,3]"/>
+                                        <field name="default_code"/>
+                                        <field name="order_id"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="total_end_debit"/>
+                                    <field name="total_end_credit"/>
+                                </group>
+                            </page>
+                            <page name="trp_approve_history" string="Lịch sử duyệt">
+                                <group>
+                                    <field name="trp_approve_config_line_id" invisible="1"/>
+                                    <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                    <field name="delegate_approver_ids" widget="many2many_tags"
+                                           domain="[('id','not in',current_approve_user_ids)]"
+                                           groups="base.group_system"/>
+                                </group>
+                                <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" groups="base.group_user"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ccv_chi_tiet_cong_no_phai_thu" model="ir.actions.act_window">
+            <field name="name">Báo cáo chi tiết công nợ phải thu</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ccv.chi.tiet.cong.no.phai.thu</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="menu_ccv_chi_tiet_cong_no_phai_thu"
+                  name="Báo cáo chi tiết công nợ phải thu"
+                  parent="sale.menu_sale_report"
+                  action="action_ccv_chi_tiet_cong_no_phai_thu"
+                  sequence="21"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="tong_hop_cong_no_phai_thu_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.thu</field>
+        <field name="model">beta.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="account_id" invisible="1"/>
+                <field name="partner_id"/>
+                <field name="parent_id" invisible="1"/>
+                <field name="is_foreign_currency" invisible="1"/>
+                <field name="customer_name"/>
+                <field name="customer_code"/>
+                <field name="customer_group"/>
+                <field name="start_debit" sum="total_start_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="start_credit" sum="total_start_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_debit" sum="total_ps_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_credit" sum="total_ps_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_debit" sum="total_end_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_credit" sum="total_end_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tong_hop_cong_no_phai_tra_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">beta.report.line2</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                    <field name="account_id" invisible="1"/>
+                    <field name="partner_id" string="Nhà cung cấp"/>
+                    <field name="parent_id" invisible="1"/>
+                    <field name="is_foreign_currency" invisible="1"/>
+                    <field name="customer_name"/>
+                    <field name="customer_code"/>
+                    <field name="vat"/>
+                    <field name="address"/>
+                    <field name="start_debit" sum="total_start_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="start_credit" sum="total_start_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="ps_debit" sum="total_ps_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="ps_credit" sum="total_ps_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="end_debit" sum="total_end_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="end_credit" sum="total_end_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tong_hop_cong_no_phai_thu_usd_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">beta.report.line3</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="partner_id"/>
+                <field name="parent_id" invisible="1"/>
+                <field name="is_foreign_currency" invisible="1"/>
+                <field name="customer_name"/>
+                <field name="customer_code"/>
+                <field name="vat"/>
+                <field name="address"/>
+                <field name="account_id" string="Tài khoản công nợ"/>
+                <field name="start_debit_nt" sum="total_start_debit"/>
+                <field name="start_debit" sum="total_start_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="start_credit_nt" sum="total_start_credit"/>
+                <field name="start_credit" sum="total_start_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                <field name="ps_debit" sum="total_ps_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                <field name="ps_credit" sum="total_ps_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_debit_nt" sum="total_end_debit"/>
+                <field name="end_debit" sum="total_end_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_credit_nt" sum="total_end_credit"/>
+                <field name="end_credit" sum="total_end_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tong_hop_cong_no_phai_tra_usd_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">beta.report.line4</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="partner_id" string="Nhà cung cấp"/>
+                <field name="parent_id" invisible="1"/>
+                <field name="is_foreign_currency" invisible="1"/>
+                <field name="customer_name"/>
+                <field name="customer_code"/>
+                <field name="vat"/>
+                <field name="address"/>
+                <field name="account_id" string="Tài khoản công nợ"/>
+                <field name="start_debit_nt" sum="total_start_debit"/>
+                <field name="start_debit" sum="total_start_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="start_credit_nt" sum="total_start_credit"/>
+                <field name="start_credit" sum="total_start_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                <field name="ps_debit" sum="total_ps_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                <field name="ps_credit" sum="total_ps_credit"/>
+                <field name="end_debit_nt" sum="total_end_debit"/>
+                <field name="end_debit" sum="total_end_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_credit_nt" sum="total_end_credit"/>
+                <field name="end_credit" sum="total_end_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="chi_tiet_cong_no_phai_tra_usd_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">beta.report.line5</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="partner_id" string="Nhà cung cấp"/>
+                <field name="move_id" string="Số chứng từ"/>
+                <field name="date" string="Ngày chứng từ"/>
+                <field name="invoice_date"/>
+                <field name="reference"/>
+                <field name="product_uom_quantity"/>
+                <field name="price_unit"/>
+                <field name="note"/>
+                <field name="account_id"/>
+                <field name="account_dest_id"/>
+                <field name="is_foreign_currency" invisible="1"/>
+                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                <field name="ps_debit" sum="total_ps_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                <field name="ps_credit" sum="total_ps_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_debit_nt"/>
+                <field name="end_debit" widget='monetary' options="{'currency_field': 'currency_id'}" />
+                <field name="end_credit_nt"/>
+                <field name="end_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="uom_id"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="chi_tiet_cong_no_phai_thu_usd_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.thu</field>
+        <field name="model">beta.report.line6</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="partner_id" string="Khách hàng"/>
+                <field name="move_id" string="Số chứng từ"/>
+                <field name="date" string="Ngày chứng từ"/>
+                <field name="invoice_date"/>
+                <field name="reference"/>
+                <field name="product_uom_quantity"/>
+                <field name="price_unit"/>
+                <field name="note"/>
+                <field name="account_id"/>
+                <field name="account_dest_id"/>
+                <field name="is_foreign_currency" invisible="1"/>
+                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                <field name="ps_debit" sum="total_ps_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                <field name="ps_credit" sum="total_ps_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_debit_nt"/>
+                <field name="end_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_credit_nt"/>
+                <field name="end_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="default_code"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="danh_sach_chi_tien_von_tu_co_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.thu</field>
+        <field name="model">beta.report.line7</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="partner_id" string="Khách hàng/Nhà cung cấp"/>
+                <field name="reference" string="Mã phiếu"/>
+                <field name="date"/>
+                <field name="note" string="Số"/>
+                <field name="amount_total" sum="total_amount_total" string="Số tiền ký kết" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id"/>
+                </tree>
+        </field>
+    </record>
+
+    <record id="chi_tiet_cong_no_nhan_vien_beta_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">alpha.report.line3</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="partner_id" string="Nhân viên"/>
+                <field name="account_id" invisible="1"/>
+                <field name="date" string="Ngày"/>
+                <field name="move_id" string="Số chứng từ"/>
+                <field name="reference" string="Mã phiếu"/>
+                <field name="note" string="Số"/>
+                <field name="account_dest_id"/>
+                <field name="product_uom_qty"/>
+                <field name="price_unit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="debit" sum="total_ps_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="credit" sum="total_ps_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_debit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="end_credit" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search Views -->
+    <record id="tong_hop_cong_no_phai_thu_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.thu</field>
+        <field name="model">beta.report.line1</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="customer_name"/>
+                <field name="customer_code"/>
+                <field name="customer_group"/>
+                <field name="account_id"/>
+                <separator/>
+                <filter string="Có số dư đầu kỳ" name="has_start_balance" domain="['|', ('start_debit', '>', 0), ('start_credit', '>', 0)]"/>
+                <filter string="Có phát sinh" name="has_ps" domain="['|', ('ps_debit', '>', 0), ('ps_credit', '>', 0)]"/>
+                <filter string="Có số dư cuối kỳ" name="has_end_balance" domain="['|', ('end_debit', '>', 0), ('end_credit', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Nhóm khách hàng" name="group_customer_group" context="{'group_by': 'customer_group'}"/>
+                    <filter string="Tài khoản" name="group_account" context="{'group_by': 'account_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="tong_hop_cong_no_phai_tra_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.tra</field>
+        <field name="model">beta.report.line2</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="customer_name"/>
+                <field name="customer_code"/>
+                <field name="vat"/>
+                <field name="address"/>
+                <field name="account_id"/>
+                <separator/>
+                <filter string="Có số dư đầu kỳ" name="has_start_balance" domain="['|', ('start_debit', '>', 0), ('start_credit', '>', 0)]"/>
+                <filter string="Có phát sinh" name="has_ps" domain="['|', ('ps_debit', '>', 0), ('ps_credit', '>', 0)]"/>
+                <filter string="Có số dư cuối kỳ" name="has_end_balance" domain="['|', ('end_debit', '>', 0), ('end_credit', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Tài khoản" name="group_account" context="{'group_by': 'account_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="tong_hop_cong_no_phai_thu_usd_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.thu.usd</field>
+        <field name="model">beta.report.line3</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="customer_name"/>
+                <field name="customer_code"/>
+                <field name="vat"/>
+                <field name="address"/>
+                <field name="account_id"/>
+                <separator/>
+                <filter string="Có số dư đầu kỳ" name="has_start_balance" domain="['|', ('start_debit', '>', 0), ('start_credit', '>', 0)]"/>
+                <filter string="Có phát sinh" name="has_ps" domain="['|', ('ps_debit', '>', 0), ('ps_credit', '>', 0)]"/>
+                <filter string="Có số dư cuối kỳ" name="has_end_balance" domain="['|', ('end_debit', '>', 0), ('end_credit', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Tài khoản" name="group_account" context="{'group_by': 'account_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="tong_hop_cong_no_phai_tra_usd_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.tra.usd</field>
+        <field name="model">beta.report.line4</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="customer_name"/>
+                <field name="customer_code"/>
+                <field name="vat"/>
+                <field name="address"/>
+                <field name="account_id"/>
+                <separator/>
+                <filter string="Có số dư đầu kỳ" name="has_start_balance" domain="['|', ('start_debit', '>', 0), ('start_credit', '>', 0)]"/>
+                <filter string="Có phát sinh" name="has_ps" domain="['|', ('ps_debit', '>', 0), ('ps_credit', '>', 0)]"/>
+                <filter string="Có số dư cuối kỳ" name="has_end_balance" domain="['|', ('end_debit', '>', 0), ('end_credit', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Tài khoản" name="group_account" context="{'group_by': 'account_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="chi_tiet_cong_no_phai_tra_usd_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.chi_tiet.tra.usd</field>
+        <field name="model">beta.report.line5</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="move_id"/>
+                <field name="date"/>
+                <field name="invoice_date"/>
+                <field name="reference"/>
+                <field name="note"/>
+                <field name="account_id"/>
+                <field name="account_dest_id"/>
+                <separator/>
+                <filter string="Có phát sinh" name="has_ps" domain="['|', ('ps_debit', '>', 0), ('ps_credit', '>', 0)]"/>
+                <filter string="Có số dư cuối kỳ" name="has_end_balance" domain="['|', ('end_debit', '>', 0), ('end_credit', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khách hàng" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Tài khoản" name="group_account" context="{'group_by': 'account_id'}"/>
+                    <filter string="Ngày chứng từ" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="chi_tiet_cong_no_phai_thu_usd_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.chi_tiet.thu.usd</field>
+        <field name="model">beta.report.line6</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="move_id"/>
+                <field name="date"/>
+                <field name="invoice_date"/>
+                <field name="reference"/>
+                <field name="note"/>
+                <field name="account_id"/>
+                <field name="account_dest_id"/>
+                <field name="default_code"/>
+                <separator/>
+                <filter string="Có phát sinh" name="has_ps" domain="['|', ('ps_debit', '>', 0), ('ps_credit', '>', 0)]"/>
+                <filter string="Có số dư cuối kỳ" name="has_end_balance" domain="['|', ('end_debit', '>', 0), ('end_credit', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khách hàng" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Tài khoản" name="group_account" context="{'group_by': 'account_id'}"/>
+                    <filter string="Ngày chứng từ" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="danh_sach_chi_tien_von_tu_co_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.chi_tien_von</field>
+        <field name="model">beta.report.line7</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="reference"/>
+                <field name="date"/>
+                <field name="note"/>
+                <field name="currency_id"/>
+                <separator/>
+                <filter string="Có số tiền" name="has_amount" domain="[('amount_total', '>', 0)]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khách hàng/Nhà cung cấp" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Loại tiền" name="group_currency" context="{'group_by': 'currency_id'}"/>
+                    <filter string="Ngày" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="chi_tiet_cong_no_nhan_vien_beta_view_search" model="ir.ui.view">
+        <field name="name">beta.view.search.chi_tiet.nhan_vien</field>
+        <field name="model">alpha.report.line3</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khách hàng" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_thu_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải thu</field>
+        <field name="res_model">beta.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_thu_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_thu_beta_view_search"/>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_tra_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải trả</field>
+        <field name="res_model">beta.report.line2</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_tra_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_tra_beta_view_search"/>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_thu_usd_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải thu USD</field>
+        <field name="res_model">beta.report.line3</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_thu_usd_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_thu_usd_beta_view_search"/>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_tra_usd_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải trả USD</field>
+        <field name="res_model">beta.report.line4</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_tra_usd_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.tong_hop_cong_no_phai_tra_usd_beta_view_search"/>
+    </record>
+
+    <record id="action_chi_tiet_cong_no_phai_tra_usd_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Chi tiết công nợ phải trả USD</field>
+        <field name="res_model">beta.report.line5</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.chi_tiet_cong_no_phai_tra_usd_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.chi_tiet_cong_no_phai_tra_usd_beta_view_search"/>
+    </record>
+
+    <record id="action_chi_tiet_cong_no_phai_thu_usd_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Chi tiết công nợ phải thu USD</field>
+        <field name="res_model">beta.report.line6</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.chi_tiet_cong_no_phai_thu_usd_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.chi_tiet_cong_no_phai_thu_usd_beta_view_search"/>
+    </record>
+
+    <record id="action_danh_sach_chi_tien_von_tu_co_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Danh sách chi tiền vốn tự có</field>
+        <field name="res_model">beta.report.line7</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.danh_sach_chi_tien_von_tu_co_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.danh_sach_chi_tien_von_tu_co_beta_view_search"/>
+    </record>
+    <record id="action_chi_tiet_cong_no_nhan_vien_beta_view_tree" model="ir.actions.act_window">
+        <field name="name">Chi tiết công nợ nhân viên</field>
+        <field name="res_model">alpha.report.line3</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao.chi_tiet_cong_no_nhan_vien_beta_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao.chi_tiet_cong_no_nhan_vien_beta_view_search"/>
+        <field name="context">{'search_default_group_by_group_partner': 1}</field>
+    </record>
+</odoo>

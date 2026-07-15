@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="rp_summary_ie_inv_pdf_warehouse" inherit_id="biz_stock_summary_report.rp_summary_ie_inv_pdf">
+        <xpath expr="//table/tbody/tr[1]" position="replace">
+            <t t-foreach="get_line(o)" t-as="lines">
+                <t t-set="sum_all_warehouse" t-value="sum_qty_warehouse(lines[1])"/>
+                <tr>
+                    <td class="text-left" colspan="2"><b><span>Tên kho: <t t-esc="lines[0] and lines[0].name or 'Không'"/>(<t t-esc="len(lines[1])"/>)</span></b></td>
+                    <td/>
+                    <td><span t-esc="format_float_number(sum_all_warehouse['qty_begin'], True)"/></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(sum_all_warehouse['tt_begin'])"/></td>
+                    <td><span t-esc="format_float_number(sum_all_warehouse['qty_import'], True)"/></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(sum_all_warehouse['tt_import'])"/></td>
+                    <td><span t-esc="format_float_number(sum_all_warehouse['qty_export'], True)"/></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt" class="text-right"><span t-esc="format_float_number(sum_all_warehouse['tt_export'])"/></td>
+                    <td><span t-esc="format_float_number(sum_all_warehouse['qty_end'], True)"/></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(sum_all_warehouse['tt_end'])"/></td>
+                </tr>
+                <tr t-foreach="lines[1]" t-as="line">
+                    <td class="text-left"><span t-esc="line.product_code" /></td>
+                    <td class="text-left"><span t-esc="line.product_id.name" /></td>
+                    <td><span t-esc="line.uom_id.name" /></td>
+                    <td><span t-esc="format_float_number(line.qty_begin, True)" /></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(line.tt_begin)" /></td>
+                    <td><span t-esc="format_float_number(line.qty_import, True)" /></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(line.tt_import)" /></td>
+                    <td><span t-esc="format_float_number(line.qty_export, True)" /></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt" class="text-right"><span t-esc="format_float_number(line.tt_export)" /></td>
+                    <td><span t-esc="format_float_number(line.qty_end, True)" /></td>
+                    <td groups="biz_stock_summary_report.group_ie_view_quant_and_tt"><span t-esc="format_float_number(line.tt_end)" /></td>
+                </tr>
+            </t>
+            
+        </xpath>
+        <xpath expr="//div[@class='title text-center']" position="replace">
+            <div class="title text-center">
+                <h4 style="font-weight: bold">BẢNG TỔNG HỢP NHẬP - XUẤT - TỒN KHO HÀNG HÓA</h4>
+                <t t-set="from_date" t-value="o.from_date.strftime('%d/%m/%Y') if o.from_date else ''"/>
+                <t t-set="to_date" t-value="o.to_date.strftime('%d/%m/%Y') if o.to_date else ''"/>
+                <t t-if="from_date == to_date">
+                    <i>Ngày <span t-esc="from_date"/></i>
+                </t>
+                <t t-else="">
+                    <i>Từ ngày <span t-esc="from_date"/> tới ngày <span t-esc="to_date"/></i>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

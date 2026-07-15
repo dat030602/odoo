@@ -1,0 +1,307 @@
+<odoo>
+    <template id="customer_receivables_template_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout" style="background-image: url('/ccv_sql/static/src/img/background_page.png');">
+                <t t-set="o" t-value="docs"/>
+                <t t-set="company" t-value="doc['company_id']"/>
+                <div class="header" style="font-family: 'Times New Roman';font-size:12px; padding: 0 60px 0 60px;">
+                    <div class="row" style="border-bottom: 1px solid red; ">
+                        <div class="col-2">
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px;max-width: 100%" alt="Logo"/>
+                        </div>
+                        <div class="col-10" style="text-align: right;">
+                            <strong style="font-size: 20px; color: red;font-weight: bold;">CCV HI-TECH AGRICULTURE GROUP</strong><br/>
+                            <span>Trụ sở chính: </span><strong>23 Lô B, Đường Số 1, P. Phú Thuận, TP. Hồ Chí Minh</strong><br/>
+                            <span>VPĐD: </span><strong>Villas KL 21, Khu Biệt Thự Kim Long, Đường Nguyễn Hữu Thọ, X. Nhà Bè, TP. Hồ Chí Minh</strong><br/>
+                            <div class="row" style="text-align: right;font-size:13px">
+                                <div class="col-8"/> 
+                                <div class="col-2">
+                                    <i class="fa fa-phone"/> <strong>1800 6126</strong>
+                                </div> 
+                                <div class="col-2">
+                                    <i class="fa fa-globe"/> <strong>www.ccv.vn</strong>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page page-ccv" style="padding: 30px 30px 0 30px; margin:0xp">
+                    <div class="row">
+                        <div class="col-12 text-center" style="font-size:20px">
+                            <span class="fw-bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</span>
+                            <br/>
+                            <span class="fw-bold text-decoration-underline">Độc lập - Tự do - Hạnh phúc</span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-center">
+                            <span class="fw-bold" style="font-size:26px">BIÊN BẢN ĐỐI CHIẾU XÁC NHẬN CÔNG NỢ</span>
+                            <br/>
+                            <span class="fst-italic" style="font-size:18px">(V/v: Xác nhận công nợ tính đến hết ngày <t t-esc="format_date(doc['parent_id'].date_to)"/>)</span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-left">
+                            <span class="fst-italic">Hôm nay, <t t-esc="format_date_vi(doc['parent_id'].date_to)"/>, tại văn phòng Công ty Cổ phần Tập đoàn Con Cò Vàng, chúng tôi gồm có:</span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-left">
+                            <span class="fw-bold">BÊN A: CÔNG TY CỔ PHẦN TẬP ĐOÀN CON CÒ VÀNG - <t t-esc="'BÊN BÁN' if doc['parent_id'].type in ['tong_hop_cong_no_phai_thu','chi_tiet_cong_no_phai_thu','chi_tiet_cong_no_phai_thu_usd'] else 'BÊN MUA' "/></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-12">
+                            <span>Địa chỉ: <strong>23 Lô B, Đường Số 1, P. Phú Thuận, TP. Hồ Chí Minh</strong></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-12">
+                            <span>Mã số thuế: <strong>0305995751</strong></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-6">
+                            <span>Đại diện bởi: <strong><t t-esc="doc['parent_id'].sudo().unit_heads_id.name_without_position or doc['parent_id'].sudo().unit_heads_id.name"/></strong></span>
+                        </div>
+                        <div class="col-6">
+                            <span>Chức vụ: <strong>Tổng giám đốc</strong></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-6">
+                            <span>Điện thoại: <strong>1800 6126</strong></span>
+                        </div>
+                        <div class="col-6">
+                            <span>Email: <strong>info@ccv.vn</strong></span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-left">
+                            <span class="fw-bold">BÊN B: <span t-esc="doc['partner_id'].name.upper()"/> - <t t-esc="'BÊN MUA' if doc['parent_id'].type in ['tong_hop_cong_no_phai_thu','chi_tiet_cong_no_phai_thu','chi_tiet_cong_no_phai_thu_usd'] else 'BÊN BÁN' "/></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-12">
+                            <span>Địa chỉ: <span class="fw-bold" t-esc="doc['partner_id'].full_address_vi or '............................'"/></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-12">
+                            <span>Mã số thuế: <span class="fw-bold" t-esc="doc['partner_id'].vat or '............................'"/></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-6">
+                            <span>Đại diện bởi: <span class="fw-bold" t-esc="doc['partner_id'].representative or '............................'"/></span>
+                        </div>
+                        <div class="col-6">
+                            <span>Chức vụ: <span class="fw-bold" t-esc="doc['partner_id'].function or '............................'"/></span>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-6">
+                            <span>Điện thoại: <span class="fw-bold" t-esc="doc['partner_id'].phone and len(doc['partner_id'].phone) >= 10 and doc['partner_id'].phone or '............................'"/></span>
+                        </div>
+                        <div class="col-6">
+                            <span>Email: <span class="fw-bold" t-esc="doc['partner_id'].email and len(doc['partner_id'].email) >= 10 and doc['partner_id'].email or '............................'"/></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span>Hai bên cùng nhau đối chiếu và xác nhận số liệu công nợ phát sinh dựa trên các hợp đồng kinh tế, đơn
+                            đặt hàng, hóa đơn, chứng từ thanh toán đã được ký kết và thực hiện giữa hai bên.</span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-left">
+                            <span class="fw-bold">I. BẢNG TỔNG HỢP CÔNG NỢ</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span>Số liệu công nợ tính đến hết ngày <strong><t t-esc="format_date(doc['parent_id'].date_to)"/></strong> như sau:</span>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 0px 15px 0 15px;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="vertical-td text-center" style="width: 60%">Nội dung</th>
+                                    <th class="vertical-td text-center" style="width: 40%">Số tiền</th>
+                                </tr>
+                            </thead>
+                            <t t-set="count" t-value="0"/>
+                            <tbody style="border-top: 0px;">
+                                <t t-set="start_credit" t-value="doc['start_credit']"/>
+                                <t t-set="start_debit" t-value="doc['start_debit']"/>
+                                <t t-set="credit" t-value="doc['credit']"/>
+                                <t t-set="debit" t-value="doc['debit']"/>
+                                <t t-set="end_amount" t-value="start_debit + debit - credit - start_credit"/>
+                                <tr>
+                                    <td class="text-left">1. Số dư đầu kỳ (tính đến ngày <t t-esc="format_date(doc['parent_id'].date_from)"/>)</td>
+                                    <td class="text-right"><span t-esc="format_float_number(start_debit - start_credit)"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">2. Tổng giá trị phát sinh tăng trong kỳ (từ ngày <t t-esc="format_date(doc['parent_id'].date_from)"/> đến <t t-esc="format_date(doc['parent_id'].date_to)"/>)</td>
+                                    <td class="text-right"><span t-esc="format_float_number(debit)"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">3. Tổng giá trị phát sinh giảm trong kỳ (tổng số tiền đã thanh toán)</td>
+                                    <td class="text-right"><span t-esc="format_float_number(credit)"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">4. Số dư cuối kỳ (tính đến hết ngày <t t-esc="format_date(doc['parent_id'].date_to)"/>)</td>
+                                    <td class="text-right"><span t-esc="format_float_number(end_amount)"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span class="fst-italic">(Số dư cuối kỳ = Số dư đầu kỳ + Phát sinh tăng - Phát sinh giảm)</span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-left">
+                            <span class="fw-bold">II. BẢNG KÊ CHI TIẾT CÔNG NỢ <span class="fst-italic">(theo file đính kèm)</span></span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-left">
+                            <span class="fw-bold">III. KẾT LUẬN:</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            Tính đến hết ngày <t t-esc="format_date(doc['parent_id'].date_to)"/>,
+                            <t t-if="end_amount > 0" t-esc="'Bên B xác nhận còn nợ Bên A'"/>
+                            <t t-else="" t-esc="'Bên A xác nhận còn nợ Bên B'"/>
+                            tổng số tiền là <t t-esc="format_float_number(abs(end_amount))"/>
+                            (<span class="fst-italic"><t t-esc="vietnam_number(abs(end_amount))"/></span>).
+                            <t t-if="doc['parent_id'].type in ['tong_hop_cong_no_phai_thu','chi_tiet_cong_no_phai_thu','chi_tiet_cong_no_phai_thu_usd']" t-esc="'Chưa bao gồm các tiền lãi chậm trả hoặc lãi phạt (nếu có).'"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span>Số tiền này khớp với số liệu trên bảng tổng hợp và bảng kê chi tiết công nợ.</span>
+                        </div>
+                    </div>
+                    <div class="row" t-if="end_amount > 0 and doc['parent_id'].type in ['tong_hop_cong_no_phai_thu','chi_tiet_cong_no_phai_thu','chi_tiet_cong_no_phai_thu_usd']">
+                        <div class="col-12 text-left">
+                            <span><strong>Kế hoạch thanh toán:</strong> Bên B cam kết sẽ thanh toán toàn bộ số công nợ nêu trên cho Bên A theo lịch trình như sau:</span>
+                            <br/>
+                            <span>• Đợt 1: Số tiền ...................... VNĐ, thanh toán trước ngày ......................</span>
+                            <br/>
+                            <span>• Đợt 2: Số tiền ...................... VNĐ, thanh toán trước ngày ......................</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span>Biên bản này được lập thành 02 (hai) bản có giá trị pháp lý như nhau, mỗi bên giữ 01 (một) bản.</span>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12 text-left">
+                            <span class="fw-bold">Hai bên thống nhất rằng Biên bản được ký (bao gồm cả chữ ký điện tử/chữ ký số), đóng dấu, sau đó được gửi bằng bản scan qua email hoặc bằng fax sẽ có đầy đủ giá trị pháp lý như bản gốc.</span>
+                        </div>
+                    </div>
+                    <div style="page-break-before: always;">
+                        <h1 style="display: none">Lam de hien full background</h1>
+                    </div>
+                    <div class="row rowp" style="padding-top:30px;margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span class="fw-bold text-decoration-underline">ĐẠI DIỆN BÊN B</span>
+                            <br/>
+                            <span class="fst-italic">(Ký, ghi rõ họ tên <br/> và đóng dấu)</span>
+                        </div>
+                        <div class="col-3">
+                            <span></span>
+                            <br/>
+                            <t t-set="commerce" t-value="doc['parent_id'].env['ir.config_parameter'].sudo().get_param('ccv_sql.chief_commerce_department_id', 0)"/>
+                            <span class="fw-bold" t-if="int(commerce) == doc['parent_id'].sudo().chief_dept_id.id" t-esc="'Phòng Thương mại'"/>
+                            <span class="fw-bold" t-else="" t-esc="'Phòng Kinh doanh'"/>
+                            <br/>
+                            <div class="name-user">
+                                <span t-esc="doc['parent_id'].sudo().chief_dept_id.name_without_position or doc['parent_id'].sudo().chief_dept_id.name"/>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <span class="fw-bold text-decoration-underline">ĐẠI DIỆN BÊN A</span>
+                            <br/>
+                            <span class="fw-bold">Phòng TCKT</span>
+                            <br/>
+                            <div class="name-user">
+                                <span t-esc="doc['parent_id'].sudo().chief_acc_id.name_without_position or doc['parent_id'].sudo().chief_acc_id.name"/>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <span></span>
+                            <br/>
+                            <span class="fw-bold">Thủ trưởng đơn vị</span>
+                            <br/>
+                            <div class="name-user">
+                                <span t-esc="doc['parent_id'].sudo().unit_heads_id.name_without_position or doc['parent_id'].sudo().unit_heads_id.name"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" t-if="end_amount > 0 and doc['parent_id'].type in ['tong_hop_cong_no_phai_thu','chi_tiet_cong_no_phai_thu','chi_tiet_cong_no_phai_thu_usd']" style="margin-top: 100px;">
+                        <div class="col-8 text-left">
+                            <span class="fw-bold">QUÝ ĐỐI TÁC VUI LÒNG THANH TOÁN THEO THÔNG TIN NHƯ SAU:</span>
+                            <br/>
+                        </div>
+                        <div class="col-4 text-right">
+                            <img t-att-src="get_qr_url(abs(end_amount))" height="250px"/>
+                        </div>
+                    </div>
+
+                    <div style="page-break-before: always;">
+                        <h1 style="display: none">Lam de hien full background</h1>
+                    </div>
+                </div>
+                
+                <style>
+                    .text-left {
+                        text-align: left;
+                    }
+                    .text-right {
+                        text-align: right;
+                    }
+                    .name-user {
+                        margin-top: 120px;
+                        font-weight: bold;
+                    }
+                    .table {
+                        border: 1px solid #000;
+                        margin-top: 5px;
+                        margin-bottom: 5px;
+                    }
+                    .table tr th{
+                        border: 1px solid #000;
+                        font-weight: bold;
+                        padding: 4px;
+                    }
+                    .table tr td{
+                        border: 1px solid #000;
+                        padding: 4px;
+                    }
+                    .vertical-td {
+                        vertical-align: middle !important;
+                    }
+                    .page-ccv {
+                        font-family: 'Times New Roman';
+                        line-height: 1.5;
+                        font-size: 19.2px;
+                    }
+                </style>
+            </t>
+        </t>
+    </template>
+
+    <template id="rp_customer_receivables">
+        <t t-foreach="line_ids" t-as="doc">
+            <t t-call="ccv_report_debt.customer_receivables_template_document" t-lang="doc['partner_id'].lang"/>
+        </t>
+    </template>
+</odoo>

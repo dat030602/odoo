@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="approval_product_line_view_form_inherit" model="ir.ui.view">
+        <field name="name">approval.product.line.form.inherit</field>
+        <field name="model">approval.product.line</field>
+        <field name="inherit_id" ref="approvals.approval_product_line_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="line_image" widget="image" options="{'zoom': True, 'zoom_delay': 0}" attrs="{
+                    'column_invisible': [('parent.has_line_image', '=', 'no')],
+                    'required': [('parent.has_line_image', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="product_image" widget="image" class="oe_avatar" attrs="{'column_invisible': [('parent.has_image_in_product', '=', 'no')]}"/>
+                <field name="picking_type_id" attrs="{'column_invisible': [('parent.has_picking_type', '=', 'no')],'required': [('parent.has_picking_type', '=', 'required'), ('parent.request_status', '!=', 'new')],}"/>
+                <field name="warehouse_id" attrs="{'column_invisible': [('parent.has_warehouse', '=', 'no')],'required': [('parent.has_warehouse', '=', 'required'), ('parent.request_status', '!=', 'new')],}" options="{'no_create': True}"/>
+                <field name="partner_id" attrs="{'column_invisible': [('parent.has_partner_in_product', '=', 'no')],'required': [('parent.has_partner_in_product', '=', 'required'), ('parent.request_status', '!=', 'new')],}" options="{'no_open': True, 'no_create': True}"/>
+                <field name="service_id" attrs="{'column_invisible': [('parent.has_service_in_product', '=', 'no')],'required': [('parent.has_service_in_product', '=', 'required'), ('parent.request_status', '!=', 'new')],}"/>
+            </xpath>
+            <xpath expr="//field[@name='quantity']" position="attributes">
+                <attribute name="digits">[16,3]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="before">
+                <field name="qty_produced" attrs="{
+                    'column_invisible': [('parent.has_qty_produced', '=', 'no')],
+                    'required': [('parent.has_qty_produced', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="qty_bb_used" attrs="{
+                    'column_invisible': [('parent.has_qty_bb_used', '=', 'no')],
+                    'required': [('parent.has_qty_bb_used', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="qty_available" attrs="{
+                    'column_invisible': [('parent.has_stock_in_product', '=', 'no')],
+                    }"/>
+                <field name="qty_income" attrs="{
+                    'column_invisible': [('parent.has_qty_income_in_product', '=', 'no')],
+                    }"/>
+                <field name="qty_outcome" attrs="{
+                    'column_invisible': [('parent.has_qty_outcome_in_product', '=', 'no')],
+                    }"/>
+                <field name="qty_outcome_sale" attrs="{
+                    'column_invisible': [('parent.has_qty_outcome_in_product', '=', 'no')],
+                    }"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="after">
+                <field name="note" attrs="{
+                    'column_invisible': [('parent.has_note_in_product', '=', 'no')],
+                    'required': [('parent.has_note_in_product', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="mkt_comment" attrs="{
+                    'column_invisible': [('parent.has_mkt_comment', '=', 'no')],
+                    'required': [('parent.has_mkt_comment', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="approval_product_line_view_form_form_inherit" model="ir.ui.view">
+        <field name="name">approval.product.line.form.inherit</field>
+        <field name="model">approval.product.line</field>
+        <field name="inherit_id" ref="approvals.approval_product_line_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="product_image" widget="image" class="oe_avatar" attrs="{'invisible': [('parent.has_image_in_product', '=', 'no')]}"/>
+                <field name="picking_type_id" attrs="{'invisible': [('parent.has_picking_type', '=', 'no')],'required': [('parent.has_picking_type', '=', 'required'), ('parent.request_status', '!=', 'new')],}"/>
+                <field name="warehouse_id" attrs="{'invisible': [('parent.has_warehouse', '=', 'no')],'required': [('parent.has_warehouse', '=', 'required'), ('parent.request_status', '!=', 'new')],}" options="{'no_create': True}"/>
+                <field name="partner_id" attrs="{'invisible': [('parent.has_partner_in_product', '=', 'no')],'required': [('parent.has_partner_in_product', '=', 'required'), ('parent.request_status', '!=', 'new')],}" options="{'no_open': True, 'no_create': True}"/>
+                <field name="service_id" attrs="{'invisible': [('parent.has_service_in_product', '=', 'no')],'required': [('parent.has_service_in_product', '=', 'required'), ('parent.request_status', '!=', 'new')],}"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="before">
+                <field name="qty_produced" attrs="{
+                    'invisible': [('parent.has_qty_produced', '=', 'no')],
+                    'required': [('parent.has_qty_produced', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="qty_bb_used" attrs="{
+                    'invisible': [('parent.has_qty_bb_used', '=', 'no')],
+                    'required': [('parent.has_qty_bb_used', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="qty_available" attrs="{
+                    'invisible': [('parent.has_stock_in_product', '=', 'no')],
+                    }"/>
+                <field name="qty_income" attrs="{
+                    'invisible': [('parent.has_qty_income_in_product', '=', 'no')],
+                    }"/>
+                <field name="qty_outcome" attrs="{
+                    'invisible': [('parent.has_qty_outcome_in_product', '=', 'no')],
+                    }"/>
+                <field name="qty_outcome_sale" attrs="{
+                    'invisible': [('parent.has_qty_outcome_in_product', '=', 'no')],
+                    }"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="after">
+                <field name="note" attrs="{
+                    'invisible': [('parent.has_note_in_product', '=', 'no')],
+                    'required': [('parent.has_note_in_product', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="mkt_comment" attrs="{
+                    'invisible': [('parent.has_mkt_comment', '=', 'no')],
+                    'required': [('parent.has_mkt_comment', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+                <field name="line_image" widget="image" options="{'zoom': True, 'zoom_delay': 0}" attrs="{
+                    'invisible': [('parent.has_line_image', '=', 'no')],
+                    'required': [('parent.has_line_image', '=', 'required'), ('parent.request_status', '!=', 'new')],
+                    }"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

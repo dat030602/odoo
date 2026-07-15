@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_stock_picking_tree_detail" model="ir.ui.view">
+        <field name="name">stock.picking.tree.detail.button</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <button name="action_view_detail_wizard" type="object" string="Chi tiết đơn" icon="fa-info-circle"/>
+            </xpath>
+        </field>
+    </record>
+</odoo> 

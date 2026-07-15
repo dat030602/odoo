@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="so_chi_tiet_ke_toan_quy_tien_mat_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.so_chi_tiet_ke_toan_quy_tien_mat_document"
+                       t-lang="doc.user_id.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="so_chi_tiet_ke_toan_quy_tien_mat_document">
+            <t t-call="ccv_sql.ccv_header2">
+                <div class="page" style="font-size: 10px;font-family: Times New Roman">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong><t t-esc="doc.name.upper()"/></strong>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center; margin-top: 10px;">
+                        <strong>Loại tiền: VND; Tài khoản &amp;nbsp;<t t-esc="doc.account_id.code"/>; Từ ngày &amp;nbsp;<t t-esc="doc.convert_print(doc.date_from)"/>&amp;nbsp; đến ngày &amp;nbsp;<t t-esc="doc.convert_print(doc.date_to)"/>
+                        </strong>
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>STT</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Ngày chứng từ</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Số phiếu thu</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Số phiếu chi</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>diễn giải</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>TK đối ứng</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" colspan="2"><strong>Phát sinh</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Số tồn</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Người nhận/ người nộp</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Nợ</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Có</strong>
+                                    </td>
+                                </tr>
+
+
+                            <t t-set="number" t-value="0"/>
+                            <t t-foreach="doc.line4_ids" t-as="line">
+                                <t t-set="number" t-value="number + 1"/>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span style="text-align: center; vertical-align: middle;" t-esc="number"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span t-esc="line.date"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;color:blue">
+                                        <span t-esc="line.move_id.name"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;color:blue">
+                                        <span t-esc="line.move2_id.name"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span t-esc="line.note"/>
+                                    </td>
+                                    <td style="text-align: left; vertical-align: middle;">
+                                        <span t-esc="line.account_dest_id.code"/>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                        <t t-if="line.debit > 0">
+                                            <span t-esc="doc.convert_vnd(line.debit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                        <t t-if="line.credit > 0">
+                                            <span t-esc="doc.convert_vnd(line.credit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                        <t t-if="line.end_debit > 0">
+                                            <span t-esc="doc.convert_vnd(line.end_debit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <t t-if="line.partner_id">
+                                            <span t-esc="line.partner_id.name"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t><!--end for-->
+                            <tr>
+                                <td colspan="6" style="text-align: left;">
+                                    <strong>Tổng cộng</strong>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line4_ids.mapped('debit')) > 0">
+                                        <strong><span t-esc="doc.convert_vnd(sum(doc.line4_ids.mapped('debit')))"/></strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line4_ids.mapped('credit')) > 0">
+                                        <strong><span t-esc="doc.convert_vnd(sum(doc.line4_ids.mapped('credit')))"/></strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="len(doc.line4_ids) > 0">
+                                        <strong><span t-esc="doc.convert_vnd(doc.line4_ids[-1].end_debit)"/></strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <t t-if="doc.page_break">
+                        <p style="page-break-after:always;">   </p>
+                    </t>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        - Số này có 01 trang, đánh số từ trang số 01 đến trang 01
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        - Ngày mở số: .............................
+                    </div>
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                        <div class="col-4"/>
+                        <div class="col-4"/>
+                        <div class="col-4">
+                            <span>Ngày .... tháng .... năm ....</span>
+                        </div>
+                    </div>
+                    <t t-set="chief_accountant_id"
+                       t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.chief_accountant_id', False)"/>
+                    <t t-if="chief_accountant_id">
+                        <t t-set="chief_accountant_id"
+                           t-value="doc.env['res.users'].sudo().search([('id', '=', int(chief_accountant_id))])"/>
+                    </t>
+                    <t t-set="cashier_accountant_id"
+                       t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.cashier_accountant_id', False)"/>
+                    <t t-if="cashier_accountant_id">
+                        <t t-set="cashier_accountant_id"
+                           t-value="doc.env['res.users'].sudo().search([('id', '=', int(cashier_accountant_id))])"/>
+                    </t>
+                    <t t-set="unit_head_id"
+                       t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.unit_head_id', False)"/>
+                    <t t-if="unit_head_id">
+                        <t t-set="unit_head_id"
+                           t-value="doc.env['res.users'].sudo().search([('id', '=', int(unit_head_id))])"/>
+                    </t>
+                    <div class="row rowp" style="padding-top: 2px; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span><strong>Người Lập Phiếu</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                            <br/><br/><br/><br/><br/>
+                            <span><strong><t t-esc="(doc.voter_id.name_without_position or doc.voter_id.name) if doc.voter_id else ''"/></strong></span><br/>
+                        </div>
+                        <div class="col-3">
+                            <span><strong>Thủ quỹ</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                            <br/><br/><br/><br/><br/>
+                            <span><strong><t t-esc="(cashier_accountant_id.name_without_position or cashier_accountant_id.name) if cashier_accountant_id else ''"/></strong></span><br/>
+                        </div>
+                        <div class="col-3">
+                            <span><strong>Kế toán trưởng</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                            <br/><br/><br/><br/><br/>
+                            <span><strong><t t-esc="(chief_accountant_id.name_without_position or chief_accountant_id.name) if chief_accountant_id else ''"/></strong></span><br/>
+                        </div>
+                        <div class="col-3">
+                            <span><strong>Thủ trưởng đơn vị</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                            <br/><br/><br/><br/><br/>
+                            <span><strong><t t-esc="unit_head_id.name_without_position or unit_head_id.name if unit_head_id else ''"/></strong></span><br/>
+                        </div>
+                    </div>
+
+
+                </div>
+            </t>
+        </template>
+
+        <record id="so_chi_tiet_ke_toan_quy_tien_mat_report" model="ir.actions.report">
+            <field name="name">Sổ Kế Toán Chi Tiết Quỹ Tiền Mặt</field>
+            <field name="model">alpha.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.so_chi_tiet_ke_toan_quy_tien_mat_template</field>
+            <field name="report_file">ccv_sql.so_chi_tiet_ke_toan_quy_tien_mat_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+            <field name="print_report_name">'Sổ Kế Toán Chi Tiết Quỹ Tiền Mặt'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

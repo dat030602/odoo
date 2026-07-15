@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="alpha_internal_account_search_view" model="ir.ui.view">
+            <field name="name">alpha_internal_account_search_view</field>
+            <field name="model">alpha.internal.account</field>
+            <field name="type">search</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_employee_id" context="{'group_by': 'employee_id'}"/>
+                        <filter name="group_by_department_id" context="{'group_by': 'department_id'}"/>
+                        <filter name="group_by_state" context="{'group_by': 'state'}"/>
+                        <filter name="group_by_date" context="{'group_by': 'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="alpha_internal_account_tree" model="ir.ui.view">
+            <field name="name">alpha.internal.account.tree</field>
+            <field name="model">alpha.internal.account</field>
+            <field name="arch" type="xml">
+                <tree default_order="date desc">
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id" optional="show"/>
+                    <field name="total_amount" sum="Tổng tiền"/>
+                    <field name="note" optional="show"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="alpha_internal_account_form" model="ir.ui.view">
+            <field name="name">alpha.internal.account.form</field>
+            <field name="model">alpha.internal.account</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Xác nhận" name="action_confirm" type="object" class="oe_highlight"
+                                attrs="{'invisible':[('state', '!=', 'draft')]}"/>
+                        <field name="is_user_current" invisible="1"/>
+                        <button name="action_agree" string="Đồng ý"
+                                attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"
+                                type="object" class="oe_highlight"/>
+                        <button name="action_refuse" string="Từ chối"
+                                attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"
+                                type="object"/>
+                        <button string="Tạo bút toán" name="do_action" type="object" class="oe_highlight"
+                                groups="account.group_account_invoice"
+                                attrs="{'invisible':[('state', '!=', 'approved')]}"/>
+                        <button string="Trả về nháp" type="object" name="action_undo"
+                                invisible="1"/>
+                        <field name="is_allowed_to_complete" invisible="1"/>
+                        <button string="Hoàn thành (Fix Lỗi)" name="action_force_done" type="object" class="oe_highlight btn-danger"
+                                attrs="{'invisible':['|', ('is_allowed_to_complete', '=', False), ('state', '=', 'done')]}"
+                                confirm="Bạn có chắc chắn muốn ép phiếu này sang trạng thái Hoàn Thành không?"/>
+                        <button string="Trở về nháp (Fix Lỗi)" name="action_force_draft" type="object" class="btn-warning"
+                                attrs="{'invisible':['|', ('is_allowed_to_complete', '=', False), ('state', '=', 'draft')]}"
+                                confirm="Bạn có chắc chắn muốn ép phiếu này về trạng thái Nháp không?"/>
+                        <button string="Hủy" type="object" name="action_cancel"
+                                attrs="{'invisible':[('state', '!=', 'draft')]}"/>
+                        <button string="Hủy" type="object" name="action_cancel"
+                                attrs="{'invisible':[('state', '!=', 'approved')]}" groups="account.group_account_invoice"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box" groups="base.group_user">
+                            <button class="oe_stat_button" name="action_view_invoice" type="object"
+                                    groups="account.group_account_invoice"
+                                    icon="fa-pencil-square-o" attrs="{'invisible':[('state', '!=', 'done')]}">
+                                <field name="number" widget="statinfo" string="Bút toán"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <field name="company_id" invisible="1"/>
+
+                        <group>
+                            <group>
+                                <field name="employee_id" required="1" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="user_id" required="0" invisible="1"
+                                       attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="department_id"/>
+                                <field name="partner_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <label for="total_amount"/>
+                                <div class="o_row">
+                                    <field name="total_amount" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                    <field name="company_currency_id" required="1"
+                                           attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                </div>
+                                <field name="journal_id" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="account_id" invisible="1"/>
+                                <field name="destination_account_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="note" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group string="Lý do hủy" attrs="{'invisible':[('trp_approve_reason_note','=', False)]}">
+                            <field name="trp_approve_reason_id" string="Phân loại" readonly="1"/>
+                            <field name="trp_approve_reason_note" string="Mô tả" readonly="1"/>
+                        </group>
+                        <notebook>
+                            <page name="trp_approve_history" string="Lịch sử duyệt">
+                                <group attrs="{'invisible':[('trp_approve_config_line_id','=', False)]}">
+                                    <group>
+                                        <field name="trp_approve_config_line_id" invisible="1"/>
+                                        <field name="current_approve_user_ids"
+                                               attrs="{'invisible':[('trp_approve_config_line_id','=', False)]}"
+                                               widget="many2many_tags" groups="base.group_system"/>
+                                        <field name="delegate_approver_ids"
+                                               attrs="{'invisible':[('trp_approve_config_line_id','=', False)]}"
+                                               widget="many2many_tags"
+                                               domain="[('id','not in',current_approve_user_ids)]"
+                                               groups="base.group_system"/>
+                                    </group>
+                                </group>
+                                <field name="trp_approve_history_ids" nolabel="1" readonly="1">
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="alpha_internal_account_action" model="ir.actions.act_window">
+            <field name="name">Đề nghị tạm ứng</field>
+            <field name="res_model">alpha.internal.account</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_alpha_internal_account" name="Đề nghị tạm ứng"
+                  action="alpha_internal_account_action"
+                  parent="account.menu_finance_entries" sequence="-11"/>
+        <menuitem id="menu_alpha_internal_account_2" name="Đề nghị tạm ứng"
+                  action="alpha_internal_account_action"
+                  parent="hr_expense.menu_hr_expense_my_expenses" sequence="10"/>
+    </data>
+</odoo>

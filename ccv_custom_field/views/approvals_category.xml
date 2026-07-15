@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="approval_category_view_form_inherit" model="ir.ui.view">
+        <field name="name">approval.category.form.inherit</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='requirer_document']" position='after'>
+                <field name="has_picking_type" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_warehouse" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+            <xpath expr="//group[@name='option_settings']" position='inside'>
+                <field name="has_picking" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_rent" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_team_id" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_reason" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_count_production" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_count_stock" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_department_id" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_create_daily_work_output_other" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_purchase" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_sale_ids" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+            <xpath expr="//field[@name='has_quantity']" position='after'>
+                <field name="has_service_in_product" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_qty_produced" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_qty_bb_used" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_partner_in_product" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_image_in_product" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_line_image" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_note_in_product" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_mkt_comment" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_stock_in_product" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_qty_income_in_product" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_qty_outcome_in_product" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

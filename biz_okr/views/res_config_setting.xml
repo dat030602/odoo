@@ -1,0 +1,49 @@
+<odoo>
+  <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.to_okr</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="100"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="OKR" string="OKR" data-key="to_okr" groups="biz_okr.group_okr_manager">
+                    <h2>OKR</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box" title="Set standard value for OKR success point threshold">
+                            <div class="o_setting_right_pane">
+                                <label for="okr_success_points_threshold" />
+	                            <div class="text-muted">
+	                                The standard value for evaluate OKR successful or failed
+	                            </div>
+	                            <field name="okr_success_points_threshold" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="to_okr_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'to_okr', 'bin_size': False}</field>
+    </record>
+
+    <menuitem id="to_okr_configuration_menu"
+        name="Configuration"
+        parent="main_okr_menu"
+        sequence="10"
+        groups="biz_okr.group_okr_manager"/>
+
+    <menuitem id="to_okr_settings_menu"
+        name="Settings"
+        parent="to_okr_configuration_menu"
+        sequence="1"
+        action="to_okr_config_settings_action"
+        groups="base.group_system"/>
+</odoo>

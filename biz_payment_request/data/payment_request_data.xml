@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        <function model="payment.request" name="create_default_approve_config"/>
+        <record id="seq_payment_request" model="ir.sequence">
+            <field name="name">payment.request</field>
+            <field name="code">payment.request</field>
+            <field name="prefix">ĐNTT</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <function model="payment.request.unc" name="create_default_approve_config"/>
+        <record id="seq_payment_request_unc" model="ir.sequence">
+            <field name="name">payment.request.unc</field>
+            <field name="code">payment.request.unc</field>
+            <field name="prefix">UNC</field>
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

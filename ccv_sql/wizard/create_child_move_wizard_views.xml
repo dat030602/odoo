@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_create_child_move_wizard_form" model="ir.ui.view">
+            <field name="name">ccv.create.child.move.wizard.form</field>
+            <field name="model">ccv.create.child.move.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Tạo Bút Toán Công Nợ">
+                    <group>
+                        <group>
+                            <field name="move_type" readonly="1"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="account_13111_id"/>
+                            <field name="opposite_account_id"/>
+                            <field name="journal_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Tạo Bút Toán" name="action_create_moves" type="object" class="btn-primary"/>
+                        <button string="Hủy" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Actions for the dropdown -->
+        <record id="action_create_debit_move" model="ir.actions.act_window">
+            <field name="name">Tạo bút toán nợ</field>
+            <field name="res_model">ccv.create.child.move.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_move_type': 'debit'}</field>
+        </record>
+
+        <record id="action_create_credit_move" model="ir.actions.act_window">
+            <field name="name">Tạo bút toán có</field>
+            <field name="res_model">ccv.create.child.move.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_move_type': 'credit'}</field>
+        </record>
+    </data>
+</odoo>

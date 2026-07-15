@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="biz_notify_mail_channel.MuteNotifyMailChannel" owl="1">
+        <t t-if="muteNotifyMailChannel">
+            <div class="o_MuteNotifyMailChannel modal-dialog" t-attf-class="{{ className }}" t-ref="root">
+                <div class="modal-content">
+                    <header class="modal-header">
+                        <h4 class="modal-title">
+                            Confirm
+                        </h4>
+                        <i class="o_MuteNotifyMailChannel_closeButton close fa fa-times" aria-label="Close" t-on-click="muteNotifyMailChannel.onClickCancel"/>
+                    </header>
+                    <main class="modal-body">
+                        <div class="o_MuteNotifyMailChannel_items flex-column d-flex">
+                            <t t-foreach="items" t-as="item" t-key="item.key">
+                                <div class="o_MuteNotifyMailChannel o_MuteNotifyMailChannel_item">
+                                    <label class="o_MuteNotifyMailChannel_label flex-grow-1 align-items-center d-flex mb-0 p-2 cursor-pointer">
+                                        <input class="o_MuteNotifyMailChannel_checkbox form-check-input me-2"
+                                               type="radio"
+                                               t-att-checked="item.checked === true"
+                                               t-on-change="(ev) => muteNotifyMailChannel.onChangeRadio(item, ev)"/>
+                                        <t t-esc="item.name"/>
+                                    </label>
+                                </div>
+
+                            </t>
+                        </div>
+                    </main>
+                    <div class="modal-footer">
+                        <button class="o-apply btn btn-primary" t-on-click="muteNotifyMailChannel.onClickApply">
+                            Apply
+                        </button>
+                        <button class="o-cancel btn btn-secondary" t-on-click="muteNotifyMailChannel.onClickCancel">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+</templates>

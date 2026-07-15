@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="search_danh_sach_chi_tiet_von_tu_co" model="ir.ui.view">
+            <field name="name">search_danh_sach_chi_tiet_von_tu_co</field>
+            <field name="model">alpha.report.line7</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Danh sách chi tiết vốn tự có">
+                    <field name="partner_id"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_danh_sach_chi_tiet_von_tu_co">
+            <field name="name">tree_danh_sach_chi_tiet_von_tu_co</field>
+            <field name="model">alpha.report.line7</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="0"/>
+                    <field name="move_id"/>
+                    <field name="invoice_date"/>
+                    <field name="date"/>
+                    <field name="note"/>
+                    <field name="amount"/>
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

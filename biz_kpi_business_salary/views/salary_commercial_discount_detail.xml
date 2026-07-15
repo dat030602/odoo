@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Commercial Discount Detail Views -->
+    <record id="view_salary_commercial_discount_detail_tree" model="ir.ui.view">
+        <field name="name">salary.commercial.discount.detail.tree</field>
+        <field name="model">salary.commercial.discount.detail</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết chiết khấu thương mại">
+                <field name="team_id" optional="hide"/>
+                <field name="total_quantity" sum="Tổng sản lượng" optional="hide"/>
+                <field name="total_revenue" sum="Tổng doanh thu" optional="hide"/>
+                <field name="total_payment" sum="Tổng tiền thanh toán" optional="hide"/>
+                <field name="total_commission_amount" sum="Tổng tiền hoa hồng" optional="show"/>
+                <field name="leadership_amount" sum="Tổng BLĐ/TL" optional="show"/>
+                <field name="department_amount" sum="Tổng Phòng Ban/TL" optional="show"/>
+                <field name="area_responsible_amount" sum="Tổng Khu vực Phụ trách/TL" optional="show"/>
+                <field name="department_head_amount" sum="Tổng Trưởng phòng" optional="show"/>
+                <field name="regulation_amount" sum="Tổng Điều tiết" optional="show"/>
+                <field name="structured_personnel_amount" sum="Tổng Nhân sự được cơ cấu" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_commercial_discount_detail_form" model="ir.ui.view">
+        <field name="name">salary.commercial.discount.detail.form</field>
+        <field name="model">salary.commercial.discount.detail</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết chiết khấu thương mại">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Thông tin">
+                            <field name="summary_id"/>
+                            <field name="team_id" readonly="1"/>
+                            <field name="commission_setup_id" readonly="1"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Dữ liệu cơ sở">
+                            <field name="total_quantity" readonly="1"/>
+                            <field name="total_revenue" readonly="1"/>
+                            <field name="total_payment" readonly="1"/>
+                            <field name="total_commission_amount" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Phân bổ hoa hồng">
+                        <group string="Tỷ lệ phân bổ">
+                            <field name="leadership_amount" readonly="1"/>
+                            <field name="department_amount" readonly="1"/>
+                            <field name="area_responsible_amount" readonly="1"/>
+                        </group>
+                        <group string="Chi tiết">
+                            <field name="department_head_amount" readonly="1"/>
+                            <field name="regulation_amount" readonly="1"/>
+                            <field name="structured_personnel_amount" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_salary_commercial_discount_detail_search" model="ir.ui.view">
+        <field name="name">salary.commercial.discount.detail.search</field>
+        <field name="model">salary.commercial.discount.detail</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm chi tiết chiết khấu thương mại">
+                <field name="summary_id"/>
+                <field name="team_id"/>
+                <field name="commission_setup_id"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khu vực" name="group_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Tổng hợp" name="group_summary" context="{'group_by':'summary_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

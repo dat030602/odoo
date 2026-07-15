@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_summary_output_spreadsheet_tree" model="ir.ui.view">
+        <field name="name">summary.output.spreadsheet.tree</field>
+        <field name="model">summary.output.spreadsheet</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="0" delete="0">
+                <field name="date" readonly="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="picking_type_id" readonly="1"/>
+                <field name="output_pro" readonly="1" sum="Tổng xuất hàng" digits="[16,3]"/>
+                <button name="action_open_output_move" string="" icon="fa-info" type="object" attrs="{'invisible': [('output_pro', '=', 0)]}"/>
+                <field name="input_pro" readonly="1" sum="Tổng nhập hàng" digits="[16,3]"/>
+                <button name="action_open_input_move" string="" icon="fa-info" type="object" attrs="{'invisible': [('input_pro', '=', 0)]}"/>
+                <field name="day_labor" readonly="1" sum="Tổng công nhật" digits="[16,3]"/>
+                <field name="other_output" readonly="1" sum="Tổng sản lượng khác" digits="[16,3]"/>
+                <field name="production" readonly="1" sum="Tổng sản xuất" digits="[16,3]"/>
+                <button name="action_open_production" string="" icon="fa-info" type="object" attrs="{'invisible': [('production', '=', 0)]}"/>
+                <field name="total_quantity" readonly="1" sum="Tổng số lượng" digits="[16,3]"/>
+                <field name="price_unit" sum="Tổng tiền công" digits="[16,3]"/>
+                <field name="total_amount" sum="Tổng tiền lương" digits="[16,3]"/>
+                <field name="total_amount_1_person" sum="Tổng tiền lương/1 người" digits="[16,3]"/>
+                <field name="currency_id" invisible="1"/>
+                <button name="action_open_employee_enjoys" icon="fa-list" type="object"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_summary_output_spreadsheet_search" model="ir.ui.view">
+        <field name="name">summary.output.spreadsheet.search</field>
+        <field name="model">summary.output.spreadsheet</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date" widget="daterange"/>
+                <field name="product_id"/>
+                <field name="picking_type_id"/>
+                <filter string="Today" name="filter_date_today" domain="[('date', '=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="filter_date_this_month" domain="[('date', '>=', context_today().to_date().replace(day=1).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 7 Days" name="filter_date_last_7_days" domain="[('date', '>=', (context_today().to_date() - relativedelta(days=6)).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 30 Days" name="filter_date_last_30_days" domain="[('date', '>=', (context_today().to_date() - relativedelta(days=29)).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Date" name="filter_date" domain="[]" context="{'group_by': 'date'}"/>
+                <filter string="Product" name="filter_product" domain="[]" context="{'group_by': 'product_id'}"/>
+                <filter string="Picking Type" name="filter_picking_type" domain="[]" context="{'group_by': 'picking_type_id'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_summary_output_spreadsheet" model="ir.actions.act_window">
+        <field name="name">Summary of output spreadsheet</field>
+        <field name="res_model">summary.output.spreadsheet</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

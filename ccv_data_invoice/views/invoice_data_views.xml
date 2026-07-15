@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_invoice_data_tree" model="ir.ui.view">
+            <field name="name">invoice.data.tree</field>
+            <field name="model">invoice.data</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách hóa đơn điện tử" decoration-warning="state == 'confirmed'" decoration-primary="state == 'processed'" decoration-success="state == 'done'">
+                    <field name="ngay_lap"/>
+                    <field name="ky_hieu"/>
+                    <field name="so_hoa_don"/>
+                    <field name="nban_ten"/>
+                    <field name="nban_mst"/>
+                    <field name="tong_tien" sum="Tổng cộng"/>
+                    <field name="tong_so_luong" sum="Tổng SL"/>
+                    <!-- <field name="created_invoice_count" string="Số HĐ đã tạo" widget="statinfo"/> -->
+                    <field name="state" widget="badge" decoration-warning="state == 'confirmed'" decoration-primary="state == 'processed'" decoration-success="state == 'done'" decoration-danger="state == 'cancelled'"/>
+                    <field name="create_date" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_invoice_data_line_m2o_tree" model="ir.ui.view">
+            <field name="name">invoice.data.line.m2o.tree</field>
+            <field name="model">invoice.data.line.m2o</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" multi_edit="1" create="false" delete="false">
+                    <field name="sequence" widget="handle"/>
+                    <field name="product_id"/>
+                    <field name="product_name" readonly="1"/>
+                    <field name="uom_id"/>
+                    <field name="account_id"/>
+                    <field name="so_luong"/>
+                    <field name="don_gia" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="thanh_tien" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="tax_id"/>
+                    <field name="thue_gtgt" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="source_line_id" invisible="1"/>
+                    <field name="tong_tien" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    <field name="ghi_chu"/>
+                    <field name="currency_id" invisible="1" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_invoice_data_line_m2o" model="ir.actions.act_window">
+            <field name="name">Danh sách hàng hóa dịch vụ (M2O)</field>
+            <field name="res_model">invoice.data.line.m2o</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('invoice_id', '=', active_id)]</field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_invoice_data_form" model="ir.ui.view">
+            <field name="name">invoice.data.form</field>
+            <field name="model">invoice.data</field>
+            <field name="arch" type="xml">
+                <form string="Hóa đơn điện tử">
+                    <header>
+                        <button name="action_compute_m2o_lines"  string="Tính toán M2O" type="object" class="oe_highlight" states="draft,confirmed"/>
+                        <button name="action_create_invoice" string="Tạo hóa đơn" type="object" class="oe_highlight" states="draft,confirmed"/>
+                        <button name="%(ccv_data_invoice.action_invoice_misa_stock_wizard)d" string="Tạo phiếu kho" type="action" class="oe_highlight" attrs="{'invisible': [('purchase_order_ids','=',[])]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,processed,done"/>
+                        <button name="action_create_partner" string="Tạo đối tác" type="object" class="oe_highlight" attrs="{'invisible': [('nban_id', '!=', False)]}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(ccv_data_invoice.action_invoice_data_line_m2o)d"
+                                    type="action"
+                                    class="oe_stat_button"
+                                    string="Hàng hóa DV"
+                                    icon="fa-list-ul"
+                                    attrs="{'invisible': [('ds_hhdv_m2o_ids', '=', [])]}"/>
+                            <button name="action_view_purchase_order"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    string="Đơn hàng"
+                                    icon="fa-shopping-cart"
+                                    attrs="{'invisible': [('purchase_order_ids', '=', [])]}"/>
+                            <button name="action_view_created_invoices"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    string="Hoá đơn"
+                                    icon="fa-pencil-square-o"
+                                    attrs="{'invisible': [('created_invoice_count', '=', 0)]}"/>
+                            <button name="action_open_picking"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    string="Điều chuyển"
+                                    icon="fa-truck"
+                                    attrs="{'invisible': [('picking_ids', '=', [])]}"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="so_hoa_don" placeholder="Số hóa đơn" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Thông tin chung">
+                                <field name="ky_hieu" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                                <field name="ngay_lap" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                                <field name="tong_tien" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                            <group string="Thông tin người bán">
+                                <field name="nban_ten" invisible="1"/>
+                                <field name="nban_id"/>
+                                <field name="nban_mst" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                                <field name="nban_dia_chi" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                                <field name="nban_dt_cong_no" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                            </group>
+                            <group string="Thông tin người mua">
+                                <field name="nmua_ten" invisible="1"/>
+                                <field name="nmua_id"/>
+                                <field name="nmua_mst" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                                <field name="nmua_dia_chi" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                            </group>
+                            <group string="Thông tin đơn đặt hàng">
+                                <field name="purchase_order_ids" widget="many2many_tags" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                                <field name="picking_ids" invisible="1"/>
+                            </group>
+                        </group>
+                        <group string="Thông tin hóa đơn đã tạo" invisible="1">
+                            <field name="created_invoice_count" invisible="1"/>
+                            <field name="created_invoice_ids" widget="many2many_tags" invisible="1" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                        </group>
+                        <notebook>
+                            <page string="Danh sách hàng hóa dịch vụ (ERP)">
+                                <field name="ds_hhdv_m2o_ids" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}" />
+                                <field name="notes" placeholder="Nhập ghi chú..." attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                            </page>
+                            <page string="Danh sách hàng hóa dịch vụ (HĐĐT)">
+                                <field name="ds_hhdv_ids" attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="ten"/>
+                                        <field name="dvt"/>
+                                        <field name="so_luong"/>
+                                        <field name="don_gia" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="thanh_tien" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="thue_suat"/>
+                                        <field name="thue_gtgt" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="tong_tien" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="ghi_chu"/>
+                                        <field name="currency_id" invisible="1" />
+                                    </tree>
+                                </field>
+                                <field name="notes" placeholder="Nhập ghi chú..." attrs="{'readonly': [('state', 'not in', ('draft', 'confirmed'))]}"/>
+                                <group class="oe_subtotal_footer">
+                                    <field name="tong_so_luong"/>
+                                    <field name="tong_thanh_tien"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_invoice_data_search" model="ir.ui.view">
+            <field name="name">invoice.data.search</field>
+            <field name="model">invoice.data</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm hóa đơn điện tử">
+                    <field name="so_hoa_don"/>
+                    <field name="ky_hieu"/>
+                    <field name="nban_ten"/>
+                    <field name="nban_mst"/>
+                    <field name="nmua_ten"/>
+                    <field name="nmua_mst"/>
+                    <separator/>
+                    <filter string="Nháp" name="draft" domain="[('state','=','draft')]"/>
+                    <filter string="Đã xác nhận" name="confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter string="Đã tạo hoá đơn" name="processed" domain="[('state','=','processed')]"/>
+                    <filter string="Đã hủy" name="cancelled" domain="[('state','=','cancelled')]"/>
+                    <separator/>
+                    <filter string="Có hóa đơn đã tạo" name="has_created_invoice" domain="[('created_invoice_count','>',0)]"/>
+                    <filter string="Chưa có hóa đơn" name="no_created_invoice" domain="[('created_invoice_count','=',0)]"/>
+                    <separator/>
+                    <filter string="Hôm nay" name="today" domain="[('ngay_lap','=',context_today().strftime('%Y-%m-%d'))]"/>
+                    <!-- <filter string="Tuần này" name="this_week" domain="[('ngay_lap','>=',(context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/> -->
+                    <filter string="Tháng này" name="this_month" domain="[('ngay_lap','>=',context_today().strftime('%Y-%m-01'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Trạng thái" name="group_state" context="{'group_by':'state'}"/>
+                        <filter string="Ngày lập" name="group_date" context="{'group_by':'ngay_lap:day'}"/>
+                        <filter string="Người bán" name="group_seller" context="{'group_by':'nban_ten'}"/>
+                        <filter string="Người mua" name="group_buyer" context="{'group_by':'nmua_ten'}"/>
+                        <!-- <filter string="Hóa đơn đã tạo" name="group_created_invoice" context="{'group_by':'created_invoice_count'}"/> -->
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_invoice_data" model="ir.actions.act_window">
+            <field name="name">Hóa đơn điện tử</field>
+            <field name="res_model">invoice.data</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_today': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Tạo hóa đơn đầu tiên
+                </p>
+                <p>
+                    Quản lý dữ liệu hóa đơn được import từ XML.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu -->
+        <!-- <menuitem id="menu_invoice_data_root" 
+                  name="Hóa đơn điện tử" 
+                  sequence="10"/> -->
+    </data>
+</odoo>

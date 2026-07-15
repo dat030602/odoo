@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <template id="payslip_report_pdf_inherit" inherit_id="biz_payslip_pdf_report.payslip_report_pdf">
+            <xpath expr="//table[@class='table-bordered']//tr[2]" position="replace">
+                <tr>
+                    <td colspan="2" style="text-align:left;">
+                        <p><span>Họ và tên/Full Name: </span><span t-field="o.employee_id.name"/></p>
+                        <p><span>Mã nhân viên/Employee code: </span><span t-field="o.employee_id.code"/></p>
+                        <p><span>Ngày bắt đầu của HĐLĐ/<br/>Start date of Labor Contract: </span><span t-field="o.contract_id.date_start"/></p>
+                    </td>
+                    <td colspan="3" style="text-align:left;">
+                        <p><span>Mã số TNCN/PIT code: </span><span t-esc="o.employee_id.code_bhxh"/></p>
+                        <p><span>Số sổ BHXH/SI book No.: </span><span t-esc="o.employee_id.code_tncn"/></p>
+                        <p><span>Phòng ban/Department: </span><span t-field="o.employee_id.department_id.name"/></p>
+                    </td>
+                </tr>
+            </xpath>
+        </template>
+    </data>
+</odoo>

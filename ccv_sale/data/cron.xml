@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="cron_create_bonus_history_line" model="ir.cron">
+        <field name="name">Tạo lịch sử quỹ dự phòng</field>
+        <field name="model_id" ref="ccv_sale.model_sale_bonus_price_unit"/>
+        <field name="code">model._cron_create_bonus_history_line()</field>
+        <field name="interval_type">hours</field>
+        <field name="interval_number">1</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <record id="cron_update_qty_ordered" model="ir.cron">
+        <field name="name">Cập nhật số lượng có thể đặt</field>
+        <field name="model_id" ref="ccv_sale.model_product_product"/>
+        <field name="code">model._cron_update_qty_ordered()</field>
+        <field name="interval_type">minutes</field>
+        <field name="interval_number">1</field>
+        <field name="numbercall">-1</field>
+    </record>
+    
+</odoo>

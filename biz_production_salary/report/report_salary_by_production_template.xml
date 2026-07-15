@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_salary_by_production_pdf_template">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <t t-set="company" t-value="o.env.company"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px;">
+                <div class="row" style="position: relative;">
+                    <div style="justify-content: left; align-items: center;position: absolute">
+                        <img t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%"/>
+                    </div>
+                    <div class="col-12" style="height: 0px;">
+                        <div class="" style="padding: 30px 0px 0 130px !important;">
+                            <span/><span t-esc="company.name"/> - Mã số thuế: <span t-esc="company.vat"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page" style="font-family: 'Times New Roman';font-size:14px; line-height: 25px">
+                <style>
+                    .table-line {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                    }
+                    .table-line th, .table-line td {
+                        border: 1px solid black;
+                        padding: 5px;
+                        word-break: break-word;
+                    }
+                    .bold { font-weight: bold; }
+                    .italic { font-style: italic; }
+                    .text-center { text-align: center; }
+                    .text-right { text-align: right; }
+                    .text-left { text-align: left; }
+                </style>
+                <div class="text-center">
+                    <h4 class="bold" style="margin-top: 0px;">TỔNG HỢP SẢN LƯỢNG CÔNG NHÂN</h4>
+                    <h6 class="italic">
+                        Từ ngày <span t-esc="o.date_from and o.date_from.strftime('%d/%m/%Y') or ''"/> đến ngày <span t-esc="o.date_to and o.date_to.strftime('%d/%m/%Y') or ''"/>
+                    </h6>
+                    <h6 class="italic">
+                        Phòng ban: <span t-esc="o.department_id.name if o.department_id else ''"/>
+                    </h6>
+                </div>
+                <table class="table-line">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 5%">STT</th>
+                            <th class="text-center" style="width: 25%">Tên hàng</th>
+                            <th class="text-center" style="width: 8%">Công nhật</th>
+                            <th class="text-center" style="width: 8%">Sản lượng</th>
+                            <th class="text-center" style="width: 8%">Nhập hàng</th>
+                            <th class="text-center" style="width: 8%">Xuất hàng</th>
+                            <th class="text-center" style="width: 8%">Sản xuất</th>
+                            <th class="text-center" style="width: 10%">Tổng SL</th>
+                            <th class="text-center" style="width: 10%">Đơn giá</th>
+                            <th class="text-center" style="width: 10%">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="sum_day_labor_all" t-value="0"/>
+                        <t t-set="sum_other_output_all" t-value="0"/>
+                        <t t-set="sum_input_pro_all" t-value="0"/>
+                        <t t-set="sum_output_pro_all" t-value="0"/>
+                        <t t-set="sum_production_all" t-value="0"/>
+                        <t t-set="sum_total_quantity_all" t-value="0"/>
+                        <t t-set="sum_thanh_tien_all" t-value="0"/>
+                        <t t-foreach="o.get_report_grouped_lines()" t-as="group">
+                            <t t-set="sum_day_labor_all" t-value="sum_day_labor_all + group['totals']['day_labor']"/>
+                            <t t-set="sum_other_output_all" t-value="sum_other_output_all + group['totals']['other_output']"/>
+                            <t t-set="sum_input_pro_all" t-value="sum_input_pro_all + group['totals']['input_pro']"/>
+                            <t t-set="sum_output_pro_all" t-value="sum_output_pro_all + group['totals']['output_pro']"/>
+                            <t t-set="sum_production_all" t-value="sum_production_all + group['totals']['production']"/>
+                            <t t-set="sum_total_quantity_all" t-value="sum_total_quantity_all + group['totals']['total_quantity']"/>
+                            <t t-set="sum_thanh_tien_all" t-value="sum_thanh_tien_all + group['totals']['total_amount']"/>
+                            <tr>
+                                <td colspan="10" class="text-left bold"><span t-esc="group['date_str']"/></td>
+                            </tr>
+                            <t t-set="stt" t-value="1"/>
+                            <t t-foreach="group['lines']" t-as="line">
+                                <tr>
+                                    <td class="text-center"><span t-esc="stt"/></td>
+                                    <td class="text-left"><span t-esc="line.product_id.name or ''"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.3f}'.format(line.day_labor)"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.3f}'.format(line.other_output)"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.3f}'.format(line.input_pro)"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.3f}'.format(line.output_pro)"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.3f}'.format(line.production)"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.3f}'.format(line.total_quantity)"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.0f}'.format(line.price_unit)"/></td>
+                                    <td class="text-right"><span t-esc="'{0:,.0f}'.format(line.total_amount)"/></td>
+                                </tr>
+                                <t t-set="stt" t-value="stt + 1"/>
+                            </t>
+                            <tr>
+                                <td colspan="2" class="text-center bold">TỔNG CỘNG</td>
+                                <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(group['totals']['day_labor'])"/></td>
+                                <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(group['totals']['other_output'])"/></td>
+                                <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(group['totals']['input_pro'])"/></td>
+                                <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(group['totals']['output_pro'])"/></td>
+                                <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(group['totals']['production'])"/></td>
+                                <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(group['totals']['total_quantity'])"/></td>
+                                <td></td>
+                                <td class="text-right bold"><span t-esc="'{0:,.0f}'.format(group['totals']['total_amount'])"/></td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td colspan="2" class="text-center bold">TỔNG CỘNG TẤT CẢ</td>
+                            <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(sum_day_labor_all)"/></td>
+                            <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(sum_other_output_all)"/></td>
+                            <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(sum_input_pro_all)"/></td>
+                            <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(sum_output_pro_all)"/></td>
+                            <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(sum_production_all)"/></td>
+                            <td class="text-right bold"><span t-esc="'{0:,.3f}'.format(sum_total_quantity_all)"/></td>
+                            <td></td>
+                            <td class="text-right bold"><span t-esc="'{0:,.0f}'.format(sum_thanh_tien_all)"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+                <div class="row text-center mt32 mb32" style="page-break-inside: avoid;">
+                    <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                        <strong>Người lập biểu</strong>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="o.state == 'approved' and o.sudo().voter_id.sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(o.sudo().voter_id.sign_signature)" style="width: 100px; height: 60px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="(o.sudo().voter_id.name_without_position or o.sudo().voter_id.name) if o.voter_id else ''"/></strong>
+                    </div>
+                    <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                        <strong>Bộ phận bốc xếp</strong>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="o.state == 'approved' and o.sudo().loading_department_id.sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(o.sudo().loading_department_id.sign_signature)" style="width: 100px; height: 60px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="(o.sudo().loading_department_id.name_without_position or o.sudo().loading_department_id.name) if o.loading_department_id else ''"/></strong>
+                    </div>
+                    <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                        <strong>Phòng HCNS</strong>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="o.state == 'approved' and o.sudo().hr_department_id.sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(o.sudo().hr_department_id.sign_signature)" style="width: 100px; height: 60px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="(o.sudo().hr_department_id.name_without_position or o.sudo().hr_department_id.name) if o.hr_department_id else ''"/></strong>
+                    </div>
+                    <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                        <strong>Kế toán trưởng</strong>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="o.state == 'approved' and o.sudo().chief_accountant_id.sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(o.sudo().chief_accountant_id.sign_signature)" style="width: 100px; height: 60px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="(o.sudo().chief_accountant_id.name_without_position or o.sudo().chief_accountant_id.name) if o.chief_accountant_id else ''"/></strong>
+                    </div>
+                    <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                        <strong>Ban lãnh đạo</strong>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="o.state == 'approved' and o.sudo().director_id.sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(o.sudo().director_id.sign_signature)" style="width: 100px; height: 60px;"/>
+                        </t>
+                        <t t-else=""><br/><br/><br/><br/></t>
+                        <br/>
+                        <strong><t t-esc="(o.sudo().director_id.name_without_position or o.sudo().director_id.name) if o.director_id else ''"/></strong>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="report_salary_by_production_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="biz_production_salary.report_salary_by_production_pdf_template" t-lang="o.env.user.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

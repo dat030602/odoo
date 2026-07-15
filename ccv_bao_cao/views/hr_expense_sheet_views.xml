@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_expense_sheet_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.form.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_mode']" position='after'>
+                <field name="partner_bank_id" attrs="{'readonly': [('state', 'not in', ['draft','submit','approve'])]}"/>
+                <field name="payment_type" widget="radio" attrs="{'readonly': [('state', 'not in', ['draft','submit','approve'])], 'required': [('partner_bank_id', '!=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

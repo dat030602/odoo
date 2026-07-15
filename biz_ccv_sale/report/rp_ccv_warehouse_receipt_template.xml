@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rp_ccv_warehouse_receipt_document">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <t t-set="company" t-value="o.env.company"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px">
+                <div class="row">
+                    <div class="col-2">
+                        <br/>
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%" alt="Logo"/>
+                    </div>
+                    <div class="col-5" style="position:  relative">
+                        <br/>
+                        <p style="position: absolute; left; top: 46%"><span t-esc="company.name"/> -<br/>Mã số thuế: <span t-esc="company.vat"/></p>
+                    </div>
+                    <div class="col-5 text-center">
+                        <strong>Mẫu số: 01 - VT</strong><br/><br/>
+                        <i>(Ban hành theo Thông tư số 99/2025/TT-BTC<br/>Ngày 27/10/2025 của Bộ Tài chính)</i>
+                    </div>
+                </div>
+            </div>
+            <div class="page" style="font-family: 'Times New Roman';font-size:15px">
+                <div class="title">
+                    <div class="row">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-4 text-center">
+                            <h4><b>PHIẾU NHẬP KHO</b></h4>
+                            <p t-if="o.stock_date_receipt" class="bold"><i t-esc="context_timestamp(o.stock_date_receipt).strftime('Ngày %d tháng %m năm %Y')"/></p>
+                            <p t-else=""><span t-esc="'Ngày.....tháng.....năm....'"/></p>
+                            <p>Số: <span t-esc="o.name"/></p>
+                            <p t-if="o.origin">Chứng từ gốc: <span t-esc="o.origin"/></p>
+                        </div>
+                        <div class="col-2"/>
+                        <div class="col-2">
+                            <span>Nợ: <span t-esc="', '.join(set([x for x in o.move_ids.mapped('account_id.code') if x]))"/></span>
+                            <br/>
+                            <span>Có: <span t-esc="', '.join(set([x for x in o.move_ids.mapped('account_dest_ids.code') if x]))"/></span>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="delirery-info mt-3">
+                    <p>- Họ vào tên người giao hàng: <span t-esc="get_delivery_user_name(o)"/></p>
+                    <table class="table-borderless" style="border: 0">
+                      <tr>
+                        <td style="width:1px; white-space: nowrap; vertical-align: top; padding-right: 5px">- Nội dung nhập:</td>
+                        <td><span style="display: inline-block;" t-esc="o.reason_output_input_stock"/></td>
+                      </tr>
+                      
+                    </table>
+                    <p>- Nhập tại kho: <span t-esc="o.location_dest_id.warehouse_id.name"/> <span style="margin-left: 80px;"> Địa điểm: <span t-esc="o.location_dest_id.name"/></span></p>
+                    <p>- Biển số xe: <span t-esc="o.vehicle_license_plate"/> <span style="margin-left: 80px;"> Tài xế: <span t-esc="o.vehicle_driver_name"/></span></p>
+                    <p>- Đơn vị thực hiện: <span t-esc="o.implementing_unit"/></p>
+                    <p>- Kiểu hoạt động: <span t-esc="o.picking_type_id.name"/></p>
+                    <p>Bộ phận thực hiện:.....................  Số lượng người thực hiện: ................. Người     Địa điểm cửa số: ...........................</p>
+                    <p>Thời gian tổng nhập/xe : ................. Phút   Thời gian bắt đầu : ......................... Thời gian kết thúc : ...............................</p>
+                </div>
+                <table class="table-main mt-2">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">STT</th>
+                            <th rowspan="2">Ảnh sản phẩm</th>
+                            <th rowspan="2">Tên, nhãn hiệu, quy cách, phẩm chất vật tư, dụng cụ sản phẩm, hàng hóa</th>
+                            <th rowspan="2">Mã số</th>
+                            <th rowspan="2">Đơn vị tính</th>
+                            <th colspan="2">Số lượng</th>
+                            <th colspan="2">Số Bao</th>
+                        </tr>
+                        <tr>
+                            <th>Theo chứng từ</th>
+                            <th>Thực nhập</th>
+                            <th>Theo chứng từ</th>
+                            <th>Thực nhập</th>
+                        </tr>
+                        <tr class="text-center">
+                            <th>A</th>
+                            <th/>
+                            <th>B</th>
+                            <th>C</th>
+                            <th>D</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>1</th>
+                            <th>2</th>
+                        </tr>
+                    </thead> 
+                    <tbody style="border-top:  0 !important">
+                        <tr t-foreach="o.move_ids_without_package" t-as="line">
+                            <td class="text-center"><span t-esc="line_index + 1"/></td>
+                            <td class="text-center"><img t-if="line.product_image" alt="product image" t-att-src="image_data_uri(line.product_image)" style="margin: 0 auto;max-width: 100px;max-height: 75px;"/></td>
+                            <td><span t-esc="line.purchase_line_id.name or line.product_id.name"/></td>
+                            <td><span t-esc="line.product_id.product_tmpl_id.split_default_code"/></td>
+                            <td class="text-center"> <span t-esc="line.product_uom.name"/></td>
+                            <td class="text-center"> <span t-esc="format_decimal(line.product_uom_qty)"/></td>
+                            <td class="text-center"> <span t-esc="format_decimal(line.quantity_done)"/></td>
+                            <td class="text-center"> <span t-esc="line.bag_number"/></td>
+                            <td class="text-center"> <span t-esc="line.bag_done"/></td>
+                        </tr>
+                        <tr>
+                            <td/>
+                            <td class="bold">Cộng</td>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td class="text-center"><strong t-esc="format_decimal(sum(line.product_uom_qty for line in o.move_ids_without_package))"/></td>
+                            <td class="text-center"><strong t-esc="format_decimal(sum(line.quantity_done for line in o.move_ids_without_package))"/></td>
+                            <td class="text-center"><strong t-esc="sum(line.bag_number for line in o.move_ids_without_package)"/></td>
+                            <td class="text-center"><strong t-esc="sum(line.bag_done for line in o.move_ids_without_package)"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>- Số đơn mua hàng kèm theo: <span t-esc="o.origin"/></p>
+                <hr style="background: 0;                     border: 1px dashed black;                     margin: 10px 0;                     opacity: 0.7;"/>
+
+                <table class="table table-borderless text-center" style="table-layout: fixed;border:0">
+                    <tr>
+                        <td>
+                            <b>Người lập phiếu</b><br/>
+                            <i>(Ký, họ tên)</i><br/>
+                            <div style="height:60px;text-align:center;">
+                                <img t-if="o.voter_id and o.voter_id.sudo().sign_signature and (not o.purchase_id or o.purchase_id.purchase_sign_requests_state == 'approved')" t-att-src="image_data_uri(o.voter_id.sudo().sign_signature)" style="max-height:60px;"/>
+                            </div>
+                            <p class="bold"><span t-esc="o.voter_id.name_without_position"/></p>
+                        </td>
+                        <td>
+                            <b>Người giao hàng</b><br/>
+                            <i>(Ký, họ tên)</i>
+                            <p class="bold" style="margin-top: 75px"><span t-esc="o.delivery_person_id.name_without_position"/></p>
+                        </td>
+                        <td>
+                            <b>Thủ kho</b><br/>
+                            <i>(Ký, họ tên)</i>
+                            <p class="bold" style="margin-top: 75px"><span t-esc="o.stocker_id.name_without_position"/></p>
+                        </td>
+                        <td>
+                            <b>Kế toán trưởng</b><br/>
+                            <i>(Ký, họ tên)</i><br/>
+                            <div style="height:60px;text-align:center;">
+                                <img t-if="o.chief_acc_id and o.chief_acc_id.sudo().sign_signature and (not o.purchase_id or o.purchase_id.purchase_sign_requests_state == 'approved')" t-att-src="image_data_uri(o.chief_acc_id.sudo().sign_signature)" style="max-height:60px;"/>
+                            </div>
+                            <p class="bold"><span t-esc="o.chief_acc_id.name_without_position"/></p>
+                        </td>
+                        <td>
+                            <b>Thủ trưởng đơn vị</b><br/>
+                            <i>(Ký, họ tên)</i><br/>
+                            <div style="height:60px;text-align:center;">
+                                <img t-if="o.unit_heads_id and o.unit_heads_id.sudo().sign_signature and (not o.purchase_id or o.purchase_id.purchase_sign_requests_state == 'approved')" t-att-src="image_data_uri(o.unit_heads_id.sudo().sign_signature)" style="max-height:60px;"/>
+                            </div>
+                            <p class="bold"><span t-esc="o.unit_heads_id.name_without_position"/></p>
+                        </td>
+                    </tr>
+                </table>
+                <hr style="background: 0;                     border: 1px dashed black;                     margin: 0;                     opacity: 0.7;"/>
+
+                <table class="table table-borderless text-center" style="table-layout: fixed;border:0">
+                    <tr>
+                        <td>
+                            <b>Bộ Phận Bốc Xếp</b><br/>
+                            <i>(Ký, họ tên)</i><br/>
+                            <p class="bold" style="margin-top: 75px"><span t-esc="o.load_department_id.name_without_position"/></p>
+                        </td>
+                        <td>
+                            <b>Xe nâng</b><br/>
+                            <i>(Ký, họ tên)</i><br/>
+                            <p class="bold" style="margin-top: 75px"><span t-esc="o.forklift_id.name_without_position"/></p>
+                        </td>
+                        <td>
+                            <b>Bảo vệ dịch vụ</b><br/>
+                            <i>(Ký, họ tên)</i><br/>
+                            <p class="bold" style="margin-top: 75px"><span t-esc="o.protect_service_id.name_without_position"/></p>
+                        </td>
+                    </tr>
+                </table>
+                <style>
+                    p {
+                        margin-bottom:0
+                    }
+                    .bold{
+                        font-weight: bold
+                    }
+                    .table-main{
+                        width: 100%;
+                    }
+                    th{
+                        padding:  5px;
+                    }
+                    .table-main td{
+                        padding:  5px;
+                        border-bottom: 0 !important;
+                    }
+                    .table-main, .table-main  th, .table-main td{
+                        border:  1px solid black;
+                    }
+                </style>
+            </div>
+        </t>
+    </template>
+
+    <template id="rp_ccv_warehouse_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="biz_ccv_sale.rp_ccv_warehouse_receipt_document" t-lang="o.env.user.lang"/>
+            </t>
+        </t>
+    </template> 
+</odoo>

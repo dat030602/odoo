@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_material_detail_book_line_tree" model="ir.ui.view">
+            <field name="name">material.detail.book.line.tree</field>
+            <field name="model">material.detail.book.line</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="is_total == True" action="action_open_reference" type="object" create="0" delete="0" edit="0">
+                    <field name="product_id" optional="show"/>
+                    <field name="product_code" invisible="1"/>
+                    <field name="product_name" invisible="1"/>
+                    <field name="warehouse_id" optional="show"/>
+                    <field name="accounting_date" optional="show"/>
+                    <field name="document_number" optional="show"/>
+                    <field name="explain" optional="show"/>
+                    <field name="uom_id" optional="show"/>
+                    <field name="qty_import" sum="qty_import" digits="[16, 3]"/>
+                    <field name="qty_export" sum="qty_export" digits="[16, 3]"/>
+                    <field name="qty_inv" optional="show"/>
+                    <field name="account_warehouse_id" invisible="1"/>
+                    <field name="account_warehouse_code" optional="show"/>
+                    <field name="ctp_account_ids" widget="many2many_tags" optional="show"/>
+                    <field name="object_name" optional="show"/>
+                    <field name="factory_manager_name" optional="show"/>
+                    <field name="production_id" optional="show"/>
+                    <field name="is_total" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_material_detail_book_line_tree_search" model="ir.ui.view">
+            <field name="name">material.detail.book.line.tree.search</field>
+            <field name="model">material.detail.book.line</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="product_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="accounting_date"/>
+                    <field name="document_number"/>
+                    <field name="explain"/>
+                    <field name="uom_id"/>
+                    <field name="ctp_account_ids" widget="many2many_tags"/>
+                    <field name="factory_manager_name"/>
+                    <field name="production_id"/>
+                    <separator/>
+                    <filter string="Có chứng từ" name="has_document" domain="[('document_number','!=',False)]"/>
+                    <filter string="Không có chứng từ" name="no_document" domain="[('document_number','=',False)]"/>
+                    <filter string="Có sản xuất" name="has_production" domain="[('production_id','!=',False)]"/>
+                    <filter string="Không sản xuất" name="no_production" domain="[('production_id','=',False)]"/>
+                    <filter string="Dòng tổng hợp" name="is_total" domain="[('is_total','=',True)]"/>
+                    <separator/>
+                    <group expand="0" string="Nhóm theo">
+                        <filter string="Sản phẩm" name="group_by_product" context="{'group_by': 'product_id'}"/>
+                        <filter string="Kho" name="group_by_warehouse" context="{'group_by': 'warehouse_id'}"/>
+                        <filter string="Ngày kế toán" name="group_by_accounting_date" context="{'group_by': 'accounting_date'}"/>
+                        <filter string="Đơn vị tính" name="group_by_uom" context="{'group_by': 'uom_id'}"/>
+                        <filter string="Lệnh sản xuất" name="group_by_production" context="{'group_by': 'production_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <record id="action_material_detail_book_line" model="ir.actions.act_window">
+            <field name="name">Material detail book line</field>
+            <field name="res_model">material.detail.book.line</field>
+            <field name="view_mode">tree</field>
+            <field name="target">current</field>
+        </record>
+    </data>
+</odoo>

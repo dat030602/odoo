@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="update_country_state_view_tree" model="ir.ui.view">
+	    <field name="name">update.country.state.tree</field>
+	    <field name="model">update.country.state</field>
+	    <field name="arch" type="xml">
+	        <tree string="Update Province" editable="bottom">
+                <field name="name"/>
+                <field name="state_id" domain="[('country_id','=',country_id)]"/>
+                <field name="country_id"/>
+                <field name="is_updated"/>
+                <button name="action_update" string="Update" />
+	        </tree>
+	    </field>
+	</record>
+
+	<record id="update_country_state_action" model="ir.actions.act_window">
+        <field name="name">Update Province</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">update.country.state</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="update_address_menu" name="Update Address" parent='contacts.res_partner_menu_config'/>
+    <menuitem id="update_country_state_menu" action="update_country_state_action" parent='update_address_menu'/>
+
+    <record id="update_country_district_view_tree" model="ir.ui.view">
+	    <field name="name">update.country.district.tree</field>
+	    <field name="model">update.country.district</field>
+	    <field name="arch" type="xml">
+	        <tree string="Update District" editable="bottom">
+                <field name="name"/>
+                <field name="district_id" domain="[('state_id','=',state_id)]"/>
+                <field name="state_id" domain="[('country_id','=',country_id)]"/>
+                <field name="country_id"/>
+                <field name="is_updated"/>
+                <button name="action_update" string="Update" />
+	        </tree>
+	    </field>
+	</record>
+
+	<record id="update_country_district_action" model="ir.actions.act_window">
+        <field name="name">Update District</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">update.country.district</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="update_country_district_menu" action="update_country_district_action" parent='update_address_menu'/>
+
+    <record id="update_country_wards_view_tree" model="ir.ui.view">
+	    <field name="name">update.country.wards.tree</field>
+	    <field name="model">update.country.wards</field>
+	    <field name="arch" type="xml">
+	        <tree string="Update Wards" editable="bottom">
+                <field name="name"/>
+                <field name="wards_id" domain="[('district_id','=',district_id)]"/>
+                <field name="district_id" domain="[('state_id','=',state_id)]"/>
+                <field name="state_id" domain="[('country_id','=',country_id)]"/>
+                <field name="country_id"/>
+                <field name="is_updated"/>
+                <button name="action_update" string="Update" />
+	        </tree>
+	    </field>
+	</record>
+
+	<record id="update_country_wards_action" model="ir.actions.act_window">
+        <field name="name">Update wards</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">update.country.wards</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="update_country_wards_menu" action="update_country_wards_action" parent='update_address_menu'/>
+
+</odoo>

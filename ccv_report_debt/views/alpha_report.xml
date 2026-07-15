@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_alpha_report_form" model="ir.ui.view">
+        <field name="name">alpha.report.form</field>
+        <field name="model">alpha.report</field>
+        <field name="inherit_id" ref="ccv_sql.form_alpha_report_view"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_print_receivables_report" string="In xác nhận công nợ" type="object"
+                attrs="{'invisible': [('type', 'not in', ['tong_hop_cong_no_phai_thu', 'tong_hop_cong_no_phai_tra', 'tong_hop_cong_no_phai_thu_usd', 'tong_hop_cong_no_phai_tra_usd', 'chi_tiet_cong_no_phai_thu', 'chi_tiet_cong_no_phai_tra', 'chi_tiet_cong_no_phai_thu_usd', 'chi_tiet_cong_no_phai_tra_usd'])]}"/>
+            </header>
+        </field>
+    </record>
+</odoo>

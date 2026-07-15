@@ -1,0 +1,43 @@
+<odoo>
+    <record id="view_check_exchange_rate_wizard_form" model="ir.ui.view">
+        <field name="name">check.exchange.rate.wizard.form</field>
+        <field name="model">check.exchange.rate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Check Exchange Rate">
+                <group>
+                    <field name="move_id" invisible="1" />
+                    <field name="currency_id" invisible="1" />
+                    <field name="purchase_ids" widget="many2many_tags"
+                        domain="[('currency_id', '=', currency_id)]"
+                        options="{'no_create_edit': True, 'no_quick_create': True}" />
+                </group>
+                <field name="line_ids" readonly="1">
+                    <tree editable="bottom">
+                        <field name="name" />
+                        <field name="exchange_rate" />
+                        <field name="diff_exchange_rate" />
+                    </tree>
+                    <form edit="0">
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="exchange_rate" readonly="1"/>
+                            <field name="diff_exchange_rate" readonly="1"/>
+                        </group>
+                    </form>
+                </field>
+                <footer>
+                    <button string="Close" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to Open Wizard -->
+    <record id="action_check_exchange_rate_wizard" model="ir.actions.act_window">
+        <field name="name">Check Exchange Rate</field>
+        <field name="res_model">check.exchange.rate.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_check_exchange_rate_wizard_form" />
+        <field name="target">new</field>
+    </record>
+</odoo>

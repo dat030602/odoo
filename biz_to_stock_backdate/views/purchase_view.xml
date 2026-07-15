@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_order_ccv_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.ccv.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_order']" position="before">
+                    <field name="stock_date_receipt"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="model_purchase_order_button_confirm_multi" model="ir.actions.server">
+            <field name="name">Confirm purchase order multi</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.button_confirm_multi()</field>
+        </record>
+    </data>
+</odoo>

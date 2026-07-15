@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="view_hr_allowance_form" model="ir.ui.view">
+		<field name="name">view.hr.allowance.form</field>
+		<field name="model">hr.allowance</field>
+		<field name="arch" type="xml">
+			<form string="Allowances">
+				<sheet>
+					<group>
+						<group>
+							<field name="name" required="1"/>
+							<field name="column_import" domain="[('allowance_id','=',False)]"
+								options="{'no_create_edit': True, 'no_create': True}"/>
+								
+							<field name="amount" attrs="{'invisible': [('is_fixed','!=',True)]}"/>
+						</group>
+						<group>
+							<field name="code" required="1"/>
+							<field name="is_fixed"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	
+	<record id="view_hr_allowance_tree" model="ir.ui.view">
+		<field name="name">view.hr.allowance.tree</field>
+		<field name="model">hr.allowance</field>
+		<field name="arch" type="xml">
+			<tree string="Allowances">
+				<field name="name"/>
+				<field name="column_import"/>
+				<field name="is_fixed"/>
+				<field name="code"/>
+				<field name="amount"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_hr_allowance_search" model="ir.ui.view">
+		<field name="name">view.hr.allowance.search</field>
+		<field name="model">hr.allowance</field>
+		<field name="arch" type="xml">
+			<search string="Allowances">
+				<field name="name"/>
+				<field name="column_import"/>
+				<field name="is_fixed"/>
+				<field name="code"/>
+				<field name="amount"/>
+			</search>
+		</field>
+	</record>
+	
+	<record id="acction_hr_allowance" model="ir.actions.act_window">
+       <field name="name">Allowances</field>
+       <field name="res_model">hr.allowance</field>
+       
+       <field name="view_mode">tree,form</field>
+       <field name="search_view_id" ref="view_hr_allowance_search"/>
+	</record>
+	
+	<menuitem id="menu_hr_allowance" action="acction_hr_allowance" parent="hr.menu_human_resources_configuration" sequence="4" groups="base.group_user"/>
+	
+	<!-- Allowance Fixed -->
+	
+	<record id="view_payroll_allowance_fixed_tree" model="ir.ui.view">
+		<field name="name">view.hr.payroll.allowance.fixed.tree</field>
+		<field name="model">hr.payroll.allowance.fixed</field>
+		<field name="arch" type="xml">
+			<tree string="Allowances Fixed" editable="bottom">
+				<field name="allowance_id"/>
+				<field name="code"/>
+				<field name="employee_id"/>
+				<field name="contract_id"/>
+				<field name="amount"/>
+				<field name="active" invisible="1"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_payroll_allowance_fixed_search" model="ir.ui.view">
+		<field name="name">view.hr.payroll.allowance.fixed.search</field>
+		<field name="model">hr.payroll.allowance.fixed</field>
+		<field name="arch" type="xml">
+			<search string="Allowances Fixed">
+				<field name="allowance_id"/>
+				<field name="code"/>
+				<field name="contract_id"/>
+				<field name="employee_id"/>
+				<field name="active"/>
+				<filter name="active_group" string="Inactive" domain="[('active','=',False)]"/>
+				<group expand="0" string="Group By">
+	                <filter name="allowance_id_group" string="Allowance" context="{'group_by':'allowance_id'}"/>
+	                <filter name="contract_id_group" string="Contract" context="{'group_by':'contract_id'}"/>
+	                <filter name="employee_id_group" string="Employee" context="{'group_by':'employee_id'}"/>
+	            </group>
+			</search>
+		</field>
+	</record>
+	
+	<record id="view_payroll_allowance_fixed_pivot" model="ir.ui.view">
+	    <field name="name">hr.payroll.allowance.fixed.pivot</field>
+	    <field name="model">hr.payroll.allowance.fixed</field>
+	    <field name="arch" type="xml">
+	        <pivot string="Allowances Fixed" display_quantity="true">
+	            <field name="allowance_id" type="row"/>
+	            <field name="amount" type="measure"/>
+	        </pivot>
+	    </field>
+	</record>
+	
+	<record model="ir.ui.view" id="view_payroll_allowance_fixed_graph">
+	    <field name="name">hr.payroll.allowance.fixed.graph</field>
+	    <field name="model">hr.payroll.allowance.fixed</field>
+	    <field name="arch" type="xml">
+	        <graph string="Allowances Fixed">
+	            <field name="allowance_id"/>
+	            <field name="amount" type="measure"/>
+	        </graph>
+	    </field>
+	</record>
+	
+	<record id="acction_payroll_allowance_fixed" model="ir.actions.act_window">
+       <field name="name">Allowances Fixed</field>
+       <field name="res_model">hr.payroll.allowance.fixed</field>
+       
+       <field name="view_mode">tree,pivot,graph</field>
+       <field name="context">{'group_by': ['allowance_id', 'contract_id']}</field>
+       <field name="search_view_id" ref="view_payroll_allowance_fixed_search"/>
+	</record>
+	
+	<menuitem id="menu_payroll_allowance_fixed" action="acction_payroll_allowance_fixed" parent="menu_payroll_update_menu" sequence="2"/>
+	
+	<!-- Allowance Monthly -->
+	
+	<record id="view_payroll_allowance_monthly_tree" model="ir.ui.view">
+		<field name="name">view.hr.payroll.allowance.monthly.tree</field>
+		<field name="model">hr.payroll.allowance.monthly</field>
+		<field name="arch" type="xml">
+			<tree string="Allowances Monthly" editable="bottom">
+				<field name="allowance_id"/>
+				<field name="code"/>
+				<field name="employee_id"/>
+				<field name="contract_id"/>
+				<field name="amount"/>
+				<field name="active" invisible="1"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_payroll_allowance_monthly_search" model="ir.ui.view">
+		<field name="name">view.hr.payroll.allowance.monthly.search</field>
+		<field name="model">hr.payroll.allowance.monthly</field>
+		<field name="arch" type="xml">
+			<search string="Allowances Monthly">
+				<field name="allowance_id"/>
+				<field name="code"/>
+				<field name="contract_id"/>
+				<field name="employee_id"/>
+				<field name="active"/>
+				<field name="month"/>
+				<filter name="group_active" string="Inactive" domain="[('active','=',False)]"/>
+				<group expand="0" string="Group By">
+	                <filter string="Allowance" name="allowance" context="{'group_by':'allowance_id'}"/>
+	                <filter string="Contract" name="contract" context="{'group_by':'contract_id'}"/>
+	                <filter string="Employee" name="employee" context="{'group_by':'employee_id'}"/>
+	                <filter string="Month" name="month" context="{'group_by':'month'}"/>
+	            </group>
+			</search>
+		</field>
+	</record>
+	
+	<record id="view_payroll_allowance_monthly_pivot" model="ir.ui.view">
+	    <field name="name">hr.payroll.allowance.monthly.pivot</field>
+	    <field name="model">hr.payroll.allowance.monthly</field>
+	    <field name="arch" type="xml">
+	        <pivot string="Allowances Monthly" display_quantity="true">
+	            <field name="allowance_id" type="row"/>
+	            <field name="amount" type="measure"/>
+	        </pivot>
+	    </field>
+	</record>
+	
+	<record model="ir.ui.view" id="view_payroll_allowance_monthly_graph">
+	    <field name="name">hr.payroll.allowance.monthly.graph</field>
+	    <field name="model">hr.payroll.allowance.monthly</field>
+	    <field name="arch" type="xml">
+	        <graph string="Invoices">
+	            <field name="allowance_id"/>
+	            <field name="amount" type="measure"/>
+	        </graph>
+	    </field>
+	</record>
+        
+	<record id="acction_payroll_allowance_monthly" model="ir.actions.act_window">
+       <field name="name">Allowances Monthly</field>
+       <field name="res_model">hr.payroll.allowance.monthly</field>
+       
+       <field name="view_mode">tree,pivot,graph</field>
+       <field name="context">{'group_by': ['allowance_id', 'contract_id', 'month']}</field>
+       <field name="search_view_id" ref="view_payroll_allowance_monthly_search"/>
+	</record>
+	
+	<menuitem id="menu_payroll_allowance_monthly" action="acction_payroll_allowance_monthly" parent="menu_payroll_update_menu" sequence="3"/>
+		
+</odoo>

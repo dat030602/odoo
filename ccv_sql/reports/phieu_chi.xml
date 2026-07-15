@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="phieu_chi_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.phieu_chi_document"
+                       t-lang="user.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="phieu_chi_document">
+            <t t-call="ccv_sql.ccv_header5">
+                <div class="page" style="font-size: 14px;font-family: Times New Roman; padding-top: 20px;">
+                    <div class="row">
+                        <div class="col-7" style="text-align: right; font-size: 20px">
+                            <strong>PHIẾU CHI&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</strong>
+                        </div>
+                        <div class="col-5" style="text-align: left; font-size: 14px; padding-left: 50px; padding-top: 7px">
+                            Quyển số: ........................................
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7" style="text-align: right; font-size: 14px;">
+                            <strong><t t-esc="doc.convert_date(doc.date)"/></strong>
+                        </div>
+                        <div class="col-5" style="text-align: left; font-size: 14px; padding-left: 50px">
+                            Số: <t t-esc="doc.name"/>
+                        </div>
+                    </div>
+                    <t t-set="line_id" t-value="doc.invoice_line_ids.filtered(lambda x: x.credit > 0)"/>
+                    <t t-set="line2_id" t-value="doc.invoice_line_ids.filtered(lambda x: x.debit > 0)"/>
+                    <div class="row">
+                        <div class="col-7" style="text-align: right; font-size: 20px;">
+                        </div>
+                        <div class="col-5" style="text-align: left; font-size: 14px;padding-left: 50px">
+                            Nợ: <t t-esc="line_id.account_id.code"/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 5px;">
+                        <div class="col-7" style="text-align: right; font-size: 20px;">
+                        </div>
+                        <div class="col-5" style="text-align: left; font-size: 14px; padding-left: 50px">
+                            Có: <t t-esc="line2_id.account_id.code"/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-12">
+                            Họ tên người nhận tiền: &amp;nbsp;<t t-esc="doc.partner_id.name"/>
+                        </div>
+                    </div>
+                    <t t-set="employee_id" t-value="doc.env['hr.employee'].search([('user_id.partner_id', '=', doc.partner_id.id)])"/>
+                    <div class="row" style="padding-top: 10px;">
+                        <t t-if="employee_id and employee_id[0].department_id">
+                            <div class="col-12">
+                                Địa chỉ: &amp;nbsp;<t t-esc="employee_id[0].department_id.name"/>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="col-12">
+                                Địa chỉ: &amp;nbsp;<t t-esc="doc.partner_id.contact_address_complete"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-12">
+                            Lý do chi: &amp;nbsp;<t t-esc="doc.ref"/>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-12">
+                            Số tiền: &amp;nbsp;<strong><t t-esc="doc.convert_vnd(doc.amount)"/>&amp;nbsp;<t t-esc="doc.currency_id.name"/></strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-12">
+                            Viết bằng chữ: &amp;nbsp;<strong><t t-esc="doc.convert_money(doc.amount)"/></strong>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-12">
+                            Kèm theo: ...............chứng từ gốc
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="text-align: right;">
+                            Ngày ...... tháng ..... năm .....&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                        </div>
+                    </div>
+                    <div class="row rowp" style="margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span>
+                                <strong>Thủ trưởng đơn vị</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên, đóng dấu)</span>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>Kế toán trưởng</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>KT.Thủ quỹ</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Người lập phiếu</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>Người nhận tiền</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                    </div>
+                    <t t-set="chief_accountant_id"
+                       t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.chief_accountant_id', False)"/>
+                    <t t-if="chief_accountant_id">
+                        <t t-set="chief_accountant_id"
+                           t-value="doc.env['res.users'].sudo().search([('id', '=', int(chief_accountant_id))])"/>
+                    </t>
+                    <t t-set="cashier_accountant_id"
+                       t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.cashier_accountant_id', False)"/>
+                    <t t-if="cashier_accountant_id">
+                        <t t-set="cashier_accountant_id"
+                           t-value="doc.env['res.users'].sudo().search([('id', '=', int(cashier_accountant_id))])"/>
+                    </t>
+                    <t t-set="unit_head_id"
+                       t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.unit_head_id', False)"/>
+                    <t t-if="unit_head_id">
+                        <t t-set="unit_head_id"
+                           t-value="doc.env['res.users'].sudo().search([('id', '=', int(unit_head_id))])"/>
+                    </t>
+                    <div class="row rowp" style="margin-left: 2px;text-align: center;padding-top:80px">
+                        <div class="col-3">
+                            <strong>
+                                <t t-if="unit_head_id">
+                                    <strong><t t-esc="unit_head_id.name_without_position"/></strong>
+                                </t>
+                            </strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>
+                                <t t-if="chief_accountant_id">
+                                    <t t-esc="chief_accountant_id.name_without_position"/>
+                                </t>
+                            </strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>
+                                <t t-if="cashier_accountant_id">
+                                    <t t-esc="cashier_accountant_id.name_without_position"/>
+                                </t>
+                            </strong>
+                        </div>
+                        <div class="col-3">
+                            <strong><t t-esc="(doc.payment_slip_creator_id or doc.create_uid).name_without_position"/>
+                            </strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>
+
+                                    <t t-esc="doc.partner_id.name"/>
+
+                            </strong>
+                        </div>
+                    </div>
+
+
+                </div>
+            </t>
+        </template>
+
+        <record id="phieu_chi_report" model="ir.actions.report">
+            <field name="name">Phiếu chi tiền mặt</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.phieu_chi_template</field>
+            <field name="report_file">ccv_sql.phieu_chi_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a5_2"/>
+            <field name="print_report_name">'Phiếu chi tiền mặt'</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

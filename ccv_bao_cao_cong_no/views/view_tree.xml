@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="chi_tiet_cong_no_phai_tra_view_tree">
+        <field name="name">tree_chi_tiet_cong_no_phai_tra</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="account_id" invisible="1"/>
+                <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="invoice_date" string="Ngày hạch toán"/>
+                <field name="date" string="Ngày chứng từ"/>
+                <field name="move_id"/>
+                <field name="reference"/>
+                <field name="note"/>
+                <field name="account_id" string="TK công nợ"/>
+                <field name="account_dest_id" string="TK đối ứng"/>
+                <field name="ps_debit" sum="total_debit"/>
+                <field name="ps_credit" sum="total_credit"/>
+                <field name="end_debit" string="SD nợ"/>
+                <field name="end_credit" string="SD có"/>
+                <field name="product_uom_quantity" sum="total_product_uom_qty"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="chi_tiet_cong_no_phai_thu_view_tree">
+        <field name="name">tree_chi_tiet_cong_no_phai_thu</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="type_line" optional="hide"/>
+                <field name="account_id" optional="hide"/>
+                <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="partner_code" optional="hide"/>
+                <field name="date" string="Ngày chứng từ"/>
+                <field name="move_id"/>
+                <field name="reference"/>
+                <field name="note"/>
+                <field name="account_dest_id" string="TK đối ứng"/>
+                <field name="uom_id"/>
+                <field name="product_uom_quantity" sum="total_product_uom_qty"/>
+                <field name="price_unit"/>
+                <field name="ps_debit" sum="total_debit"/>
+                <field name="ps_credit" sum="total_credit"/>
+                <field name="end_debit" string="SD nợ"/>
+                <field name="end_credit" string="SD có"/>
+                <field name="default_code"/>
+                <field name="product_id" optional="hide"/>
+                <field name="order_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tong_hop_cong_no_phai_thu_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.thu</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="type_line" optional="hide"/>
+                <field name="account_id" optional="hide"/>
+                <field name="partner_id" optional="show"/>
+                <field name="partner_name" optional="show"/>
+                <field name="partner_code" optional="show"/>
+                <field name="partner_group" optional="show"/>
+                <field name="start_debit" sum="total_start_debit"/>
+                <field name="start_credit" sum="total_start_credit"/>
+                <field name="ps_debit" sum="total_ps_debit"/>
+                <field name="ps_credit" sum="total_ps_credit"/>
+                <field name="end_debit" sum="total_end_debit"/>
+                <field name="end_credit" sum="total_end_credit"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tong_hop_cong_no_phai_tra_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="account_id" optional="hide"/>
+                <field name="partner_id" optional="show"/>
+                <field name="parent_id" invisible="1"/>
+                <field name="partner_name" optional="show"/>
+                <field name="partner_code" optional="show"/>
+                <field name="vat" optional="show"/>
+                <field name="address" optional="show"/>
+                <field name="start_debit" sum="total_start_debit"/>
+                <field name="start_credit" sum="total_start_credit"/>
+                <field name="ps_debit" sum="total_ps_debit"/>
+                <field name="ps_credit" sum="total_ps_credit"/>
+                <field name="end_debit" sum="total_end_debit"/>
+                <field name="end_credit" sum="total_end_credit"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tong_hop_cong_no_phai_thu_nt_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="type_line" optional="hide"/>
+                <field name="account_id" string="Tài khoản công nợ" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="partner_name" optional="show"/>
+                <field name="partner_code" optional="show"/>
+                <field name="vat" optional="show"/>
+                <field name="address" optional="show"/>
+                <field name="start_debit_nt" sum="total_start_debit"/>
+                <field name="start_debit" sum="total_start_debit"/>
+                <field name="start_credit_nt" sum="total_start_credit"/>
+                <field name="start_credit" sum="total_start_credit"/>
+                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                <field name="ps_debit" sum="total_ps_debit"/>
+                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                <field name="ps_credit" sum="total_ps_credit"/>
+                <field name="end_debit_nt" sum="total_end_debit"/>
+                <field name="end_debit" sum="total_end_debit"/>
+                <field name="end_credit_nt" sum="total_end_credit"/>
+                <field name="end_credit" sum="total_end_credit"/>
+            </tree>
+        </field>
+    </record>
+    <record id="tong_hop_cong_no_phai_tra_nt_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="partner_id" optional="hide"/>
+                <field name="parent_id" invisible="1"/>
+                <field name="partner_name" optional="show"/>
+                <field name="partner_code" optional="show"/>
+                <field name="vat" optional="show"/>
+                <field name="address" optional="show"/>
+                <field name="account_id" string="Tài khoản công nợ" optional="show"/>
+                <field name="start_debit_nt" sum="total_start_debit"/>
+                <field name="start_debit" sum="total_start_debit"/>
+                <field name="start_credit_nt" sum="total_start_credit"/>
+                <field name="start_credit" sum="total_start_credit"/>
+                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                <field name="ps_debit" sum="total_ps_debit"/>
+                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                <field name="ps_credit" sum="total_ps_credit"/>
+                <field name="end_debit_nt" sum="total_end_debit"/>
+                <field name="end_debit" sum="total_end_debit"/>
+                <field name="end_credit_nt" sum="total_end_credit"/>
+                <field name="end_credit" sum="total_end_credit"/>
+            </tree>
+        </field>
+    </record>
+    <record id="chi_tiet_cong_no_phai_tra_nt_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.tra</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="partner_id" optional="show"/>
+                <field name="move_id" string="Số chứng từ"/>
+                <field name="date" string="Ngày chứng từ"/>
+                <field name="invoice_date"/>
+                <field name="reference"/>
+                <field name="product_uom_quantity"/>
+                <field name="price_unit"/>
+                <field name="note"/>
+                <field name="account_id"/>
+                <field name="account_dest_id"/>
+                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                <field name="ps_debit" sum="total_ps_debit"/>
+                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                <field name="ps_credit" sum="total_ps_credit"/>
+                <field name="end_debit_nt"/>
+                <field name="end_debit"/>
+                <field name="end_credit_nt"/>
+                <field name="end_credit"/>
+                <field name="uom_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="chi_tiet_cong_no_phai_thu_nt_view_tree" model="ir.ui.view">
+        <field name="name">beta.view.tree.thu</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" action="action_open_reference" type="object">
+                <field name="partner_id" optional="show"/>
+                <field name="move_id" string="Số chứng từ" optional="show"/>
+                <field name="date" string="Ngày chứng từ" optional="show"/>
+                <field name="invoice_date" optional="show"/>
+                <field name="reference" optional="show"/>
+                <field name="product_uom_quantity" optional="show"/>
+                <field name="price_unit" optional="show"/>
+                <field name="note" optional="show"/>
+                <field name="account_id" optional="show"/>
+                <field name="account_dest_id" optional="show"/>
+                <field name="ps_debit_nt" sum="total_ps_debit" optional="show"/>
+                <field name="ps_debit" sum="total_ps_debit" optional="show"/>
+                <field name="ps_credit_nt" sum="total_ps_credit" optional="show"/>
+                <field name="ps_credit" sum="total_ps_credit" optional="show"/>
+                <field name="end_debit_nt" optional="show"/>
+                <field name="end_debit" optional="show"/>
+                <field name="end_credit_nt" optional="show"/>
+                <field name="end_credit" optional="show"/>
+                <field name="default_code" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="report_view_search" model="ir.ui.view">
+        <field name="name">beta.view.tree.thu</field>
+        <field name="model">ccv.debt.report.line1</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="product_id"/>
+                <field name="move_id" string="Số chứng từ"/>
+                <field name="date" string="Ngày chứng từ"/>
+                <field name="invoice_date"/>
+                <field name="reference"/>
+                <field name="product_uom_quantity"/>
+                <field name="price_unit"/>
+                <field name="note"/>
+                <field name="account_id"/>
+                <field name="account_dest_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_chi_tiet_cong_no_phai_thu_view_tree" model="ir.actions.act_window">
+        <field name="name">Chi tiết công nợ phải thu</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+    <record id="action_chi_tiet_cong_no_phai_tra_view_tree" model="ir.actions.act_window">
+        <field name="name">Chi tiết công nợ phải trả</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_thu_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải thu</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_tra_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải trả</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_thu_nt_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải thu ngoại tệ</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_thu_nt_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+
+    <record id="action_tong_hop_cong_no_phai_tra_nt_view_tree" model="ir.actions.act_window">
+        <field name="name">Tổng hợp công nợ phải trả ngoại tệ</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.tong_hop_cong_no_phai_tra_nt_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+
+    <record id="action_chi_tiet_cong_no_phai_tra_nt_view_tree" model="ir.actions.act_window">
+        <field name="name">Chi tiết công nợ phải trả ngoại tệ</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_nt_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+
+    <record id="action_chi_tiet_cong_no_phai_thu_nt_view_tree" model="ir.actions.act_window">
+        <field name="name">Chi tiết công nợ phải thu ngoại tệ</field>
+        <field name="res_model">ccv.debt.report.line1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_thu_nt_view_tree"/>
+        <field name="search_view_id" ref="ccv_bao_cao_cong_no.report_view_search"/>
+    </record>
+</odoo>

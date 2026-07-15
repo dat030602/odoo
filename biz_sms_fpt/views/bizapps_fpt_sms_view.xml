@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_bizapps_fpt_sms_form" model="ir.ui.view">
+			<field name="name">bizapps.fpt.sms.form</field>
+			<field name="model">bizapps.fpt.sms</field>
+			<field name="arch" type="xml">
+				<form string="Bizapps FPT SMS Form" class="o_sale_order">
+					<header>
+						<button name="action_sent" string="Sent" type="object" icon="fa-paper-plane text-success" states="draft" confirm="Are you want Sent SMS FPT!"/>
+						<button name="action_resent" string="Resend" type="object" icon="fa-paper-plane text-success" states="error" confirm="Are you want Resend SMS FPT!"/>
+						<button name="action_cancel" string="Cancel" type="object" icon="fa-times-circle text-danger" style="color: #a94442" states="error,draft" confirm="Are you want Cancel SMS FPT!"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft, sent, error, cancel"/>
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="message_id" readonly="1" states="sent"/>
+								<field name="phone"  required="1" attrs="{'readonly': [('state', '=', 'sent')]}"/>
+								<field name="telco" states="sent" attrs="{'readonly': [('state', '=', 'sent')]}"/>
+							</group>
+							<group>
+								<field name="date_sent" states="sent" attrs="{'readonly': [('state', '=', 'sent')]}"/>
+								<field name="partner_id" states="sent" attrs="{'readonly': [('state', '=', 'sent')]}"/>
+								<field name="error_detail"  states="error" style="color: #a94442" attrs="{'readonly': [('state', '=', 'sent')]}"/>
+							</group>
+						</group>
+						<group>
+							<field name="message" required="1" attrs="{'readonly': [('state', '=', 'sent')]}"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_bizapps_fpt_sms_tree" model="ir.ui.view">
+			<field name="name">bizapps.fpt.sms.tree</field>
+			<field name="model">bizapps.fpt.sms</field>
+			<field name="arch" type="xml">
+				<tree string="Bizapps FPT SMS Tree">
+					<field name="phone" />
+					<field name="message" />
+					<field name="message_id" />
+					<field name="partner_id" />
+					<field name="telco" />
+					<field name="date_sent" />
+					<field name="state"/>
+		    		<button name="action_sent" string="Sent" type="object" icon="fa-paper-plane text-success" states="draft" confirm="Are you want Sent SMS FPT!"/>
+		    		<button name="action_resent" string="Resend" type="object" icon="fa-paper-plane text-success" states="error" confirm="Are you want Resend SMS FPT!"/>
+                    <button name="action_cancel" string="Cancel" type="object" icon="fa-times-circle text-danger" states="error,draft" confirm="Are you want Cancel SMS FPT!"/>
+				</tree>
+			</field>
+		</record>
+		<record id="action_bizapps_fpt_sms" model="ir.actions.act_window">
+			<field name="name">SMS</field>
+			<field name="res_model">bizapps.fpt.sms</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+	</data>
+</odoo>

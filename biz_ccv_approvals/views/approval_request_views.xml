@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_request_view_form_ccv" model="ir.ui.view">
+        <field name="name">approval.request.view.form.ccv</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <field name="reason" position="before">
+                <field name="request_note_ids" attrs="{'readonly': [('request_status', '!=', 'new')]}">
+                    <tree editable="bottom">
+                        <field name="description"/>
+                        <field name="quantity"/>
+                        <field name="note"/>
+                    </tree>
+                </field>
+            </field>
+        </field>
+    </record>
+</odoo>

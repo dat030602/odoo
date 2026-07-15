@@ -1,0 +1,65 @@
+<odoo>
+    <record id="view_report_stock_order_ccv" model="ir.ui.view">
+        <field name="name">report.stock.order.ccv.form</field>
+        <field name="model">report.stock.order.ccv</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Lấy dữ liệu" type="object" name="action_get_data" class="oe_highlight"/>
+                    <button string="In" type="object" name="action_generate_report"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_tree" type="object" icon="fa-globe icon">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Chi tiết</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="warehouse_ids" widget="many2many_tags"/>
+                            <field name="team_id"/>
+                            <span></span>
+                            <span attrs="{'invisible': [('team_id', '=', False)]}" 
+                                class="oe_inline" 
+                                style="font-style: italic; color: #555;display:ruby-text;">Lưu ý: Trường &quot;Đội bán hàng&quot; chỉ áp dụng để lọc trong báo cáo, khi bấm chạy dữ liệu sẽ chạy toàn bộ sản phẩm</span>
+                        </group>
+                        <group string="Chữ ký" name="sign">
+                            <field name="voter_id"/>
+                            <field name="team_sale_id"/>
+                            <field name="lead_sale_id"/>
+                            <field name="chief_finance_id"/>
+                            <field name="director_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết" name="line_ids">
+                            <field name="line_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_report_stock_order_ccv_tree" model="ir.ui.view">
+        <field name="name">report.stock.order.ccv.tree</field>
+        <field name="model">report.stock.order.ccv</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="team_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_report_stock_order_ccv_action" model="ir.actions.act_window">
+        <field name="name">Báo cáo hàng tồn kho khu vực</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">report.stock.order.ccv</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_report_stock_order_ccv" name="Báo cáo hàng tồn kho khu vực" action="view_report_stock_order_ccv_action"
+                  parent="account_reports.account_reports_audit_reports_menu" sequence="20"/>
+</odoo>

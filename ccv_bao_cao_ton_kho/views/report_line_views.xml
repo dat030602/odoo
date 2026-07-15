@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_report_line_view_tree" model="ir.ui.view">
+        <field name="name">stock.report.line.view.tree</field>
+        <field name="model">stock.ccv.report.line1</field>
+        <field name="arch" type="xml">
+            <tree action="action_open_reference" type="object">
+                <field name="is_in" invisible="1"/>
+                <field name="name" invisible="1"/>
+                <field name="location_origin_id" optional="hide"/>
+                <field name="date"/>
+                <field name="product_id" optional="show"/>
+                <field name="picking_id" optional="show"/>
+                <field name="ref" optional="show"/>
+                <field name="partner_id" optional="show" options="{'no_open': True, 'no_create': True}"/>
+                <field name="location_id" optional="show"/>
+                <field name="location_dest_id" optional="show"/>
+                <field name="qty" sum="total_qty" optional="show"/>
+                <field name="to_qty_done" digits="[16,3]" sum="total_to_qty_done" optional="show" decoration-success="to_qty_done &gt; 0"/>
+                <field name="from_qty_done" digits="[16,3]" sum="total_from_qty_done" optional="show" decoration-danger="from_qty_done &gt; 0"/>
+                <field name="qty_done" sum="total_qty_done" optional="hide" decoration-success="is_in=='in'" decoration-danger="is_in=='out'"/>
+                <field name="stock_quant_qty" optional="show" decoration-danger="stock_quant_qty &lt; 0"/>
+                <field name="origin" optional="show"/>
+                <field name="state" widget="badge" optional="show" decoration-danger="state=='cancel'" decoration-info="state== 'assigned'" decoration-muted="state == 'draft'" decoration-success="state == 'done'" decoration-warning="state not in ('draft','cancel','done','assigned')"/>
+            </tree>
+        </field>
+    </record>
+    <!-- stock.ccv.report.line1 search view -->
+    <record id="stock_ccv_report_line1_view_search" model="ir.ui.view">
+        <field name="name">stock.ccv.report.line1.view.search</field>
+        <field name="model">stock.ccv.report.line1</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="picking_id"/>
+                <field name="ref"/>
+                <field name="date"/>
+                <field name="location_id"/>
+                <field name="location_dest_id"/>
+                <field name="origin"/>
+                <filter string="Sản phẩm" name="group_by_product_id" context="{'group_by':'product_id'}"/>
+                <filter string="Ngày" name="group_by_date" context="{'group_by':'date'}"/>
+                <filter string="Trạng thái" name="group_by_state" context="{'group_by':'state'}"/>
+                <filter string="Vị trí" name="group_by_location_id" context="{'group_by':'location_origin_id'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>

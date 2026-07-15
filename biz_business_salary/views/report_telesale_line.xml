@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_report_telesale_line_tree" model="ir.ui.view">
+        <field name="name">report.telesale.line.tree</field>
+        <field name="model">report.telesale.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" default_order="stt" create="false">
+                <field name="stt" invisible="1"/>
+                <field name="target_id"/>
+                <field name="performed"/>
+                <field name="plan"/>
+                <field name="achi_rt_cp_to_plan"/>
+                <field name="achieved_money" sum="achieved_money"/>
+                <field name="employee_id" invisible="1"/>
+                <field name="company_currency_id" invisible="1"/>
+                <field name="note"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_report_telesale_line" model="ir.actions.act_window">
+        <field name="name">Report Telesale Line</field>
+        <field name="res_model">report.telesale.line</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+</odoo>

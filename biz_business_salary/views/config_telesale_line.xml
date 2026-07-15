@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_config_telesale_line_tree" model="ir.ui.view">
+        <field name="name">config.telesale.line.tree</field>
+        <field name="model">config.telesale.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="value"/>
+                <field name="compare"/>
+                <field name="achieved_money" sum="achieved_money"/>
+                <field name="company_currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_config_telesale_line" model="ir.actions.act_window">
+        <field name="name">Config Telesale Line</field>
+        <field name="res_model">config.telesale.line</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+</odoo>

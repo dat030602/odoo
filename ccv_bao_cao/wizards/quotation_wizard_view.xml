@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_quotation_report_wizard_new" model="ir.ui.view">
+        <field name="name">quotation.report.wizard.form</field>
+        <field name="model">quotation.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                <group>
+                    <field name="user_id"/>
+                    <field name="date"/>
+                    <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="pricelist_id"/>
+                    <field name="amount_ck"/>
+                    <field name="bonus_price_id"/>
+                    <field name="amount"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="category_ids" nolable="1" domain="[('parent_id','!=',False)]"/>
+                </group>
+                <footer>
+                    <button string="In" type="object" name="action_generate_report" class="oe_highlight"/>
+                    <button string="Hủy" class="oe_link" special="cancel"/>
+                </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_quotation_report_wizard_action" model="ir.actions.act_window">
+        <field name="name">Bảng báo giá</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">quotation.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_quotation_report_wizard_new"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_quotation_report_wizard" name="Bảng báo giá" action="view_quotation_report_wizard_action"
+                  parent="sale.sale_order_menu" sequence="200"/>
+</odoo>

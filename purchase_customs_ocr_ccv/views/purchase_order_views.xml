@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_purchase_order_form_inherit_ocr_extractor" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.ocr_extractor</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_customs_infomation_ccv.view_purchase_order_form_customs_information"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='attachments']//group" position="after">
+                <group>            
+                    <button name="action_run_ocr" type="object" string="Run OCR" class="btn-primary" icon="fa-magic" colspan="2"/>
+                    <field name="ocr_result_json" groups="base.group_no_one" readonly="1" widget="text" invisible="1"/> 
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

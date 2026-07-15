@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_employee_enjoys_tree" model="ir.ui.view">
+        <field name="name">employee.enjoys.tree</field>
+        <field name="model">employee.enjoys</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="employee_id"/>
+                <field name="rate"/>
+                <field name="amount_1_person"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_employee_enjoys_search" model="ir.ui.view">
+        <field name="name">employee.enjoys.search</field>
+        <field name="model">employee.enjoys</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="date" widget="daterange"/>
+                <filter string="Today" name="filter_date_today" domain="[('date', '=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="filter_date_this_month" domain="[('date', '>=', context_today().to_date().replace(day=1).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 7 Days" name="filter_date_last_7_days" domain="[('date', '>=', (context_today().to_date() - relativedelta(days=6)).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 30 Days" name="filter_date_last_30_days" domain="[('date', '>=', (context_today().to_date() - relativedelta(days=29)).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Date" name="filter_date" domain="[]" context="{'group_by': 'date'}"/>
+                <filter string="Employee" name="filter_employee" domain="[]" context="{'group_by': 'employee_id'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_employee_enjoys" model="ir.actions.act_window">
+        <field name="name">Employee Enjoys</field>
+        <field name="res_model">employee.enjoys</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

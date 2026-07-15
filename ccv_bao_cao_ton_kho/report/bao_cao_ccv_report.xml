@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Excel -->
+    <report
+        id="bao_cao_xuat_nhap_ton_report"
+        model="report.line.mixin"
+        string="Báo cáo xuất nhập tồn"
+        report_type="xlsx"
+        name="ccv_bao_cao_ton_kho.bao_cao_xuat_nhap_ton"
+        file="bao_cao_xuat_nhap_ton"
+        attachment_use="False"
+    />
+    <report
+        id="bien_ban_kiem_ke_report"
+        model="report.line.mixin"
+        string="Biên bản kiểm kê"
+        report_type="xlsx"
+        name="ccv_bao_cao_ton_kho.bien_ban_kiem_ke"
+        file="bien_ban_kiem_ke"
+        attachment_use="False"
+    />
+</odoo>

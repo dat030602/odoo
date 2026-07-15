@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+    <record id="cron_update_address_type" model="ir.cron">
+        <field name="name">Update address type</field>
+        <field name="model_id" ref="model_res_users"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_update_address_type()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now()).strftime('%Y-%m-%d 16:59:00')"/>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="cron_update_contact_type" model="ir.cron">
+        <field name="name">Update Contact Type</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_update_contact_type()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now()).strftime('%Y-%m-%d 16:59:00')"/>
+        <field name="active" eval="False"/>
+    </record>
+    
+</odoo>

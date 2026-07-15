@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<record id="mrp_bom_tree_view_biz_production_salary" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherit</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="unit_price_cal_out_worker" digits="[16, 0]"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="mrp_bom_form_view_biz_production_salary" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherit</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group[1]" position="inside">
+                <field name="unit_price_cal_out_worker"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

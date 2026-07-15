@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_viettel_sinvoice_tree" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.tree</field>
+            <field name="model">viettel.sinvoice</field>
+            <field name="arch" type="xml">
+                <tree string="Viettel Sinvoice">
+					<field name="name"/>
+                    <field name="user_id"/>
+                    <field name="company_id"/>
+                    <field name="currency_id"/>
+                    <field name="partner_vat_id"/>
+                    <field name="reservationCode"/>
+                    <field name="transactionID"/>
+                    <field name="invoiceIssuedDate"/>
+                    <field name="state"/>
+                    <field name="einvoice_status"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_viettel_sinvoice_form" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.form</field>
+            <field name="model">viettel.sinvoice</field>
+            <field name="arch" type="xml">
+                <form string="Invoice" class="o_invoice_form">
+	                <header>
+	                	<button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state','not in',(False,'draft'))]}"/>
+	                	
+						<button name="action_create_invoice" string="Issue the invoice" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=',('comfirm'))]}"/>
+
+						<button name="action_create_draft_invoice" string="Issue the draft invoice" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state','!=',('comfirm')), ('issue_draft','=',True)]}"/>
+                        
+                        <widget name="preview_einv_pdf" attrs="{'invisible': ['|',('id','=', False),('state','not in',('draft',False))]}"/>
+
+						<button name="action_draft" string="Unconfirmed" type="object" states="comfirm"/>
+	                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,comfirm,created"/>
+	                </header>
+                	<sheet string="Invoice">
+                		<div name="button_box" string="Button box">
+		                    <button name="open_invoice_adjustment" class="oe_stat_button" icon="fa-bars" type="object" >
+		                        <field string="Invoice adjustment" name="count_adjust_invoice" widget="statinfo"/>
+		                    </button>
+		                </div>
+	                    <group>
+	                        <group>
+	                        	<field name="issue_draft" invisible="1"/>
+			                    <field name="company_id" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+			                    <field name="currency_id" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+			                    <field name="partner_vat_id" attrs="{'readonly': [('state','not in',(False,'draft'))]}" required="1"/>
+			                    <field name='partner_vat_name' attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+			                    <field name="partner_vat_address" attrs="{'readonly': [('state','not in',(False,'draft'))]}" required="1"/>
+			                    <field name="partner_vat" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+			                    <field name="invoice_id" readonly="1"/>
+	                        </group>
+	                        <group>
+	                        	<field name="config_id" required="1"/>
+	                        	<field name="item_type_set_id"/>
+			                    <field name="type" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+			                    <field name="journal_id" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+                                <field name="user_id" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+                                <field name="einvoice_status" readonly='1'/>
+                                <field name="vsi_type_id"/>
+                                <field name="vsi_type_code" invisible="1"/>
+								<field name="attachment_ids" widget="many2many_binary" string="PDF file" />
+	                        </group>
+	                    </group>
+	                    <group>
+	                    	<group attrs="{'invisible': [('vsi_type_code','!=','04HGDL')]}">
+	                    		<field name="economicContractNo"/>
+	                    		<field name="transformer" string="Hợp đồng kinh tế số"/>
+	                    		<field name="vehicle"/>
+	                    		<field name="contractNo"/>
+	                    		<field name="commandDate"/>
+	                    		<field name="HVTNXHang"/>
+	                    	</group>
+	                    	<group attrs="{'invisible': [('vsi_type_code','!=','03XKNB')]}">
+	                    		<field name="economicContractNo"/>
+	                    		<field name="transformer"/>
+	                    		<field name="vehicle"/>
+	                    		<field name="contractNo"/>
+	                    		<field name="commandDate"/>
+	                    		<field name="HVTNXHang"/>
+	                    	</group>
+	                    	<group attrs="{'invisible': [('vsi_type_code','!=','07KPTQ')]}">
+	                    		<field name="KPTQuan"/>
+	                    	</group>
+	                    	<group attrs="{'invisible': [('vsi_type_code','not in',['04HGDL','03XKNB'])]}">
+	                    		<field name="exportAt"/>
+	                    		<field name="importAt"/>
+	                    	</group>
+	                    </group>
+	                    <notebook colspan="4">
+	                        <page string="Data">
+	                			<field name="sinvoice_data_ids" no-edit="0" nolabel="1" widget="section_and_note_one2many" mode="tree,kanban" context="{'type': type, 'journal_id': journal_id, 'default_sinvoice_id': id}" attrs="{'readonly': [('state','not in',(False,'draft'))]}">
+	                				<tree editable="bottom">
+										<control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                            <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                            <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                        </control>
+										<field name="sequence" widget="handle" />
+		                                <field name="product_id" domain="[('sale_ok','=',True)]"/>
+		                                <field name="origin" invisible="1"/>
+		                                <field name="name" widget="section_and_note_text"/>
+		                                <field name="company_id" invisible="1"/>
+		                                <field name="account_id" groups="account.group_account_user" domain="[('company_id', '=', parent.company_id), ('deprecated', '=', False)]"/>
+		                                <field name="quantity"/>
+		                                <field name="product_uom_id" groups="uom.group_uom"/>
+		                                <field name="price_unit" string="Price"/>
+										<field name="discount"/>
+		                                <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}" context="{'type':parent.type, 'tree_view_ref': 'account.account_tax_view_tree', 'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id', '=', parent.company_id)]"/>
+		                                <field name="price_subtotal" string="Subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+		                                <field name="price_total" string="Total" groups="account.group_show_line_subtotals_tax_included"/>
+		                                <field name="currency_id" invisible="1"/>
+										<field name="display_type" invisible="1"/>
+		                                <field name="vsi_item_type"/>
+	                				</tree>
+                                    <form>
+    	                				<group>
+                                            <field name="price_total" invisible="1"/>
+                                            <field name="sinvoice_id" invisible="1"/>
+                                            <group>
+                                                <field name="product_id"/>
+                                                <field name="name"/>
+                                                <field name="account_id" groups="account.group_account_user" domain="[('company_id', '=', parent.company_id), ('deprecated', '=', False)]"/>
+                                                <field name="product_uom_id" groups="uom.group_uom"/>
+												<field name="vsi_item_type" required="1"/>
+                                                
+                                            </group>
+                                            <group>
+                                                <field name="quantity"/>
+                                                <field name="price_unit" string="Price"/>
+                                                <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}" context="{'type':parent.type, 'tree_view_ref': 'account.account_tax_view_tree', 'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id', '=', parent.company_id)]"/>
+                                                <field name="price_subtotal" string="Subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                                <field name="price_total" string="Total" groups="account.group_show_line_subtotals_tax_included"/>
+                                            </group>
+                                        </group>
+                                    </form>
+	                			</field>
+	                		</page>
+	                		<page string="E-Invoice">
+		                    	<field name="sinvoice_line_ids" no-edit="1" attrs="{'readonly': [('state','not in',(False,'draft'))]}">
+		                      		<tree>
+		                      			<field name="transactionUuid" groups="base.group_no_one"/>
+			                      		<field name="invoiceNo"/>
+			                      		<field name="supplierTaxCode"/>
+			                      		<field name="transactionID"/>
+			                      		<field name="create_date"/>
+			                      		<field name="state"/>
+		                      		</tree>
+		                      		<form>
+			                            <header>
+			                                <button name="action_download_invoice_representation_file" type="object" class="oe_highlight" string="Download PDF" icon="fa-print" attrs="{'invisible': [('downloaded', '=',True)]}"/>
+			                                <button name="action_download_exchange_invoice_file" type="object" class="oe_highlight" string="Download exchange invoice file" icon="fa-download" attrs="{'invisible': [('exchange_file_downloaded', '=',True)]}"/>
+			                                <button name="%(biz_viettel_sinvoice_v2.action_sinvoice_cancel)d" context="{'model': 'viettel.sinvoice.line',}" type="action" class="oe_highlight" string="Cancel SInvoice" icon="fa-remove" attrs="{'invisible': [('state', '!=',('created'))]}"/>
+			                                <button name="%(biz_viettel_sinvoice_v2.action_sinvoice_edit)d"  context="{'type': 'info','default_type': 'info',}" type="action" class="oe_highlight" string="Update SInvoice" icon="fa-edit" attrs="{'invisible': [('state', '!=',('created'))]}"/>
+
+			                                <button name="action_get_invoices" type="object" string="Get Invoice" groups="base.group_no_one"/>
+			                                <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,created"/>
+			                            </header>
+			                            <group>
+			                                <group>
+			                                	<field name="state"/>
+			                                    <field name="invoiceNo"/>
+                                                <field name="type"/>
+                                                <field name="reservationCode"/>
+                                                <field name="invoiceIssuedDate"/>
+                                                <field name="originalInvoiceIssueDate"/>
+                                                <field name="templateCode"/>
+                                                <field name="totalBeforeTax"/>
+                                                <field name='buyerLegalName'/>
+                                                <field name="buyerAddressLine"/>
+                                                <field name="buyerTaxCode"/>
+                                                <field name="buyerCode"/>
+                                                <field name="currencyCode"/>
+			                                </group>
+			                                <group>
+			                                    <field name="transactionID"/>
+			                                    <field name="create_date"/>
+                                                <field name="invoiceId"/>
+                                                <field name="invoiceType"/>
+                                                <field name="invoiceSeri"/>
+                                                <field name="adjustmentType"/>
+                                                <field name="invoiceNumber"/>
+                                                <field name="taxAmount"/>
+                                                <field name="buyerName"/>
+                                                <field name="paymentStatus"/>
+                                                <field name="createTime"/>
+                                                <field name="total"/>
+                                            </group>
+			                                <group>
+			                                   <field name="downloaded" invisible="1"/>
+			                                   <field name="exchange_file_downloaded" invisible="1"/>
+			                                   <field name="attachment_ids" widget="many2many_binary" string="PDF file" colspan="2"/>
+			                                   <field name="exchange_file_ids" widget="many2many_binary" string="Exchange file" colspan="2"/>
+			                                </group>
+			                            </group>
+			                        </form>
+		                      	</field>
+							</page>
+	                    </notebook>
+	                </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_viettel_sinvoice" model="ir.actions.act_window">
+            <field name="name">Viettel Sinvoice</field>
+            <field name="res_model">viettel.sinvoice</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <menuitem id="menu_viettel_sinvoice" name="Viettel Invoice" action="action_viettel_sinvoice" sequence="13" web_icon="biz_viettel_sinvoice_v2,static/description/icon.png" groups="biz_viettel_sinvoice_v2.group_viettel_user"/>
+        <menuitem id="menu_account_viettel_sinvoice" parent="biz_viettel_sinvoice_v2.menu_viettel_sinvoice" action="action_viettel_sinvoice" sequence="1"/>
+    </data>
+</odoo>

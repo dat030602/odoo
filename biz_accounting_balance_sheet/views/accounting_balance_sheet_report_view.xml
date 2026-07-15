@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="view_accounting_balance_sheet_report_tree" model="ir.ui.view">
+            <field name="name">accounting.balance.sheet.report.tree</field>
+            <field name="model">accounting.balance.sheet.report</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="previous_id"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="template_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_accounting_balance_sheet_report_form" model="ir.ui.view">
+            <field name="name">accounting.balance.sheet.report.form</field>
+            <field name="model">accounting.balance.sheet.report</field>
+            <field name="arch" type="xml">
+              	<form>
+                    <header>
+                        <button name="action_calculate" string="Calculate" class="btn-primary" type="object"/>
+                        <button name="action_closed" states="draft" string="Closing" type="object"/>
+                        <button name="action_open" string="Open" states="closed" type="object" />
+                        <field name="state" widget="statusbar"/>                         
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="action_view_detail"
+                                    string="Detail" type="object"
+                                    icon="fa-bars"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="previous_id" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                                <field name="from_date" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                                <field name="to_date" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                                <field name="template_id" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="line_ids" nolabel="1" colspan="2" attrs="{'readonly': [('state','=', 'closed')]}">
+                                <tree editable="bottom" default_order="code">
+                                    <field name="balance_id"/>
+                                    <field name="code"/>
+                                    <field name="number_last_year"/>
+                                    <field name="number_first_year"/>
+                                    <field name="apply_by" invisible="1"/>
+                                    <button attrs="{'invisible': [('apply_by','=','total_categ')]}" name="view_move_line" class="btn-primary" string="View detail" type="object"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+      	</record>
+
+        <record id="action_accounting_balance_sheet_report" model="ir.actions.act_window">
+            <field name="name">Accounting balance sheet</field>
+            <field name="res_model">accounting.balance.sheet.report</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_accounting_balance_sheet_report_line_tree" model="ir.ui.view">
+            <field name="name">accounting.balance.sheet.report.line.tree</field>
+            <field name="model">accounting.balance.sheet.report.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="balance_id"/>
+                    <field name="code"/>
+                    <field name="number_first_year"/>
+                    <field name="number_last_year"/>
+                    <field name="apply_by" invisible="1"/>
+                    <button class="btn-primary" attrs="{'invisible': [('apply_by','=','total_categ')]}" name="view_move_line" string="View detail" type="object"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_accounting_balance_sheet_report_line_search" model="ir.ui.view">
+            <field name="name">accounting.balance.sheet.report.line.search</field>
+            <field name="model">accounting.balance.sheet.report.line</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="balance_id"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_accounting_balance_sheet_report_line" model="ir.actions.act_window">
+            <field name="name">Accounting balance sheet detail</field>
+            <field name="res_model">accounting.balance.sheet.report.line</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+    </data>
+</odoo>

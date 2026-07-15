@@ -1,0 +1,38 @@
+<odoo>
+    <record id="view_stock_picking_detail_wizard_form" model="ir.ui.view">
+        <field name="name">stock.picking.detail.wizard.form</field>
+        <field name="model">stock.picking.detail.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết đơn mua hàng" readonly="1">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <group>
+                    <group>
+                        <field name="picking_id"/>
+                        <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="picking_type_id"/>
+                        <field name="location_id"/>
+                        <field name="location_dest_id"/>
+                    </group>
+                    <group>
+                        <field name="stock_date_receipt"/>
+                        <field name="origin"/>
+                    </group>
+                </group>
+                <field name="move_ids" nolabel="1">
+                    <tree>
+                        <field name="product_id"/>
+                        <field name="product_uom_qty"/>
+                        <field name="product_uom"/>
+                        <field name="quantity_done"/>
+                        <field name="state" invisible="1"/>
+                    </tree>
+                </field>
+                <footer>
+                    <button string="Đóng" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo> 

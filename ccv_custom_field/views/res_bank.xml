@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<record id="view_res_bank_form_inherit_ccv" model="ir.ui.view">
+<field name="name">res.bank.form.inherit.ccv</field>
+<field name="model">res.bank</field>
+<field name="inherit_id" ref="base.view_res_bank_form"/>
+<field name="arch" type="xml">
+<xpath expr="//field[@name='email']" position="after">
+<field name="napas_code"/>
+</xpath>
+</field>
+</record>
+</data>
+</odoo>

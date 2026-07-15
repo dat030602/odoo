@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="giay_thanh_toan_tien_tam_ung_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.giay_thanh_toan_tien_tam_ung_document"
+                       t-lang="doc.user_id.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="giay_thanh_toan_tien_tam_ung_document">
+            <t t-call="ccv_sql.ccv_header2">
+                <div class="page" style="font-size: 10px;font-family: Times New Roman">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong>
+                            <t t-esc="doc.name"/>
+                        </strong>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center; margin-top: 10px;">
+                        <strong>Ngày chứng từ: <t t-esc="doc.convert_print(doc.date_to)"/>
+                        </strong>
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        Họ tên người thanh toán: <t t-esc="doc.partner_id.name"/>
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        Bộ phận (Hoặc địa chỉ):  <t t-esc="doc.department"/>
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        Số tiền tạm ứng được thanh toán theo bảng dưới đây:
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        I/ Số tiền tạm ứng:
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        II/ Số tiền đã chi:
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                            <tr>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>STT</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Ghi nợ</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Ghi có</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Số tiền</strong>
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <strong>Diễn giải</strong>
+                                </td>
+                            </tr>
+                            <t t-set="number" t-value="0"/>
+                            <t t-foreach="doc.line5_ids" t-as="line">
+                                <t t-set="number" t-value="number + 1"/>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span style="text-align: center; vertical-align: middle;" t-esc="number"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span t-esc="line.account_id.code"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle">
+                                        <span t-esc="line.account_dest_id.code"/>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle">
+                                        <span t-esc="doc.convert_vnd(line.credit)"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span t-esc="line.note"/>
+                                    </td>
+                                </tr>
+                            </t><!--end for-->
+                            <tr>
+                                <td colspan="3" style="text-align: left;">
+                                    <strong>Tổng cộng</strong>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line5_ids.mapped('credit')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(sum(doc.line5_ids.mapped('credit')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <t t-if="doc.page_break">
+                        <p style="page-break-after:always;"></p>
+                    </t>
+                    <div class="row" style="margin-left: 2px">
+                        III/ Chênh lệch:
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 4px">
+                        1 Số tạm ứng chi không hết ( I -
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 4px">
+                        2 Chi quá số tạm ứng (II - I):
+                    </div>
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span>
+                                <strong>Thủ trưởng đơn vị</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Kế toán trưởng</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Kế toán thanh toán</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Người đề nghị thanh toán</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </t>
+        </template>
+
+        <record id="giay_thanh_toan_tien_tam_ung_report" model="ir.actions.report">
+            <field name="name">Giấy thanh toán tiền tạm ứng</field>
+            <field name="model">alpha.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.giay_thanh_toan_tien_tam_ung_template</field>
+            <field name="report_file">ccv_sql.giay_thanh_toan_tien_tam_ung_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+            <field name="print_report_name">'Giấy thanh toán tiền tạm ứng'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

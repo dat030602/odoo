@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_summary_output_daily_work_tree" model="ir.ui.view">
+        <field name="name">summary.output.daily.work.tree</field>
+        <field name="model">summary.output.daily.work</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="date_of_last_contract_push"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state in ('refuse', 'cancel')" decoration-info="state == 'approve'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_summary_output_daily_work_search" model="ir.ui.view">
+        <field name="name">summary.output.daily.work.search</field>
+        <field name="model">summary.output.daily.work</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="department_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <filter string="Department" name="filter_department" domain="[]" context="{'group_by': 'department_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_summary_output_daily_work_form" model="ir.ui.view">
+        <field name="name">summary.output.daily.work.form</field>
+        <field name="model">summary.output.daily.work</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="is_user_current" invisible="1"/>
+                    <button string="In PDF" name="action_print_pdf" type="object"/>
+                    <button name="action_summary" string="Summary" type="object"/>
+                    <button name="push_up_contract" string="Push up contract" type="object"/>
+                    <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                            attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                            attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_refuse" type="object" string="Từ chối"
+                            attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_cancel" type="object" string="Hủy"
+                            attrs="{'invisible': [('state', 'not in', ('approve'))]}"/>
+                    <button name="action_undo" type="object" string="Đặt về Nháp"
+                            attrs="{'invisible': [('state', 'not in', ('refuse', 'cancel'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approve,approved"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Đã duyệt" attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                    <widget name="web_ribbon" title="Hủy" attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                    <widget name="web_ribbon" title="Từ chối" attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_line_ids" string="View details" type="object" class="oe_highlight" icon="fa-list"/>
+                        <button name="action_view_line_1_ids" string="View By day" type="object" class="oe_highlight" icon="fa-calendar"/>
+                        <button name="action_view_line_2_ids" string="View Final Total" type="object" class="oe_highlight" icon="fa-calculator"/>
+                    </div>
+                    <group>
+                        <group string="Thông tin">
+                            <field name="name" attrs="{'readonly': [('state','!=','draft')]}" force_save="1"/>
+                            <field name="date_from" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="date_to" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="department_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="date_of_last_contract_push" readonly="1"/>
+                        </group>
+                        <group string="Người ký">
+                            <field name="voter_id" attrs="{'readonly': [('state','!=','draft')]}" options="{'no_create': True}"/>
+                            <field name="loading_department_id" attrs="{'readonly': [('state','!=','draft')]}" options="{'no_create': True}"/>
+                            <field name="hr_department_id" attrs="{'readonly': [('state','!=','draft')]}" options="{'no_create': True}"/>
+                            <field name="chief_accountant_id" attrs="{'readonly': [('state','!=','draft')]}" options="{'no_create': True}"/>
+                            <field name="director_id" attrs="{'readonly': [('state','!=','draft')]}" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Summary of output spreadsheet" name="line_ids">
+                            <field name="line_ids" readonly="1"/>
+                        </page>
+                        <page string="Total amount received by day" name="line_1_ids">
+                            <field name="line_1_ids" readonly="1"/>
+                        </page>
+                        <page string="Final Total" name="line_2_ids">
+                            <field name="line_2_ids" readonly="1"/>
+                        </page>
+                        <page name="trp_approve_history" string="Lịch sử duyệt">
+                            <group>
+                                <field name="trp_approve_config_line_id" invisible="1"/>
+                                <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                <field name="delegate_approver_ids" widget="many2many_tags"
+                                       domain="[('id','not in',current_approve_user_ids)]" groups="base.group_system"/>
+                            </group>
+                            <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_summary_output_daily_work" model="ir.actions.act_window">
+        <field name="name">Summary of output for daily work</field>
+        <field name="res_model">summary.output.daily.work</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_summary_output_daily_work"
+        name="Summary of output for daily work"
+        parent="biz_production_salary.menu_common_worker_output_salary"
+        sequence="30"
+        action="action_summary_output_daily_work"
+        />
+
+    
+</odoo>

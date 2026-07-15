@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model='ir.ui.menu' id='account.account_reports_legal_statements_menu'>
+        <field name="groups_id" eval="[(4,ref('account.group_account_invoice'))]"/>
+    </record>
+    <record id="account_move_tree_inherit_js_class" model="ir.ui.view">
+        <field name="name">account.move.tree.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">button_create_invoice</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_move_form_inherit_ccv" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.ccv</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_right_group']" position="inside">
+                <label for="exchange_rate" string="Exchange Rate"/>
+                <div class="o_row">
+                    <field name="exchange_rate" options="{'no_quick_create': True, 'no_create_edit': True,'no_open': True}" context="{'order_display': 'name desc'}"/>
+                    <button name="create_new_exchange_rate" string="New" type="object" class="oe_link pt-0"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='note']" position="after">
+                <field name="partner_bank_id" options="{'no_create': True}"/>
+                <field name="number_ctnb"/>
+            </xpath>
+
+           <xpath expr="//sheet/group/group/label[@for='ref']" position="attributes">
+                <attribute name="string">Reference</attribute>
+            </xpath>
+
+            <field name="ref" position="after">
+                <field name="series" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_receipt', 'in_refund'))]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="account.action_report_payment_receipt" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+    <record id="account.action_move_in_invoice_type" model="ir.actions.act_window">
+        <field name="domain">[('journal_id.type','=','purchase')]</field>
+    </record>
+    <record id="account.action_move_out_invoice_type" model="ir.actions.act_window">
+        <field name="domain">[('journal_id.type','=','sale')]</field>
+    </record>
+</odoo>

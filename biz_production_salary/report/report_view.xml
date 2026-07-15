@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="action_report_salary_by_production_xlsx" model="ir.actions.report">
+        <field name="name">Salary report by production</field>
+        <field name="model">summary.output.daily.work</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">biz_production_salary.report_salary_by_production_xlsx</field>
+        <field name="report_file">biz_production_salary.report_salary_by_production_xlsx</field>
+        <field name="print_report_name">'BÁO CÁO LƯƠNG THEO SẢN LƯỢNG'</field>
+        <field name="binding_model_id" ref="model_summary_output_daily_work"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="paperformat_salary_by_production_pdf" model="report.paperformat">
+        <field name="name">Salary by Production Paperformat</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">28</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">25</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_salary_by_production_pdf" model="ir.actions.report">
+        <field name="name">Salary report by production PDF</field>
+        <field name="model">summary.output.daily.work</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_production_salary.report_salary_by_production_pdf</field>
+        <field name="report_file">biz_production_salary.report_salary_by_production_pdf</field>
+        <field name="print_report_name">'BÁO CÁO LƯƠNG THEO SẢN LƯỢNG (PDF)'</field>
+        <field name="binding_model_id" ref="model_summary_output_daily_work"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="biz_production_salary.paperformat_salary_by_production_pdf"/>
+    </record>
+
+    <record id="action_report_salary_bx_xlsx" model="ir.actions.report">
+        <field name="name">SX Payroll</field>
+        <field name="model">popup.print.salary.bx.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">biz_production_salary.report_salary_bx_xlsx</field>
+        <field name="report_file">biz_production_salary.report_salary_bx_xlsx</field>
+        <field name="print_report_name">'BẢNG LƯƠNG SX'</field>
+        <field name="binding_model_id" ref="model_popup_print_salary_bx_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_advance_salary_payment_xlsx" model="ir.actions.report">
+        <field name="name">In Bảng Lương (Excel)</field>
+        <field name="model">advance.salary.summary</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">biz_production_salary.report_advance_salary_payment_xlsx</field>
+        <field name="report_file">biz_production_salary.report_advance_salary_payment_xlsx</field>
+        <field name="print_report_name">'BẢNG THANH TOÁN TẠM ỨNG LƯƠNG'</field>
+        <field name="binding_model_id" ref="model_advance_salary_summary"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

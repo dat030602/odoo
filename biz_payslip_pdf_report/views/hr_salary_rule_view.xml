@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_salary_rule_form_inherit" model="ir.ui.view">
+            <field name="name">hr.salary.rule.form.inherit</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='main_details']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[@name='main_details']" position="after">
+                    <group>
+                        <group>
+                           <field name="code"/>
+                           <field name="struct_id"/>
+                           <field name="appears_on_payslip"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="payslip_no"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group></group>
+                        <group string="PDF Information">
+                            <field name="is_bold"/>
+                            <field name="index_display"/>
+                            <field name="unit"/>
+                            <field name="is_display_title"/>
+                            <field name="config_a_category"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

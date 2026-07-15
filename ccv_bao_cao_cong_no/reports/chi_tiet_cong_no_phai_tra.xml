@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="chi_tiet_cong_no_phai_tra_template_ccv_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_bao_cao_cong_no.chi_tiet_cong_no_phai_tra_document_ccv_report"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="chi_tiet_cong_no_phai_tra_document_ccv_report">
+            <t t-call="ccv_sql.ccv_header">
+                <div class="page" style="font-size: 14px;font-family: Times New Roman">
+                    <t t-set="is_many" t-value="doc.report_type not in ('1')"/>
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong>Chi Tiết Công Nợ Phải Trả <t t-if="doc.report_type == 'team' and doc.team_id" t-esc="doc.team_id.report_name"/></strong>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center; margin-top: 10px;">
+                        <strong>Tài khoản: &amp;nbsp;<t t-esc="','.join(doc.account_ids.mapped('code'))"/>;Loại tiền: <t t-if="doc.currency_id"><t t-esc="doc.currency_id.name"/> </t><t t-else="">VND</t><t t-if="not is_many">; Khách hàng:&amp;nbsp;
+                            <t t-esc="doc.partner_id.name"/></t>; Từ ngày &amp;nbsp;<t
+                                    t-esc="doc.convert_print(doc.date_from)"/>&amp;nbsp; đến ngày &amp;nbsp;
+                            <t t-esc="doc.convert_print(doc.date_to)"/>
+                        </strong>
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm fixed" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                            <col width="5%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <col width="7%"/>
+                            <tr>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>STT</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>Ngày hạch toán</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>Ngày chứng từ</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>Số chứng từ</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>Số hóa đơn</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>Diễn giải</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>TK công nợ</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>TK đối ứng</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" colspan="2">
+                                    <strong>Phát sinh</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" colspan="2">
+                                    <strong>Số dư</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" rowspan="2">
+                                    <strong>Số lượng</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Nợ</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Có</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Nợ</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Có</strong>
+                                </td>
+                            </tr>
+
+
+                            <t t-set="total_last_end_debit" t-value="0"/>
+                            <t t-set="total_last_end_credit" t-value="0"/>
+                            <t t-foreach="doc.line2_ids.mapped('partner_id')" t-as="partner_id">
+                                <t t-set="number" t-value="0"/>
+                                <tr t-if="is_many">
+                                    <td colspan="14" style="text-align: left;">
+                                        <strong t-esc="partner_id.name"/>
+                                    </td>
+                                </tr>
+                                <t t-foreach="doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id)" t-as="line">
+                                    <t t-set="number" t-value="number + 1"/>
+                                    <tr>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span style="text-align: center; vertical-align: middle;" t-esc="number"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="doc.convert_print(line.invoice_date)"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="doc.convert_print(line.date)"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="line.move_id.name"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="line.reference"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="line.note"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="line.account_id.code"/>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <span t-esc="line.account_dest_id.code"/>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <t t-if="line.ps_debit > 0">
+                                                <span t-esc="doc.convert_vnd(line.ps_debit)"/>
+                                            </t>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <t t-if="line.ps_credit > 0">
+                                                <span t-esc="doc.convert_vnd(line.ps_credit)"/>
+                                            </t>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <t t-if="line.end_debit > 0">
+                                                <span t-esc="doc.convert_vnd(line.end_debit)"/>
+                                            </t>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <t t-if="line.end_credit > 0">
+                                                <span t-esc="doc.convert_vnd(line.end_credit)"/>
+                                            </t>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <t t-if="line.product_uom_quantity > 0">
+                                                <span t-esc="doc.convert_number(line.product_uom_quantity)"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-set="last_end_debit" t-value="doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('end_debit')[-1] if doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id) else 0"/>
+                                <t t-set="last_end_credit" t-value="doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('end_credit')[-1] if doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id) else 0"/>
+                                <t t-set="total_last_end_debit" t-value="total_last_end_debit + last_end_debit"/>
+                                <t t-set="total_last_end_credit" t-value="total_last_end_credit + last_end_credit"/>
+                                <tr t-if="is_many">
+                                    <td colspan="8" style="text-align: left;">
+                                        <strong t-esc="'Tổng công nợ khách hàng ' + partner_id.name"></strong>
+                                    </td>
+                                    <t t-set="total_debit" t-value="sum(doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('ps_debit'))"/>
+                                    <t t-set="total_credit" t-value="sum(doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('ps_credit'))"/>
+                                    <t t-set="last_end_debit" t-value="doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('end_debit')[-1] if doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id) else 0"/>
+                                    <t t-set="last_end_credit" t-value="doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('end_credit')[-1] if doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id) else 0"/>
+
+                                    <td style="text-align: right;">
+                                        <t t-if="total_debit > 0">
+                                            <strong>
+                                                <span t-esc="doc.convert_vnd(total_debit)"/>
+                                            </strong>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="total_credit > 0">
+                                            <strong>
+                                                <span t-esc="doc.convert_vnd(total_credit)"/>
+                                            </strong>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="last_end_debit > 0">
+                                            <strong>
+                                                <span t-esc="doc.convert_vnd(last_end_debit)"/>
+                                            </strong>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="last_end_credit > 0">
+                                            <strong>
+                                                <span t-esc="doc.convert_vnd(last_end_credit)"/>
+                                            </strong>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="sum(doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('product_uom_quantity')) > 0">
+                                            <strong>
+                                                <span t-esc="doc.convert_number(sum(doc.line2_ids.filtered(lambda l:l.partner_id.id == partner_id.id).mapped('product_uom_quantity')))"/>
+                                            </strong>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t><!--end for-->
+                            
+                            <tr>
+                                <td colspan="8" style="text-align: left;">
+                                    <strong>Tổng cộng</strong>
+                                </td>
+                                <t t-set="total_debit" t-value="sum(doc.line2_ids.mapped('ps_debit'))"/>
+                                <t t-set="total_credit" t-value="sum(doc.line2_ids.mapped('ps_credit'))"/>
+
+                                <td style="text-align: right;">
+                                    <t t-if="total_debit > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(total_debit)"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="total_credit > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(total_credit)"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="total_last_end_debit > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(total_last_end_debit)"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="total_last_end_credit > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(total_last_end_credit)"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line2_ids.mapped('product_uom_quantity')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_number(sum(doc.line2_ids.mapped('product_uom_quantity')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <t t-if="doc.is_break">
+                        <p style="page-break-after:always;"></p>
+                    </t>
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-4">
+                        </div>
+                        <div class="col-4">
+                            <span>Ngày .... tháng .... năm ....</span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="padding-top: 2px; margin-left: 2px;text-align: center;">
+                        <div class="col-4">
+                            <span>
+                                <strong>Người lập</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                            <t t-if="doc.voter_id">
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <span>
+                                    <!-- <strong t-esc="doc.voter_id.name"/> -->
+                                </span>
+                            </t>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                <strong>Kế toán trưởng</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                            <t t-if="doc.chief_acc_id">
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <span>
+                                    <!-- <strong t-esc="doc.chief_acc_id.name"/> -->
+                                </span>
+                            </t>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                <strong>Thủ trưởng đơn vị</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                            <t t-if="doc.unit_heads_id">
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <span>
+                                    <!-- <strong t-esc="doc.unit_heads_id.name"/> -->
+                                </span>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

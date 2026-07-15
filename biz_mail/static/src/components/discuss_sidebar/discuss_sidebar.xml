@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="mail.DiscussSidebar" t-inherit-mode="extension">
+        <xpath expr="//hr[hasclass('o_DiscussSidebar_separator')]" position="before">
+            <!-- <input class="o_DiscussSidebar_messagesSearch" style="margin-top: 10px;" t-on-input="_onInputGroupsMessagesSearch" placeholder="Messages of People, Groups search..." t-ref="groupMessagesSearchInput" t-esc="discuss.sidebaGroupsMessagesValue"/> -->
+            <input class="o_DiscussSidebar_messagesSearch" style="margin-top: 10px;" t-on-input="discussView.onInputGroupMessagesSearch" placeholder="Messages of People, Groups search..." t-ref="groupMessagesSearchInput"/>
+            
+        </xpath>
+    </t>
+
+</templates>

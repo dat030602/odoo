@@ -1,0 +1,166 @@
+.o_org_chart {
+    position: relative;
+    display: inline-block;
+    overflow: auto;
+    text-align: center;
+    background: #f9f9f9;
+    width: 100%;
+    height: 100%;
+
+    #to_org_chart {
+        width: 100%;
+        height: 100%;
+
+        .to_org_chart {
+            background: #f9f9f9;
+
+            table {
+                width: 100%;
+            }
+
+            .node_menu {
+                width: 20px;
+                height: 34px;
+                line-height: 34px;
+                position: absolute;
+                right: 3px;
+                top: 3px;
+                border-radius: 0 6px 0 0;
+                transition: all ease .5s;
+                cursor: pointer;
+                color: rgba(101, 70, 132, 0.8);
+
+                a {
+                    display: block;
+                }
+
+                .node_menu_container {
+                    padding: 12px;
+                    min-width: 100px;
+                    background: white;
+                    display: inline-block;
+                    transition: all ease .5s;
+                    border-radius: 6px;
+                    box-shadow: 0px 3px 8px #cacaca;
+                    z-index: 1200;
+                    transform: translateY(-17px);
+                }
+            }
+
+            .node_menu:hover {
+                background: rgba(46, 41, 74, 0.1);
+            }
+
+            .company_node {
+                background: #b6dbfb !important;
+                padding: 7px;
+                font-size: 1.3em;
+
+                .node_menu {
+                    height: 54px;
+                    line-height: 54px;
+                    border-radius: 0 6px 6px 0;
+                }
+            }
+
+            .year_node {
+                background: #fbb6b6 !important;
+            }
+
+            .quarter_node {
+                background: #cbb6fb !important;
+            }
+
+            .node_content {
+                background: white;
+                border-radius: 7px;
+                border: 1px solid #e6e6e6;
+                box-shadow: 0px 2px 8px #e6e6e6;
+                transition: all ease .5s;
+                cursor: default;
+                min-width: 200px;
+
+                @media only screen and (max-width: 600px) {
+                    min-width: 0px;
+                }
+
+                .objective_name {
+                    padding: 8px 22px 4px 8px;
+                    border-radius: 6px 6px 0 0;
+                    font-weight: 600;
+                    font-size: 1.1em;
+                }
+
+                .department {
+                    background: #f1f1f1;
+                    padding: 2px 8px;
+                }
+
+                .bottom_block {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 6px;
+
+                    .owner {
+                        img {
+                            height: 26px;
+                            width: 26px;
+                            object-fit: cover;
+                        }
+                    }
+
+                    .points {
+                        font-weight: 600;
+                        height: 16px;
+                        align-self: center;
+                    }
+                }
+
+                .progress {
+                    height: 4px;
+                    border-radius: 0 0 6px 6px;
+                }
+            }
+
+            .node:hover {
+
+                .node_content {
+                    border: 1px solid #834486;
+                    box-shadow: 0px 4px 15px #c7c7c7;
+
+                    .progress {
+                        height: 6px;
+                    }
+                }
+            }
+
+            .node.focused {
+                .node_content{
+                    border: 1px solid #834486;
+                    box-shadow: 0px 4px 15px #c7c7c7;
+
+                    .progress {
+                        height: 6px;
+                    }
+                }
+            }
+
+            .lines {
+                .topLine {
+                    border-top: 2px solid #02b6c9;
+                }
+                .rightLine {
+                    border-right: 1px solid #02b6c9;
+                }
+                .leftLine {
+                    border-left: 1px solid #02b6c9;
+                }
+                .downLine {
+                    background-color: #02b6c9;
+                    // margin: 0;
+                    // margin-left: calc(50% - 2px);
+                }
+            }
+        }
+    }
+}

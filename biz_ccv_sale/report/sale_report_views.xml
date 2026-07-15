@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_order_product_search_inherited" model="ir.ui.view">
+        <field name="name">sale.report.search.inherited</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='Sales']" position="after">
+                <filter string="Not a Promotional Product" name="is_promotional_product" domain="[('is_promotional_product', '!=', True)]"/>
+                <filter string="Sales Order Type" name="filter_sale_order_type" domain="[('sale_order_type_id', '!=', False)]"/>
+            </xpath>
+            <xpath expr="//field[@name='industry_id']" position="after">
+                <field name="state_id"/>
+                <field name="district_id"/>
+                <field name="wards_id"/>
+            </xpath>
+            <xpath expr="//filter[@name='status']" position="after">
+                <filter string="Province/City" name="group_state" context="{'group_by':'state_id'}"/>
+                <filter string="District" name="group_district" context="{'group_by':'district_id'}"/>
+                <filter string="Wards" name="group_wards" context="{'group_by':'wards_id'}"/>
+                <filter string="Sales Order Type" name="group_sale_order_type" domain="[]" context="{'group_by': 'sale_order_type_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

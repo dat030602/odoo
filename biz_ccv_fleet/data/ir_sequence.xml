@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sequence_fleet_services_registration_seq" model="ir.sequence">
+            <field name="name">fleet service registration sequence</field>
+            <field name="code">fleet.service.registration</field>
+            <field name="prefix">DVDK</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">5</field>
+            <field eval="False" name="company_id"/>
+        </record>
+        <record id="sequence_fleet_services_maintenance_seq" model="ir.sequence">
+            <field name="name">fleet service maintenance sequence</field>
+            <field name="code">fleet.service.maintenance</field>
+            <field name="prefix">DVBD</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">5</field>
+            <field eval="False" name="company_id"/>
+        </record>
+        <record id="sequence_fleet_services_seq" model="ir.sequence">
+            <field name="name">fleet service sequence</field>
+            <field name="code">fleet.service</field>
+            <field name="prefix">DV</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field name="padding">5</field>
+            <field eval="False" name="company_id"/>
+        </record>
+    </data>
+</odoo>

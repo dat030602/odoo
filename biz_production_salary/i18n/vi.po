@@ -1,0 +1,880 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* biz_production_salary
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-28 09:17+0000\n"
+"PO-Revision-Date: 2025-02-28 09:17+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: biz_production_salary
+#: model:ir.actions.report,print_report_name:biz_production_salary.action_report_salary_by_production_xlsx
+msgid "'BÁO CÁO LƯƠNG THEO SẢN LƯỢNG'"
+msgstr "'BÁO CÁO LƯƠNG THEO SẢN LƯỢNG'"
+
+#. module: biz_production_salary
+#: model:ir.actions.report,print_report_name:biz_production_salary.action_report_salary_bx_xlsx
+msgid "'BẢNG LƯƠNG SX'"
+msgstr "'BẢNG LƯƠNG SX'"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__amount_received
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__amount_received
+msgid "Amount received"
+msgstr "Tiền nhận được"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__amount_1_person
+msgid "Amount/1 person"
+msgstr "Tiền nhận/1 người"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_stock_picking_type__apply_unit_price_goods_imported
+msgid "Apply unit price for goods imported?"
+msgstr "Áp dụng đơn giá nhập hàng?"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_stock_picking_type__apply_unit_price_goods_sold
+msgid "Apply unit price for goods sold?"
+msgstr "Áp dụng đơn giá xuất hàng?"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_stock_picking_type__apply_unit_pirce_cal_output_worker
+msgid "Apply unit price to calculate output for workers?"
+msgstr "Áp dụng đơn giá tính sản lượng cho công nhân?"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.product_template_form_view_biz_production_salary
+msgid "Calculate output for workers"
+msgstr "Tính sản lượng cho công nhân"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.popup_print_salary_bx_wizard_form
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_change_manual_worker_coefficient_byday
+msgid "Change Manual Worker Coefficient By Day"
+msgstr "Thay đổi hệ số công nhân thủ công theo ngày"
+
+#. module: biz_production_salary
+#: model:ir.actions.act_window,name:biz_production_salary.action_change_manual_worker_coefficient_byday
+#: model:ir.ui.menu,name:biz_production_salary.menu_change_manual_worker_coefficient_byday
+msgid "Change manual worker coefficient by day"
+msgstr "Thay đổi hệ số công nhân thủ công theo ngày"
+
+#. module: biz_production_salary
+#. odoo-python
+#: code:addons/biz_production_salary/models/employee_classification.py:0
+#: model:ir.actions.act_window,name:biz_production_salary.action_config_classification
+#: model:ir.actions.act_window,name:biz_production_salary.action_employee_classification
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__classification_id
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__classification_id
+#: model:ir.ui.menu,name:biz_production_salary.menu_config_classification
+#: model:ir.ui.menu,name:biz_production_salary.menu_employee_classification
+#, python-format
+msgid "Classification"
+msgstr "Xếp loại"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__coefficient
+msgid "Coefficient"
+msgstr "Hệ số"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_config_classification
+msgid "Config Classification"
+msgstr "Cấu hình xếp loại"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__create_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__create_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__date
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__date
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__date
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__date
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__date
+msgid "Date"
+msgstr "Ngày"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__date_from
+msgid "Date From"
+msgstr "Từ ngày"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__date_to
+msgid "Date To"
+msgstr "Đến ngày"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__date_of_last_contract_push
+msgid "Date of last contract push"
+msgstr "Ngày đẩy lên hợp đồng gần nhất"
+
+#. module: biz_production_salary
+#: model:ir.actions.act_window,name:biz_production_salary.action_day_labor
+#: model:ir.model,name:biz_production_salary.model_day_labor
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__day_labor
+#: model:ir.ui.menu,name:biz_production_salary.menu_day_labor
+msgid "Day Labor"
+msgstr "Công nhật"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__day_labor_coefficient
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__day_labor_id
+msgid "Day Labor Coefficient"
+msgstr "Hệ số công nhật"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_stock_warehouse__department_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__department_id
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Department"
+msgstr "Phòng ban"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__department_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_mrp_production__department_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__department_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_stock_picking__department_ids
+msgid "Departments"
+msgstr "Phòng ban"
+
+#. module: biz_production_salary
+#. odoo-python
+#: code:addons/biz_production_salary/models/summary_output_daily_work.py:0
+#: code:addons/biz_production_salary/models/summary_output_daily_work.py:0
+#: code:addons/biz_production_salary/models/summary_output_daily_work.py:0
+#: code:addons/biz_production_salary/models/summary_output_daily_work.py:0
+#, python-format
+msgid "Details"
+msgstr "Chi tiết"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__display_name
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_hr_employee
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__employee_id
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__employee_id
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__employee_id
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__employee_applicable_ids
+msgid "Employee Applicable"
+msgstr "Nhân viên áp dụng"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_employee_classification
+msgid "Employee Classification"
+msgstr "Phân loại nhân viên"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__employee_enjoys_ids
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+#: model:ir.actions.act_window,name:biz_production_salary.action_employee_enjoys
+msgid "Employee Enjoys"
+msgstr "Nhân viên hưởng"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_employee_enjoys
+msgid "Employee enjoys"
+msgstr "Nhân viên hưởng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__employee_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__employee_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__employee_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_mrp_production__employee_ids
+#: model:ir.model.fields,field_description:biz_production_salary.field_stock_picking__employee_ids
+msgid "Employees"
+msgstr "Nhân viên"
+
+#. module: biz_production_salary
+#: model:ir.actions.act_window,name:biz_production_salary.action_enter_daily_work_output_other
+#: model:ir.model,name:biz_production_salary.model_enter_daily_work_output_other
+#: model:ir.ui.menu,name:biz_production_salary.menu_enter_daily_work_output_other
+msgid "Enter daily work output/other"
+msgstr "Nhập sản lượng công nhật/khác"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__line_2_ids
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+#: model:ir.actions.act_window,name:biz_production_salary.action_final_total
+msgid "Final Total"
+msgstr "Tổng tiền cuối"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_final_total
+msgid "Final total"
+msgstr "Tổng tiền cuối"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__founder_id
+msgid "Founder"
+msgstr "Người lập"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__hcns_department_id
+msgid "HCNS Department"
+msgstr "Phòng HCNS"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__id
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification__id
+msgid "ID"
+msgstr ""
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__input_pro
+msgid "Input"
+msgstr "Nhập hàng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__intput_move_ids
+msgid "Input Moves"
+msgstr "Phiếu nhập"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday____last_update
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__write_uid
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_change_manual_worker_coefficient_byday__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__write_date
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__month
+msgid "Month"
+msgstr "Tháng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__01
+msgid "Month 1"
+msgstr "Tháng 1"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__10
+msgid "Month 10"
+msgstr "Tháng 10"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__11
+msgid "Month 11"
+msgstr "Tháng 11"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__12
+msgid "Month 12"
+msgstr "Tháng 12"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__02
+msgid "Month 2"
+msgstr "Tháng 2"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__03
+msgid "Month 3"
+msgstr "Tháng 3"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__04
+msgid "Month 4"
+msgstr "Tháng 4"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__05
+msgid "Month 5"
+msgstr "Tháng 5"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__06
+msgid "Month 6"
+msgstr "Tháng 6"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__07
+msgid "Month 7"
+msgstr "Tháng 7"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__08
+msgid "Month 8"
+msgstr "Tháng 8"
+
+#. module: biz_production_salary
+#: model:ir.model.fields.selection,name:biz_production_salary.selection__popup_print_salary_bx_wizard__month__09
+msgid "Month 9"
+msgstr "Tháng 9"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__name
+#: model:ir.model.fields,field_description:biz_production_salary.field_type_classification__name
+msgid "Name"
+msgstr "Tên"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__other_output
+msgid "Other Output"
+msgstr "Sản lượng khác"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__output_pro
+msgid "Output"
+msgstr "Xuất hàng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__output_move_ids
+msgid "Output Moves"
+msgstr "Phiếu xuất"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_stock_picking_type
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "Picking Type"
+msgstr "Loại giao nhận"
+
+#. module: biz_production_salary
+#. odoo-python
+#: code:addons/biz_production_salary/models/stock_picking.py:0
+#, python-format
+msgid "Please select only one configuration in the salary information tab"
+msgstr "Vui lòng chỉ chọn một cấu hình trong tab thông tin lương"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_popup_print_salary_bx_wizard
+msgid "Popup Print Salary BX Wizard"
+msgstr "Hộp thoại in bảng lương SX"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__position_id
+msgid "Position"
+msgstr "Chức vụ"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__price_unit
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__price_unit
+msgid "Price Unit"
+msgstr "Đơn giá"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.popup_print_salary_bx_wizard_form
+msgid "Print Excel"
+msgstr "Xuất Excel"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_product_template
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__product_id
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__product_id
+msgid "Product Name"
+msgstr "Tên hàng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__production
+msgid "Production"
+msgstr "Sản xuất"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__production_move_ids
+msgid "Production Moves"
+msgstr "Phiếu sản xuất"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_mrp_production
+msgid "Production Order"
+msgstr "Lệnh sản xuất"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__production_date
+msgid "Production date"
+msgstr "Ngày sản lượng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_enter_daily_work_output_other__production_other
+msgid "Production, other"
+msgstr "Sản lượng, khác"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_config_classification__proportion
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_classification__proportion
+msgid "Proportion"
+msgstr "Tỷ lệ"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_hr_employee_public
+msgid "Public Employee"
+msgstr "Nhân viên công khai"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_classification_form
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+msgid "Push up contract"
+msgstr "Đẩy lên hợp đồng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__rate
+msgid "Rate"
+msgstr "Tỷ lệ"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_stock_picking_type__user_id
+msgid "Responsible User"
+msgstr "Người phụ trách"
+
+#. module: biz_production_salary
+#: model:ir.actions.act_window,name:biz_production_salary.popup_print_salary_bx_wizard_action
+#: model:ir.actions.report,name:biz_production_salary.action_report_salary_bx_xlsx
+#: model:ir.ui.menu,name:biz_production_salary.popup_print_salary_bx_wizard_menu
+msgid "SX Payroll"
+msgstr "Bảng lương SX"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.stock_barcode_view_picking_type_form_biz_production_salary
+msgid "Salary information"
+msgstr "Thông tin lương"
+
+#. module: biz_production_salary
+#: model:ir.actions.report,name:biz_production_salary.action_report_salary_by_production_xlsx
+msgid "Salary report by production"
+msgstr "Báo cáo lương theo sản lượng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_final_total__summary_id
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__summary_id
+#: model:ir.model.fields,field_description:biz_production_salary.field_total_amount_received_byday__summary_id
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+msgid "Summary"
+msgstr "Tổng hợp"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_employee_enjoys__summary_line_id
+msgid "Summary Line"
+msgstr "Dòng tổng hợp"
+
+#. module: biz_production_salary
+#. odoo-python
+#: code:addons/biz_production_salary/models/summary_output_daily_work.py:0
+#: model:ir.actions.act_window,name:biz_production_salary.action_summary_output_daily_work
+#: model:ir.model,name:biz_production_salary.model_summary_output_daily_work
+#: model:ir.ui.menu,name:biz_production_salary.menu_summary_output_daily_work
+#, python-format
+msgid "Summary of output for daily work"
+msgstr "Tổng hợp sản lượng cho công nhân"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_summary_output_spreadsheet
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__line_ids
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+#: model:ir.actions.act_window,name:biz_production_salary.action_summary_output_spreadsheet
+msgid "Summary of output spreadsheet"
+msgstr "Tổng hợp bảng tính sản lượng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__tckt_department_id
+msgid "TCKT Department"
+msgstr "Phòng TCKT"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__total_amount_1_person
+msgid "Total Amount/1 person"
+msgstr "Tổng số tiền/1 người"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__total_quantity
+msgid "Total Quantity"
+msgstr "Tổng SL"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__total_amount
+msgid "Total amount"
+msgstr "Thành tiền"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_total_amount_received_byday
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_daily_work__line_1_ids
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+#: model:ir.actions.act_window,name:biz_production_salary.action_total_amount_received_byday
+msgid "Total amount received by day"
+msgstr "Tổng tiền nhận được theo ngày"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_stock_picking
+msgid "Transfer"
+msgstr "Điều chuyển"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_type_classification
+msgid "Type Classification"
+msgstr "Loại xếp loại"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_summary_output_spreadsheet__picking_type_id
+msgid "Type of activity"
+msgstr "Loại hoạt động"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__unit_head_id
+msgid "Unit Head"
+msgstr "Thủ trưởng đơn vị"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_day_labor__unit_price
+msgid "Unit Price"
+msgstr "Đơn giá"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_product_product__unit_price_export
+#: model:ir.model.fields,field_description:biz_production_salary.field_product_template__unit_price_export
+msgid "Unit price export"
+msgstr "Đơn giá xuất hàng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_product_product__unit_price_cal_out_worker
+#: model:ir.model.fields,field_description:biz_production_salary.field_product_template__unit_price_cal_out_worker
+#: model:ir.model.fields,field_description:biz_production_salary.field_mrp_bom__unit_price_cal_out_worker
+msgid "Unit price for calculating output for workers"
+msgstr "Đơn giá tính sản lượng cho công nhân"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_product_product__unit_price_import
+#: model:ir.model.fields,field_description:biz_production_salary.field_product_template__unit_price_import
+msgid "Unit price import"
+msgstr "Đơn giá nhập hàng"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_stock_warehouse
+msgid "Warehouse"
+msgstr "Kho hàng"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_hr_employee__worker_coefficient
+#: model:ir.model.fields,field_description:biz_production_salary.field_hr_employee_public__worker_coefficient
+msgid "Worker coefficient"
+msgstr "Hệ số công nhân"
+
+#. module: biz_production_salary
+#: model:ir.ui.menu,name:biz_production_salary.menu_common_worker_output_salary
+msgid "Worker output salary"
+msgstr "Lương sản lượng công nhân"
+
+#. module: biz_production_salary
+#: model:ir.model.fields,field_description:biz_production_salary.field_popup_print_salary_bx_wizard__year
+msgid "Year"
+msgstr "Năm"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_report_biz_production_salary_report_salary_bx_xlsx
+msgid "report_salary_bx_xlsx"
+msgstr "Bảng lương SX"
+
+#. module: biz_production_salary
+#: model:ir.model,name:biz_production_salary.model_report_biz_production_salary_report_salary_by_production_xlsx
+msgid "report_salary_by_production_xlsx"
+msgstr "Báo cáo lương theo sản lượng"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+msgid "View details"
+msgstr "Xem chi tiết"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+msgid "View By day"
+msgstr "Xem theo ngày"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_form
+msgid "View Final Total"
+msgstr "Xem tổng cuối"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_enjoys_search
+msgid "Today"
+msgstr "Hôm nay"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_enjoys_search
+msgid "This Month"
+msgstr "Tháng này"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_enjoys_search
+msgid "Last 7 Days"
+msgstr "7 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_enjoys_search
+msgid "Last 30 Days"
+msgstr "30 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_change_manual_worker_coefficient_byday_search
+msgid "Today"
+msgstr "Hôm nay"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_change_manual_worker_coefficient_byday_search
+msgid "This Month"
+msgstr "Tháng này"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_change_manual_worker_coefficient_byday_search
+msgid "Last 7 Days"
+msgstr "7 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_change_manual_worker_coefficient_byday_search
+msgid "Last 30 Days"
+msgstr "30 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_change_manual_worker_coefficient_byday_search
+msgid "Date"
+msgstr "Ngày"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_change_manual_worker_coefficient_byday_search
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_classification_search
+msgid "Today"
+msgstr "Hôm nay"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_classification_search
+msgid "This Month"
+msgstr "Tháng này"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_classification_search
+msgid "Last 7 Days"
+msgstr "7 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_classification_search
+msgid "Last 30 Days"
+msgstr "30 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_classification_search
+msgid "Date"
+msgstr "Ngày"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_employee_classification_search
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Today"
+msgstr "Hôm nay"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "This Month"
+msgstr "Tháng này"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Last 7 Days"
+msgstr "7 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Last 30 Days"
+msgstr "30 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Date"
+msgstr "Ngày"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_enter_daily_work_output_other_search
+msgid "Department"
+msgstr "Phòng ban"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_final_total_search
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_daily_work_search
+msgid "Department"
+msgstr "Phòng ban"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "Today"
+msgstr "Hôm nay"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "This Month"
+msgstr "Tháng này"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "Last 7 Days"
+msgstr "7 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "Last 30 Days"
+msgstr "30 ngày qua"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "Date"
+msgstr "Ngày"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_summary_output_spreadsheet_search
+msgid "Picking Type"
+msgstr "Loại giao nhận"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_total_amount_received_byday_search
+msgid "Production Date"
+msgstr "Ngày sản lượng"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_total_amount_received_byday_search
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: biz_production_salary
+#: model_terms:ir.ui.view,arch_db:biz_production_salary.view_total_amount_received_byday_search
+msgid "Position"
+msgstr "Chức vụ"

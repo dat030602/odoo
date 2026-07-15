@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="vietinbank_template_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+            <t t-set="doc" t-value="doc.sudo().with_context(lang=doc.env.user.lang)" />
+            <t t-set="company" t-value="doc.env.company"/>
+                <div class="page" style="font-family: Times New Roman;font-size:13px">
+                    <div class="page-child-one">
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-blue" style="margin-bottom: 0px; font-size: 18px;font-weight: bold;">Ngân Hàng TMCP Công Thương Việt Nam</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                            </div>
+                            <div class="col-6 text-center" style="position: relative;">
+                                <span class="title-blue" style="margin-bottom: 0px; font-size: 17px;font-weight: bold;">
+                                Chứng từ giao dịch</span><br/>
+                                <span class="title-blue" style="margin-bottom: 0px; font-size: 23px;font-weight: bold;">
+                                    Ủy nhiệm chi 
+                                </span>
+                                <div style="position: absolute;right: 0;left: 220px;top: 37px;text-align: center;">
+                                    <span style="margin-bottom: 0px;font-size: 12px">Payment Order</span>
+                                </div>
+                            </div>
+                            <div class="col-3 text-right" style="display: flex; justify-content: right; align-items: center; padding: 0 40px 0 0 ;">
+                                <img src="/biz_delegate_expense_vietinbank/static/src/img/logo.png"  style="height: 35px; max-width: 130px;"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                            </div>
+                            <div class="col-2">
+                                <span class="title-vi">Số</span> No
+                            </div>
+                            <div class="col-1">
+                            </div>
+                            <div class="col-3">
+                                <span class="title-vi">Ngày</span> Date <span t-esc="doc.date.strftime('%d/%m/%Y')"/>
+                            </div>
+                        </div>
+                        <div class="row bg-row">
+                            <div class="col-3 padding-left-row ">
+                                <span class="title-blue">Ký hiệu </span>Invoice sign
+                            </div>
+                            <div class="col-2">
+                                <span class="title-blue"> Số HĐ </span>Invoice No
+                            </div>
+                            <div class="col-3 text-center">
+                                <!-- <span class="title-blue">Mẫu số</span> -->
+                                <span class="title-blue">Mẫu số 01GTKT2/003</span>
+                            </div>
+                            <div class="col-3 text-right">
+                                <span class="title-blue">Liên 1. Lưu </span>Copy 1, Bank's copy
+                            </div>
+                            <div class="col-1">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 padding-left-row ">
+                                <span class="title-blue-one">Người/Đơn vị trả tiền </span>Applicant Name <b>Công ty TNHH Con Cò Vàng</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <t t-set="number_bank" t-value="0"/>
+                            <t t-set="number_bank" t-value="0"/>
+                            <t t-set="name_bank" t-value="''"/>
+                            <t t-foreach="doc.company_id.partner_id.bank_ids" t-as="bank">
+                                <t t-if="bank.bank_id.bic == 'VietinBank'">
+                                    <t t-set="number_bank" t-value="bank.acc_number"/>
+                                    <t t-set="name_bank" t-value="bank.bank_id.name"/>
+                                    <t t-break="true"/>
+                                </t>
+                            </t>
+                            <div class="col-6 padding-left-row">
+                                <span class="title-vi">Số TK ghi Nợ </span>Debit Account No.
+                            </div>
+                            <div class="col-6">
+                                <span class="title-vi">Tại Ngân hàng </span>With Bank <t t-esc="name_bank"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-vi">Địa chỉ </span>Address <span t-esc="doc.company_id.street or ''"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-blue-one">Người/Đơn vị hưởng </span>Beneficiary Name <span class="title-black" t-esc="doc.partner_bank_id.acc_holder_name or ''"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <t t-set="number_bank" t-value="doc.partner_bank_id.acc_number if doc.partner_bank_id else ''"/>
+                            <t t-set="name_bank" t-value="doc.partner_bank_id.bank_id.name if doc.partner_bank_id else ''"/>
+                            <div class="col-6 padding-left-row">  
+                                <span class="title-vi">Số TK ghi Có </span>Credit Account No. <b><t t-esc="number_bank"/></b>
+                            </div>
+                            <div class="col-6">
+                            <span class="title-vi">Tại Ngân hàng </span>With Bank <t t-esc="name_bank"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                            <span class="title-vi">Địa chỉ </span>Address 
+                                <t t-esc="doc.partner_id.street"/><t t-if="doc.partner_id.street">, </t>
+                                <t t-esc="doc.partner_id.wards_id.name"/><t t-if="doc.partner_id.wards_id">, </t>
+                                <t t-esc="doc.partner_id.district_id.name"/><t t-if="doc.partner_id.district_id">, </t>
+                                <t t-esc="doc.partner_id.state_id.name"/><t t-if="doc.partner_id.state_id">, </t>
+                                <t t-esc="doc.partner_id.country_id.name"/>
+                            <!-- <span t-esc="doc.partner_id.street or ''"/> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 padding-left-row">
+                                <span class="title-vi">Số CCCD/CMND/HC </span>ID/PP No. ...........................................
+                            </div>
+                            <div class="col-3">
+                                <span class="title-vi">Ngày cấp </span>Date of Issue .....................
+                            </div>
+                            <div class="col-4">
+                                <span class="title-vi">Nơi cấp </span>Place of Issue .............................................
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-vi">Số tiền bằng số </span>Amount in figures <span  style="padding: 100px; font-weight: bold;" t-esc="format_float_number(doc.amount_total)"/> <span style="font-weight: bold;">VNĐ</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-vi">Số tiền bằng chữ </span>Amount in words <span class="font-css" style="padding-left: 30px" t-esc="amount2text(doc.amount_total)"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 padding-left-row">
+                                <span class="title-vi">Phí ngân hàng </span>Fee: 
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox"/> <span style="padding-left: 20px" class="title-vi">Phí trong </span>Including
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox"/> <span style="padding-left: 20px" class="title-vi">Phí ngoài </span>Excluding
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 padding-left-row" style="width: 15%">
+                                <span class="title-vi">Nội dung </span>Remarks:
+                            </div>
+                            <div class="col-10" style="padding-top: 3px;">  
+                                <t t-if="doc.ref">
+                                    <span t-esc="doc.ref"/>
+                                    <br/>
+                                </t>
+                                <t t-else="">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </t>    
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row bg-row" style="height: 145px">
+                            <div class="col-4 padding-left-row">
+                                <span class="title-vi">Kế toán trưởng </span><span class="title-eg">Chief accountant</span><br/>
+                                <span class="title-eg">Chữ ký, họ tên </span>Signature &amp; full name
+                            </div>
+                            <div class="col-4">
+                                <span class="title-vi">Chủ tài khoản </span><span class="title-eg">A/c holder</span><br/>
+                                <span class="title-eg">Chữ ký, họ tên và dấu (nếu có)</span><br/>
+                                Signature, full name &amp; Stamp (if any)
+                            </div>
+                            <div class="col-2">
+                                <span class="title-vi">Giao dịch viên</span><br/> 
+                                <span class="title-eg">Teller</span> 
+                            </div>
+                            <div class="col-2">
+                                <span class="title-vi">Kiểm soát viên</span><br/>
+                                <span class="title-eg">Supervisor</span> 
+                                <div class="outer">
+                                    <div class="inner rotate">
+                                        <!-- <b>Mẫu số</b> -->
+                                        <b>Mẫu số 01GTKT2/003</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-child-two" style="page-break-inside: avoid;">
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-blue" style="margin-bottom: 0px; font-size: 18px;font-weight: bold;">Ngân Hàng TMCP Công Thương Việt Nam</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                            </div>
+                            <div class="col-6 text-center" style="position: relative;">
+                                <span class="title-blue" style="margin-bottom: 0px; font-size: 17px;font-weight: bold;">
+                                Chứng từ giao dịch</span><br/>
+                                <span class="title-blue" style="margin-bottom: 0px; font-size: 23px;font-weight: bold;">
+                                    Ủy nhiệm chi 
+                                </span>
+                                <div style="position: absolute;right: 0;left: 220px;top: 37px;text-align: center;">
+                                    <span style="margin-bottom: 0px;font-size: 12px">Payment Order</span>
+                                </div>
+                            </div>
+                            <div class="col-3 text-right" style="display: flex; justify-content: right; align-items: center; padding: 0 40px 0 0 ;">
+                                <img src="/biz_delegate_expense_vietinbank/static/src/img/logo.png"  style="height: 35px; max-width: 130px;"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                            </div>
+                            <div class="col-2">
+                                <span class="title-vi">Số</span> No
+                            </div>
+                            <div class="col-1">
+                            </div>
+                            <div class="col-3">
+                                <span class="title-vi">Ngày</span> Date <span t-esc="doc.date.strftime('%d/%m/%Y')"/>
+                            </div>
+                        </div>
+                        <div class="row bg-row">
+                            <div class="col-3 padding-left-row">
+                                <span class="title-blue">Ký hiệu </span>Invoice sign
+                            </div>
+                            <div class="col-2">
+                                <span class="title-blue"> Số HĐ </span>Invoice No
+                            </div>
+                            <div class="col-3 text-center">
+                                <!-- <span class="title-blue">Mẫu số</span> -->
+                                <span class="title-blue">Mẫu số 01GTKT2/003</span>
+                            </div>
+                            <div class="col-3 text-right">
+                                <span class="title-blue">Liên 2. Lưu </span>Copy 2, Bank's copy
+                            </div>
+                            <div class="col-1">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-blue-one">Người/Đơn vị trả tiền </span>Applicant Name <b>Công ty TNHH Con Cò Vàng</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <t t-set="number_bank" t-value="0"/>
+                            <t t-set="name_bank" t-value="''"/>
+                            <t t-foreach="doc.company_id.partner_id.bank_ids" t-as="bank">
+                                <t t-if="bank.bank_id.bic == 'VietinBank'">
+                                    <t t-set="number_bank" t-value="bank.acc_number"/>
+                                    <t t-set="name_bank" t-value="bank.bank_id.name"/>
+                                    <t t-break="true"/>
+                                </t>
+                            </t>
+                            <div class="col-6 padding-left-row">
+                                <span class="title-vi">Số TK ghi Nợ </span>Debit Account No.
+                            </div>
+                            <div class="col-6">
+                                <span class="title-vi">Tại Ngân hàng </span>With Bank <t t-esc="name_bank"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-vi">Địa chỉ </span>Address <span t-esc="doc.company_id.street or ''"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-blue-one">Người/Đơn vị hưởng </span>Beneficiary Name <span class="title-black" t-esc="doc.partner_bank_id.acc_holder_name or ''"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <t t-set="number_bank" t-value="doc.partner_bank_id.acc_number if doc.partner_bank_id else ''"/>
+                            <t t-set="name_bank" t-value="doc.partner_bank_id.bank_id.name if doc.partner_bank_id else ''"/>
+                            <div class="col-6 padding-left-row">  
+                                <span class="title-vi">Số TK ghi Có </span>Credit Account No. <b><t t-esc="number_bank"/></b>
+                            </div>
+                            <div class="col-6">
+                            <span class="title-vi">Tại Ngân hàng </span>With Bank <t t-esc="name_bank"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                            <span class="title-vi">Địa chỉ </span>Address 
+                                <t t-esc="doc.partner_id.street"/><t t-if="doc.partner_id.street">, </t>
+                                <t t-esc="doc.partner_id.wards_id.name"/><t t-if="doc.partner_id.wards_id">, </t>
+                                <t t-esc="doc.partner_id.district_id.name"/><t t-if="doc.partner_id.district_id">, </t>
+                                <t t-esc="doc.partner_id.state_id.name"/><t t-if="doc.partner_id.state_id">, </t>
+                                <t t-esc="doc.partner_id.country_id.name"/>
+                            <!-- <span t-esc="doc.partner_id.street or ''"/> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 padding-left-row">
+                                <span class="title-vi">Số CCCD/CMND/HC </span>ID/PP No. ...........................................
+                            </div>
+                            <div class="col-3">
+                                <span class="title-vi">Ngày cấp </span>Date of Issue .....................
+                            </div>
+                            <div class="col-4">
+                                <span class="title-vi">Nơi cấp </span>Place of Issue .............................................
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-vi">Số tiền bằng số </span>Amount in figures <span  style="padding: 100px; font-weight: bold;" t-esc="format_float_number(doc.amount_total)"/> <span style="font-weight: bold;">VNĐ</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 padding-left-row">
+                                <span class="title-vi">Số tiền bằng chữ </span>Amount in words <span class="font-css" style="padding-left: 30px" t-esc="amount2text(doc.amount_total)"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 padding-left-row">
+                                <span class="title-vi">Phí ngân hàng </span>Fee: 
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox"/> <span style="padding-left: 20px" class="title-vi">Phí trong </span>Including
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox"/> <span style="padding-left: 20px" class="title-vi">Phí ngoài </span>Excluding
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 padding-left-row" style="width: 15%">
+                                <span class="title-vi">Nội dung </span>Remarks:
+                            </div>
+                            <div class="col-10" style="padding-top: 3px;">
+                                <t t-if="doc.ref">
+                                    <span t-esc="doc.ref"/>
+                                    <br/>
+                                </t>
+                                <t t-else="">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </t>    
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row bg-row" style="height: 145px">
+                            <div class="col-4 padding-left-row">
+                                <span class="title-vi">Kế toán trưởng </span><span class="title-eg">Chief accountant</span><br/>
+                                <span class="title-eg">Chữ ký, họ tên </span>Signature &amp; full name
+                            </div>
+                            <div class="col-4">
+                                <span class="title-vi">Chủ tài khoản </span><span class="title-eg">A/c holder</span><br/>
+                                <span class="title-eg">Chữ ký, họ tên và dấu (nếu có)</span><br/>
+                                Signature, full name &amp; Stamp (if any)
+                            </div>
+                            <div class="col-2">
+                                <span class="title-vi">Giao dịch viên</span><br/> 
+                                <span class="title-eg">Teller</span> 
+                            </div>
+                            <div class="col-2">
+                                <span class="title-vi">Kiểm soát viên</span><br/>
+                                <span class="title-eg">Supervisor</span> 
+                                <div class="outer">
+                                    <div class="inner rotate">
+                                        <!-- <b>Mẫu số</b> -->
+                                        <b>Mẫu số 01GTKT2/003</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <style>
+                    .inner {
+                        font-size: 14px;
+                        top:20%;
+                        left: 188px;
+                        background: #d3f1ff;
+                        width: 135px;
+                        margin: 25px 0px 0px 135px;
+                    }
+
+                    .rotate {
+                        -moz-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+                        -webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+                        transform:  translateX(-50%) translateY(-50%) rotate(-90deg);
+                    }
+
+                    .font-css {
+                        font-weight: bold;
+                        font-style: italic;
+                    }
+                    .title-vi {
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                    .title-eg {
+                        font-size: 15px;
+                    }
+                    .title-blue {
+                        color: #3c6295;
+                        font-size: 16px;
+                        font-weight: bold;
+                        margin-bottom: 0px;
+                    }
+                    .title-blue-one {
+                        color: #005993;
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-bottom: 0px;
+                    }
+                    .title-black {
+                        color: #000;
+                        font-size: 15px;
+                        font-weight: bold;
+                        margin-bottom: 0px;
+                    }
+                    .text-right{
+                        text-align: right;
+                    }
+                    .text-center{
+                        text-align: center;
+                    }
+                    .text-left{
+                        text-align: left;
+                    }
+                    .content-p {
+                        margin-bottom: 0px;
+                        padding: 1px;
+                    }
+                    .bg-row {
+                        background: #d3f1ff;
+                    }
+                    hr {
+                        margin: 0px;
+                        border: none;
+                        border-top: 10px solid #ff0000;
+                        opacity:1;
+                    }
+                    .row {
+                        --bs-gutter-x: 0;
+                        --bs-gutter-y: 0;
+                    }
+                    .padding-left-row {
+                        padding-left: 5px;
+                    }
+                </style>
+            </t>
+        </t>
+    </template>
+    <template id="vietinbank_template">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="biz_delegate_expense_vietinbank.vietinbank_template_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="account_accountant.reconciliation.line.mv_line" t-inherit-mode="extension" t-name="biz_custom_payment.reconciliation.line.mv_line">
+        <xpath expr="//td[hasclass('cell_label')]" position="replace">
+            <td class="cell_label">
+                <t t-if="line.partner_id &amp;&amp; line.partner_id !== state.st_line.partner_id">
+                    <t t-if="line.partner_name &amp;&amp; line.partner_name.length">
+                        <span class="fw-bold" t-esc="line.partner_name"/>:
+                    </t>
+                </t>
+                <span class="o_form_uri entry_view" t-if="line.name" t-att-data-line_id="line.id" t-esc="line.name.move_name"/>
+                <t t-if="line.name" t-esc="line.name.line_name"/>
+            </td>
+        </xpath>
+    </t>
+
+</templates>

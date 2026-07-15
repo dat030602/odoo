@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rp_vourcher_receipt_document">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)" />
+            <t t-set="company" t-value="o.env.company"/>
+            <t t-set="move" t-value="o.move_id"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px">
+                <div class="row">
+                    <div class="col-2">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%" alt="Logo"/>
+                    </div>
+                    <div class="col-10" style="position:  relative">
+                        <p style="position: absolute; left; top: 46%">Công Ty TNHH Con Cò Vàng  - Mã số thuế: 0305995751</p>
+                    </div>
+                </div>
+            </div>
+            <div class="page" style="font-family: 'Times New Roman';font-size:15px; line-height: 25px">
+                <div class="text-center">
+                    <h4 class="bold">CHỨNG TỪ KẾ TOÁN</h4>                    
+                </div>
+                
+                <div class="row">
+                    <div class='col-8'>
+                        <p>Tên: <span style="margin-left: 20px" t-esc="move.partner_id.name"/></p>
+                        <div class="row m-0 p-0">
+                            <div class="m-0 p-0" style="width: 12%; margin-right: 20px">Địa chỉ:</div> 
+                            <div class="m-0 p-0" style="width: 80%"><span t-esc="get_address(move.partner_id)"/></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <p>Số: <span style="margin-left: 20px" t-esc="o.name" /></p>
+                        <p>Ngày: <span style="margin-left: 10px" t-esc="move.date and move.date.strftime('%d/%m/%Y')"/></p>
+                    </div>
+                </div>
+                <div class="row m-0 p-0">
+                    <div class="m-0 p-0" style="width: 10%">Diễn giải:</div> 
+                    <div class="m-0 p-0" style="width: 80%" t-esc="o.ref"/>
+                </div>
+                <table class="table-main">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Diễn giải</th>
+                            <th>Ghi Nợ</th>
+                            <th>Ghi có</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="get_lines(move)" t-as="line">
+                            <td class="text-center"><span t-esc="line_index + 1"/></td>
+                            <td class="text-left"><span t-esc="line['name']"/></td>
+                            <td class="text-left"><span t-esc="line['debit']"/></td>
+                            <td class="text-left"><span t-esc="line['credit']"/></td>
+                            <td class="text-right"><span t-esc="format_float_number(line['amount'])"/></td>
+                        </tr>
+                        <t t-set="total" t-value="sum(line['amount'] for line in get_lines(move)) "/>
+                        <tr>
+                            <td class="text-center bold" colspan="2">Cộng</td>
+                            <td></td>
+                            <td></td>
+                            <td class="bold text-right"><span t-esc="format_float_number(total)"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Thành tiền bằng chữ: <i class="bold"><span t-esc="amount_to_text(total)"/> đồng</i></p>
+                <p>Ghi chú: <span t-if="o.note" t-esc="o.note"/><hr t-else=""/></p>
+                <div class="row text-center mt-3">
+                    <div class="col-4">
+                        <p class="bold">Người lập phiếu</p>
+                        <p><i>(Ký, họ tên)</i></p>
+                        <p class="bold" style="margin-top: 50px"><span t-esc="o.creator_id.name_without_position or o.creator_id.name"/></p>
+                    </div>
+                    <div class="col-4">
+                        <p class="bold">Kế Toán Trưởng</p>
+                        <p><i>(Ký, họ tên)</i></p>
+                        <p class="bold" style="margin-top: 50px"><span t-esc="o.chief_accountant_id.name_without_position or o.chief_accountant_id.name"/></p>
+                    </div>
+                    <div class="col-4">
+                        <p class="bold">Thủ trưởng đơn vị</p>
+                        <p><i>(Ký, họ tên, đóng dấu)</i></p>
+                        <p class="bold" style="margin-top: 50px"><span t-esc="o.unit_head_id.name_without_position or o.unit_head_id.name"/></p>
+                    </div>
+                </div>
+                <style>
+                    p {
+                        margin-bottom:0;
+                    }
+                    .text-right{
+                        text-align: right;
+                    }
+                    .text-left{
+                        text-align: left;
+                    }
+                    .bold{
+                        font-weight: bold
+                    }
+                    .table-main{
+                        width: 100%;
+                    }
+                    th{
+                        padding:  3px 5px;
+                        white-space: nowrap;
+                    }
+                    .table-main td{
+                        padding:  3px 5px;
+                        border-bottom: 0 !important;
+                    }
+                    .table-main, .table-main  th, .table-main td{
+                        border:  1px solid black;
+                        vertical-align: middle;
+                    }
+                    hr{
+                        margin-top: -6px;
+                        margin-left: 55px;
+                        background: none;
+                        border-bottom: 1px dotted;
+                    }
+                </style>
+            </div>
+        </t>
+    </template>
+
+    <template id="rp_vourcher_receipt">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="biz_accounting_voucher_receipt.rp_vourcher_receipt_document" t-lang="o.env.user.lang"/>
+            </t>
+        </t>
+    </template> 
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_payment_request_form_ccv_link" model="ir.ui.view">
+        <field name="name">payment.request.form.ccv.link.purchase</field>
+        <field name="model">payment.request</field>
+        <field name="inherit_id" ref="biz_payment_request.payment_request_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="purchase_id" invisible="1" groups="purchase.group_purchase_user"/>
+            </xpath>
+            <xpath expr="//div/button[@name='action_view_payment']" position="before">
+                <field name="purchase_count" invisible="1" groups="purchase.group_purchase_user"/>
+                <button class="oe_stat_button" groups="purchase.group_purchase_user" name="action_view_purchase_order" type="object" icon="fa-money" attrs="{'invisible': [('purchase_count','=',0)]}">
+                    <div class="o_stat_info">
+                        <span class="o_stat_value" t-esc="payment_count"/>
+                        <span class="o_stat_text">Đơn mua hàng</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

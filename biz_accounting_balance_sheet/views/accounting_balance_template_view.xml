@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="view_accounting_balance_template_tree" model="ir.ui.view">
+            <field name="name">accounting.balance.template.tree</field>
+            <field name="model">accounting.balance.template</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_accounting_balance_template_form" model="ir.ui.view">
+            <field name="name">accounting.balance.template.form</field>
+            <field name="model">accounting.balance.template</field>
+            <field name="arch" type="xml">
+              	<form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="template_type" invisible="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="balance_ids" nolabel="1" colspan="2">
+                                <tree default_order="code">
+                                    <field name="categ_name"/>
+                                    <field name="code"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <field name="line_ids" nolabel="1" colspan="2" invisible="1">
+                                <tree editable="bottom">
+                                    <field name="balance_id"/>
+                                    <field name="code"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+      	</record>
+
+        <record id="action_accounting_balance_template" model="ir.actions.act_window">
+            <field name="name">Accounting balance template</field>
+            <field name="res_model">accounting.balance.template</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

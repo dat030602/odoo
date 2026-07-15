@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_device_record_form_inherit_biz_process" model="ir.ui.view">
+        <field name="name">attendance.device.form.inherit.biz.process</field>
+        <field name="model">attendance.device</field>
+        <field name="inherit_id" ref="biz_attendance_device.view_device_record_form"/>
+        <field name="arch" type="xml">
+            <field name="unaccent_user_name" position="after">
+                <field name="is_not_create_attendance_data_by_state"/>
+            </field>
+        </field>
+    </record>
+</odoo>

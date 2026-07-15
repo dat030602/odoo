@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_approval_request_form_inherit" model="ir.ui.view">
+        <field name="name">approval.request.form.inherit.inherit</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_create_approval_product_line"
+                        string="Tạo công nhật"
+                        type="object"
+                        class="oe_highlight"
+                        groups="hr_payroll.group_hr_payroll_employee_manager"
+                        attrs="{'invisible': [('has_count_norm','=','no')]}"
+                />
+                <button name="action_create_approval_product_line"
+                        string="Tạo công nhật"
+                        type="object"
+                        class="oe_highlight"
+                        groups="hr_payroll.group_hr_payroll_employee_manager"
+                        attrs="{'invisible': [('has_fuel_norm','=','no')]}"
+                />
+            </header>
+            <div name="button_box">
+                <button type="object"
+                        name="action_view_daily_work_output_other"
+                        class="oe_stat_button"
+                        icon="fa-hourglass-end"
+                        groups="hr_payroll.group_hr_payroll_employee_manager"
+                        attrs="{'invisible': [('has_count_norm','=','no')]}">
+                    Công nhật
+                </button>
+                <button type="object"
+                        name="action_view_daily_work_output_other"
+                        class="oe_stat_button"
+                        icon="fa-hourglass-end"
+                        groups="hr_payroll.group_hr_payroll_employee_manager"
+                        attrs="{'invisible': [('has_fuel_norm','=','no')]}">
+                    Công nhật
+                </button>
+            </div>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="has_count_norm" invisible="1"/>
+                <field name="has_fuel_norm" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

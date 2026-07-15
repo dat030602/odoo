@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_message_delete_empty_record" model="ir.cron">
+        <field name="name">Tin nhắn: Xóa dòng record lỗi</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+        <field name="model_id" ref="mail.model_mail_message"/>
+        <field name="code">model.delete_record_not_exists()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

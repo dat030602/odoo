@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="coordinate_tolerancing_view_form" model="ir.ui.view">
+        <field name="name">coordinate.tolerancing.form</field>
+        <field name="model">coordinate.tolerancing</field>
+        <field name="arch" type="xml">
+            <form string="Coordinate Tolerancing">
+                <group>
+                    <field name="allow_value"/>
+                    <field name="is_valid"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="coordinate_tolerancing_view_tree" model="ir.ui.view">
+        <field name="name">coordinate.tolerancing.tree</field>
+        <field name="model">coordinate.tolerancing</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="is_valid"/>
+                <field name="allow_value"/>
+            </tree>
+        </field>
+    </record>
+    
+    
+    <record id="action_coordinate_tolerancing" model="ir.actions.act_window">
+        <field name="name">Coordinate Tolerancing</field>
+        <field name="res_model">coordinate.tolerancing</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="mail.ThreadView" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_ThreadView_bottomPart')]" position="before">
+            <t t-if="threadView">
+                <input class="o_DiscussSidebar_messagesSearch biz_message_search" t-on-input="threadView.onInputMessageSearch" t-ref="messageSearchInput" style="margin-top: 10px;" placeholder="Message search..." />
+            </t>
+        </xpath>
+    </t>
+
+</templates>

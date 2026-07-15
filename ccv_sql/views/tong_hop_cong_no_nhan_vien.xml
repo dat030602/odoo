@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="search_tong_hop_cong_no_nhan_vien" model="ir.ui.view">
+            <field name="name">search_tong_hop_cong_no_nhan_vien</field>
+            <field name="model">alpha.report.line</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Tổng hợp công nợ nhân viên">
+                    <field name="employee_code"/>
+                    <field name="employee_id"/>
+<!--                    <group expand="0" string="Group By">-->
+<!--                        <filter name="group_by_sale_id" string="Đơn hàng" context="{'group_by': 'sale_id'}"/>-->
+<!--                        <filter name="group_by_partner_id" string="Khách hàng" context="{'group_by': 'partner_id'}"/>-->
+<!--                    </group>-->
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_tong_hop_cong_no_nhan_vien">
+            <field name="name">tree_tong_hop_cong_no_nhan_vien</field>
+            <field name="model">alpha.report.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="1"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="employee_code"/>
+                    <field name="employee_id"/>
+                    <field name="start_debit" sum="total_start_debit"/>
+                    <field name="start_credit" sum="total_start_credit"/>
+                    <field name="debit" sum="total_debit"/>
+                    <field name="credit" sum="total_credit"/>
+                    <field name="end_debit" sum="total_end_debit"/>
+                    <field name="end_credit" sum="total_end_credit"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

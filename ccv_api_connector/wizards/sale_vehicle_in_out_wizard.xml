@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_sale_vehicle_in_out_wizard_form" model="ir.ui.view">
+        <field name="name">sale.vehicle.in.out.wizard.form</field>
+        <field name="model">sale.vehicle.in.out.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Thông tin xe ra/vào">
+                <group>
+                    <group>
+                        <field name="number_of_vehicle" widget="integer"/>
+                    </group>
+                    <group></group>
+                    <group>
+                        <field name="type"/>
+                        <field name="vehicle_num"/>
+                        <field name="vehicle_driver"/>
+                        <field name="sale_order_ids" widget="many2many_tags" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'no_create_popup': True}" attrs="{'invisible': [('type', '!=', 'out')]}" />
+                        <field name="purchase_order_ids" widget="many2many_tags" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True, 'no_create_popup': True}" attrs="{'invisible': [('type', '!=', 'in')]}" />
+                        <field name="partner_name"/>
+                        <field name="quantity"/>
+                        <field name="uom_id"/>
+                        <field name="note"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Đóng" special="cancel" class="btn-secondary"/>
+                    <button string="Tạo" type="object" name="action_create_vehicle" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_sale_vehicle_in_out_wizard"
+        name="Thông tin xe ra/vào"
+        res_model="sale.vehicle.in.out.wizard"
+        view_mode="form"
+        target="new"
+        binding_model="sale.vehicle.in.out.wizard"
+    />
+</odoo>

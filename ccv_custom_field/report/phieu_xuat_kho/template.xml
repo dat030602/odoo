@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<template id="ccv_custom_field.phieu_xuat_kho_vat_tu_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="ccv_custom_field.phieu_xuat_kho_document"
+                t-lang="o.user_id.partner_id.lang" />
+        </t>
+    </t>
+</template>
+</odoo>

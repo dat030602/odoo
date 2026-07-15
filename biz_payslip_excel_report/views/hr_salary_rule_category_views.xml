@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_hr_salary_rule_category_form_ccv" model="ir.ui.view">
+        <field name="name">hr.salary.rule.category.form.ccv</field>
+        <field name="model">hr.salary.rule.category</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_category_form"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="is_receivables"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_salary_rule_category_tree_ccv" model="ir.ui.view">
+        <field name="name">hr.salary.rule.category.tree.ccv</field>
+        <field name="model">hr.salary.rule.category</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_category_tree"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="is_receivables"/>
+            </field>
+        </field>
+    </record>
+</odoo>

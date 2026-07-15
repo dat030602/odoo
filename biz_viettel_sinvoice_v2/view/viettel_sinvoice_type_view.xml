@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_viettel_sinvoice_type_tree" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.type.tree</field>
+            <field name="model">viettel.sinvoice.type</field>
+            <field name="arch" type="xml">
+            	<tree>
+	          		<field name="name"/>
+	          		<field name="code"/>
+	          		<field name="description"/>
+	          		<field name="template"/>
+	          		<field name="series"/>
+	            </tree>
+	    	</field>
+        </record>
+        <record id="view_viettel_sinvoice_type_form" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.type.form</field>
+            <field name="model">viettel.sinvoice.type</field>
+            <field name="arch" type="xml">
+            	<form>
+            		<sheet>
+            			<group>
+            				<group>
+            					<field name="name"/>
+				          		<field name="code"/>
+				          		<field name="description"/>
+				          		<field name="template"/>
+				          		<field name="series"/>
+            				</group>
+            			</group>
+            			<group>
+            				<field name="customer_field_ids">
+            					<tree>
+            						<field name="field_id"/>
+            						<field name="keyLabel"/>
+            						<field name="valueType"/>
+            						<field name="invoiceTemplatePrototypeId"/>
+            						<field name="keyTag"/>
+            						<field name="isSeller"/>
+            						<field name="isRequired"/>
+            					</tree>
+            				</field>
+            			</group>
+            		</sheet>
+	            </form>
+	    	</field>
+        </record>
+        
+         <record id="action_viettel_sinvoice_type" model="ir.actions.act_window">
+	    	<field name="name">S-Invoice Template</field>
+	     	<field name="res_model">viettel.sinvoice.type</field>
+	     	<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_viettel_sinvoice_type" action='action_viettel_sinvoice_type' parent="biz_viettel_sinvoice_v2.menu_viettel_sinvoice_config_root" sequence="1"/>
+	</data>
+</odoo>

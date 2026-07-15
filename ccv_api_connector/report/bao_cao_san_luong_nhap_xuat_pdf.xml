@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="bao_cao_sl_nhap_xuat_pdf">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_api_connector.bao_cao_sl_nhap_xuat_pdf_document"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="bao_cao_sl_nhap_xuat_pdf_document">
+            <div class="header" style="border-bottom: none;">
+            </div>
+            <div class="article o_report_layout_standard"
+                 style="font-family: 'Times New Roman', serif; font-size: 11px;">
+                <div class="page">
+                    <!-- Header: Logo + Company info -->
+                    <div class="row" style="margin-bottom: 5px;">
+                        <div class="col-2" style="text-align: left;">
+                            <img t-if="user.company_id.logo"
+                                 t-att-src="image_data_uri(user.company_id.logo)"
+                                 style="max-height: 50px; width: auto;"/>
+                        </div>
+                        <div class="col-6" style="font-size: 12px; padding-top: 5px;">
+                            <span>Công ty TNHH Con Cò Vàng - Mã số thuế: 0305995751</span><br/>
+                            <span>23 Lô B, Đường số 1, P. Phú Thuận, Q.7</span>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-12 text-center">
+                            <h3 style="font-weight: bold; margin-bottom: 2px;">
+                                BÁO CÁO SẢN LƯỢNG NHẬP XUẤT
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center" style="font-style: italic; font-weight: bold;">
+                            Phòng ban: <t t-esc="doc.department_id.name if doc.department_id else 'Tất cả'"/>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 8px;">
+                        <div class="col-12 text-center" style="font-style: italic; font-weight: bold;">
+                            <t t-if="doc.date and doc.date_to and doc.date != doc.date_to">
+                                Từ ngày <t t-esc="doc.date.strftime('%d/%m/%Y')"/> đến ngày <t t-esc="doc.date_to.strftime('%d/%m/%Y')"/>
+                            </t>
+                            <t t-elif="doc.date">
+                                Ngày <t t-esc="doc.date.strftime('%d/%m/%Y')"/>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table table-sm table-bordered"
+                           style="font-size: 10px; border-collapse: collapse; width: 100%;">
+                        <thead>
+                            <tr style="background-color: #f2f2f2;">
+                                <th class="text-center" style="width: 3%;">STT</th>
+                                <th class="text-center" style="width: 8%;">Ngày</th>
+                                <th class="text-center" style="width: 5%;">Loại</th>
+                                <th class="text-center" style="width: 15%;">Đại lý/NCC</th>
+                                <th class="text-center" style="width: 10%;">Đơn hàng</th>
+                                <th class="text-center" style="width: 8%;">Số xe</th>
+                                <th class="text-center" style="width: 8%;">Tài xế</th>
+                                <th class="text-center" style="width: 5%;">ĐVT</th>
+                                <th class="text-center" style="width: 8%;">SL phiếu kho</th>
+                                <th class="text-center" style="width: 5%;">Cửa</th>
+                                <th class="text-center" style="width: 8%;">Bốc xếp</th>
+                                <th class="text-center" style="width: 8%;">Thủ kho</th>
+                                <th class="text-center" style="width: 9%;">Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="lines" t-as="line">
+                                <tr>
+                                    <td class="text-center"><t t-esc="line.get('no')"/></td>
+                                    <td class="text-center">
+                                        <t t-if="line.get('date')">
+                                            <t t-esc="line['date'].strftime('%d/%m/%Y')"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center"><t t-esc="line.get('type', '')"/></td>
+                                    <td><t t-esc="line.get('partner_name', '')"/></td>
+                                    <td><t t-esc="line.get('order', '')"/></td>
+                                    <td class="text-center"><t t-esc="line.get('vehicle_num', '')"/></td>
+                                    <td class="text-center"><t t-esc="line.get('vehicle_driver', '')"/></td>
+                                    <td class="text-center"><t t-esc="line.get('uom_id', '')"/></td>
+                                    <td class="text-right">
+                                        <t t-esc="'{:,.3f}'.format(line.get('quantity', 0))"/>
+                                    </td>
+                                    <td class="text-center"><t t-esc="line.get('gate', '')"/></td>
+                                    <td class="text-center"><t t-esc="line.get('loading', '')"/></td>
+                                    <td class="text-center"><t t-esc="line.get('stocker', '')"/></td>
+                                    <td><t t-esc="line.get('note', '')"/></td>
+                                </tr>
+                            </t>
+                            <!-- Total row -->
+                            <tr style="font-weight: bold;">
+                                <td colspan="8" style="text-align: left; font-weight: bold;">TỔNG CỘNG</td>
+                                <td class="text-right" style="font-weight: bold;">
+                                    <t t-esc="'{:,.3f}'.format(grand_totals.get('quantity', 0))"/>
+                                </td>
+                                <td colspan="4"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Signatures -->
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-12 text-right" style="font-style: italic; font-size: 11px;">
+                            Ngày ..... tháng ..... năm .........
+                        </div>
+                    </div>
+                    <div class="row text-center" style="margin-top: 10px; font-size: 11px;">
+                        <div class="col-2">
+                            <strong>Người Lập Biểu</strong>
+                            <br/>
+                            <t t-if="doc.sudo().voter_id.sign_signature">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().voter_id.sign_signature)"
+                                     style="width: 100px; height: 40px;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="doc.sudo().voter_id.name_without_position if doc.voter_id else ''"/></strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>Bộ nhận bốc xếp</strong>
+                            <br/>
+                            <t t-if="doc.sudo().loading_id.sign_signature">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().loading_id.sign_signature)"
+                                     style="width: 100px; height: 40px;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="doc.sudo().loading_id.name_without_position if doc.loading_id else ''"/></strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>Quản lý sản xuất</strong>
+                            <br/>
+                            <t t-if="doc.sudo().stocker_id.sign_signature">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().stocker_id.sign_signature)"
+                                     style="width: 100px; height: 40px;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="doc.sudo().stocker_id.name_without_position if doc.stocker_id else ''"/></strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>Phòng HCNS</strong>
+                            <br/>
+                            <t t-if="doc.sudo().hr_admin_department_id.sign_signature">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().hr_admin_department_id.sign_signature)"
+                                     style="width: 100px; height: 40px;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="doc.sudo().hr_admin_department_id.name_without_position if doc.hr_admin_department_id else ''"/></strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>Phòng Kế toán</strong>
+                            <br/>
+                            <t t-if="doc.sudo().chief_finance_id.sign_signature">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().chief_finance_id.sign_signature)"
+                                     style="width: 100px; height: 40px;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="doc.sudo().chief_finance_id.name_without_position if doc.chief_finance_id else ''"/></strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>Thủ trưởng đơn vị</strong>
+                            <br/>
+                            <t t-if="doc.sudo().director_id.sign_signature">
+                                <br/>
+                                <img t-att-src="image_data_uri(doc.sudo().director_id.sign_signature)"
+                                     style="width: 100px; height: 40px;"/>
+                            </t>
+                            <t t-else=""><br/><br/><br/><br/></t>
+                            <br/>
+                            <strong><t t-esc="doc.sudo().director_id.name_without_position if doc.director_id else ''"/></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer" style="border-top: none;">
+                <div class="text-center" style="font-size: 10px;">
+                    Trang: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

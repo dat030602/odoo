@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="view_cash_flows_tree" model="ir.ui.view">
+            <field name="name">cash.flows.tree</field>
+            <field name="model">cash.flows</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="categ_name"/>
+                    <field name="code"/>
+                    <field name="parent_level"/>
+                    <field name="apply_by"/>
+                    <field name="account_ids" widget="many2many_tags"/>
+                    <field name="total_categ_ids" widget="many2many_tags"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_cash_flows_form" model="ir.ui.view">
+            <field name="name">cash.flows.form</field>
+            <field name="model">cash.flows</field>
+            <field name="arch" type="xml">
+              	<form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="categ_name"/>
+                                <field name="report_type"/>
+                                <field name="code"/>
+                                <field name="parent_level"/>
+                                <field name="apply_by"/>
+                                <field name="stt_calculate"/>
+                            </group>
+                            <group>
+					            <field name="account_ids" widget="many2many_tags" attrs="{'readonly': [('apply_by','=', 'total_categ')],'invisible': [('report_type','=', 'statements_cash_flows')]}"/>
+                                <field name="total_categ_ids" widget="many2many_tags"/>
+                                <field name="in_business_cycle" invisible="1"/>
+                                <field name="is_bold_report" groups="base.group_no_one"/>
+                                <field name="is_italic_report" groups="base.group_no_one"/>
+                                <field name="target_id" attrs="{'invisible': [('apply_by','!=', 'accounting_balance_sheet')]}"/>
+                                <field name="column" attrs="{'invisible': [('apply_by','!=', 'accounting_balance_sheet')]}"/>
+                            </group>
+                        </group>
+                        <notebook attrs="{'invisible':[('apply_by','=', 'total_categ')]}">
+                            <page string="Set Method">
+                                <field name="line_ids">
+                                    <tree editable='bottom'>
+                                        <field name="account_number_import_ids" widget="many2many_tags" string="Revenue Account Import"/>
+                                        <field name="reciprocal_account_import_ids" widget="many2many_tags" string="Reciprocal Account Import"/>
+                                        <field name="account_number_export_ids" widget="many2many_tags" string="Revenue Account Export"/>
+                                        <field name="reciprocal_account_export_ids" widget="many2many_tags" string="Reciprocal Account Export"/>
+                                        <field name="diary_book_ids" widget="many2many_tags" string="Diary Book"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+      	</record>
+
+        <record id="action_cash_flows_sheet" model="ir.actions.act_window">
+            <field name="name">Cash flows</field>
+            <field name="res_model">cash.flows</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

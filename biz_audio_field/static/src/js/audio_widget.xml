@@ -1,0 +1,13 @@
+<templates>
+
+    <t t-name="biz_audio_field.BinaryFieldAudio" owl="1">
+        <t t-if="props.readonly or mode === 'readonly'">
+            <t t-if="props.record.resId and props.value">
+                <audio controls="controls" preload="metadata">
+                    <source t-att-src="url"/>
+                </audio>
+            </t>
+        </t>
+    </t>
+
+</templates>

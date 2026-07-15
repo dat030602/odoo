@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="view_config_salary_insurence_union_dues_tree" model="ir.ui.view">
+		<field name="name">config.salary.insurence.union.dues.tree</field>
+		<field name="model">config.salary.insurence.union.dues</field>
+		<field name="arch" type="xml">
+			<tree string="Working Day Type" editable="bottom">
+				<field name="date_apply"/>
+				<field name="rule_apply"/>
+				<field name="maximum_amount"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_config_salary_insurence_union_dues" model="ir.actions.act_window">
+       <field name="name">Configure the maximum salary for insurance/union dues</field>
+       <field name="res_model">config.salary.insurence.union.dues</field>
+       <field name="view_mode">tree</field>
+	</record>
+	
+	<menuitem
+            id="menu_config_salary_insurence_union_dues"
+            action="action_config_salary_insurence_union_dues"
+            parent="hr_payroll.menu_hr_salary_configuration"
+            sequence="7"
+            groups="base.group_user"/>
+
+
+		
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_mrp_production_tree_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.tree.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_qty']" position="attributes">
+                <attribute name="string">SL kế hoạch</attribute>
+                <attribute name="digits">[16,3]</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_qty']" position="after">
+                <field name="qty_producing" string="SL sản xuất" sum="sum_qty_producing" digits="[16,3]"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="biz_ccv_sale_mrp_production_form_view_inherit_client_ccv_sale_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.tree.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="biz_ccv_sale.mrp_production_form_view_inherit_client_ccv_sale"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='packaging_image']" position="replace">
+                <field name="packaging_image_128" widget="image" class="oe_avatar"/>
+            </xpath>
+            <xpath expr="//field[@name='product_image']" position="replace">
+                <field name="product_image_1920" widget="image" class="oe_avatar" string="Ảnh sản phẩm"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_mrp_production_form_inherit_images" model="ir.ui.view">
+        <field name="name">mrp.production.form.inherit.images</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div style="float: right; display: flex; gap: 15px;">
+                    <field name="product_packaging_image" widget="image" options="{'size': [140, 140]}" style="border: 1px solid #ddd; max-width: 140px; max-height: 140px; background-color: white;"/>
+                    <field name="product_image_1920" widget="image" options="{'size': [140, 140]}" style="border: 1px solid #ddd; max-width: 140px; max-height: 140px; background-color: white;"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_rp_po_ccv" model="ir.actions.report">
+        <field name="name">Purchase order CCV</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">purchase.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">rp_po_ccv</field>
+        <field name="report_file">rp_po_ccv</field>
+        <field name="print_report_name">'%s' % (object.get_po_ccv_report_name())</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">biz_ccv_purchase</field>
+        <field name="py3o_template_fallback">reports/po_ccv.odt</field>
+    </record>
+
+    <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+    <record id="purchase.report_purchase_quotation" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="approval_category_view_kanban" model="ir.ui.view">
+        <field name="name">approval.category.views.kanban</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='%(approvals.approval_request_action_to_review_category)d']" position="replace">
+                <button
+                type="object"
+                class="btn btn-sm btn-secondary float-end"
+                name="action_to_review_category"
+                groups="approvals.group_approval_user">Chờ xem xét: <field name="request_to_validate_count"/></button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

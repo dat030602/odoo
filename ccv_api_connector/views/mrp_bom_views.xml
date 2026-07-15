@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit mrp.bom form view to add tag_ids field -->
+    <record id="view_mrp_bom_form_tags" model="ir.ui.view">
+        <field name="name">mrp.bom.form.tags</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="tag_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

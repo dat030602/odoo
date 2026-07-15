@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Thêm nút "Xem chi tiết" vào tree view của line -->
+        <record id="view_summary_ie_inventory_line_tree" model="ir.ui.view">
+            <field name="name">summary.ie.inventory.line.tree</field>
+            <field name="model">summary.ie.inventory.line</field>
+            <field name="inherit_id" ref="biz_stock_summary_report.view_summary_ie_inventory_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="multi_edit">0</attribute>
+                </xpath>
+                <xpath expr="//tree" position="inside">
+                    <field name="is_show_moves" invisible="1"/>
+                    <button name="action_view_moves" type="object" string="Xem chi tiết" class="btn-link" icon="fa-eye" attrs="{'invisible': [('is_show_moves', '=', False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='uom_id']" position="after">
+                    <field name="warehouse_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_summary_ie_inventory_line_form_inherit" model="ir.ui.view">
+            <field name="name">summary.ie.inventory.line.form</field>
+            <field name="model">summary.ie.inventory.line</field>
+            <field name="inherit_id" ref="biz_stock_summary_report.view_summary_ie_inventory_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='uom_id']" position="after">
+                    <field name="is_show_moves" invisible="1"/>
+                    <field name="warehouse_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

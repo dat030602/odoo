@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="tree_management_fertilization_process_view_form" model="ir.ui.view">
+            <field name="name">tree.management.fertilization.process.form</field>
+            <field name="model">tree.management.fertilization.process</field>
+            <field name="arch" type="xml">
+                <form string="Fertilization Process">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <label for="name" string="Fertilization Process Name" />
+                                <field name="name" default_focus="1" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="dosage" />
+                                <field name="plant_type_id" required="1"/>
+                            </group>
+                            <group>
+                                <field name="fertilization_time" />
+                                <field name="description" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="tree_management_fertilization_process_view_tree" model="ir.ui.view">
+            <field name="name">tree.management.fertilization.process.tree</field>
+            <field name="model">tree.management.fertilization.process</field>
+            <field name="arch" type="xml">
+                <tree string="Fertilization Process">
+                    <field name="name" />
+                    <field name="dosage" />
+                    <field name="plant_type_id" />
+                    <field name="fertilization_time" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="tree_management_fertilization_process_action" model="ir.actions.act_window">
+            <field name="name">Fertilization Process</field>
+            <field name="res_model">tree.management.fertilization.process</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_tree_management_fertilization_process" name="Fertilization Process" action="tree_management_fertilization_process_action" sequence="12" groups="base.group_user" parent="tree_management_menu"/>
+    </data>
+</odoo>

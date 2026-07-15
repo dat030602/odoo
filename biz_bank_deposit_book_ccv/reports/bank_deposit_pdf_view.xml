@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="rp_bank_deposit_book_pdf_document2">
+    <t t-call="web.basic_layout">
+        <t t-set="company" t-value="doc.env.company"/>
+        <div class="page" style="font-family:Times New Roman; font-size:18px;">
+            <div class="oe_structure"/>
+            <div class="row">
+                <div class="col-2">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%" alt="Logo"/>
+                </div>
+                <div class="col-5" style="position:  relative">
+                    <p style="position: absolute; left; top: 35%">Công Ty TNHH Con Cò Vàng  - Mã số thuế: 0305995751</p>
+                </div>
+                <div class="col-5 text-center">
+                    <p><b>Mẫu số: S08-DN</b></p>
+                    <p>(Ban hành theo Thông tư số 99/2025/TT-BTC</p>
+                    <p>Ngày 27/10/2025 của Bộ Tài chính)</p>
+                </div>
+            </div>
+
+            <div class="text-center my-5 bold">
+                <h4 class="bold">SỔ TIỀN GỬI NGÂN HÀNG</h4>
+                <p class="italic">
+                    Tài khoản: <span t-field="doc.journal_id.default_account_id.code"/>;
+                    <span>Loại tiền: <t t-if="doc.type_print == 'usd'">USD</t> <t t-else="">VNĐ</t></span>;
+                    <br/>
+                    <span>TK ngân hàng: <span t-field="doc.journal_id.bank_account_id.acc_number"/> - <span t-field="doc.journal_id.bank_account_id.bank_id.name"/></span>;
+                    <br/>
+                    <t t-if="doc.from_date == doc.to_date">
+                        <span t-esc="doc.from_date.strftime('ngày %d tháng %m năm %Y')"/>
+                    </t>
+                    <t t-else="">
+                        Từ <span t-esc="doc.from_date.strftime('ngày %d tháng %m năm %Y')"/> đến <span t-esc="doc.to_date.strftime('ngày %d tháng %m năm %Y')"/>
+                    </t>
+                </p>
+            </div>  
+            <!-- <p class="bold">Tài khoản ngân hàng: <span t-field="doc.journal_id.bank_account_id.acc_number"/> - <span t-field="doc.journal_id.bank_account_id.bank_id.name"/></p> -->
+            <table class="table">
+                <col width="5%"/>
+                <col width="5%"/>
+                <col width="5%"/>
+                <col width="23%"/>
+                <col width="1%"/>
+                <col width="1%"/>
+                <col width="9%"/>
+                <col width="9%"/>
+                <col width="9%"/>
+                <col width="9%"/>
+                <col width="9%"/>
+                <col width="9%"/>
+                <col width="9%"/>
+                <thead>
+                    <tr>
+                        <th>Ngày hoạch<br/>toán</th>
+                        <th>Ngày<br/>chứng từ</th>
+                        <th>Số chứng<br/>từ</th>
+                        <th>Diễn giải</th>
+                        <th>TK đối ứng</th>
+                        <th t-if="doc.type_print == 'usd'">Tỷ giá</th>
+                        <th t-if="doc.type_print == 'usd'">Thu</th>
+                        <th>Thu</th>
+                        <th t-if="doc.type_print == 'usd'">Chi</th>
+                        <th>Chi</th>
+                        <th t-if="doc.type_print == 'usd'">Tồn</th>
+                        <th>Tồn</th>
+                        <th t-if="doc.type_print == 'vnd'">Tên đối<br/>tượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="initital" t-value="get_initial_balance(doc)"/>
+                    <t t-set="remaining" t-value="initital"/>
+                    
+                    <t t-if="doc.type_print == 'usd'">
+                        <t t-set="initital_usd" t-value="get_initial_balance_usd(doc)"/>
+                        <t t-set="remaining_usd" t-value="initital_usd"/>
+                    </t>
+                    <t t-set="data" t-value="get_lines(doc)"/>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="bold">Số dư đầu kỳ</td>
+                        <td></td>
+                        <td t-if="doc.type_print == 'usd'"></td>
+                        <td t-if="doc.type_print == 'usd'"></td>
+                        <td></td>
+                        <td t-if="doc.type_print == 'usd'"></td>
+                        <td></td>
+                        <td t-if="doc.type_print == 'usd'" class="format-currency bold"><span t-esc="format_number(initital_usd)" /></td>
+                        <t t-if="doc.type_print == 'usd'"><td class="format-currency bold"><span t-esc="format_number(initital)" /></td></t>
+                        <t t-else=""><td class="format-currency normal bold"><span t-esc="format_number(initital)" /></td></t>
+                        <td t-if="doc.type_print == 'vnd'"></td>
+                    </tr>
+                    <t t-set="last_date" t-value=""/>
+                    <t t-set="sum_debit" t-value="0"/>
+                    <t t-set="sum_pdebit" t-value="0"/>
+                    <t t-set="sum_credit" t-value="0"/>
+                    <t t-set="sum_pcredit" t-value="0"/>
+                    <t t-foreach="data['lines']" t-as="line">
+                        <t t-set="sum_debit" t-value="sum_debit + line['debit']"/>
+                        <t t-if="doc.type_print == 'usd'" t-set="sum_pdebit" t-value="sum_pdebit + line['pdebit']"/>
+                        <t t-set="sum_credit" t-value="sum_credit + line['credit']"/>
+                        <t t-if="doc.type_print == 'usd'" t-set="sum_pcredit" t-value="sum_pcredit + line['pcredit']"/>
+                        <t t-if="last_date != '' and last_date is not None">
+                            <tr t-if="line['date'] != last_date">
+                                <td t-if="doc.type_print == 'vnd'" colspan="5" class="bold">Số dư cuối ngày <span t-esc="last_date"/></td>
+                                <td t-else="" colspan="6" class="bold">Số dư cuối ngày <span t-esc="last_date"/></td>
+                                <t t-if="doc.type_print == 'usd'">
+                                    <td class="format-currency bold"><span t-esc="format_number(sum_pdebit)"/></td>
+                                    <td class="format-currency bold"><span t-esc="format_number(sum_debit)"/></td>
+                                    <td class="format-currency bold"><span t-esc="format_number(sum_pcredit)"/></td>
+                                    <td class="format-currency bold"><span t-esc="format_number(sum_credit)"/></td>
+                                    <td class="format-currency bold"><span t-esc="format_number(remaining_usd)"/></td>
+                                    <td class="format-currency bold"><span t-esc="format_number(remaining)"/></td>
+                                </t>
+                                <t t-else="">
+                                    <td class="format-currency normal bold"><span t-esc="format_number(sum_debit)"/></td>
+                                    <td class="format-currency normal bold"><span t-esc="format_number(sum_credit)"/></td>
+                                    <td class="format-currency normal bold"><span t-esc="format_number(remaining)"/></td>
+                                </t>
+                                <td t-if="doc.type_print == 'vnd'"></td>
+                                <t t-set="last_date" t-value="line['date']"/>
+                                <t t-set="sum_debit" t-value="0"/>
+                                <t t-if="doc.type_print == 'usd'" t-set="sum_pdebit" t-value="0"/>
+                                <t t-set="sum_credit" t-value="0"/>
+                                <t t-if="doc.type_print == 'usd'" t-set="sum_pcredit" t-value="0"/>
+                            </tr>
+                        </t>
+                        <t t-set="remaining" t-value="remaining + line['debit'] - line['credit']"/>
+                        <t t-if="doc.type_print == 'usd'" t-set="remaining_usd" t-value="remaining_usd + line['pdebit'] - line['pcredit']"/>
+                        <tr>
+                            <td><span t-esc="line['date']"/></td>
+                            <td><span t-esc="line['date']"/></td>
+                            <td><span t-esc="split_string_to_lines(line['move_name'],'/',1)"/></td>
+                            <td>
+                                <t t-if="doc.type_print == 'usd'"><span style="display: inline-block;max-width: 42mm;" t-esc="line['name']"/></t>
+                                <t t-else=""><span style="display: inline-block;max-width: 76mm;" t-esc="line['name']"/></t>
+                            </td>
+                            <td class="text-center"><span t-esc="line['cpt_code']"/></td>
+                            <t t-if="doc.type_print == 'usd'">
+                                <td class="nowrap"><span t-esc="format_number(line['tygia'])"/></td>
+                                <td class="format-currency"><span t-esc="format_number(line['pdebit'])"/></td>
+                                <td class="format-currency"><span t-esc="format_number(line['debit'])"/></td>
+                                <td class="format-currency"><span t-esc="format_number(line['pcredit'])"/></td>
+                                <td class="format-currency"><span t-esc="format_number(line['credit'])"/></td>
+                                <td class="format-currency"><span t-esc="format_number(remaining_usd)"/></td>
+                                <td class="format-currency"><span t-esc="format_number(remaining)"/></td>
+                            </t>
+                            <t t-else="">
+                                <td class="format-currency normal"><span t-esc="format_number(line['debit'])"/></td>
+                                <td class="format-currency normal"><span t-esc="format_number(line['credit'])"/></td>
+                                <td class="format-currency normal"><span t-esc="format_number(remaining)"/></td>
+                                <td t-if="doc.type_print == 'vnd'"></td>
+                            </t>
+                        </tr>
+                        <t t-set="last_date" t-value="line['date']"/>
+                    </t>
+                    <tr t-if="last_date != ''">
+                        <td t-if="doc.type_print == 'vnd'" colspan="5" class="bold">Số dư cuối ngày <span t-esc="last_date"/></td>
+                        <td t-else="" colspan="6" class="bold">Số dư cuối ngày <span t-esc="last_date"/></td>
+                        <t t-if="doc.type_print == 'usd'">
+                            <td class="format-currency bold"><span t-esc="format_number(sum_pdebit)"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(sum_debit)"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(sum_pcredit)"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(sum_credit)"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(remaining_usd)"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(remaining)"/></td>
+                        </t>
+                        <t t-else="">
+                            <td class="format-currency normal bold"><span t-esc="format_number(sum_debit)"/></td>
+                            <td class="format-currency normal bold"><span t-esc="format_number(sum_credit)"/></td>
+                            <td class="format-currency normal bold"><span t-esc="format_number(remaining)"/></td>
+                        </t>
+                        <td t-if="doc.type_print == 'vnd'"></td>
+                    </tr>
+                    <tr>
+                        <td t-if="doc.type_print == 'vnd'" colspan="5" class="bold">Tổng cộng</td>
+                        <td t-else="" colspan="6" class="bold">Tổng cộng</td>
+                        <t t-if="doc.type_print == 'usd'">
+                            <td class="format-currency bold"><span t-esc="format_number(data['sum_pdebit'])"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(data['sum_debit'])"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(data['sum_pcredit'])"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(data['sum_credit'])"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(initital_usd + data['sum_pdebit'] - data['sum_pcredit'])"/></td>
+                            <td class="format-currency bold"><span t-esc="format_number(initital + data['sum_debit'] - data['sum_credit'])"/></td>
+                        </t>
+                        <t t-else="">
+                            <td class="format-currency normal bold"><span t-esc="format_number(data['sum_debit'])"/></td>
+                            <td class="format-currency normal bold"><span t-esc="format_number(data['sum_credit'])"/></td>
+                            <td class="format-currency normal bold"><span t-esc="format_number(initital + data['sum_debit'] - data['sum_credit'])"/></td>
+                        </t>
+                        <td t-if="doc.type_print == 'vnd'"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <p>- Sổ này có ... trang, đánh số từ trang 01 đến trang...</p>
+                <p>- Ngày mở sổ: ...</p>
+            </div>
+            <div class="row text-center mt-3" >
+                <div class="col-8"/>
+                <div class="col-4">
+                    <p class="italic">Ngày..........tháng.........năm..........</p>
+                </div>
+            </div>
+            <div class="row text-center" style="page-break-inside: avoid">
+                <div class="col-4">
+                    <p class="bold">Người lập phiếu</p>
+                    <p><i>(Ký, họ tên)</i></p>
+                    <p class="bold" style="margin-top: 50px"><span t-esc="doc.creator_id.name_without_position or doc.creator_id.name"/></p>
+                </div>
+                <div class="col-4">
+                    <p class="bold">Kế Toán Trưởng</p>
+                    <p><i>(Ký, họ tên)</i></p>
+                    <p class="bold" style="margin-top: 50px"><span t-esc="doc.chief_id.name_without_position or doc.chief_id.name"/></p>
+                </div>
+                <div class="col-4">
+                    <p class="bold">Thủ trưởng đơn vị</p>
+                    <p><i>(Ký, họ tên, đóng dấu)</i></p>
+                    <p class="bold" style="margin-top: 50px"><span t-esc="doc.unit_head_id.name_without_position or doc.unit_head_id.name"/></p>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="text-right" style="text-align: right">
+                    <div class="text-muted">
+                        Page: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .bold{
+                    font-weight: bold;
+                }
+                .italic{
+                    font-style: italic;
+                }
+                p{
+                    margin: 0;
+                }
+                table{
+                    border:  1px solid;
+                    width: 100%;
+                }
+                td, th{
+                    padding: 5px;
+                }
+                thead {
+                    border-bottom: 0 !important;
+                }
+                tbody{
+                    border-top: 0 !important;
+                }
+                thead tr, thead th{
+                    border:  1px solid;
+                    padding: 0.4rem;
+                }
+                tbody tr,tbody td{
+                    border-bottom: 1px solid !important;
+                    border-top: 1px solid !important;
+                    border-left: 1px solid !important;
+                    border-right: 1px solid !important;
+                    padding: 0.4rem;
+                }
+                tr{
+                    page-break-inside: avoid;
+                }
+                .nowrap{
+                    white-space: nowrap;
+                    text-align: right;
+                }
+                .format-currency {
+                    text-align: right;
+                }
+                .format-currency span {
+                    display: inline-block;
+                    max-width: 23mm;
+                    text-align: right;
+                }
+                .format-currency.normal span{
+                    max-width: 31mm;
+                }
+            </style>
+        </div>
+    </t>
+</template>
+
+
+<template id="biz_bank_deposit_book.rp_bank_deposit_book_pdf">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="biz_bank_deposit_book_ccv.rp_bank_deposit_book_pdf_document2" t-lang="doc.env.user.lang"/>
+        </t>
+    </t>
+</template>
+
+</odoo>

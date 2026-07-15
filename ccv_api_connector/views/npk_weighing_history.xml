@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- NPK Weighing Factory Views -->
+    <record id="view_npk_weighing_factory_tree" model="ir.ui.view">
+        <field name="name">npk.weighing.factory.tree</field>
+        <field name="model">npk.weighing.factory</field>
+        <field name="arch" type="xml">
+            <tree string="Nhà máy cân NPK">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="address"/>
+                <field name="picking_type_id"/>
+                <field name="active" widget="boolean_button" options="{'terminology': 'status'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_npk_weighing_factory_form" model="ir.ui.view">
+        <field name="name">npk.weighing.factory.form</field>
+        <field name="model">npk.weighing.factory</field>
+        <field name="arch" type="xml">
+            <form string="Nhà máy cân NPK">
+                <sheet>
+                    <group>
+                        <group string="Thông tin nhà máy">
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="address"/>
+                            <field name="picking_type_id"/>
+                            <field name="active" widget="boolean_button" options="{'terminology': 'status'}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_npk_weighing_factory_search" model="ir.ui.view">
+        <field name="name">npk.weighing.factory.search</field>
+        <field name="model">npk.weighing.factory</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm nhà máy cân NPK">
+                <field name="name"/>
+                <field name="code"/>
+                <filter string="Hoạt động" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Không hoạt động" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_npk_weighing_factory" model="ir.actions.act_window">
+        <field name="name">Nhà máy cân NPK</field>
+        <field name="res_model">npk.weighing.factory</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_npk_weighing_factory_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có nhà máy cân NPK
+            </p>
+        </field>
+    </record>
+
+    <!-- NPK Weighing Machine Views -->
+    <record id="view_npk_weighing_machine_tree" model="ir.ui.view">
+        <field name="name">npk.weighing.machine.tree</field>
+        <field name="model">npk.weighing.machine</field>
+        <field name="arch" type="xml">
+            <tree string="Máy cân NPK">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="factory_id"/>
+                <field name="is_default" widget="boolean_toggle"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_npk_weighing_machine_form" model="ir.ui.view">
+        <field name="name">npk.weighing.machine.form</field>
+        <field name="model">npk.weighing.machine</field>
+        <field name="arch" type="xml">
+            <form string="Máy cân NPK">
+                <header>
+                    <button name="action_get_current_ticket" type="object" string="Lấy phiếu cân hiện tại" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Thông tin máy cân">
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="factory_id"/>
+                            <field name="is_default" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Sản phẩm">
+                            <field name="tag_ids"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_npk_weighing_machine_search" model="ir.ui.view">
+        <field name="name">npk.weighing.machine.search</field>
+        <field name="model">npk.weighing.machine</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm máy cân NPK">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="factory_id"/>
+                <filter string="Hoạt động" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Không hoạt động" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Nhóm">
+                    <filter string="Nhà máy" name="group_factory" context="{'group_by': 'factory_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_npk_weighing_machine" model="ir.actions.act_window">
+        <field name="name">Máy cân NPK</field>
+        <field name="res_model">npk.weighing.machine</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_npk_weighing_machine_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có máy cân NPK
+            </p>
+        </field>
+    </record>
+
+    <!-- NPK Weighing History Views -->
+    <record id="view_npk_weighing_history_tree" model="ir.ui.view">
+        <field name="name">npk.weighing.history.tree</field>
+        <field name="model">npk.weighing.history</field>
+        <field name="arch" type="xml">
+            <tree string="Lịch sử cân NPK" decoration-success="is_finished" decoration-danger="is_deleted">
+                <field name="name"/>
+                <field name="production_id"/>
+                <field name="partner_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                <field name="product_id"/>
+                <field name="machine_id"/>
+                <field name="plan_counter"/>
+                <field name="counter"/>
+                <field name="total"/>
+                <field name="is_finished" widget="boolean_button" options="{'terminology': 'status'}"/>
+                <field name="is_deleted" widget="boolean_button" options="{'terminology': 'status'}"/>
+                <field name="create_time"/>
+                <field name="stock_date_receipt"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_npk_weighing_history_form" model="ir.ui.view">
+        <field name="name">npk.weighing.history.form</field>
+        <field name="model">npk.weighing.history</field>
+        <field name="arch" type="xml">
+            <form string="Lịch sử cân NPK">
+                <sheet>
+                    <widget name="web_ribbon" title="Hoàn thành" bg_color="bg-success" attrs="{'invisible': [('is_finished', '=', False)]}"/>
+                    <widget name="web_ribbon" title="Hủy" bg_color="bg-danger" attrs="{'invisible': [('is_deleted', '=', False)]}"/>
+                    <group>
+                        <group string="Thông tin cân">
+                            <field name="name" readonly="1"/>
+                            <field name="stock_date_receipt" readonly="1"/>
+                            <field name="production_id" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="partner_ids" widget="many2many_tags" readonly="1"/>
+                            <field name="machine_id" readonly="1"/>
+                            <field name="factory_id" readonly="1"/>
+                            <field name="vehicle" readonly="1"/>
+                            <field name="batch_number" readonly="1"/>
+                        </group>
+                        <group string="Chỉ số cân">
+                            <field name="quantity_start" readonly="1"/>
+                            <field name="plan_counter" readonly="1"/>
+                            <field name="counter" readonly="1"/>
+                            <field name="total" readonly="1"/>
+                            <field name="unit_price" readonly="1"/>
+                            <field name="is_finished" readonly="1" attrs="{'invisible': [('is_finished', '=', True)]}"/>
+                            <field name="is_deleted" readonly="1" attrs="{'invisible': [('is_deleted', '=', True)]}"/>
+                        </group>
+                    </group>
+                    <group string="Thông tin API">
+                        <group>
+                            <field name="api_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Thông tin thời gian">
+                        <group>
+                            <field name="create_time" readonly="1"/>
+                            <field name="start_time" readonly="1"/>
+                            <field name="stop_time" readonly="1"/>
+                            <field name="last_time" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Ghi chú" name="note">
+                            <field name="note" placeholder="Nhập ghi chú..." readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_npk_weighing_history_search" model="ir.ui.view">
+        <field name="name">npk.weighing.history.search</field>
+        <field name="model">npk.weighing.history</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm lịch sử cân NPK">
+                <field name="name"/>
+                <field name="production_id"/>
+                <field name="product_id"/>
+                <field name="machine_id"/>
+                <field name="factory_id"/>
+                <filter string="Đã hoàn thành" name="is_finished" domain="[('is_finished', '=', True)]"/>
+                <filter string="Đang thực hiện" name="not_finished" domain="[('is_finished', '=', False)]"/>
+                <separator/>
+                <filter string="Đã xóa" name="is_deleted" domain="[('is_deleted', '=', True)]"/>
+                <group expand="0" string="Nhóm">
+                    <filter string="Sản phẩm" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Lệnh sản xuất" name="group_production" context="{'group_by': 'production_id'}"/>
+                    <filter string="Máy cân" name="group_machine" context="{'group_by': 'machine_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_npk_weighing_history" model="ir.actions.act_window">
+        <field name="name">Lịch sử cân NPK</field>
+        <field name="res_model">npk.weighing.history</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_npk_weighing_history_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có lịch sử cân NPK
+            </p>
+            <p>
+                Lịch sử cân NPK sẽ được tạo tự động khi có dữ liệu từ API.
+            </p>
+        </field>
+    </record>
+</odoo>

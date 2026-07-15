@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_payslip_run_form_ccv" model="ir.ui.view">
+            <field name="name">hr.payslip.run.form.inherit</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='country_code']" position="after">
+                    <field name="working_days_per_month"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_hr_payslip_tree_ccv" model="ir.ui.view">
+            <field name="name">hr.payslip.tree.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="before">
+                    <field name="employee_code" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="after">
+                    <field name="employee_pure_name" optional="show"/>
+                    <field name="bank_acc_number" optional="show"/>
+                    <field name="bank_id" optional="show"/>
+                </xpath>
+
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="%(biz_ccv_payslip.action_hr_payslip_pdf)d" string="IN BẢNG LƯƠNG" type="action" class="btn-primary"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

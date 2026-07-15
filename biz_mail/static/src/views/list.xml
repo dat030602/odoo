@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="biz_mail.ListView.buttons" t-inherit="web.ListView.Buttons" owl="1">
+        <xpath expr="//t[contains(@t-if, 'isExportEnable')]" position="before">
+            <button type="button" class="btn btn-primary" t-on-click="onClickAddAllChannel">Add all channel</button>
+            <button type="button" class="btn btn-secondary" t-on-click="onClickSyncPartner">Sync Partner</button>
+        </xpath>
+    </t>
+</templates>

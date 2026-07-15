@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_viettel_sinvoice_form_inherit" model="ir.ui.view">
+        <field name="name">viettel.sinvoice.form.inherit</field>
+        <field name="model">viettel.sinvoice</field>
+        <field name="inherit_id" ref="biz_viettel_sinvoice_v2.view_viettel_sinvoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_vat']" position="before">
+                <field name="use_identity_card" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_vat']" position="after">
+                <field name="partner_identity_card" attrs="{'readonly': [('state','not in',(False,'draft'))],'invisible': [('use_identity_card','=','vat')]}"/>
+                <field name="payment_method" attrs="{'readonly': [('state','not in',(False,'draft'))]}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_vat']" position="attributes">
+                <attribute name="attrs"> {'readonly': [('state','not in',(False,'draft'))],'invisible': [('use_identity_card','!=','vat')]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

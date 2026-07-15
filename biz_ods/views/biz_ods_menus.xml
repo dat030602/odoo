@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="biz_ods_root_menu_ods" name="Call Center ODS" web_icon="biz_ods,static/description/icon.png" groups="biz_ods.biz_ods_group_operator">
+        <menuitem id="res_partner_menu_ods_action" name="Contacts" action="contacts.action_contacts" sequence="5"/>
+        <menuitem id="call_history_menu_ods_action" name="Call History" action="biz_ods.biz_ods_call_history_action" sequence="10"/>
+        <menuitem id="extension_menu_ods_action" name="List Extension" action="biz_ods.biz_ods_extension_action" sequence="15"/>
+        <menuitem id="report_menu_ods" name="Report" action="biz_ods.biz_ods_call_history_report_action" sequence="20" groups="biz_ods.biz_ods_group_administrator"/>
+        <menuitem id="api_menu_ods" name="API" sequence="25">
+            <menuitem id="call_sync_menu_ods_action" name="Call Sync" action="biz_ods.biz_ods_sync_wizard_action" sequence="5"/>
+            <menuitem id="logs_menu_ods_action" name="Logs API" action="biz_ods.biz_ods_call_logs_action" sequence="10"/>
+            <menuitem id="ods_webhook_menu" name="Webhook" action="biz_ods.ods_webhook_action" sequence="10"/>
+        </menuitem>
+        <menuitem id="configuration_menu_ods" name="Configuration" sequence="30">
+            <menuitem id="connect_menu_ods_action" action="biz_ods.action_biz_ods_configuration" sequence="5"/>
+        </menuitem>
+    </menuitem>
+</odoo>

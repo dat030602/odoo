@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem id="menu_invoice_data_root" 
+                  name="Hóa đơn điện tử" 
+                  web_icon="ccv_data_invoice,static/description/icon.png"
+                  sequence="50"/>
+ 
+        <!-- Sub Menus -->
+        <menuitem id="menu_invoice_data_list" 
+                  name="Danh sách hóa đơn điện tử" 
+                  parent="menu_invoice_data_root" 
+                  action="action_invoice_data" 
+                  sequence="10"/>
+
+        <menuitem id="menu_invoice_data_config" 
+                  name="Cấu hình" 
+                  parent="menu_invoice_data_root" 
+                  sequence="30"/>
+
+        <menuitem id="menu_invoice_data_mapping" 
+                  name="Cấu hình Mapping" 
+                  parent="menu_invoice_data_config" 
+                  action="action_mapping_data_product" 
+                  sequence="10"/>
+
+        <menuitem id="menu_invoice_data_import" 
+                  name="Import dữ liệu" 
+                  parent="menu_invoice_data_config" 
+                  action="action_import_xml_wizard" 
+                  sequence="20"/>
+        
+        <!-- <menuitem id="menu_invoice_data_report" 
+                  name="Báo cáo" 
+                  parent="menu_invoice_data_root" 
+                  sequence="40"/> -->
+    </data>
+</odoo>

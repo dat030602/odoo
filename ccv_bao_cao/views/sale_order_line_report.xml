@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_line_report_line_tree" model="ir.ui.view">
+        <field name="name">sale.order.line.report.line.tree</field>
+        <field name="model">sale.order.line.report.line</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết dòng đơn hàng" edit="0" create="0">
+                <field name="date_order" optional="show"/>
+                <field name="name" optional="show"/>
+                <field name="package_product_id" optional="hide"/>
+                <field name="product_id" optional="hide"/>
+                <field name="order_name" optional="show"/>
+                <field name="qty" optional="show" sum="total_qty"/>
+                <field name="qty_done" optional="show" sum="total_qty_done"/>
+                <field name="uom_id" optional="show"/>
+                <field name="amount" optional="hide"/>
+                <field name="user_id" optional="hide"/>
+                <field name="team_id" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="state_id" optional="show"/>
+                <field name="district_id" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_sale_order_line_report_line_form" model="ir.ui.view">
+        <field name="name">sale.order.line.report.line.form</field>
+        <field name="model">sale.order.line.report.line</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết dòng đơn hàng" edit="0" create="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="order_name"/>
+                            <field name="date_order"/>
+                            <field name="amount"/>
+                            <field name="user_id"/>
+                            <field name="team_id"/>
+                            <field name="partner_id"/>
+                            <field name="state_id"/>
+                            <field name="district_id"/>
+                        </group>
+                        <group>
+                            <field name="package_product_id"/>
+                            <field name="product_id"/>
+                            <field name="uom_id"/>
+                            <field name="qty"/>
+                            <field name="qty_done"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_sale_order_line_report_line_search" model="ir.ui.view">
+        <field name="name">sale.order.line.report.line.search</field>
+        <field name="model">sale.order.line.report.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm dòng đơn hàng">
+                <field name="name" string="Tên" filter_domain="['|', ('name', 'ilike', self), ('product_id.name', 'ilike', self)]"/>
+                <field name="product_id" string="Sản phẩm" filter_domain="['|', ('name', 'ilike', self), ('product_id.name', 'ilike', self)]"/>
+                <field name="package_product_id" string="Bao bì" filter_domain="['|', ('name', 'ilike', self), ('product_id.name', 'ilike', self)]"/>
+                <field name="partner_id"/>
+                <field name="district_id" filter_domain="['|', ('district_id.name', 'ilike', self), ('district_id.name_extension', 'ilike', self)]"/>
+                <field name="state_id" filter_domain="['|', ('state_id.name', 'ilike', self), ('state_id.name_extension', 'ilike', self)]"/>
+                <field name="date_order"/>
+                <separator/>
+                <filter string="Ngày đặt hàng" name="filter_date" date="date_order"/>
+                <separator/>
+                <filter string="Tỉnh/Thành phố" name="group_by_state" context="{'group_by':'state_id'}"/>
+                <filter string="Quận/Huyện" name="group_by_district" context="{'group_by':'district_id'}"/>
+                <filter string="Sản phẩm" name="group_by_product" context="{'group_by':'product_id'}"/>
+                <filter string="Bao bì" name="group_by_package_product_id" context="{'group_by':'package_product_id'}"/>
+                <filter string="Ngày đặt hàng" name="group_by_date" context="{'group_by':'date_order'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- <record id="action_sale_order_line_report_line" model="ir.actions.act_window">
+        <field name="name">Chi tiết dòng đơn hàng</field>
+        <field name="res_model">sale.order.line.report.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_sale_order_line_report_line_search"/>
+        <field name="domain">[('report_id', '=', active_id)]</field>
+    </record> -->
+
+    <record id="view_sale_order_line_report_tree" model="ir.ui.view">
+        <field name="name">sale.order.line.report.tree</field>
+        <field name="model">sale.order.line.report</field>
+        <field name="arch" type="xml">
+            <tree string="Báo cáo dòng đơn hàng">
+                <field name="name"/>
+                <field name="parent_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_sale_order_line_report_form" model="ir.ui.view">
+        <field name="name">sale.order.line.report.form</field>
+        <field name="model">sale.order.line.report</field>
+        <field name="arch" type="xml">
+            <form string="Báo cáo dòng đơn hàng">
+                <header>
+                    <button name="action_confirm" type="object" string="Tổng hợp" class="oe_highlight" attrs="{'invisible':[('parent_id','=',False)]}"/>
+                    <button name="action_run_query" type="object" string="Chạy dữ liệu" attrs="{'invisible':[('attachment_ids','=',False)]}"/>
+                </header>
+                <sheet>
+                    <field name="line_count" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_sale_order_line_report_line" type="object" string="Xem chi tiết" icon="fa-globe icon"  attrs="{'invisible':[('line_count','=',0)]}"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="parent_id"/>
+                        <field name="write_date" string="Lần cập nhật cuối"/>
+                    </group>
+                    <notebook>
+                        <page name='line_ids' string="Dòng sản phẩm">
+                            <field name="line_ids"/>
+                        </page>
+                        <page name='attachment_ids' string="Dữ liệu">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_sale_order_line_report" model="ir.actions.act_window">
+        <field name="name">Báo Cáo Tem, Bao Bì</field>
+        <field name="res_model">sale.order.line.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_sale_order_line_report_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <record id="action_sale_order_line_report_line" model="ir.actions.act_window">
+        <field name="name">Báo Cáo Tem, Bao Bì</field>
+        <field name="res_model">sale.order.line.report.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_main_sale_order_line_report_line" name="Báo Cáo Tem, Bao Bì" action="action_sale_order_line_report_line"
+                  parent="sale.menu_sale_report" sequence="20"/>
+
+    <menuitem id="menu_main_sale_order_line_report" name="Báo Cáo Tem, Bao Bì (Cập nhật DL)" action="action_sale_order_line_report"
+                  parent="sale.menu_sale_report" sequence="21"/>
+
+</odoo>

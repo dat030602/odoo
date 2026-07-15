@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wz_select_time_form" model="ir.ui.view">
+        <field name="name">wz.select.time.view.form</field>
+        <field name="model">wz.select.time</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="creator_id"/>
+                        <field name="factory_leader_id"/>
+                    </group>              
+                    <group>
+                        <field name="date_to"/>
+                        <field name="storekeeper_id"/>
+                        <field name="accountant_chief_id"/>
+                        <field name="unit_head_id"/>
+                    </group>
+                </group>
+                
+                <footer>
+                    <button string="Export Excel" name="%(biz_details_sales_book_by_customer.action_details_sales_book_by_customer_xlsx)d" type="action" class="btn-primary"/>
+                    <button string="Export PDF" name="%(biz_details_sales_book_by_customer.action_details_sales_book_by_customer_pdf)d" type="action" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id='action_wz_select_time' model='ir.actions.act_window'>
+        <field name='name'>Report details sales book by customer</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name='res_model'>wz.select.time</field>
+        <field name='view_mode'>form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- <menuitem id="menu_wz_select_time"
+        parent="account.account_reports_legal_statements_menu"
+        action="action_wz_select_time"
+        name="Report details sales book by customer"
+    /> -->
+</odoo>

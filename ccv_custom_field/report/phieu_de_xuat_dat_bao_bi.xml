@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="phieu_de_xuat_dat_bao_bi_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_custom_field.phieu_de_xuat_dat_bao_bi_document"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="phieu_de_xuat_dat_bao_bi_document">
+            <t t-call="ccv_bao_cao.ccv_header_img">
+                <style>
+                    .page * {
+                        font-size: 14px;
+                        line-height: 18px;
+                    }
+                </style>
+                <div class="page" style="font-size: 14px; font-family: Times New Roman; padding-top: 20px;">
+                    <!-- Tiêu đề -->
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12" style="text-align: center; font-size: 20px;">
+                            <p><strong style="font-size: 20px;">PHIẾU ĐỀ XUẤT ĐẶT BAO BÌ</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Kính gửi -->
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            <span>Kính gửi: </span><strong>BAN TỔNG GIÁM ĐỐC CÔNG TY</strong>
+                        </div>
+                    </div>
+
+                    <!-- Họ và tên, Bộ phận, Chức vụ -->
+                    <t t-set="employee" t-value="doc.sudo().request_owner_id.employee_id"/>
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-4">
+                            <span>Họ và tên: </span><t t-esc="doc.sudo().request_owner_id.name"/>
+                        </div>
+                        <div class="col-4">
+                            <span>Bộ phận: </span><t t-esc="employee.department_id.name if employee else ''"/>
+                        </div>
+                        <div class="col-4">
+                            <span>Chức vụ: </span><t t-esc="employee.job_id.name if employee else ''"/>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top: 8px;">
+                        <div class="col-12">
+                            <span>Kính trình xét duyệt đề xuất với những nội dung sau:</span>
+                        </div>
+                    </div>
+
+                    <!-- Bảng sản phẩm -->
+                    <div class="row" style="margin-top: 12px;">
+                        <table class="table table-sm" style="padding: 0px; border: solid 1px; width: 100%; margin-top: 4px;">
+                            <thead>
+                                <tr>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle; width: 40px;">
+                                        <strong>STT</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>Mã BB</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>Diễn giải</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>Hình ảnh</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>SL Bao bì đã sử dụng (cái)</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>Tồn kho (cái)</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>Số lượng đặt (cái)</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>Ghi chú</strong>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <strong>Ý kiến MKT</strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="number" t-value="0"/>
+                                <tr t-foreach="doc.product_line_ids" t-as="line">
+                                    <t t-set="number" t-value="number + 1"/>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <span t-esc="number"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <span t-esc="line.product_id.default_code"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: left; vertical-align: middle;">
+                                        <span t-esc="line.product_id.name"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <img t-if="line.line_image" alt="image" t-att-src="image_data_uri(line.line_image)" style="margin: 0 auto; max-width: 100px; max-height: 75px;"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <span t-esc="'%.0f' % line.qty_bb_used"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <span t-esc="'%.0f' % line.qty_available"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: center; vertical-align: middle;">
+                                        <span t-esc="'%.0f' % line.quantity"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: left; vertical-align: middle;">
+                                        <span t-esc="line.note"/>
+                                    </td>
+                                    <td class="border border-dark" style="padding: 4px 6px; text-align: left; vertical-align: middle;">
+                                        <span t-esc="line.mkt_comment"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Thời gian cần thực hiện -->
+                    <div class="row" style="padding-top: 8px;">
+                        <div class="col-12">
+                            <span>Thời gian cần thực hiện: .........................</span>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top: 4px;">
+                        <div class="col-12">
+                            <span>Kính mong Tổng Giám đốc duyệt.</span>
+                        </div>
+                    </div>
+
+                    <!-- Ngày tháng -->
+                    <div class="row" style="padding-top: 12px;">
+                        <div class="col-7"/>
+                        <div class="col-5" style="text-align: center;">
+                            <em>
+                                <span>Đồng Nai, ngày </span>
+                                <t t-esc="doc.date.strftime('%d')"/>
+                                <span> tháng </span>
+                                <t t-esc="doc.date.strftime('%m')"/>
+                                <span> năm </span>
+                                <t t-esc="doc.date.strftime('%Y')"/>
+                                <span>.</span>
+                            </em>
+                        </div>
+                    </div>
+
+                    <!-- Chữ ký -->
+                    <div class="row" style="text-align: center; margin-top: 12px;">
+                        <div class="col-2">
+                            <strong>Người đề nghị</strong>
+                            <br/><br/><br/><br/><br/>
+                            <span><t t-esc="doc.sudo().request_owner_id.name"/></span>
+                        </div>
+                        <div class="col-2">
+                            <strong>P.MKT</strong>
+                            <br/><br/><br/><br/><br/>
+                        </div>
+                        <div class="col-2">
+                            <strong>P.TM</strong>
+                            <br/><br/><br/><br/><br/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Ban Điều Hành</strong>
+                            <br/><br/><br/><br/><br/>
+                        </div>
+                        <div class="col-3">
+                            <strong>Ban Lãnh Đạo</strong>
+                            <br/><br/><br/><br/><br/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

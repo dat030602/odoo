@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_summary_ie_inventory_line_search" model="ir.ui.view">
+        <field name="name">summary.ie.inventory.line.search</field>
+        <field name="model">summary.ie.inventory.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="warehouse_id"/>
+                <field name="stock_valuation_account_id"/>
+                <filter string="Có nhập" name="has_import" domain="[('qty_import_total', '>', 0)]"/>
+                <filter string="Có xuất" name="has_export" domain="[('qty_export_total', '>', 0)]"/>
+                <filter string="Tồn kho" name="has_qty" domain="[('qty_end', '!=', 0)]"/>
+                <filter string="Có tồn" name="has_qty_end" domain="[('qty_end', '>', 0)]"/>
+                <filter string="Âm kho" name="has_qty_end_negative" domain="[('qty_end', '&lt;', 0)]"/>
+                <separator/>
+                <filter string="Tài khoản kho" name="group_stock_valuation_account" context="{'group_by': 'stock_valuation_account_id'}"/>
+                <filter string="Sản phẩm" name="group_product" context="{'group_by': 'product_id'}"/>
+                <filter string="Kho" name="group_warehouse" context="{'group_by': 'warehouse_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_summary_ie_inventory_line_tree" model="ir.ui.view">
+        <field name="name">summary.ie.inventory.line.tree</field>
+        <field name="model">summary.ie.inventory.line</field>
+        <field name="arch" type="xml">
+            <tree string="Summary of import and export inventory" create="0" edit="0">
+                <field name="stock_valuation_account_id" optional="show"/>
+                <field name="product_code" string="Mã hàng hoá" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="uom_id" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+                <field name="qty_begin" optional="show" sum="qty_begin" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_begin" options="{'currency_field': 'currency_id'}" widget="monetary" optional="show" sum="value_begin"/>
+                
+                <!-- Nhap -->
+                <field name="qty_import_purchase" optional="hide" sum="qty_import_purchase" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_import_purchase" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_import_purchase"/>
+                <field name="qty_import_production" optional="hide" sum="qty_import_production" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_import_production" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_import_production"/>
+                <field name="qty_import_inventory_adjustment" optional="hide" sum="qty_import_inventory_adjustment" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_import_inventory_adjustment" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_import_inventory_adjustment"/>
+                <field name="qty_import_internal" optional="hide" sum="qty_import_internal" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_import_internal" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_import_internal"/>
+                <field name="qty_import_other" optional="hide" sum="qty_import_other" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_import_other" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_import_other"/>
+                <field name="qty_import_total" optional="show" sum="qty_import_total" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_import_total" options="{'currency_field': 'currency_id'}" widget="monetary" optional="show" sum="value_import_total"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="allocated_cost" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="allocated_cost"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="average_price" optional="hide" sum="average_price"/>
+                
+                <!-- Xuat -->
+                <field name="qty_export_sale" optional="hide" sum="qty_export_sale" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_sale" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_export_sale"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_sale_cost" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_export_sale_cost"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_sale_profit" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_export_sale_profit"/>
+                <field name="qty_export_production" optional="hide" sum="qty_export_production" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_production" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_export_production"/>
+                <field name="qty_export_inventory_adjustment" optional="hide" sum="qty_export_inventory_adjustment" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_inventory_adjustment" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_export_inventory_adjustment"/>
+                <field name="qty_export_internal" optional="hide" sum="qty_export_internal" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_internal" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_export_internal"/>
+                <field name="qty_export_other" optional="hide" sum="qty_export_other" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_other" options="{'currency_field': 'currency_id'}" widget="monetary" optional="hide" sum="value_export_other"/>
+                <field name="qty_export_total" optional="show" sum="qty_export_total" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_export_total" options="{'currency_field': 'currency_id'}" widget="monetary" optional="show" sum="value_export_total"/>
+                
+                <!-- Ton cuoi ky -->
+                <field name="qty_end" optional="show" sum="qty_end" digits="[16, 3]"/>
+                <field groups="biz_stock_summary_report.group_ie_view_quant_and_tt" name="value_end" options="{'currency_field': 'currency_id'}" widget="monetary" optional="show" sum="value_end"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Them form view cho summary.ie.inventory.line, chia theo nhap xuat va page cho move_ids -->
+    <record id="view_summary_ie_inventory_line_form" model="ir.ui.view">
+        <field name="name">summary.ie.inventory.line.form</field>
+        <field name="model">summary.ie.inventory.line</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiet dong ton kho nhap xuat" create="0" edit="0">
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="uom_id"/>
+                        <field name="stock_valuation_account_id"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <group string="Tồn đầu kỳ">
+                            <field name="qty_begin"/>
+                            <field name="value_begin" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                        </group>
+                        <group string="Tồn cuối kỳ">
+                            <field name="qty_end"/>
+                            <field name="value_end" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                        </group>
+                        <group string="Giá Bình quân">
+                            <field name="allocated_cost" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="average_price" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                        </group>
+                        <group></group>
+                        <group string="Nhập">
+                            <field name="qty_import_purchase"/>
+                            <field name="qty_import_production"/>
+                            <field name="qty_import_inventory_adjustment"/>
+                            <field name="qty_import_internal"/>
+                            <field name="qty_import_other"/>
+                            <field name="qty_import_total"/>
+                            <separator string="Giá trị nhập" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_import_purchase" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_import_production" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_import_inventory_adjustment" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_import_internal" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_import_other" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_import_total" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                        </group>
+                        <group string="Xuất">
+                            <field name="qty_export_sale"/>
+                            <field name="qty_export_production"/>
+                            <field name="qty_export_inventory_adjustment"/>
+                            <field name="qty_export_internal"/>
+                            <field name="qty_export_other"/>
+                            <field name="qty_export_total"/>
+                            <separator string="Giá trị xuất" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_sale" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_sale_cost" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_sale_profit" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_production" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_inventory_adjustment" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_internal" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_other" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                            <field name="value_export_total" widget="monetary" options="{'currency_field': 'currency_id'}" groups="biz_stock_summary_report.group_ie_view_quant_and_tt"/>
+                        </group>
+                        <group groups="biz_stock_summary_report.group_ie_view_quant_and_tt">
+                        </group>
+                        <group groups="biz_stock_summary_report.group_ie_view_quant_and_tt">
+                        </group>
+                    </group>
+                    <notebook>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_summary_ie_inventory_line" model="ir.actions.act_window">
+        <field name="name">Summary of import and export inventory line</field>
+        <field name="res_model">summary.ie.inventory.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context" eval="{'search_default_has_qty': 1}"/>
+    </record>
+</odoo>

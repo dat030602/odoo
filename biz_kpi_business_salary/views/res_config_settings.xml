@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Res Config Settings View -->
+    <record id="view_res_config_settings_form" model="ir.ui.view">
+        <field name="name">res.config.settings.form.inherit.biz.kpi.business.salary</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='biz_kpi_scorecard']/div[hasclass('o_settings_container')]" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div name="kpi_business_salary" class="o_setting_right_pane">
+                        <label for="sales_commission_employee_ids"/>
+                        <div name="kpi_history_hint" class="text-muted">
+                            Chọn danh sách nhân viên được áp dụng tính hoa hồng phòng kinh doanh
+                        </div>
+                        <field name="sales_commission_employee_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}"/>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div name="kpi_business_salary" class="o_setting_right_pane">
+                        <label for="excluded_employee_ids"/>
+                        <div name="excluded_employee_hint" class="text-muted">
+                            Chọn danh sách nhân viên bị loại trừ khỏi tính toán hoa hồng và thưởng
+                        </div>
+                        <field name="excluded_employee_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}"/>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

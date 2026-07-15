@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paper_format_rp_average_period" model="report.paperformat">
+        <field name="name">Kiêm tra chi phí phân bổ 2%</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">7</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_rp_average_period_pdf" model="ir.actions.report">
+        <field name="name">Kiểm tra chi phí phân bổ (PDF)</field>
+        <field name="model">average.price.end.period.mass</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_capital_price.rp_average_period_pdf</field>
+        <field name="report_file">biz_capital_price.rp_average_period_pdf</field>
+        <field name="print_report_name">'Kiểm tra chi phí phân bổ'</field>
+        <field name="paperformat_id" ref='paper_format_rp_average_period'/>
+        <field name="binding_model_id" ref="model_average_price_end_period_mass"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_rp_average_period_xlsx" model="ir.actions.report">
+        <field name="name">Kiểm tra chi phí phân bổ (Excel)</field>
+        <field name="model">average.price.end.period.mass</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">biz_capital_price.rp_average_period_xlsx</field>
+        <field name="report_file">biz_capital_price.rp_average_period_xlsx</field>
+        <field name="print_report_name">'Kiểm tra chi phí phân bổ'</field>
+        <field name="binding_model_id" ref="model_average_price_end_period_mass"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_costing_rp_xlsx" model="ir.actions.report">
+        <field name="name">Báo cáo giá thành (Excel)</field>
+        <field name="model">average.price.end.period.mass</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">biz_capital_price.costing_rp_xlsx</field>
+        <field name="report_file">biz_capital_price.costing_rp_xlsx</field>
+        <field name="print_report_name">'Báo cáo giá thành'</field>
+        <field name="binding_model_id" ref="model_average_price_end_period_mass"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_costing_rp_pdf" model="ir.actions.report">
+        <field name="name">Báo cáo giá thành (PDF)</field>
+        <field name="model">average.price.end.period.mass</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_capital_price.costing_rp_pdf</field>
+        <field name="report_file">biz_capital_price.costing_rp_pdf</field>
+        <field name="print_report_name">'Báo cáo giá thành'</field>
+        <field name="paperformat_id" ref='paper_format_rp_average_period'/>
+        <field name="binding_model_id" ref="model_average_price_end_period_mass"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

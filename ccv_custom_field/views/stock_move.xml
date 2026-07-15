@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_move_form_inherit_inherit" model="ir.ui.view">
+        <field name="name">stock.move.form.inherit.inherit</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="action">action_open_reference</attribute>
+                <attribute name="type">object</attribute>
+            </xpath>
+            <!-- <xpath expr="//field[@name='product_uom_qty']" position="after">
+                <field name="cur_location_stock_quant" optional="hide"/>
+                <field name="cur_location_dest_stock_quant" optional="hide"/>
+            </xpath> -->
+        </field>
+    </record>
+</odoo>

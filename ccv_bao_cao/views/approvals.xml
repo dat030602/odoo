@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="approval_request_form_inherit" model="ir.ui.view">
+        <field name="name">approval.request.form.inherit</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='request_details']" position='after'>
+                <field name="has_user_ids" invisible="1"/>
+                <field name="has_location_start" invisible="1"/>
+                <field name="has_location_end" invisible="1"/>
+                <field name="has_total_km" invisible="1"/>
+                <field name="has_fuel_start" invisible="1"/>
+                <field name="has_fuel_end" invisible="1"/>
+                <field name="has_fuel_consumed" invisible="1"/>
+                <field name="has_fuel_rate" invisible="1"/>
+                <field name="has_driver_id" invisible="1"/>
+                <field name="has_vehicle_type" invisible="1"/>
+                <field name="has_vehicle_plate" invisible="1"/>
+                <field name="has_vehicle_condition_start" invisible="1"/>
+                <field name="has_vehicle_condition_end" invisible="1"/>
+                
+                <group>
+                    <field name="user_ids" widget="many2many_tags" attrs="{'invisible':[('has_user_ids','=','no')],'required':[('has_user_ids','=','required')],'readonly':[('request_status','!=','new')]}"/>
+                    <field name="location_start" attrs="{'invisible':[('has_location_start','=','no')],'required':[('has_location_start','=','required')],'readonly':[('request_status','!=','new')]}"/>
+                    <field name="location_end" attrs="{'invisible':[('has_location_end','=','no')],'required':[('has_location_end','=','required')],'readonly':[('request_status','!=','new')]}"/>
+                    <field name="km_start" attrs="{'invisible':[('has_total_km','=','no')],'required':[('has_total_km','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <field name="km_end" attrs="{'invisible':[('has_total_km','=','no')],'required':[('has_total_km','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <field name="total_km" attrs="{'invisible':[('has_total_km','=','no')]}"/>
+                    <field name="driver_id" attrs="{'invisible':[('has_driver_id','=','no')],'required':[('has_driver_id','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <field name="vehicle_type" attrs="{'invisible':[('has_vehicle_type','=','no')],'required':[('has_vehicle_type','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <field name="vehicle_plate" attrs="{'invisible':[('has_vehicle_plate','=','no')],'required':[('has_vehicle_plate','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                </group>
+                <group>
+                    <field name="fuel_start" attrs="{'invisible':[('has_fuel_start','=','no')],'required':[('has_fuel_start','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <field name="fuel_end" attrs="{'invisible':[('has_fuel_end','=','no')],'required':[('has_fuel_end','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <field name="fuel_consumed" attrs="{'invisible':[('has_fuel_consumed','=','no')],'required':[('has_fuel_consumed','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <label for="fuel_rate" string="Định mức" attrs="{'invisible':[('has_fuel_rate','=','no')]}"/>
+                    <div attrs="{'invisible':[('has_fuel_rate','=','no')]}">
+                        <div>
+                            <field name="fuel_rate" class="oe_inline" attrs="{'invisible':[('has_fuel_rate','=','no')],'required':[('has_fuel_rate','=','required')],'readonly':[('request_status','!=','approved')]}"/> <span>/100 KM</span>
+                        </div>
+                    </div>
+                    <field name="vehicle_condition_start" attrs="{'invisible':[('has_vehicle_condition_start','=','no')],'required':[('has_vehicle_condition_start','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                    <field name="vehicle_condition_end" attrs="{'invisible':[('has_vehicle_condition_end','=','no')],'required':[('has_vehicle_condition_end','=','required')],'readonly':[('request_status','!=','approved')]}"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='location']" position='after'>
+                <field name="type_car" widget="radio" options="{'horizontal': true}" attrs="{'invisible':[('has_location','=','no')],'readonly':[('request_status','!=','new')]}"/>
+                <field name="contact_name" attrs="{'invisible':[('type_car','!=','2')],'readonly':[('request_status','!=','new')]}"/>
+                <field name="phone_contact" attrs="{'invisible':[('type_car','!=','2')],'readonly':[('request_status','!=','new')]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="approval_category_view_form_inherit" model="ir.ui.view">
+        <field name="name">approval.category.form.inherit</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='option_settings']" position='inside'>
+                <field name="has_user_ids" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_location_start" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_location_end" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_total_km" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_fuel_start" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_fuel_end" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_fuel_consumed" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_fuel_rate" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_driver_id" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_vehicle_type" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_vehicle_plate" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_vehicle_condition_start" widget="radio" options="{'horizontal': true}"/>
+                <field name="has_vehicle_condition_end" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

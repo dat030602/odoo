@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="biz_mail.EmojiGridMessageReactionView" owl="1">
+        <div class="d-flex flex-column biz_message_reaction" t-on-scroll="emojiGridMessageReactionView.onScroll" t-ref="containerRef">
+            <!-- <h2><t t-esc=""/><h2> -->
+            <t t-set="partners" t-value="emojiGridMessageReactionView.emojiPickerMessageReactionViewOwner.popoverViewOwner.messageReactionGroupOwnerAsReaction.partners"/>
+            <t t-set="messageReactionGroup" t-value="emojiGridMessageReactionView.emojiPickerMessageReactionViewOwner.popoverViewOwner.messageReactionGroupOwnerAsReaction"/>
+            <t t-set="cuser_display" t-value='0'></t>
+            <t t-set="currentPartner" t-value="messaging.currentPartner"/>
+            <t t-foreach="partners" t-as="partner" t-key="partner.localId">
+                <t t-set="cuser_display" t-value='cuser_display + 1'></t>
+                <t t-if="10 >= cuser_display and !messageReactionGroup.hasShowMoreButton" >
+                    <div style="padding: 2px 5px 2px 5px;">
+                        <span style="padding: 2px 5px 2px 5px; color: #FDFCFC;">
+                        <t t-if="partner==messaging.currentPartner">
+                                <t t-esc="partner.nameOrDisplayName"/> (you)
+                        </t>
+                        <t t-else="">
+                                <t t-esc="partner.nameOrDisplayName"/>
+                        </t>
+                        </span>
+                        <img class="o_ChannelInvitationForm_selectablePartnerAvatar biz-img-icon rounded-circle biz_o_Message_authorAvatarContainer" style="cursor: pointer; margin-left: 2px !important; float: left !important;"  t-att-src="partner.avatarUrl" alt="Avatar"/> 
+                    </div>
+                </t>
+                <t t-elif="messageReactionGroup.hasShowMoreButton">
+                    <div style="padding: 2px 5px 2px 5px;">
+                        <span style="padding: 2px 5px 2px 5px; color: #FDFCFC;">
+                            <t t-if="partner==messaging.currentPartner">
+                                <t t-esc="partner.nameOrDisplayName"/> (you)
+                        </t>
+                        <t t-else="">
+                                <t t-esc="partner.nameOrDisplayName"/>
+                        </t>
+                        </span>
+                        <img class="o_ChannelInvitationForm_selectablePartnerAvatar biz-img-icon rounded-circle biz_o_Message_authorAvatarContainer" style="cursor: pointer; margin-left: 2px !important; float: left !important;"  t-att-src="partner.avatarUrl" alt="Avatar"/> 
+                    </div>
+                </t>
+            </t>
+                
+            <t t-if="partners.length > 10">
+               <span style="padding: 2px 5px 2px 5px; color: #FDFCFC;">
+                    <t t-if="!messageReactionGroup.hasShowMoreButton" >
+                        <a class="o_Activity_detailsButton btn btn-link" t-on-click="messageReactionGroup._onClickShowMore">show more...</a>
+                    </t>
+                    <t t-else="">
+                        <a class="o_Activity_detailsButton btn btn-link" t-on-click="messageReactionGroup._onClickShowLess">show less...</a>
+                    </t>
+                </span>
+            </t> 
+        </div>
+    </t>
+
+</templates>

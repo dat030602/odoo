@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="view_hr_type_workingday_form" model="ir.ui.view">
+		<field name="name">view.hr.type.workingday.form</field>
+		<field name="model">hr.type.working.day</field>
+		<field name="arch" type="xml">
+			<form string="Working Day Type">
+				<sheet>
+					<group>
+						<group>
+							<field name="name" required="1"/>
+							<field name="column_import" domain="[('working_id','=',False)]"
+								options="{'no_create_edit': True, 'no_create': True}"/>
+						</group>
+						<group>
+							<field name="code" required="1"/>
+							<field name="type_value"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	
+	<record id="view_hr_type_workingday_tree" model="ir.ui.view">
+		<field name="name">view.hr.type.workingday.tree</field>
+		<field name="model">hr.type.working.day</field>
+		<field name="arch" type="xml">
+			<tree string="Working Day Type">
+				<field name="name"/>
+				<field name="column_import"/>
+				<field name="code"/>
+				<field name="type_value"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_hr_type_workingday_search" model="ir.ui.view">
+		<field name="name">view.hr.type.workingday.search</field>
+		<field name="model">hr.type.working.day</field>
+		<field name="arch" type="xml">
+			<search string="Working Day Type">
+				<field name="name"/>
+				<field name="column_import"/>
+				<field name="code"/>
+				<field name="type_value"/>
+			</search>
+		</field>
+	</record>
+	
+	<record id="acction_hr_type_workingday" model="ir.actions.act_window">
+       <field name="name">Working Day Type</field>
+       <field name="res_model">hr.type.working.day</field>
+       
+       <field name="view_mode">tree,form</field>
+       <field name="search_view_id" ref="view_hr_type_workingday_search"/>
+	</record>
+	
+	<menuitem
+            id="menu_hr_type_workingday"
+            action="acction_hr_type_workingday"
+            parent="hr.menu_human_resources_configuration"
+            sequence="6"
+            groups="base.group_user"/>
+		
+</odoo>

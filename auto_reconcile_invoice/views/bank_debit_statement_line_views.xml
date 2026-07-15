@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bank_debit_statement_line_form" model="ir.ui.view">
+        <field name="name">bank.debit.statement.line.form</field>
+        <field name="model">bank.debit.statement.line</field>
+        <field name="arch" type="xml">
+            <form string="Số dư nợ ngân hàng" duplicate="0">
+                <field name="count_line_ids" invisible="1"/>
+                <header>
+                    <button name="action_create_payment" string="Tạo Phiếu Thanh Toán" type="object" class="oe_highlight" attrs="{'invisible':[('state', '!=', 'new')]}"/>
+                    <button name="action_delete_account_payment" string="Huỷ Xác nhận Thanh Toán" type="object" attrs="{'invisible':[('state', '==', 'new')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,payment,reconciled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoices"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o"
+                                attrs="{'invisible': [('inv_count', '=', 0)]}"> <field name="inv_count" widget="statinfo" string="Hóa đơn"/>
+                        </button>
+                        <button name="action_view_payment"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-money"
+                                attrs="{'invisible': [('payment_ids', '=', [])]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Xem</span>
+                                <span class="o_stat_text">Thanh toán</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="ref" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="amount"  attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="transaction_number" readonly="1"/>
+                            <field name="counterpart_account" readonly="1" attrs="{'invisible': [('partner_bank_id','!=',False)]}"/>
+                            <field name="counterpart_name" readonly="1" attrs="{'invisible': [('partner_bank_id','!=',False)]}"/>
+                            <field name="partner_bank_name" readonly="1"/>
+                            <field name="partner_bank_id" attrs="{'invisible': [('partner_bank_id','=',False)]}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="payment_ids" readonly="1" widget="many2many_tags" invisible="1"/>
+                            <field name="journal_id" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                            <field name="viettel_inv_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Thông tin liên kết" attrs="{'invisible': [('count_line_ids', '!=', 0)]}">
+                            <group>
+                                <field name="sale_ids" widget="many2many_tags" force_save="1" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                <field name="partner_ids" widget="many2many_tags" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                                <field name="invoice_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                        <page string="Dữ liệu đơn hàng">
+                            <field name="line_ids" attrs="{'readonly': [('state', '!=', 'new')]}">
+                                <tree editable="bottom">
+                                    <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="sale_ids" widget="many2many_tags"/>
+                                    <field name="amount"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_bank_debit_statement_line_tree" model="ir.ui.view">
+        <field name="name">bank.debit.statement.line.tree</field>
+        <field name="model">bank.debit.statement.line</field>
+        <field name="arch" type="xml">
+            <tree string="Số dư nợ ngân hàng" decoration-info="state == 'new'" decoration-danger="state == 'cancel'" decoration-success="state == 'reconciled'">
+                <field name="name" optional="hide"/>
+                <field name="date" optional="show"/>
+                <field name="ref" optional="show"/>
+                <field name="counterpart_account" optional="show"/>
+                <field name="counterpart_name" optional="show"/>
+                <field name="partner_bank_name" optional="show"/>
+                <field name="partner_show_ids" widget="many2many_tags" optional="show"/>
+                <field name="sale_show_ids" widget="many2many_tags" optional="show"/>
+                <field name="partner_ids" invisible="1"/>
+                <field name="sale_ids" invisible="1"/>
+                <field name="payment_ids" invisible="1"/>
+                <field name="invoice_ids" invisible="1"/>
+                <field name="line_ids" invisible="1"/>
+                <field name="viettel_inv_ids" widget="many2many_tags" optional="show"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="journal_id" optional="hide"/>
+                <field name="state"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_bank_debit_statement_line_search" model="ir.ui.view">
+        <field name="name">bank.debit.statement.line.search</field>
+        <field name="model">bank.debit.statement.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm Số dư nợ ngân hàng">
+                <field name="ref" string="Nội dung/Số đơn/Khách hàng" filter_domain="['|', '|', ('ref', 'ilike', self), ('partner_ids', 'ilike', self), ('sale_ids', 'ilike', self)]"/>
+                <field name="counterpart_account" string="Tài khoản ngân hàng" filter_domain="['|', ('counterpart_account', 'ilike', self), ('counterpart_name', 'ilike', self)]"/>
+                <field name="partner_show_ids"/>
+                <field name="sale_show_ids"/>
+                <field name="viettel_inv_ids"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Tháng này" name="this_month" domain="[('date','&gt;=',context_today().strftime('%Y-%m-01'))]"/>
+                <filter string="Năm nay" name="this_year" domain="[('date','&gt;=',context_today().strftime('%Y-01-01'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Tài khoản ngân hàng" name="group_by_account" domain="[]" context="{'group_by': 'counterpart_account'}"/>
+                    <filter string="Ngày giao dịch" name="groupby_date" domain="[]" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_bank_debit_statement_line" model="ir.actions.act_window">
+        <field name="name">Số dư nợ ngân hàng</field>
+        <field name="res_model">bank.debit.statement.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_bank_debit_statement_line_search"/>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Chưa có dữ liệu số dư nợ ngân hàng.
+            </p><p>
+            Bắt đầu bằng cách tạo một bản ghi mới.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_account_bank_debit_statement_line"
+        name="Số dư nợ ngân hàng"
+        parent="account.menu_finance_payables"
+        action="action_bank_debit_statement_line"
+        sequence="20"/>
+</odoo>

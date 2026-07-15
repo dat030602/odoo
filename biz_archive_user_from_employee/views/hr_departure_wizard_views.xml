@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="hr_departure_wizard_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr.departure.wizard.view.form.inherit</field>
+            <field name="model">hr.departure.wizard</field>
+            <field name="inherit_id" ref="hr.hr_departure_wizard_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form//group[@id='action']" position="inside">
+                    <div class="o_td_label" id="label_info2">
+                        <span class="o_form_label o_hr_form_label cursor-default">Archive User</span>
+                    </div>
+                    <div class="column" id="info2">
+                        <div>
+                            <field name="archive_user"/>
+                        </div>
+                    </div>
+                    <div class="o_td_label" id="label_info2" attrs="{'invisible': [('archive_user', '=', False)]}">
+                        <span class="o_form_label o_hr_form_label cursor-default">Archive Partner</span>
+                    </div>
+                    <div class="column" id="info2">
+                        <div>
+                            <field name="archive_partner"  attrs="{'invisible': [('archive_user', '=', False)]}"/>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

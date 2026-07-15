@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="deleted_sign_request_custom" name="Signature Request Not Found" inherit_id="sign.deleted_sign_request">
+        <xpath expr="//div[hasclass('my-auto')]" position="inside">
+            <p style="color: red;">The document has changed the signer.</p>
+        </xpath>
+    </template>
+</odoo>

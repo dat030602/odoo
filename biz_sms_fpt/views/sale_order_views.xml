@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sale_order_view_form_inherit_sms_fpt" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.sms.fpt</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']/group" position="inside">
+                <group name="information_sms_fpt" string="Information SMS">
+                    <field name="is_sent_confirmation_sms_fpt" readonly="1"/>
+                    <field name="is_sent_completion_sms_fpt" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

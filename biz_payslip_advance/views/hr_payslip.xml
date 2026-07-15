@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.actions.server" id="action_sent_payslip_detail">
+        <field name="name">Send mail</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_sent_payslip_detail()
+        </field>
+    </record>
+
+     <record id="view_hr_payslip_advanced_form_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.advanced.form.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <field name="has_refund_slip" position="after">
+                <field name="is_probation"/>
+            </field>
+            <xpath expr="//page[@name='salary_computation']" position="after">
+               <page name="worked_days_input" position="move"/>
+            </xpath>
+            <xpath expr="//page[@name='worked_days_input']/separator[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='worked_days_input']/field[@name='worked_days_line_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='salary_computation']/field[@name='line_ids']/tree/field[@name='category_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='salary_computation']/field[@name='line_ids']/tree/field[@name='quantity']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='salary_computation']/field[@name='line_ids']/tree/field[@name='rate']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='salary_computation']/field[@name='line_ids']/tree/field[@name='salary_rule_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//page[@name='salary_computation']/field[@name='line_ids']/tree/field[@name='amount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

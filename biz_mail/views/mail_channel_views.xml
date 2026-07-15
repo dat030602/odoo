@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="mail_channel_view_form" model="ir.ui.view">
+            <field name="name">mail.channel.form.inherit.biz_mail</field>
+            <field name="model">mail.channel</field>
+            <field name="inherit_id" ref="mail.mail_channel_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='privacy']/group[hasclass('o_label_nowrap')]" position="replace">
+                    <group>
+                        <group class="o_label_nowrap" position="move">
+                            <field name="group_public_id" attrs="{'invisible': [('channel_type', '!=', 'channel')]}"/>
+                            <field name="group_ids" widget="many2many_tags" attrs="{'invisible': [('channel_type', '!=', 'channel')]}" string="Auto Subscribe Groups"/>
+                            <field name="is_edit_sub_user" invisible="1" />
+                            <field name="main_user_id"/>
+                            <field name="sub_user_id" widget="many2many_tags" attrs="{'readonly': [('is_edit_sub_user', '=', False)]}"/>
+                        </group>
+                        <group name="show_read">
+                            <field name="show_read"/>
+                            <field name="check_notification_channel" attrs="{'invisible': [('is_edit_sub_user', '=', False)]}"/>
+                            <field name="is_pinned_channel" readonly="1" invisible="1"/>
+                            <field name="no_pinned_channel" readonly="1" invisible="1"/>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@name='members']" position="after">
+                    <page string="Members Seen Channel" name="partner_seen_channel_ids" invisible="1">
+                        <field name="partner_seen_channel_ids" readonly="1">
+                            <tree>
+                                <field name="partner_id"/>
+                                <field name="seen_time"/>
+                            </tree>
+                        </field>
+                    </page>
+                 </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

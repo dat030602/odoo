@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="giay_bao_co_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.giay_bao_co_document"
+                       t-lang="user.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="giay_bao_co_document">
+            <t t-call="ccv_sql.ccv_header3">
+                <div class="page" style="font-size: 14px;font-family: Times New Roman; padding-top: 20px;">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong>Giấy Báo Có</strong>
+                    </div>
+                    <t t-set="line_id" t-value="doc.get_account_payment()"/>
+                    <div class="row">
+                        <table class="table table-sm fixed" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                            <col width="12%"/>
+                            <col width="12%"/>
+                            <col width="12"/>
+                            <col width="12%"/>
+                            <col width="12%"/>
+                            <col width="12%"/>
+                            <col width="14%"/>
+                            <col width="14%"/>
+                            <tr>
+                                <td style="text-align: left; vertical-align: middle;" colspan="6">
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Nguời nộp tiền: <t t-esc="doc.partner_id.name"/></div>
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Địa chỉ: <t t-esc="doc.partner_id.contact_address_complete"/></div>
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Lý do: <t t-esc="doc.ref"/></div>
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;" colspan="2">
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Số: <t t-esc="doc.name"/></div>
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Ngày: <t t-esc="doc.convert_print(doc.date)"/></div>
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Tài khoản: <t t-esc="line_id.account_id.code"/></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; vertical-align: middle;" colspan="8">
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Số tài khoản đơn vị thụ hưởng: <t t-if="doc.partner_bank_id"><strong><t t-esc="doc.partner_bank_id.acc_number"/></strong></t></div>
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Tại ngân hàng: <t t-if="doc.partner_bank_id"><strong><t t-esc="doc.partner_bank_id.bank_id.name"/></strong></t></div>
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">
+                                            <div class="col-8">Số tiền: <strong><t t-esc="doc.convert_vnd(doc.amount)"/></strong></div>
+                                            <div class="col-4">Loại tiền: <t t-esc="doc.currency_id.name"/></div>
+                                    </div>
+                                    <div class="row rowp" style="text-align: left;padding-top: 10px;">Số tiền bằng chữ: <strong><t t-esc="doc.convert_money(doc.amount)"/><t t-esc="doc.currency_id.currency_unit_label"/></strong></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; vertical-align: middle;" colspan="2">
+                                    <strong>Diễn giải</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" colspan="2">
+                                    <strong>Số tiền nguyên tệ (<t t-esc="doc.currency_id.name"/>)</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;" colspan="2">
+                                    <strong>Số tiền (VND)</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Ghi nợ</strong>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <strong>Ghi có</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left; vertical-align: middle;" colspan="2">
+                                    <t t-esc="doc.ref"/>
+                                </td>
+                                <td style="text-align: right; vertical-align: middle;" colspan="2">
+                                    <t t-esc="doc.convert_vnd(doc.amount)"/>
+                                </td>
+                                <td style="text-align: right; vertical-align: middle;" colspan="2">
+                                    <t t-if="doc.currency_id.name == 'VND'">
+                                        <t t-esc="doc.convert_vnd(doc.amount)"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-if="len(doc.currency_id.rate_ids) > 0">
+                                            <t t-esc="doc.convert_vnd(doc.amount * doc.currency_id.rate_ids[0].inverse_company_rate)"/>
+                                        </t>
+                                        <t t-else="">
+                                            Chưa có tỷ giá
+                                        </t>
+                                    </t>
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <t t-esc="line_id.account_id.code"/>
+                                </td>
+                                <td style="text-align: left; vertical-align: middle;">
+                                    <t t-esc="line_id.move_id.line_ids.filtered(lambda x: x != line_id)[0].account_id.code"/>
+                                </td>
+                            </tr>
+                            <t t-if="len(doc.currency_id.rate_ids) > 0">
+                                <tr>
+                                    <td style="text-align: left; vertical-align: middle;" colspan="8">
+                                        Tỷ giá quy đổi: <t t-esc="doc.convert_vnd(doc.currency_id.rate_ids[0].inverse_company_rate)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span>
+                                <strong>Giám đốc</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên, đóng dấu)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Kế toán trưởng</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>Người lập phiếu</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>Người nộp tiền</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <strong>Thủ quỹ</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="margin-left: 2px;text-align: center;padding-top:80px">
+                        <div class="col-3">
+                            <strong>
+                                <t t-if="doc.unit_head_id">
+                                    <strong><t t-esc="doc.unit_head_id.name_without_position"/></strong>
+                                </t>
+                            </strong>
+                        </div>
+                        <div class="col-3">
+                            <strong>
+                                <t t-if="doc.chief_accountant_id">
+                                    <t t-esc="doc.chief_accountant_id.name_without_position"/>
+                                </t>
+                            </strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>
+                            <t t-if="doc.creator_id">
+                                <t t-esc="doc.creator_id.name_without_position"/>
+                            </t>
+                            </strong>
+                        </div>
+                        <div class="col-2">
+                            <strong>
+                                <t t-if="doc.partner_id and doc.partner_id.user_id">
+                                    <t t-esc="doc.partner_id.user_id.name_without_position"/>
+                                </t>
+                            </strong>
+                        </div>
+                        <t t-set="cashier_accountant_id"
+                            t-value="doc.env['ir.config_parameter'].sudo().get_param('ccv_sql.cashier_accountant_id', False)"/>
+                        <t t-if="cashier_accountant_id">
+                            <t t-set="cashier_accountant_id"
+                            t-value="doc.env['res.users'].sudo().search([('id', '=', int(cashier_accountant_id))])"/>
+                        </t>
+                        <div class="col-2">
+                            <strong>
+                                <t t-if="cashier_accountant_id">
+                                    <t t-esc="cashier_accountant_id.name_without_position"/>
+                                </t>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="giay_bao_co_report" model="ir.actions.report">
+            <field name="name">Giấy Báo Có</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.giay_bao_co_template</field>
+            <field name="report_file">ccv_sql.giay_bao_co_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+            <field name="print_report_name">'Giấy Báo Có'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

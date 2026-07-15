@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="location_dest_id" position="after">
+                    <field name="vehicle_license_plate"/>
+                    <field name="vehicle_driver_name"/>
+                </field>
+                <notebook position="inside">
+                    <page string="Conveyor">
+                        <header position="inside">
+                            <button name="send_to_conveyor" type="object" string="Push Bag"/>
+                            <button name="get_bagcouter_from_conveyor" type="object" string="Get Bag"/>
+                        </header>
+                        <group>
+                            <group>
+                                <field name="conveyor_lineid"/>
+                                <field name="vehicle_license_plate"/>
+<!--                                <field name="conveyor_start"/>-->
+<!--                                <field name="conveyor_end"/>-->
+                                <field name="conveyor_realnum"/>
+                                <field name="check_conveyor_data" invisible="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="conveyor_log_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="response"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        <record id="view_picking_search" model="ir.ui.view">
+            <field name="name">stock.picking.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="before">
+                    <field name="vehicle_license_plate" filter_domain="['|', ('vehicle_license_plate', 'ilike', self), ('vehicle_driver_name', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Commission Setup Views -->
+    <record id="view_salary_commission_setup_tree" model="ir.ui.view">
+        <field name="name">salary.commission.setup.tree</field>
+        <field name="model">salary.commission.setup</field>
+        <field name="arch" type="xml">
+            <tree string="Setup tỷ lệ hoa hồng">
+                <field name="team_id" optional="show"/>
+                <field name="sale_support_percent" widget="percentage" optional="show"/>
+                <field name="team_leader_percent" widget="percentage" optional="show"/>
+                <field name="department_manager_percent" widget="percentage" optional="show"/>
+                <field name="remaining_percent" widget="percentage" optional="show"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_commission_setup_form" model="ir.ui.view">
+        <field name="name">salary.commission.setup.form</field>
+        <field name="model">salary.commission.setup</field>
+        <field name="arch" type="xml">
+            <form string="Setup tỷ lệ hoa hồng">
+                <sheet>
+                    <widget name="web_ribbon" title="Lưu trữ" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="team_id"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="sale_support_percent" widget="percentage"/>
+                            <field name="team_leader_percent" widget="percentage"/>
+                            <field name="department_manager_percent" widget="percentage"/>
+                            <field name="remaining_percent" readonly="1" widget="percentage"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Hoa hồng Thương mại" name="commission_allocation">
+                            <group>
+                                <group string="Tỷ lệ phân bổ">
+                                    <field name="leadership_percent" widget="percentage"/>
+                                    <field name="department_percent" widget="percentage"/>
+                                    <field name="area_responsible_percent" widget="percentage"/>
+                                </group>
+                                <group string="Chi tiết">
+                                    <field name="department_head_percent" widget="percentage"/>
+                                    <field name="regulation_percent" widget="percentage"/>
+                                    <field name="structured_personnel_percent" widget="percentage"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

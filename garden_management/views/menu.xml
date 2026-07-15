@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <menuitem id="garden_menu_act" name="Khu vườn" sequence="10" web_icon="garden_management,static/description/icon.png"/>
+
+    <menuitem id="garden_area_kanban_menu_act" name="Tổng quan" parent="garden_menu_act" action="garden_area_kanban_action" sequence="-1"/>
+
+    <menuitem id="garden_history_menu_act" name="Ghi nhận" parent="garden_menu_act" action="garden_history_action" sequence="10"/>
+    <menuitem id="garden_plan_menu_act" name="Trồng cây" parent="garden_menu_act" action="garden_plan_action" sequence="20"/>
+
+    <menuitem id="garden_product_menu_act" parent="garden_menu_act" name="Sản phẩm" sequence="100"/>
+    <menuitem id="garden_tree_menu_act" name="Cây trồng" parent="garden_product_menu_act" action="garden_tree_action" sequence="10"/>
+    <menuitem id="garden_fertilizer_menu_act" name="Phân phón" parent="garden_product_menu_act" action="garden_fertilizer_action" sequence="20"/>
+
+    <menuitem id="garden_product_care_menu_act" parent="garden_menu_act" name="Chăm sóc" sequence="200"/>
+    <menuitem id="garden_stage_menu_act" name="Giai đoạn" parent="garden_product_care_menu_act" action="garden_stage_action" sequence="10"/>
+    <menuitem id="garden_care_menu_act" name="Cách chăm sóc" parent="garden_product_care_menu_act" action="garden_care_action" sequence="20"/>
+    <menuitem id="garden_fertilizer_usage_menu_act" name="Liều lượng" parent="garden_product_care_menu_act" action="garden_fertilizer_usage_action" sequence="30"/>
+    <menuitem id="garden_proportion_menu_act" name="Tỷ lệ" parent="garden_product_care_menu_act" action="garden_proportion_action" sequence="40"/>
+    
+    <menuitem id="garden_config_menu_act" parent="garden_menu_act" name="Cấu hình" sequence="300" groups="garden_management.group_garden_manager"/>
+    <menuitem id="garden_area_menu_act" name="Khu vực" parent="garden_config_menu_act" action="garden_area_action" sequence="10"/>
+</odoo>

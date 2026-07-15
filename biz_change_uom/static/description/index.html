@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Odoo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+<div id="loempia_tabs" class="container py-5 oe_styling_v8"
+     style="color: #0b3b52;font-family: Times New Roman;">
+    <div class="row align-items-center mb-4">
+        <div class="col-12 col-md-12">
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">During the process of using the software, with the need to change the unit of measurement of products that have had purchase/sale/move of warehouse transactions, users who want to change the unit of measurement should follow these steps:</p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Step 1: At the product screen, click on "Execute > select Change unit of measurement"</p>
+            <div class="oe_demo oe_screenshot" style="margin-top:10px">
+                <img src="images/1.png" alt="arrow" style="max-width:100%;max-height:600px">
+            </div>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">The system will display a screen to update the calculation unit</p>
+            <div class="oe_demo oe_screenshot" style="margin-top:10px">
+                <img src="images/2.png" alt="arrow" style="max-width:100%;max-height:600px">
+            </div>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left;">Description of items:</p>
+            <ul style="padding-left: 50px;font-size: 30px;color: #3c3c3c;list-style-type: none;">
+                <li>1, In this section, the user selects the storage unit that needs to be changed</li>
+                <li>2, In this section, the user selects the purchasing unit that needs to be changed</li>
+                <li>3, In case the sales order uses a different unit of calculation than the one previously configured on the product, the user needs to check here and select the unit of calculation to update on the sales order.</li>
+                <li>4, In case the purchase order uses a different unit of calculation than the one previously configured on the product, the user needs to check here and select the unit of calculation to update on the purchase order.</li>
+            </ul>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">*for example: product “Right corner table”</p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Previous unit of calculation: unit</p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Unit of previous purchase: unit</p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Users who need to convert to kg units should select as shown below:</p>
+            <div class="oe_demo oe_screenshot" style="margin-top:10px">
+                <img src="images/3.png" alt="arrow" style="max-width:100%;max-height:600px">
+            </div>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Click <img src="images/5.png" alt="arrow" style="max-width:100%;max-height:600px">: The system will automatically change the unit of measurement on the standing product and will also search on sales orders/purchase orders/warehouse movements that are using the old unit and update to the new unit.
+            Result: will convert all "units" of this product to kg on the sales order/purchase order/warehouse movements
+            </p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">*Another example:<br/>
+                Products whose previous unit of measurement is kg, but on the sales/purchase order the unit is "mm", items 3 and 4 will be used to update. example pictured below
+            </p>
+            <div class="oe_demo oe_screenshot" style="margin-top:10px">
+                <img src="images/4.png" alt="arrow" style="max-width:100%;max-height:600px">
+            </div>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Click <img src="images/5.png" alt="arrow" style="max-width:100%;max-height:600px">: : The system will automatically change the unit of measurement on the standing product and will also search on sales orders, purchase orders, warehouse movements that are using the old unit and update to the new corresponding unit. selected response
+            </p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">result:</p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Will convert all "units" of this product to kg on sales orders/purchase orders/warehouse movements and will change all units of "mm" in sales/purchase orders of this product to kg</p>
+            <p class="pr-md-5 mb-4" style="font-size: 30px;color: #3c3c3c;text-align:left">Note: customers need to know which unit of measure is being used on the sales/purchase order to be able to choose the correct unit to update.</p>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

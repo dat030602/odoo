@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_ocr" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ocr</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add our settings under Integrations section -->
+            <xpath expr="//div[@name='integration']" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <i class="fa fa-robot" role="img" title="Gemini AI" aria-label="Gemini AI"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="gemini_api_key">Gemini AI</label>
+                        <div class="text-muted">
+                            <field name="gemini_api_key" 
+                                   class="o_field_char" 
+                                   password="True"
+                                   placeholder="Enter your Gemini API key"/>
+                            <div class="mt-2">
+                                <p class="mb-1">
+                                    <i class="fa fa-info-circle me-1"/>
+                                    Get your API key from 
+                                    <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

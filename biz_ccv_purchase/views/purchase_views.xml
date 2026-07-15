@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                </xpath>
+                <xpath expr="//page[@name='products']/field[@name='order_line']//field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                </xpath>
+                <page name="purchase_delivery_invoice" position="inside">
+                    <group>
+                        <group>
+                            <field name="delivery_location"/>
+                            <field name="payment_note"/>
+                            <field name="ccv_represent_id"/>
+                            <field name="ccv_contract_id"/>
+                        </group>
+                        <group>
+                            <field name="supplier_represent"/>
+                            <field name="supplier_contact"/>
+                            <field name="supplier_phone"/>
+                            <field name="note"/>
+                            <field name="requirements"/>
+                        </group>
+                    </group>
+                </page>
+
+                <xpath expr="//button[@name='action_create_invoice'][1]" position="replace">
+                    <button name="action_create_invoice" string="Create Bill" type="object" class="oe_highlight" 
+                        context="{'create_bill':True}" 
+                        invisible="1"/>
+
+                    <button name="action_create_invoice_ccv" string="Create Bill" type="object" class="oe_highlight" 
+                        context="{'create_bill':True}" 
+                        attrs="{'invisible': ['|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'in', ('no', 'invoiced'))]}" 
+                        data-hotkey="w"/>
+
+                </xpath>
+
+                <xpath expr="//button[@name='action_create_invoice'][2]" position="replace">
+                    <button name="action_create_invoice" string="Create Bill" type="object" class="oe_highlight" 
+                        context="{'create_bill':True}" 
+                        invisible="1"/>
+
+                    <button name="action_create_invoice_ccv" string="Create Bill" type="object" 
+                        context="{'create_bill':True}" 
+                        attrs="{'invisible': ['|', '|', ('state', 'not in', ('purchase', 'done')), ('invoice_status', 'not in', ('no', 'invoiced')), ('order_line', '=', [])]}" 
+                        data-hotkey="w"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_view_form_inherit_ccv" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='incoterm_id']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

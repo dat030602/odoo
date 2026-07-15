@@ -1,0 +1,35 @@
+.o_sales_audit_dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+
+    .kpi-card {
+        border-radius: 12px;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        h6 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 2rem;
+            margin-top: 10px;
+        }
+    }
+
+    .alert-card {
+        border-left: 4px solid #dc3545 !important;
+        background-color: #fffafb;
+    }
+}

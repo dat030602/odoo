@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="approval_product_line_view_kanban" model="ir.ui.view">
+        <field name="name">approval.product.line.view.kanban</field>
+        <field name="model">approval.product.line</field>
+        <field name="priority">15</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="product_id" string="Products">
+                <field name="id"/>
+                <field name="description"/>
+                <field name="product_uom_id"/>
+                <field name="quantity"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_card oe_kanban_global_click">
+                        <div class="oe_kanban_details">
+                            Sản phẩm: <field name="product_id" 
+                                attrs="{'required': [('parent.has_product', '=', 'required')]}" 
+                                widget="many2one"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                            Mô tả: <field name="description"/>
+                        </div>
+                        <div class="oe_kanban_details"
+                            t-attf-class="{'oe_hidden': [[('parent.has_quantity', '=', 'no')]]}">
+                            Số lượng: <field name="quantity" 
+                                attrs="{'required': [('parent.has_quantity', '=', 'required'), ('parent.request_status', '!=', 'new')]}" />
+                        </div>
+                        <div class="oe_kanban_details"
+                            t-attf-class="{'oe_hidden': [[('parent.has_quantity', '=', 'no')]]}">
+                            Số lượng sản xuất: <field name="qty_produced" 
+                                attrs="{
+                                'invisible': [('parent.has_qty_produced', '=', 'no')],
+                                'required': [('parent.has_qty_produced', '=', 'required'), ('parent.request_status', '!=', 'new')]}" />
+                        </div>
+                        <div class="oe_kanban_details">
+                            ĐVT: <field name="product_uom_id" 
+                                groups="uom.group_uom"
+                                options="{'no_create': True, 'no_open': True}"/>
+                        </div>
+                        <field name="product_uom_category_id" invisible="1"/>
+                    </div>
+                </t>
+            </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="view_approval_request_form_inherit_inherit" model="ir.ui.view">
+        <field name="name">approval.request.form.inherit.inherit</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="has_partner_in_product" invisible="1"/>
+                <field name="show_history" invisible="1"/>
+                <button name="action_toggle_history" string="Lịch sử đề xuất" type="object" class="oe_highlight" attrs="{'invisible': [('show_history', '=', True)]}"/>
+                <button name="action_toggle_history" string="Ẩn lịch sử" type="object" attrs="{'invisible': [('show_history', '=', False)]}"/>
+                <field name="has_picking" invisible="1"/>
+                <button name="action_create_picking_wizard"
+                        string="Tạo phiếu kho"
+                        type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('has_picking','!=','required')]}"
+                />
+                <button name="action_create_daily_work_output_other"
+                        string="Tạo công nhật"
+                        type="object"
+                        class="oe_highlight"
+                        groups="hr_payroll.group_hr_payroll_employee_manager"
+                        attrs="{'invisible': [('has_create_daily_work_output_other','=','no')]}"
+                />
+                <button name="action_create_mrp_wizard"
+                        string="Tạo lệnh sản xuất"
+                        type="object"
+                        groups="mrp.group_mrp_user"
+                        attrs="{'invisible': [('has_qty_produced','=','no')]}"
+                />
+                <button name="action_reset_qty_mrp_pk"
+                        string="Cập nhật số lượng"
+                        type="object"
+                        groups="stock.group_stock_user"
+                        attrs="{'invisible': ['|',('has_qty_income_in_product','=','no'),('has_qty_outcome_in_product','=','no')]}"
+                />
+            </xpath>
+            <xpath expr="//page[@name='approvers']" position="before">
+                <page name="rent_line_ids" string="Thông tin thuê xe" attrs="{'invisible': [('has_rent', '=', 'no')],'readonly': [('request_status', '!=', 'new')]}">
+                    <field name="has_rent" invisible="1"/>
+                    <field name="request_status" invisible="1"/>
+                    <field name="rent_line_ids" attrs="{'required': [('has_rent', '=', 'required')],'readonly': [('request_status', '!=', 'new')]}">
+                        <tree editable="bottom">
+                            <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="product_id"/>
+                            <field name="weight"/>
+                            <field name="amount"/>
+                            <field name="total"/>
+                            <field name="transporter"/>
+                            <field name="routes"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object"
+                        name="action_view_related_pickings"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        attrs="{'invisible': [('has_picking','!=','required')]}">
+                    <field name="picking_count" widget="statinfo" string="Phiếu xuất"/>
+                </button>
+                <button type="object"
+                        name="action_view_daily_work_output_other"
+                        class="oe_stat_button"
+                        icon="fa-hourglass-end"
+                        groups="hr_payroll.group_hr_payroll_employee_manager"
+                        attrs="{'invisible': [('has_create_daily_work_output_other','=','no')]}">
+                    Công nhật
+                </button>
+                <button type="object"
+                        name="action_view_purchase"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square-o"
+                        attrs="{'invisible': [('has_purchase','=','no')]}"
+                        groups="purchase.group_purchase_user">
+                    <field name="count_po" widget="statinfo" string="Mua hàng"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('request_status','!=','new'), ('automated_sequence', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='request_owner_id']" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('change_request_owner', '=', False), ('request_status','not in',('new'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reason']" position="attributes">
+                <attribute name="attrs">{'readonly':['|', ('change_request_owner', '=', False), ('request_status','not in',('new'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="attrs">{'required': [('has_date','=','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="attributes">
+                <attribute name="attrs">{'readonly': [('request_status','!=','new')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_end']" position="attributes">
+                <attribute name="attrs">{'readonly': [('request_status','!=','new')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='location']" position="attributes">
+                <attribute name="attrs">{'invisible':[('has_location','=','no')], 'required': [('has_location','=','required')], 'readonly': [('request_status','not in',('new'))]}</attribute>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page name="approval_history" string="Lịch sử đề xuất" attrs="{'invisible': [('show_history', '=', False)]}">
+                        <field name="summary_info" nolabel="1" widget="html"/>
+                    </page>
+                </notebook>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">{'invisible':[('has_partner','=','no')], 'required': [('has_partner','=','required')], 'readonly': [('request_status','not in',('new'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='quantity']" position="attributes">
+                <attribute name="attrs">{
+                    'invisible':['|', ('has_quantity', '=', 'no'), ('has_product', '!=', 'no')],
+                    'required': [('has_quantity','=','required'), ('has_product', '=', 'no')],
+                    'readonly':[('request_status','not in',('new'))],
+                }</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="attrs">{'invisible':[('has_amount','=','no')], 'required': [('has_amount','=','required')], 'readonly':[('request_status','not in',('new'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reference']" position="attributes">
+                <attribute name="attrs">{'invisible':[('has_reference','=','no')], 'required': [('has_reference','=','required')],'readonly':[('request_status','not in',('new'))],}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_line_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': [('request_status','!=','new')]}</attribute>
+                <attribute name="context">{'tree_view_ref': 'approvals.approval_product_line_view_tree','form_view_ref': 'ccv_custom_field.approval_product_line_view_form_form_inherit','kanban_view_ref': 'ccv_custom_field.approval_product_line_view_kanban'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="has_reason" invisible="1"/>
+                <field name="has_team_id" invisible="1"/>
+                <field name="has_department_id" invisible="1"/>
+                <field name="has_count_stock" invisible="1"/>
+                <field name="has_count_production" invisible="1"/>
+                <field name="has_qty_produced" invisible="1"/>
+                <field name="has_qty_bb_used" invisible="1"/>
+                <field name="has_image_in_product" invisible="1"/>
+                <field name="has_line_image" invisible="1"/>
+                <field name="has_note_in_product" invisible="1"/>
+                <field name="has_mkt_comment" invisible="1"/>
+                <field name="has_stock_in_product" invisible="1"/>
+                <field name="has_qty_income_in_product" invisible="1"/>
+                <field name="has_qty_outcome_in_product" invisible="1"/>
+                <field name="has_service_in_product" invisible="1"/>
+                <field name="has_create_daily_work_output_other" invisible="1"/>
+                <field name="has_purchase" invisible="1"/>
+                <field name="has_sale_ids" invisible="1"/>
+                <field name="has_picking_type" invisible="1"/>
+                <field name="has_warehouse" invisible="1"/>
+                <field name="picking_type_id" options="{'no_create': True}" attrs="{'invisible':[('has_picking_type','=','no')], 'required': [('has_picking_type','=','required')], 'readonly': [('request_status','not in',('new'))]}"/>
+                <field name="department_id" force_save="1" attrs="{'invisible':[('has_department_id','=','no')], 'required': [('has_department_id','=','required')], 'readonly': [('request_status','not in',('new'))]}"/>
+                <field name="team_id" force_save="1" attrs="{'invisible':[('has_team_id','=','no')], 'required': [('has_team_id','=','required')], 'readonly': [('request_status','not in',('new'))]}"/>
+                <field name="sale_ids" widget="many2many_tags" force_save="1" domain="[('partner_id','=',partner_id)]" attrs="{'invisible':[('has_sale_ids','=','no')], 'required': [('has_sale_ids','=','required')], 'readonly': [('request_status','not in',('new'))]}"/>
+                <field name="description" widget="text" attrs="{'invisible':[('has_reason','=','no')], 'required': [('has_reason','=','required')], 'readonly': [('request_status','not in',('new'))]}"/>
+                <field name="sale_order_id" options="{'no_create': True}" attrs="{'readonly': [('request_status','not in',('new'))]}"/>
+                <field name="count_stock" attrs="{'invisible':[('has_count_stock','=','no')], 'required': [('has_count_stock','=','required')], 'readonly': [('request_status','not in',('new'))]}"/>
+                <field name="count_production" attrs="{'invisible':[('has_count_production','=','no')], 'required': [('has_count_production','=','required')], 'readonly': [('request_status','not in',('new'))]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_batch_create_daily_work_output_server" model="ir.actions.server">
+        <field name="name">Tạo công nhật hàng loạt</field>
+        <field name="model_id" ref="approvals.model_approval_request"/>
+        <field name="binding_model_id" ref="approvals.model_approval_request"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_batch_create_daily_work_output()</field>
+    </record>
+</odoo>

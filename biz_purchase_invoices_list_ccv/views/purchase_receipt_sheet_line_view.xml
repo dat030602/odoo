@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_receipt_sheet_line_ccv_tree" model="ir.ui.view">
+        <field name="name">purchase.invoices.list.line.ccv.tree</field>
+        <field name="model">purchase.invoices.list.line.ccv</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết bảng kê hóa đơn mua vào" decoration-danger="is_not_uploaded == True"
+            editable="bottom" multi_edit="1" create="0" delete="0">
+                <field name="invoice_code_key" optional="show" readonly="1"/>
+                <field name="invoice_code" optional="show" readonly="1"/>
+                <field name="invoice_number" optional="show" readonly="1"/>
+                <field name="invoice_date" optional="show" readonly="1"/>
+                <field name="date" optional="show" readonly="1"/>
+                <field name="ref" optional="show" readonly="1"/>
+                <field name="seller_id" optional="show" readonly="1"/>
+                <field name="seller_tax" optional="show" readonly="1"/>
+                <field name="product_id" optional="show" readonly="1"/>
+                <field name="base_amount" optional="show" readonly="1"/>
+                <field name="tax_id" optional="show" readonly="1"/>
+                <field name="tax_amount" optional="show" readonly="1"/>
+                <field name="tax_account_id" optional="show" readonly="1"/>
+                <field name="aml_id" invisible="1"/>
+                <field name="move_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="is_not_uploaded" optional="show"/>
+                <button name="action_view_account_move" string="Xem" type="object" 
+                    attrs="{'invisible': [('move_id', '=', False)]}" icon="fa-eye"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_purchase_receipt_sheet_line_ccv_form" model="ir.ui.view">
+        <field name="name">purchase.invoices.list.line.ccv.form</field>
+        <field name="model">purchase.invoices.list.line.ccv</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết bảng kê hóa đơn mua vào">
+                <header>
+                    <button name="action_view_account_move" string="Xem chứng từ" type="object" 
+                        attrs="{'invisible': [('move_id', '=', False)]}" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="move_id"/>
+                            <field name="aml_id" invisible="1"/>
+                            <field name="invoice_code_key"/>
+                            <field name="invoice_code"/>
+                            <field name="invoice_number"/>
+                            <field name="invoice_date"/>
+                            <field name="date"/>
+                            <field name="ref"/>
+                            <field name="is_not_uploaded"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="seller_id"/>
+                            <field name="seller_tax"/>
+                            <field name="product_id"/>
+                            <field name="base_amount"/>
+                            <field name="tax_id"/>
+                            <field name="tax_amount"/>
+                            <field name="tax_account_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_purchase_receipt_sheet_line_ccv_search" model="ir.ui.view">
+        <field name="name">purchase.invoices.list.line.ccv.search</field>
+        <field name="model">purchase.invoices.list.line.ccv</field>
+        <field name="arch" type="xml">
+            <search string="Chi tiết bảng kê hóa đơn mua vào">
+                <field name="product_id" string="Sản phẩm"/>
+                <field name="seller_id" string="Người bán" filter_domain="['|', '|', ('seller_id', 'ilike', self), ('seller_id.vat', 'ilike', self)]"/>
+                <field name="invoice_number" string="Ký hiệu/Số HĐ" filter_domain="['|', '|', ('invoice_code_key', 'ilike', self), ('invoice_code', 'ilike', self), ('invoice_number', 'ilike', self)]"/>
+                <field name="ref"/>
+                <field name="tax_id"/>
+                <field name="tax_account_id"/>
+                <field name="parent_id" invisible="1"/>
+                <field name="is_not_uploaded" invisible="1"/>
+                
+                <filter string="Đủ thông tin HĐ" name="non_missing_invoice_info" domain="[('invoice_code_key', '!=', False), ('invoice_code', '!=', False), ('invoice_number', '!=', False)]"/>
+                <filter string="Thiếu thông tin HĐ" name="missing_invoice_info" 
+                    domain="['|', '|', ('invoice_code_key', '=', False), ('invoice_code', '=', False), ('invoice_number', '=', False)]"/>
+                <filter string="Không đẩy" name="is_not_uploaded_true" domain="[('is_not_uploaded', '=', True)]"/>
+                <filter string="Có đẩy" name="is_not_uploaded_false" domain="[('is_not_uploaded', '=', False)]"/>
+                
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Sản phẩm" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Người bán" name="group_seller" context="{'group_by': 'seller_id'}"/>
+                    <filter string="Thuế suất" name="group_tax" context="{'group_by': 'tax_id'}"/>
+                    <filter string="TK thuế" name="group_tax_account" context="{'group_by': 'tax_account_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_purchase_invoices_list_line_ccv" model="ir.actions.act_window">
+        <field name="name">Chi tiết bảng kê hóa đơn mua vào</field>
+        <field name="res_model">purchase.invoices.list.line.ccv</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_is_not_uploaded_false': 1}</field>
+    </record>
+</odoo>

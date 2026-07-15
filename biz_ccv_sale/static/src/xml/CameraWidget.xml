@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="biz_ccv_sale.CameraWidget" owl="1">
+        <t t-if="recordData.id and recordData.parent_state == 'processing'">
+            <t t-if="!recordData.sale_route_report_id and recordData.parent_state != 'cancel'">
+                <button t-if="type == 'checkin'" class="btn-primary btn-check-in" t-on-click="_onCheckin">Check-In</button>
+            </t>
+            <t t-if="!recordData.is_done_check">
+                <button t-if="type == 'checkout'" class="btn-danger btn-check-out text-uppercase" t-on-click="_onCheckout">Check-Out</button>
+            </t>
+        </t>
+        <t t-if="record and record.resModel === 'res.partner'">
+            <button class="btn-primary btn-check-in" t-on-click="_onCheckinPartner">Check-In</button>
+        </t>
+    </t>
+
+    <div t-name="biz_ccv_sale.CameraWidgetLegacyIn">
+        <button role="button" t-if="widget.data.id" class="btn-primary btn-check-in">Check-In</button>
+    </div>
+
+    <div t-name="biz_ccv_sale.CameraWidgetLegacyOut">
+        <button role="button" t-if="widget.data.id" class="btn-danger btn-check-out text-uppercase" >Check-out</button>
+    </div>
+</templates>

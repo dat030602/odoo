@@ -1,0 +1,21 @@
+<odoo>
+    <menuitem id="menu_sale_order_vietqr" name="VietQR Bank" parent="sale.menu_sale_config" action="action_vietqr_bank"/>
+    <menuitem id="menu_vietqr_bank_config" name="VietQR Bank Config" parent="sale.menu_sale_config" action="action_vietqr_bank_config"/>
+    <menuitem
+        id="menu_sale_bonus_price_unit_root"
+        name="Quỹ dự phòng"
+        parent="sale.menu_sale_config" sequence="100" action="sale_bonus_price_unit_action_manager"
+        groups="sales_team.group_sale_manager"
+    />
+    <menuitem
+        id="menu_sale_bonus_price_unit_report"
+        name="Quỹ dự phòng"
+        parent="sale.menu_sale_report" sequence="100" action="sale_bonus_price_unit_action"
+    />
+    <menuitem
+        id="menu_sale_ccv_promotion_root"
+        name="Khuyến mãi CCV"
+        parent="sale.menu_sale_config" sequence="101" action="action_sale_ccv_promotion"
+        groups="sales_team.group_sale_manager"
+    />
+</odoo>

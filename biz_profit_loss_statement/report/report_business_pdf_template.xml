@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_business_pdf_document">
+    	<t t-set="company" t-value="o.env.company"/>
+        <t t-call="web.basic_layout">
+        	<div class="header" style="font-family:Times New Roman; font-size:18px;">
+        		<div class="row"> 
+        			<div class="col-7">
+        				<p style="margin-bottom: 0"><b>Đơn vị: <span t-esc="company.name"/></b></p>
+        				<p style="margin-bottom: 0"><b>Địa chỉ: <span t-esc="get_company_address(company)"/></b></p>
+        			</div>
+        			<div class="col-5 text-center">
+        				<p style="margin-bottom: 0"><b>Mẫu số B 02 - DN</b></p>
+        				<p style="margin-bottom: 0">(Ban hành theo Thông tư số 99/2025/TT-BTC</p>
+        				<p style="margin-bottom: 0">Ngày 27/10/2025 của Bộ Tài chính)</p>
+        			</div>
+        		</div>
+        	</div>
+
+            <div class="page" style="font-family:Times New Roman; font-size:18px;">
+                <div class="title text-center mt-5">
+                    <h4 class="bold">BÁO CÁO KẾT QUẢ HOẠT ĐỘNG KINH DOANH</h4>
+                    <p style="font-style: italic">Từ ngày <span t-esc="o.date_from.strftime('%d/%m/%Y')"/> đến ngày <span t-esc="o.date_to.strftime('%d/%m/%Y')"/>
+                    </p>
+                </div>
+
+                <p class="text-right mt-3" style="font-style: italic">Đơn vị tính: VNĐ</p>
+                <table>
+                    <thead class="text-center">
+                        <tr>
+                            <th>CHỈ TIÊU</th>
+                            <th>Mã số</th>
+                            <th>Thuyết minh</th>
+                            <th>Năm nay</th>
+                            <th>Năm trước</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="lines" t-value="get_lines(o)"/>
+                        <tr t-foreach="lines" t-as="line">
+                            <td><span t-esc="line.get('chi_tieu')"/></td>
+                            <td class="text-center"><span t-esc="line.get('ma_so')"/></td>
+                            <td class="text-center"><span t-esc="line.get('thuyet_minh')"/></td>
+                            <td class="text-right"><span t-esc="line.get('nam_nay')"/></td>
+                            <td class="text-right"><span t-esc="line.get('nam_truoc')"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <p>(*)Chỉ áp dụng tại công ty cổ phần</p>
+                </div>
+                <div class="page-break mt-2">
+                    <div class="row text-cente">
+                        <div class="col-8">
+                        </div>
+                        <div class="col-4 bold">
+                            <p>Lập <span t-esc="format_today()"/></p>
+                        </div>
+                    </div>
+                    <div class="row text-center ">
+                        <div class="col-4">
+                            <p><b>Người lập biểu</b></p>
+                            <p>(Ký, họ tên)</p>
+                        </div>
+
+                        <div class="col-4">
+                            <p><b>Kế toán trưởng</b></p>
+                            <p>(Ký, họ tên)</p>
+                        </div>
+
+                        <div class="col-4">
+                            <p><b>Giám đốc</b></p>
+                            <p>(Ký, họ tên, đóng dấu)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 page-break">
+                    <p>- Số chứng chỉ hành nghề;</p>
+                    <p>- Đơn vị cung cấp dịch vụ kế toán;</p>
+                    <p><i>Đối với người lập biểu là các đơn vị dịch vụ kế toán phải ghi rõ Số chứng chỉ hành nghề, tên và địa chỉ Đơn vị cung cấp dịch vụ kế toán. Người lập biểu là cá nhân ghi rõ Số chứng chỉ hành nghề</i></p>
+                </div>
+
+                <style>
+                    p{
+                        margin-bottom: 0;
+                    }
+                    .text-right {
+                        text-align: right;
+                    }
+                    table{
+                        border:  1px solid;
+                        width: 100%;
+                    }
+                    td, th {
+                        padding: 5px;
+                    }
+                    th{
+                        border:  1px solid;
+                        white-space: nowrap;
+                    }
+                    td{
+                        border-right: 1px  solid;
+                    }
+                    tr,td{
+                        page-break-inside: avoid;
+                    }
+                    .bold{
+                        font-weight: bold;
+                    }
+                    .page-break{
+                        page-break-inside: avoid;
+                    }
+
+                </style>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_business_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="biz_profit_loss_statement.report_business_pdf_document" t-lang="o.env.user.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

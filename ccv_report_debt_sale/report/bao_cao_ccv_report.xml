@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Excel -->
+    <record id="report_debt_sale_total_xlsx" model="ir.actions.report">
+        <field name="name">Sổ tổng hợp bán hàng</field>
+        <field name="model">ccv.report.debt.sale</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_report_debt_sale.report_debt_sale_total_xlsx</field>
+        <field name="report_file">ccv_report_debt_sale.report_debt_sale_total_xlsx</field>
+        <field name="print_report_name">'Sổ tổng hợp bán hàng'</field>
+        <field name="binding_model_id" ref="model_ccv_report_debt_sale"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="report_debt_sale_xlsx" model="ir.actions.report">
+        <field name="name">Sổ chi tiết bán hàng</field>
+        <field name="model">ccv.report.debt.sale</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_report_debt_sale.report_debt_sale_xlsx</field>
+        <field name="report_file">ccv_report_debt_sale.report_debt_sale_xlsx</field>
+        <field name="print_report_name">'Sổ chi tiết bán hàng'</field>
+        <field name="binding_model_id" ref="model_ccv_report_debt_sale"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

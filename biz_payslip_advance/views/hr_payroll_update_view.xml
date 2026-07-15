@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="view_hr_payroll_update_form" model="ir.ui.view">
+		<field name="name">view.hr.payroll.update.form</field>
+		<field name="model">hr.payroll.update</field>
+		<field name="arch" type="xml">
+			<form string="Information Contract and Payroll">
+				<header>
+					<button name="action_load" type="object" string="Load File" states="draft"/>
+					<field name="state" widget="statusbar"/>
+				</header>
+				<!-- <sheet> -->
+					<div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="0"/>
+                        </h1>
+                    </div>
+					<group>
+						<group>
+						   <field name="month"/>
+			        	   <field name="year"/>
+			        	   <field name="show_workday"/>
+						</group>
+		        	</group>
+		        	<separator string="Select file import contract"/>
+		           		<field name="file_name" invisible="1"/>
+		               	<label for="file_import"/>
+						<field name="file_import" class="oe_inline" placeholder="/home/excel.xlsx" filename="file_name" attrs="{'readonly':[('state','=','done')]}"/>	 
+
+						<a style="margin-left: 15px;color:blue;" href="/biz_payslip_advance/static/template/mau_Import_luong.xlsx" attrs="{'invisible':[('file_import','!=',False)]}" > Download Template </a>      
+		        	<notebook>
+		        		<page string="Allowances" class="oe_allowances">
+		        			<field name="allowance_ids" nolabel="1">
+		        				<tree string="Allowances" editable="bottom" default_order="contract_id asc" decoration-danger="contract_id == False">
+				           			<field name="employee_code"/>
+					        		<field name="employee_id"/>
+					        		<field name="allowances_1"/>
+									<field name="allowances_2"/>
+									<field name="allowances_3"/>
+									<field name="allowances_4"/>
+									<field name="allowances_5"/>
+									<field name="allowances_6"/>
+									<field name="allowances_7"/>
+									<field name="allowances_8"/>
+									<field name="allowances_9"/>
+									<field name="allowances_10"/>
+									<field name="allowances_11"/>
+									<field name="allowances_12"/>
+									<field name="allowances_13"/>
+									<field name="allowances_14"/>
+									<field name="allowances_15"/>
+									<field name="allowances_16"/>
+									<field name="allowances_17"/>
+									<field name="allowances_18"/>
+									<field name="allowances_19"/>
+									<field name="allowances_20"/>
+									<field name="allowances_21"/>
+									<field name="allowances_22"/>
+									<field name="allowances_23"/>
+									<field name="allowances_24"/>
+									<field name="allowances_25"/>
+									<field name="allowances_26"/>
+									<field name="allowances_27"/>
+									<field name="allowances_28"/>
+									<field name="allowances_29"/>
+									<field name="allowances_30"/>
+									<field name="allowances_31"/>
+									<field name="allowances_32"/>
+									<field name="allowances_33"/>
+									<field name="allowances_34"/>
+									<field name="allowances_35"/>
+									
+									<field name="contract_id"/>
+
+					        	</tree>
+		        			</field>
+		        		</page>
+		        		<page string="Deductions">
+		        			<field name="deduction_ids">
+			        		 	<tree string="Deduction" editable="bottom">
+				           			<field name="employee_code"/>
+					        		<field name="employee_id"/>
+					        		<field name="deduction_1"/>
+									<field name="deduction_2"/>
+									<field name="deduction_3"/>
+									<field name="deduction_4"/>
+									<field name="deduction_5"/>
+									<field name="deduction_6"/>
+									<field name="deduction_7"/>
+									<field name="deduction_8"/>
+									<field name="deduction_9"/>
+									<field name="deduction_10"/>
+									<field name="contract_id" />
+					        	</tree> 
+					      	</field>
+		        		</page>
+		        		<page string="Working Day" attrs="{'invisible': [('show_workday','=',False)]}">
+		        			<field name="working_day_ids" nolabel="1">
+					        	<tree string="Working Days" editable="bottom">
+				           			<field name="employee_code"/>
+					        		<field name="employee_id"/>
+					        		<field name="day_type_1"/>
+									<field name="day_type_2"/>
+									<field name="day_type_3"/>
+									<field name="day_type_4"/>
+									<field name="day_type_5"/>
+									<field name="day_type_6"/>
+									<field name="day_type_7"/>
+									<field name="day_type_8"/>
+									<field name="day_type_9"/>
+									<field name="day_type_10"/>
+									<field name="contract_id"/>
+						        </tree> 
+					       </field>
+		        		</page>
+		        	</notebook>
+				<!-- </sheet> -->
+			</form>
+		</field>
+	</record>
+	
+	<record id="view_hr_payroll_update_tree" model="ir.ui.view">
+		<field name="name">view.hr.payroll.update.tree</field>
+		<field name="model">hr.payroll.update</field>
+		<field name="arch" type="xml">
+			<tree string="Information Contract and Payroll">
+				<field name="name"/>
+				<field name="month"/>
+				<field name="year"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="view_hr_payroll_update_search" model="ir.ui.view">
+		<field name="name">view.hr.payroll.update.search</field>
+		<field name="model">hr.payroll.update</field>
+		<field name="arch" type="xml">
+			<search string="Information Contract and Payroll">
+				<field name="name"/>
+				<field name="month"/>
+				<field name="year"/>
+				<group expand="1" string="Group By">
+                    <filter string="Month" name="month" context="{'group_by':'month'}"/>
+                    <filter string="Year" name='year' context="{'group_by':'year'}"/>
+                </group>
+			</search>
+		</field>
+	</record>
+	
+	<record id="action_payroll_update" model="ir.actions.act_window">
+	    <field name="name">Update Contract and Payroll</field>
+	    <field name="res_model">hr.payroll.update</field>
+	    
+	    <field name="view_mode">tree,form</field>
+       	<field name="search_view_id" ref="view_hr_payroll_update_search"/>
+	</record>
+	
+	<menuitem action="action_payroll_update" id="menu_action_payroll_update" parent="menu_payroll_update_menu" sequence="1"/>
+	
+	
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_inherit_consignment" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.consignment</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_transfer_to_consignment" string="Chuyển Kho Ký gửi" type="object" class="btn-secondary"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,51 @@
+<odoo>
+    <record id="view_purchase_order_form_inherit_deliveries_created" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.deliveries.created</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <field name="has_unmatched_containers" invisible="1"/>
+            </xpath>
+            
+            <xpath expr="//div[@class='oe_button_box' and @name='button_box']" position="inside">
+            <button name="action_view_delivery_orders" type="object" class="oe_stat_button" icon="fa-truck">
+                <field name="delivery_ids" widget="statinfo"/>
+            </button>
+        </xpath>
+        </field>
+    </record>
+    
+    <record id="view_purchase_order_form_inherit_create_delivery" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.create.delivery</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(purchase_to_delivery_ccv.action_delivery_picking_wizard)d"
+                    type="action"
+                    string="Create transfers"
+                    class="btn-primary"
+                    attrs="{'invisible': [('has_unmatched_containers', '=', False)]}"
+                    icon="fa-truck"
+                    />
+                    <!-- context="{'default_picking_type_id': picking_type_id}" -->
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_form_customs_information" model="ir.ui.view">
+        <field name="name">purchase.order.form.customs.information</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_customs_infomation_ccv.view_purchase_order_form_customs_information"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='carrier_name']" position="before">
+                <field name="is_import" string="Loại hàng"/>
+            </xpath>
+            <xpath expr="//field[@name='stock_input_ids']/tree/field[@name='product_uom_qty']" position="after">
+                <field name="weight_port"/>
+                <field name="weight_ccv"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

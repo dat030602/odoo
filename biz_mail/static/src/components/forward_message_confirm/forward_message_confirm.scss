@@ -1,0 +1,122 @@
+// .o_DeleteMessageConfirmDialog_blockquote {
+//     font-style: normal;
+// }
+
+.o_FowardMessageConfirmDialog_blockquote .o_Message_header {
+    display: none !important;
+}
+
+
+.o_FowardMessageConfirmDialog_blockquote .o_Message_sidebar {
+    flex: 0 0 50px;
+    max-width: 50px;
+    justify-content: center;
+    display: none !important;
+}
+
+.o_FowardMessageConfirmDialog_blockquote .o_MessageInReplyToView {
+    display: none !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 50px;
+}
+.biz-message {
+    font-style: italic !important;
+    background-color: $o-webclient-background-color !important;
+}
+
+.blockquote:before {
+    position: absolute;
+    font-family: 'FontAwesome';
+    top: 0;
+    
+    content:"\f10d";
+    font-size: 200px;
+    // color: rgba(0,0,0,0.1);
+     
+  }
+  
+.blockquote::after {
+    content: "";
+    top: 20px;
+    left: 50%;
+    margin-left: -100px;
+    position: absolute;
+    border-bottom: 3px solid #bf0024;
+    height: 3px;
+    width: 200px;
+}
+
+
+.otro-blockquote{
+    font-size: 0.8em;
+    width:100%;
+    font-family:Open Sans;
+    font-style:italic;
+    color: #555555;
+    padding:1.2em 30px 1.2em 75px;
+    line-height:1.6;
+    position: relative;
+    display: inline !important
+}
+
+.otro-blockquote::before{
+    font-family:Arial;
+    content: "\201C";
+    color:rgb(138, 141, 145);
+    font-size:4em;
+    position: absolute;
+    left: 10px;
+    top:-10px;
+}
+
+.otro-blockquote::after{
+    content: '';
+}
+
+.otro-blockquote span{
+    display:block;
+    color:#333333;
+    font-style: normal;
+    font-weight: bold;
+    margin-top:1em;
+}
+
+.o_FowardMessageConfirmDialog_blockquote .o_Message_prettyBody{
+    margin-left:2em;
+}
+
+input.o_ChannelForwardForm_searchInput {
+    height: 45px;
+    background-color: #1C75BC;
+    border-radius: 1.2rem;
+}
+input.o_TypeMessage {
+    height: 40px;
+    // background-color: #1C75BC;
+    border-radius: 1.2rem;
+}
+.o_ChannelForwardForm_searchInput::placeholder{
+    color: #fff;
+    font-weight: bold;
+    
+}
+
+.biz-btn-secondary {
+    padding: 0.25rem 0.5rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    width: 60px;
+    border-color: #1C75BC !important;
+}
+
+.biz-btn-primary {
+    padding: 0.25rem 0.5rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    color: #fff;
+    background-color: #1C75BC;
+    border-color: #1C75BC;
+    width: 60px;
+}

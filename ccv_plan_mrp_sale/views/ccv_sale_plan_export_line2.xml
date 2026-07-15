@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="ccv_sale_plan_export_line2_view_tree">
+        <field name="name">tree_ccv_sale_plan_export_line2</field>
+        <field name="model">ccv.sale.plan.export.line2</field>
+        <field name="arch" type="xml">
+            <tree create="1" edit="1" editable="bottom" multi_edit="1">
+                <field name="product_id" optional="show" attrs="{'readonly': [('parent_state','in',('locked'))]}" decoration-danger="is_highlight == True"/>
+                <field name="qty_delivery" optional="show" attrs="{'readonly': [('parent_state','in',('locked'))]}" digits="[16,3]" sum="total_qty_delivery" decoration-danger="is_highlight == True"/>
+                <field name="qty_available" optional="show" attrs="{'readonly': [('parent_state','in',('locked'))]}" digits="[16,3]" sum="total_qty_available" decoration-danger="is_highlight == True"/>
+                <field name="qty_mrp" optional="show" attrs="{'readonly': [('parent_state','in',('locked'))]}" digits="[16,3]" sum="total_qty_mrp" decoration-danger="is_highlight == True"/>
+                <field name="picking_type_id" optional="show" attrs="{'readonly': [('parent_state','in',('locked'))]}" decoration-danger="is_highlight == True"/>
+                <field name="bom_id" optional="show" attrs="{'readonly': [('parent_state','in',('locked'))]}" decoration-danger="is_highlight == True"/>
+                <field name="description" optional="show" widget="text" attrs="{'readonly': [('parent_state','in',('locked'))]}" decoration-danger="is_highlight == True"/>
+                <field name="parent_state" optional="hide" />
+                <field name="is_highlight" invisible="1" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ccv_sale_plan_export_line2_search" model="ir.ui.view">
+        <field name="name">ccv.sale.plan.export.line2.tree</field>
+        <field name="model">ccv.sale.plan.export.line2</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="description"/>
+                <field name="picking_type_id"/>
+                <field name="bom_id"/>
+            </search>
+        </field>
+    </record>
+</odoo>

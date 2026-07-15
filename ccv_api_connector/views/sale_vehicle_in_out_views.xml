@@ -1,0 +1,134 @@
+<odoo>
+    
+    <record id="view_sale_vehicle_in_out_tree" model="ir.ui.view">
+        <field name="name">sale.vehicle.in.out.tree</field>
+        <field name="model">sale.vehicle.in.out</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="date" />
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_sale_vehicle_in_out_form" model="ir.ui.view">
+        <field name="name">sale.vehicle.in.out.form</field>
+        <field name="model">sale.vehicle.in.out</field>
+        <field name="arch" type="xml">
+            <form string="Vehicle In/Out">
+                <header>
+                    <button name="action_sale_vehicle_in_out_wizard" type="object" class="btn-primary" string="Thêm xe" attrs="{'invisible': [('status','=','lock')]}" />
+                    <button name="action_send_to_conveyor" type="object" string="Đẩy lên băng tải" attrs="{'invisible': [('status','=','lock')]}" />
+                    <button name="%(ccv_api_connector.action_sale_vehicle_in_out_print_delivery)d" type="action" string="In Phiếu xuất kho" attrs="{'invisible': [('status','=','lock')]}" />
+                    <button name="%(ccv_api_connector.action_sale_vehicle_in_out_print_receipt)d" type="action" string="In Phiếu nhập kho" attrs="{'invisible': [('status','=','lock')]}" />
+                    <button name="%(ccv_api_connector.action_sale_vehicle_in_out_print_ccv_transfer)d" type="action" string="In phiếu chuyển kho CCV" attrs="{'invisible': [('status','=','lock')]}" />
+                    <button name="action_force_unlock" type="object" string="Mở khóa (Admin)" class="btn-secondary" groups="base.group_system" attrs="{'invisible': ['|', ('force_unlock','=',True), ('status','!=','lock')]}" />
+                    <button name="action_force_lock" type="object" string="Khóa lại" class="btn-secondary" groups="base.group_system" attrs="{'invisible': [('force_unlock','=',False)]}" />
+                    <field name="force_unlock" invisible="1" />
+                    <field name="type" invisible="1" />
+                    <field name="status" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" attrs="{'readonly': [('status','=','lock')]}" />
+                        <field name="date" attrs="{'readonly': [('status','=','lock')]}" />
+                        <field name="ra_loa" attrs="{'readonly': [('status','=','lock')]}" />
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                            <group>
+                                <label for="type" string="Loại" />
+                                <div class="o_row">
+                                    <field name="type" class="oe_inline" style="max-width: 80px;" />
+                                    <span style="margin-right: 20px;" />
+                                    <field name="other_type" class="oe_inline" style="max-width: 80px;" />
+                                </div>
+                                <label for="count_line_w_domain" string="Số lượng phiếu" />
+                                <div class="o_row">
+                                    <field name="count_line_w_domain" class="oe_inline" style="max-width: 80px;" />
+                                    <span style="margin-right: 20px;" />
+                                    <field name="count_other_line_w_domain" class="oe_inline" style="max-width: 80px;" />
+                                </div>
+                            </group>
+                            <field name="line_ids" domain="[('type','=',type)]" context="{'default_sale_vehicle_id':active_id,'default_type':type}">
+                            <tree class="ccv_auto_layout_tree" editable="bottom" delete="0" decoration-success="has_link_line==False and is_next_day==True and is_carried_over==False" decoration-danger="is_carried_over==True">
+                <field name="is_baove_only" invisible="1" />
+                <field name="has_link_line" invisible="1" />
+                <field name="is_carried_over" invisible="1" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="has_loading" invisible="1" />
+                <field name="has_loading2" invisible="1" />
+                <field name="has_stocker" invisible="1" />
+                <field name="status" invisible="1" />
+                <button name="action_xac_nhan" string="Xác nhận xe đến" type="object" class="btn-info" attrs="{'invisible': ['|', ('status','=','lock'), ('canxe_status','!=','dang_ky')]}" groups="ccv_api_connector.group_admin,ccv_api_connector.group_vehicle_security,ccv_api_connector.group_vehicle_main_action"/>
+                <button name="action_can_xong" string="Cân xong" type="object" class="btn-warning" attrs="{'invisible': ['|', ('status','=','lock'), ('canxe_status','!=','dang_cho')]}" groups="ccv_api_connector.group_admin,ccv_api_connector.group_vehicle_security,ccv_api_connector.group_vehicle_main_action"/>
+                <button name="action_moi_vao" string="Mời vào" type="object" class="btn-primary" attrs="{'invisible': ['|', ('status','=','lock'), ('canxe_status','!=','chuan_bi')]}" groups="ccv_api_connector.group_admin,ccv_api_connector.group_vehicle_main_action,ccv_api_connector.group_vehicle_invite_only"/>
+                <button name="action_xac_nhan_hoan_thanh" string="Xác nhận hoàn thành" type="object" class="btn-primary" attrs="{'invisible': ['|', ('status','=','lock'), ('canxe_status','!=','moi_vao')]}" groups="ccv_api_connector.group_admin,ccv_api_connector.group_vehicle_main_action,ccv_api_connector.group_vehicle_complete_only"/>
+                <button name="action_xac_nhan_ra_cong" string="Xác nhận xe ra cổng" type="object" class="btn-danger" attrs="{'invisible': ['|', ('status','=','lock'), ('canxe_status','!=','xuat_nhap')]}" groups="ccv_api_connector.group_admin,ccv_api_connector.group_vehicle_out_confirm,ccv_api_connector.group_vehicle_security"/>
+                <button name="dummy_action" string="Xe đã ra cổng" type="object" class="btn-success invisible" attrs="{'invisible': ['|', ('status','=','lock'), ('canxe_status','!=','hoan_thanh')]}"/>
+                <field name="canxe_status" decoration-info="canxe_status == 'hoan_thanh'" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="name" readonly="1" />
+                <button name="action_open_popup" type="object" icon="fa-expand" title="Mở chi tiết (Pop-up)" class="btn-info" attrs="{'invisible': [('is_baove_only', '=', True)]}" />
+                <field name="type" readonly="1" />
+                <field name="partner_name" readonly="1" />
+                <field name="vehicle_num" readonly="1" />
+                <field name="gate" invisible="1" />
+                <field name="gate_id" optional="show" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="vehicle_driver" readonly="1" />
+                <field name="quantity" readonly="1" />
+                <field name="uom_id" readonly="1" />
+                <field name="quantity_plan" optional="show" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="bag_number" optional="show" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="date_in" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="loading" invisible="1" />
+                <field name="loading_id" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="loading2" invisible="1" />
+                <field name="loading2_id" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="stocker" invisible="1" />
+                <field name="stocker_id" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="date_start" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="date_end" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="bom_time" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="bom_time_over" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="note" invisible="1" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="user_note" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="quantity_bag" optional="show" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="quantity_stock" optional="show" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="quantity_done_stock" optional="show" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="is_next_day" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="next_day" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <field name="create_at" optional="hide" attrs="{'readonly': [('is_baove_only', '=', True)]}" />
+                <button name="action_delete_self" type="object" icon="fa-trash" groups="base.group_system" string="" title="Xóa dòng" confirm="Bạn có chắc chắn muốn xóa dòng này không?" class="btn-dark" attrs="{'invisible': [('status','=','lock')]}" />
+            </tree></field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_vehicle_in_out_in" model="ir.actions.act_window">
+        <field name="name">Vehicle In/Out</field>
+        <field name="res_model">sale.vehicle.in.out</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'type': 'in'}</field>
+    </record>
+    <record id="action_sale_vehicle_in_out_out" model="ir.actions.act_window">
+        <field name="name">Vehicle In/Out</field>
+        <field name="res_model">sale.vehicle.in.out</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'type': 'out'}</field>
+    </record>
+
+    <record id="action_batch_update_tkho_bxep_server" model="ir.actions.server">
+        <field name="name">Cập nhật Tkho-Bxep</field>
+        <field name="model_id" ref="ccv_api_connector.model_sale_vehicle_in_out" />
+        <field name="binding_model_id" ref="ccv_api_connector.model_sale_vehicle_in_out" />
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+for rec in records:
+    for line in rec.line_ids:
+        line.action_update_fields_to_picking()
+        </field>
+    </record>
+</odoo>

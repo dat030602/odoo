@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sms_template_view_form_inherit_sms_fpt" model="ir.ui.view">
+        <field name="name">sms.template.form.inherit.sms.fpt</field>
+        <field name="model">sms.template</field>
+        <field name="inherit_id" ref="sms.sms_template_view_form"/>
+        <field name="arch" type="xml">
+            <field name="model_id" position="attributes">
+                <attribute name="context">{'is_happy_birthday_template': fpt_template_type}</attribute>
+            </field>
+            <field name="model_id" position="after">
+                <field name="fpt_template_type"/>
+                <label for="fpt_template_type" string="Time To Apply Birthday" attrs="{'invisible': [('fpt_template_type', '!=', 'happy_birthday')]}"/>
+                <div attrs="{'invisible': [('fpt_template_type', '!=', 'happy_birthday')]}">
+                    <field name="time_from_fpt" class="oe_inline" placeholder="Time From"/>
+                    <field name="time_to_fpt" class="oe_inline col-lg-6" placeholder="Time To"/>
+                </div>
+            </field>
+        </field>
+    </record>
+</odoo>

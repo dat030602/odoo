@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="details_sales_book_by_customer_form" model="ir.ui.view">
+        <field name="name">details_sales_book_by_customer.view.form</field>
+        <field name="model">details.sales.book.by.customer</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="is_user_current" invisible="1"/>
+                    <button name="action_confirm" string="Lấy dữ liệu" type="object" class="btn-primary" attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary" attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_agree" type="object" string="Duyệt" class="btn-primary" attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_refuse" type="object" string="Từ chối" attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_cancel" type="object" string="Hủy" attrs="{'invisible': [('state', 'not in', ('approve'))]}"/>
+                    <button string="Xuất Excel" name="action_print_excel" type="object"/>
+                    <button string="Xuất PDF" name="action_print_pdf" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approve,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_details" string="Chi tiết" type="object" class="oe_stat_button" icon="fa-list"/>
+                    </div>
+                    <widget name="web_ribbon" title="Đã duyệt" attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                    <widget name="web_ribbon" title="Hủy" attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                    <widget name="web_ribbon" title="Từ chối" attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="oe_inline" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="partner" string="Khách hàng">
+                            <field name="type_partner" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="partner_id" attrs="{'invisible': [('type_partner','!=','1')], 'readonly': [('state','!=','draft')]}"/>
+                            <field name="team_id" widget="many2many_tags" attrs="{'invisible': [('type_partner','!=','team')], 'readonly': [('state','!=','draft')]}"/>
+                            <field name="order_state_id" attrs="{'invisible': [('type_partner','!=','order_state')], 'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                        <group>
+                            <label for="date_from"/>
+                            <div class="o_row">
+                                <field name="date_from" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                -
+                                <field name="date_to" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết" name="line_ids">
+                            <field name="line_ids" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </page>
+                        <page name="trp_approve_history" string="Lịch sử duyệt">
+                            <group>
+                                <field name="trp_approve_config_line_id" invisible="1"/>
+                                <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                <field name="delegate_approver_ids" widget="many2many_tags" domain="[('id','not in',current_approve_user_ids)]" groups="base.group_system"/>
+                            </group>
+                            <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        
+                        <page string="Người ký" name="sign_user">
+                            <group string="Người ký">
+                                <field name="creator_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="statistics_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="account_liability_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="accountant_chief_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="unit_head_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <!-- <field name="activity_ids"/> -->
+                        <field name="message_ids"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="details_sales_book_by_customer_tree" model="ir.ui.view">
+        <field name="name">details_sales_book_by_customer.view.tree</field>
+        <field name="model">details.sales.book.by.customer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="team_id" widget="many2many_tags"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'cancel' or state == 'refuse'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="details_sales_book_by_customer_tree_search" model="ir.ui.view">
+        <field name="name">details_sales_book_by_customer.view.tree.search</field>
+        <field name="model">details.sales.book.by.customer</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="team_id"/>
+                <field name="state"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('date_from', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Tháng này" name="this_month" domain="[('date_from', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <separator/>
+                <filter string="Đã khoá" name="locked" domain="[('state', '=', 'locked')]"/>
+                <filter string="Mới" name="draft" domain="[('state', '=', 'draft')]"/>
+                <separator/>
+                <filter string="Đã lưu" name="active" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id='action_details_sales_book_by_customer' model='ir.actions.act_window'>
+        <field name='name'>Sổ chi tiết bán hàng theo khách hàng</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name='res_model'>details.sales.book.by.customer</field>
+        <field name='view_mode'>tree,form</field>
+        <field name='target'>current</field>
+    </record>
+
+    <menuitem id="menu_details_sales_book_by_customer"
+        parent="account.account_reports_legal_statements_menu"
+        action="action_details_sales_book_by_customer"
+        name="Sổ chi tiết bán hàng theo khách hàng"
+    />
+    <menuitem id="menu_main_details_sales_book_by_customer" name="Sổ chi tiết bán hàng theo khách hàng" action="action_details_sales_book_by_customer"
+                  parent="sale.menu_sale_report" sequence="20"/>
+</odoo>

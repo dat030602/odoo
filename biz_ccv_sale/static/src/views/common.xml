@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="biz_ccv_sale.SignFormController" t-inherit="sign.SignViews.buttons" t-inherit-mode="extension" owl="1">
+        <xpath expr='//t[@t-if="!env.isSmall"]' position="inside">
+            <t t-if="props.resModel === 'sale.order'" t-call="biz_ccv_sale.SignViews.sign_request.buttons_custom"/>
+        </xpath>
+    </t>
+
+    <t t-name="biz_ccv_sale.SignViews.sign_request.buttons_custom" owl="1">
+        <button class="btn btn-primary" title="Update a pdf that you want to sign directly" t-on-click="() => this.requestFile(true, 'sign_send_request')">
+            UPDATE A PDF TO SIGN
+        </button>
+    </t>
+</templates>

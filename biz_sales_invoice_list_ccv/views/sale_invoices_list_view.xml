@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_invoices_list_ccv_tree" model="ir.ui.view">
+        <field name="name">sale.invoices.list.ccv.tree</field>
+        <field name="model">sale.invoices.list.ccv</field>
+        <field name="arch" type="xml">
+            <tree string="Bảng kê hóa đơn bán ra">
+                <field name="name"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sale_invoices_list_ccv_form" model="ir.ui.view">
+        <field name="name">sale.invoices.list.ccv.form</field>
+        <field name="model">sale.invoices.list.ccv</field>
+        <field name="arch" type="xml">
+            <form string="Bảng kê hóa đơn bán ra">
+                <header>
+                    <button name="action_generate" string="Lấy dữ liệu" type="object" class="btn-primary" 
+                        attrs="{'invisible': [('state', '=', 'locked')]}"/>
+                    <button name="action_lock" string="Khóa" type="object" 
+                        attrs="{'invisible': [('state', '=', 'locked')]}"/>
+                    <button name="action_unlock" string="Mở khóa" type="object" 
+                        attrs="{'invisible': [('state', '!=', 'locked')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,locked"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_lines" string="Xem chi tiết" type="object" icon="fa-eye"
+                            attrs="{'invisible': [('line_ids', '=', [])]}"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly': [('state', '=', 'locked')]}"/>
+                            <field name="from_date" attrs="{'readonly': [('state', '=', 'locked')]}"/>
+                            <field name="to_date" attrs="{'readonly': [('state', '=', 'locked')]}"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết">
+                            <field name="line_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sale_invoices_list_ccv_search" model="ir.ui.view">
+        <field name="name">sale.invoices.list.ccv.search</field>
+        <field name="model">sale.invoices.list.ccv</field>
+        <field name="arch" type="xml">
+            <search string="Bảng kê hóa đơn bán ra">
+                <field name="name"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="state"/>
+                <filter string="Mới" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="Đã khóa" name="locked" domain="[('state', '=', 'locked')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_sale_invoices_list_line_ccv_tree" model="ir.ui.view">
+        <field name="name">sale.invoices.list.line.ccv.tree</field>
+        <field name="model">sale.invoices.list.line.ccv</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết bảng kê hóa đơn bán ra" edit="0" create="0" delete="0">
+                <field name="invoice_code_key" optional="show" readonly="1"/>
+                <field name="invoice_code" optional="show" readonly="1"/>
+                <field name="invoice_number" optional="show" readonly="1"/>
+                <field name="invoice_date" optional="show" readonly="1"/>
+                <field name="date" optional="show" readonly="1"/>
+                <field name="ref" optional="show" readonly="1"/>
+                <field name="buyer_id" optional="show" readonly="1"/>
+                <field name="buyer_tax" optional="show" readonly="1"/>
+                <field name="product_id" optional="show" readonly="1"/>
+                <field name="base_amount" optional="show" readonly="1" sum="Tổng"/>
+                <field name="tax_id" optional="show" readonly="1"/>
+                <field name="tax_amount" optional="show" readonly="1" sum="Tổng"/>
+                <field name="tax_account_id" optional="show" readonly="1"/>
+                <field name="aml_id" invisible="1"/>
+                <field name="move_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <button name="action_view_account_move" string="Xem" type="object" 
+                    attrs="{'invisible': [('move_id', '=', False)]}" icon="fa-eye"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sale_invoices_list_line_ccv_form" model="ir.ui.view">
+        <field name="name">sale.invoices.list.line.ccv.form</field>
+        <field name="model">sale.invoices.list.line.ccv</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết bảng kê hóa đơn bán ra">
+                <header>
+                    <button name="action_view_account_move" string="Xem chứng từ" type="object" 
+                        attrs="{'invisible': [('move_id', '=', False)]}" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="move_id"/>
+                            <field name="aml_id" invisible="1"/>
+                            <field name="invoice_code_key"/>
+                            <field name="invoice_code"/>
+                            <field name="invoice_number"/>
+                            <field name="invoice_date"/>
+                            <field name="date"/>
+                            <field name="ref"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="buyer_id"/>
+                            <field name="buyer_tax"/>
+                            <field name="product_id"/>
+                            <field name="base_amount"/>
+                            <field name="tax_id"/>
+                            <field name="tax_amount"/>
+                            <field name="tax_account_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sale_invoices_list_line_ccv_search" model="ir.ui.view">
+        <field name="name">sale.invoices.list.line.ccv.search</field>
+        <field name="model">sale.invoices.list.line.ccv</field>
+        <field name="arch" type="xml">
+            <search string="Chi tiết bảng kê hóa đơn bán ra">
+                <field name="product_id" string="Sản phẩm"/>
+                <field name="buyer_id" string="Người mua" filter_domain="['|', '|', ('buyer_id', 'ilike', self), ('buyer_id.vat', 'ilike', self)]"/>
+                <field name="invoice_number" string="Ký hiệu/Số HĐ" filter_domain="['|', '|', ('invoice_code_key', 'ilike', self), ('invoice_code', 'ilike', self), ('invoice_number', 'ilike', self)]"/>
+                <field name="ref"/>
+                <field name="tax_id"/>
+                <field name="tax_account_id"/>
+                <field name="parent_id" invisible="1"/>
+                
+                <filter string="Đủ thông tin HĐ" name="non_missing_invoice_info" domain="[('invoice_code_key', '!=', False), ('invoice_code', '!=', False), ('invoice_number', '!=', False)]"/>
+                <filter string="Thiếu thông tin HĐ" name="missing_invoice_info" 
+                    domain="['|', '|', ('invoice_code_key', '=', False), ('invoice_code', '=', False), ('invoice_number', '=', False)]"/>
+                
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Sản phẩm" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Người mua" name="group_buyer" context="{'group_by': 'buyer_id'}"/>
+                    <filter string="Thuế suất" name="group_tax" context="{'group_by': 'tax_id'}"/>
+                    <filter string="TK thuế" name="group_tax_account" context="{'group_by': 'tax_account_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sale_invoices_list_ccv" model="ir.actions.act_window">
+        <field name="name">Bảng kê hóa đơn bán ra CCV</field>
+        <field name="res_model">sale.invoices.list.ccv</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo mới bảng kê hóa đơn bán ra
+            </p>
+        </field>
+    </record>
+
+    <record id="action_sale_invoices_list_line_ccv" model="ir.actions.act_window">
+        <field name="name">Chi tiết bảng kê hóa đơn bán ra</field>
+        <field name="res_model">sale.invoices.list.line.ccv</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

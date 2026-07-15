@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_crm_partner_geo_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base_geolocalize.view_crm_partner_geo_form"/>
+        <field name="arch" type="xml">
+<!--            <xpath expr="//form" position="attributes">-->
+<!--                <attribute name="js_class">abc_test</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//page[@name='geo_location']/group[1]/group[1]" position="after">
+                <group string="Coordinate Tolerancing">
+                    <field name="coordinate" widget="WebCamDialog"/>
+                    <widget name="camera_widget"/>
+<!--                    <button string="Check In"-->
+<!--                            name="action_check_in"-->
+<!--                            id="show_cammera"-->
+<!--                            context="{'hide_automatic_options': 1}"-->
+<!--                            class="btn-primary o_form_binary_file_web_cam"/>-->
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='geo_location']/group[1]" position="after">
+                <group>
+                    <field name="checkin_history_ids" invisible="1">
+                        <tree create="false" decoration-danger="status == 'failed'"
+                              decoration-success="status == 'successful'">
+                            <field name="latitude"/>
+                            <field name="Longitude"/>
+                            <field name="checkin_image" widget="image" class="oe_avatar"/>
+                            <field name="checkin_date"/>
+                            <field name="status"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_check_in" attrs="{'invisible': [('hide_interface','!=',False)]}" icon="fa-users">
+                    <field name="checkin_history_count" widget="statinfo" string="Checkin"/>
+                    <field name="hide_interface" invisible="1"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_res_partner_code_contact_inherit" model="ir.ui.view">
+        <field name="name">res.partner.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//span[@name='address_name']" position="before">
+                <field name="code_contact"/>
+            </xpath>
+            <field name="vat" position="after">
+                <field name="property_account_expense_id"
+                       string="Tài khoản chi phí"
+                       groups="account.group_account_readonly"
+                       options="{'no_create': True}"
+                       placeholder="Sử dụng tài khoản từ danh mục sản phẩm"/>
+                <field name="fax"/>
+                <field name="representative"/>
+                <field name="representative_phone" widget="phone"/>
+                <field name="hide_interface" invisible="1"/>
+            </field>
+            <notebook position="inside">
+                <page string="Sale route" attrs="{'invisible': [('hide_interface','!=',False)]}">
+                    <field name="sale_route_ids" domain="[('state','in',['draft','processing']),('partner_detail_ids','not in', [id])]" context="{
+                            'search_default_user_id': user_id,
+                            'form_view_ref':'biz_ccv_sale.sale_route_form_popup',
+                            'default_line_ids': [(0,0, {
+                                'partner_id': id,
+                            })],
+                            'default_user_id': user_id,
+                            'default_team_id': team_id,
+                        }" delete='true'>
+                        <tree default_order="customer_care_day">
+                            <field name="sequence" invisible="1"/>
+                            <field name="stt" widget="sequence_vt" class="text-center"/>
+                            <field name="code" optional="show"/>
+                            <field name="name" optional="show"/>
+                            <field name="customer_care_day" optional="show"/>
+                            <field name="user_id" optional="show"/>
+                            <field name="team_id" optional="show"/>
+                            <field name="sales_team_captain_id" optional="show"/>
+                            <field name="state" optional="show"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+
+    <record id="view_partner_tree_inherit" model="ir.ui.view">
+        <field name="name">res.partner.tree.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="before">
+                <field name="code_contact" filter_domain="[('code_contact', 'ilike', self)]" attrs="{'invisible': [('is_hide_fields', '=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_form_private_ccv" model="ir.ui.view">
+        <field name="name">res.partner.form.private.ccv</field>
+        <field name="model">res.partner</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <div class="oe_chatter" position="replace"/>
+        </field>
+    </record>
+
+
+    <record id="res_partner_view_search" model="ir.ui.view">
+            <field name="name">res.partner.search.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='supplier']" position="before">
+                    <field name="code_contact" filter_domain="[('code_contact', 'ilike', self)]"/>
+                </xpath>
+            </field>
+    </record>
+
+    <menuitem id="contacts.res_partner_menu_config"
+              name="Configuration"
+              parent="contacts.menu_contacts"
+              groups="base.group_system"
+              sequence="4"/>
+
+    <menuitem id="sales_coordinate_tolerancing_config"
+              name="Coordinate Tolerancing"
+              parent="contacts.res_partner_menu_config"
+              action="action_coordinate_tolerancing"
+              sequence="3"/>
+
+<!-- Menu CRM -->
+    <menuitem id="res_partner_menu_crm"
+              name="Contact"
+              parent="crm.crm_menu_root"
+              action="contacts.action_contacts"
+              sequence="-5"/>
+
+    <!-- <menuitem id="sales_coordinate_tolerancing_config_crm"
+              name="Coordinate Tolerancing"
+              parent="crm.crm_menu_root"
+              action="action_coordinate_tolerancing"
+              sequence="0"/> -->
+</odoo>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_hr_expense_sheet_form_ccv_sql" model="ir.ui.view">
+            <field name="name">view_hr_expense_sheet_form_ccv_sql</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="before">
+                    <field name="internal_account_id" invisible="1" domain="[('employee_id', '=', employee_id), ('state', 'in', ('approved', 'done'))]"/>
+                    <field name="internal_account_ids" domain="[('employee_id', '=', employee_id), ('state', 'in', ('approved', 'done'))]" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//form//header" positon="inside">
+                    <button 
+                        name="action_create_payment"
+                        string="Thanh toán"
+                        type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('state', '!=', 'done')]}"
+                    />
+                </xpath>
+                <xpath expr="//sheet//div[@class='oe_button_box']" positon="inside">
+                    <button name="action_open_payment"
+                        class="oe_stat_button"
+                        icon="fa-list"
+                        type="object"
+                        attrs="{'invisible': ['|', ('count_payment', '=', 0), ('state', '!=', 'done')]}">
+                        <field name="count_payment" widget="statinfo" string="Thanh toán"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

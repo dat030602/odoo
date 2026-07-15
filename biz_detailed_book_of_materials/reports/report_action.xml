@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+        <!-- Paper format A4 ngang cho báo cáo -->
+        <record id="format_a4_ngang_material_detail" model="report.paperformat">
+            <field name="name">A4 Landscape Material Detail</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="action_rp_material_detail_book_xlsx" model="ir.actions.report">
+            <field name="name">Material detail book (Excel)</field>
+            <field name="model">material.detail.book</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">biz_detailed_book_of_materials.rp_material_detail_xlsx</field>
+            <field name="report_file">biz_detailed_book_of_materials.rp_material_detail_xlsx</field>
+            <field name="print_report_name">'Material detail book'</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_material_detail_book_pdf" model="ir.actions.report">
+            <field name="name">In PDF</field>
+            <field name="model">material.detail.book</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">biz_detailed_book_of_materials.report_material_detail_book_pdf</field>
+            <field name="report_file">biz_detailed_book_of_materials.report_material_detail_book_pdf</field>
+            <field name="print_report_name">'Sổ chi tiết vật tư - %s' % object.name</field>
+            <field name="paperformat_id" ref="biz_detailed_book_of_materials.format_a4_ngang_material_detail"/>
+            <field name="binding_type">report</field>
+            <field name="binding_model_id" ref="model_material_detail_book"/>
+        </record>
+
+    </data>
+</odoo>

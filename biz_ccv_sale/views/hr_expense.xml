@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_expense_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.form.inherit</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+
+            <field name="analytic_distribution" position='after'>
+                <field name="partner_name" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="payment_type" widget="radio" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                <field name="partner_bank_id" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_hr_expense_sheet_form_inherit" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.form.inherit</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="account_move_stock_landed_costs_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.stock.landed.costs.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="stock_landed_costs.account_view_move_form_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_type']" position='attributes'>
+                <attribute name="groups"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='is_landed_costs_line']" position='attributes'>
+                <attribute name="groups"></attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="account_move_form_inherit_ccv_restrict_mode_hash_table" model="ir.ui.view">
+        <field name="name">account.move.edit.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_left_group']/label[1]" position='attributes'>
+                <attribute name="attrs">{'invisible': [('move_type', 'not in', ())]}</attribute>
+            </xpath>
+            <xpath expr="//group[@id='header_left_group']/label[2]" position='attributes'>
+                <attribute name="attrs">{'invisible': [('move_type', 'not in', ())]}</attribute>
+            </xpath>
+            <xpath expr="//group[@id='header_left_group']/field[@name='partner_id']" position='before'>
+                <label for="partner_id" string="Đối tác" style="font-weight:bold;"/>
+            </xpath>
+            <xpath expr="//group[@id='header_left_group']/field[@name='partner_id']" position='attributes'>
+                <attribute name="attrs">{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt', 'entry'))]}</attribute>
+            </xpath>
+            <!-- <xpath expr="//div[@name='journal_div']/field[@name='journal_id']" position='attributes'>
+                <attribute name="attrs"></attribute>
+            </xpath> -->
+            <!-- <xpath expr="//field[@name='invoice_user_id']" position='before'>
+                <field name="sale_id"/>
+            </xpath> -->
+        </field>
+    </record>
+    <record id="account_journal_form_inherit_ccv_restrict_mode_hash_table" model="ir.ui.view">
+        <field name="name">account.journal.ccv_restrict_mode_hash_table.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='restrict_mode_hash_table']" position='after'>
+                <field name="ccv_restrict_mode_hash_table"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

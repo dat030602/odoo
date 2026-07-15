@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_report_inherit_inherit" model="ir.ui.view">
+        <field name="name">sale.report.form.inherit.inherit</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.sale_report_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="product_id" optional="hide"/>
+                <field name="product_tmpl_id" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="categ_id" optional="hide"/>
+                <field name="commercial_partner_id" optional="hide"/>
+                <field name="invoice_status" optional="hide"/>
+                <field name="price_subtotal" optional="hide" sum="sum_price_subtotal"/>
+                <field name="product_uom" optional="hide"/>
+                <field name="delivery_status" optional="hide"/>
+                <field name="product_uom_qty" optional="hide" sum="sum_product_uom_qty"/>
+                <field name="qty_delivered" optional="hide" sum="sum_qty_delivered"/>
+                <field name="qty_invoiced" optional="hide" sum="sum_qty_invoiced"/>
+                <field name="qty_to_deliver" optional="hide" sum="sum_qty_to_deliver"/>
+                <field name="qty_to_invoice" optional="hide" sum="sum_qty_to_invoice"/>
+                <field name="untaxed_amount_invoiced" optional="hide" sum="sum_untaxed_amount_invoiced"/>
+                <field name="untaxed_amount_to_invoice" optional="hide" sum="sum_untaxed_amount_to_invoice"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_sale_report_search_inherit_inherit" model="ir.ui.view">
+        <field name="name">sale.report.search.inherit.inherit</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='Sales']" position="after">
+                <separator/>
+                <filter string="Sản phẩm tặng" name="price_subtotal_0" domain="[('price_subtotal','=',0)]"/>
+                <filter string="Sản phẩm không tặng" name="price_subtotal_not_0" domain="[('price_subtotal','!=',0)]"/>
+                <filter string="Chưa giao" name="delivered" domain="[('qty_to_deliver','!=',0),('delivery_status','!=','full'),('delivery_status','!=','')]"/>
+                <filter string="Đã giao" name="delivered" domain="['|',('qty_to_deliver','=',0),('delivery_status','=','full')]"/>
+            </xpath>
+            <xpath expr="//filter[@name='group_by_date_day']" position="after">
+                <filter string="Ngày giao hàng" name="group_by_commitment_date" context="{'group_by':'commitment_date'}"/>
+                <filter string="Ngày hiệu lực" name="group_by_effective_date" context="{'group_by':'effective_date'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

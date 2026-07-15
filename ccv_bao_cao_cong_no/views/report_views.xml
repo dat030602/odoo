@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ccv_debt_report_form_inherit" model="ir.ui.view">
+        <field name="name">ccv.debt.report.form.inherit</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="arch" type="xml">
+            <form>
+            <header>
+                <button name="action_confirm" string="Tổng hợp" type="object" class="btn-primary" attrs="{'invisible': [('state','=','locked')]}"/>
+                <button name="action_change_state" string="Mở khóa" attrs="{'invisible':[('state','=','new')]}" type="object"/>
+                <button name="action_change_state" string="Khóa" attrs="{'invisible':[('state','=','locked')]}" type="object"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_tree" type="object" icon="fa-globe icon" context="{'type':'chi_tiet'}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Chi tiết</span>
+                        </div>
+                    </button>
+                    <button name="action_view_tree" type="object" icon="fa-globe icon" context="{'type':'tong_hop'}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Tổng hợp</span>
+                        </div>
+                    </button>
+                    <button name="action_view_tree" type="object" icon="fa-globe icon" context="{'type':'chi_tiet','nt':'nt'}" attrs="{'invisible': [('is_currency','=',False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Chi tiết</span>
+                            <span class="o_stat_text">Ngoại tệ</span>
+                        </div>
+                    </button>
+                    <button name="action_view_tree" type="object" icon="fa-globe icon" context="{'type':'tong_hop','nt':'nt'}" attrs="{'invisible': [('is_currency','=',False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Tổng hợp</span>
+                            <span class="o_stat_text">Ngoại tệ</span>
+                        </div>
+                    </button>
+                    <button name="action_open_account_move" type="object" icon="fa-globe icon" string="Hóa đơn" />
+                    <button name="action_open_account_move_line" type="object" icon="fa-globe icon">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Chi tiết</span>
+                            <span class="o_stat_text">bút toán</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" class="oe_inline" attrs="{'readonly': [('state','=','locked')]}"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="parent_id" domain="[('id', '!=', active_id),('type', '=', type),('is_sale', '=', is_sale),('team_id', '=', team_id)]" attrs="{'readonly': [('state','=','locked')]}"/>
+                        <field name="is_break"/>
+                        <field name="is_sale"/>
+                        <field name="domain" invisible="1"/>
+                        <field name="is_currency" invisible="1"/>
+                        <field name="type" invisible="1"/>
+                    </group>
+                    <group>
+                        <label for="date_from"/>
+                        <div class="o_row">
+                            <field name="date_from" required="1" attrs="{'readonly': [('state','=','locked')]}"/>
+                            -
+                            <field name="date_to" required="1" attrs="{'readonly': [('state','=','locked')]}"/>
+                        </div>
+                        <field name="account_ids" widget="many2many_tags" required="1" attrs="{'readonly': [('state','=','locked')]}"/>
+                        <field name="report_type" attrs="{'readonly': [('state','=','locked')]}"/>
+                        <field name="team_id" attrs="{'required': [('report_type','=','team')],'invisible': [('report_type','!=','team')],'readonly': [('state','=','locked')]}"/>
+                        <field name="partner_id" attrs="{'required': [('report_type','=','1')],'invisible': [('report_type','!=','1')],'readonly': [('state','=','locked')]}" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="partner_ids" widget="many2many_tags" attrs="{'required': [('report_type','=','is_many_partner')],'invisible': [('report_type','!=','is_many_partner')],'readonly': [('state','=','locked')]}"/>
+                        <field name="currency_id" attrs="{'readonly': [('state','=','locked')]}"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Chi tiết công nợ" name="line1_ids" attrs="{'invisible': [('type','!=','cong_no_phai_thu')]}">
+                        <field name="line1_ids" readonly="1">
+                            <tree>
+                                <field name="type_line" optional="hide"/>
+                                <field name="account_id" optional="hide"/>
+                                <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="partner_code" optional="hide"/>
+                                <field name="date" string="Ngày chứng từ"/>
+                                <field name="move_id"/>
+                                <field name="reference"/>
+                                <field name="note"/>
+                                <field name="account_dest_id" string="TK đối ứng"/>
+                                <field name="uom_id"/>
+                                <field name="product_uom_quantity" sum="total_product_uom_qty"/>
+                                <field name="price_unit"/>
+                                <field name="ps_debit" sum="total_debit"/>
+                                <field name="ps_credit" sum="total_credit"/>
+                                <field name="end_debit" string="SD nợ"/>
+                                <field name="end_credit" string="SD có"/>
+                                <field name="default_code"/>
+                                <field name="product_id" optional="hide"/>
+                                <field name="order_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Tổng hợp công nợ" name="line1_th_ids" attrs="{'invisible': [('type','!=','cong_no_phai_thu')]}">
+                        <field name="line1_th_ids" readonly="1">
+                            <tree>
+                                <field name="type_line" optional="hide"/>
+                                <field name="account_id" optional="hide"/>
+                                <field name="partner_id" optional="show"/>
+                                <field name="partner_name" optional="show"/>
+                                <field name="partner_code" optional="show"/>
+                                <field name="partner_group" optional="show"/>
+                                <field name="start_debit" sum="total_start_debit"/>
+                                <field name="start_credit" sum="total_start_credit"/>
+                                <field name="ps_debit" sum="total_ps_debit"/>
+                                <field name="ps_credit" sum="total_ps_credit"/>
+                                <field name="end_debit" sum="total_end_debit"/>
+                                <field name="end_credit" sum="total_end_credit"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Chi tiết công nợ ngoại tệ" name="line1_nt_ids" attrs="{'invisible': ['|',('is_currency','=',False),('type','!=','cong_no_phai_thu')]}">
+                        <field name="line1_nt_ids" readonly="1">
+                            <tree>
+                                <field name="partner_id" optional="show"/>
+                                <field name="move_id" string="Số chứng từ" optional="show"/>
+                                <field name="date" string="Ngày chứng từ" optional="show"/>
+                                <field name="invoice_date" optional="show"/>
+                                <field name="reference" optional="show"/>
+                                <field name="product_uom_quantity" optional="show"/>
+                                <field name="price_unit" optional="show"/>
+                                <field name="note" optional="show"/>
+                                <field name="account_id" optional="show"/>
+                                <field name="account_dest_id" optional="show"/>
+                                <field name="ps_debit_nt" sum="total_ps_debit" optional="show"/>
+                                <field name="ps_debit" sum="total_ps_debit" optional="show"/>
+                                <field name="ps_credit_nt" sum="total_ps_credit" optional="show"/>
+                                <field name="ps_credit" sum="total_ps_credit" optional="show"/>
+                                <field name="end_debit_nt" optional="show"/>
+                                <field name="end_debit" optional="show"/>
+                                <field name="end_credit_nt" optional="show"/>
+                                <field name="end_credit" optional="show"/>
+                                <field name="default_code" optional="show"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Tổng hợp công nợ ngoại tệ" name="line1_th_nt_ids" attrs="{'invisible': ['|',('is_currency','=',False),('type','!=','cong_no_phai_thu')]}">
+                        <field name="line1_th_nt_ids" readonly="1">
+                            <tree>
+                                <field name="type_line" optional="hide"/>
+                                <field name="account_id" string="Tài khoản công nợ" optional="show"/>
+                                <field name="partner_id" optional="show"/>
+                                <field name="parent_id" optional="hide"/>
+                                <field name="partner_name" optional="show"/>
+                                <field name="partner_code" optional="show"/>
+                                <field name="vat" optional="show"/>
+                                <field name="address" optional="show"/>
+                                <field name="start_debit_nt" sum="total_start_debit"/>
+                                <field name="start_debit" sum="total_start_debit"/>
+                                <field name="start_credit_nt" sum="total_start_credit"/>
+                                <field name="start_credit" sum="total_start_credit"/>
+                                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                                <field name="ps_debit" sum="total_ps_debit"/>
+                                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                                <field name="ps_credit" sum="total_ps_credit"/>
+                                <field name="end_debit_nt" sum="total_end_debit"/>
+                                <field name="end_debit" sum="total_end_debit"/>
+                                <field name="end_credit_nt" sum="total_end_credit"/>
+                                <field name="end_credit" sum="total_end_credit"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Chi tiết công nợ" name="line2_ids" attrs="{'invisible': [('type','!=','cong_no_phai_tra')]}">
+                        <field name="line2_ids" readonly="1">
+                            <tree>
+                                <field name="account_id" invisible="1"/>
+                                <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="invoice_date" string="Ngày hạch toán"/>
+                                <field name="date" string="Ngày chứng từ"/>
+                                <field name="move_id"/>
+                                <field name="reference"/>
+                                <field name="note"/>
+                                <field name="account_id" string="TK công nợ"/>
+                                <field name="account_dest_id" string="TK đối ứng"/>
+                                <field name="ps_debit" sum="total_debit"/>
+                                <field name="ps_credit" sum="total_credit"/>
+                                <field name="end_debit" string="SD nợ"/>
+                                <field name="end_credit" string="SD có"/>
+                                <field name="product_uom_quantity" sum="total_product_uom_qty"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Tổng hợp công nợ" name="line2_th_ids" attrs="{'invisible': [('type','!=','cong_no_phai_tra')]}">
+                        <field name="line2_th_ids" readonly="1">
+                            <tree>
+                                <field name="account_id" optional="hide"/>
+                                <field name="partner_id" optional="show"/>
+                                <field name="parent_id" invisible="1"/>
+                                <field name="partner_name" optional="show"/>
+                                <field name="partner_code" optional="show"/>
+                                <field name="vat" optional="show"/>
+                                <field name="address" optional="show"/>
+                                <field name="start_debit" sum="total_start_debit"/>
+                                <field name="start_credit" sum="total_start_credit"/>
+                                <field name="ps_debit" sum="total_ps_debit"/>
+                                <field name="ps_credit" sum="total_ps_credit"/>
+                                <field name="end_debit" sum="total_end_debit"/>
+                                <field name="end_credit" sum="total_end_credit"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Chi tiết công nợ ngoại tệ" name="line2_nt_ids" attrs="{'invisible': ['|',('is_currency','=',False),('type','!=','cong_no_phai_tra')]}">
+                        <field name="line2_nt_ids" readonly="1">
+                            <tree>
+                                <field name="partner_id" optional="show"/>
+                                <field name="move_id" string="Số chứng từ"/>
+                                <field name="date" string="Ngày chứng từ"/>
+                                <field name="invoice_date"/>
+                                <field name="reference"/>
+                                <field name="product_uom_quantity"/>
+                                <field name="price_unit"/>
+                                <field name="note"/>
+                                <field name="account_id"/>
+                                <field name="account_dest_id"/>
+                                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                                <field name="ps_debit" sum="total_ps_debit"/>
+                                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                                <field name="ps_credit" sum="total_ps_credit"/>
+                                <field name="end_debit_nt"/>
+                                <field name="end_debit"/>
+                                <field name="end_credit_nt"/>
+                                <field name="end_credit"/>
+                                <field name="uom_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Tổng hợp công nợ ngoại tệ" name="line2_th_nt_ids" attrs="{'invisible': ['|',('is_currency','=',False),('type','!=','cong_no_phai_tra')]}">
+                        <field name="line2_th_nt_ids" readonly="1">
+                            <tree>
+                                <field name="partner_id" optional="hide"/>
+                                <field name="parent_id" invisible="1"/>
+                                <field name="partner_name" optional="show"/>
+                                <field name="partner_code" optional="show"/>
+                                <field name="vat" optional="show"/>
+                                <field name="address" optional="show"/>
+                                <field name="account_id" string="Tài khoản công nợ" optional="show"/>
+                                <field name="start_debit_nt" sum="total_start_debit"/>
+                                <field name="start_debit" sum="total_start_debit"/>
+                                <field name="start_credit_nt" sum="total_start_credit"/>
+                                <field name="start_credit" sum="total_start_credit"/>
+                                <field name="ps_debit_nt" sum="total_ps_debit"/>
+                                <field name="ps_debit" sum="total_ps_debit"/>
+                                <field name="ps_credit_nt" sum="total_ps_credit"/>
+                                <field name="ps_credit" sum="total_ps_credit"/>
+                                <field name="end_debit_nt" sum="total_end_debit"/>
+                                <field name="end_debit" sum="total_end_debit"/>
+                                <field name="end_credit_nt" sum="total_end_credit"/>
+                                <field name="end_credit" sum="total_end_credit"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Chi tiết bút toán" name="aml_ids">
+                        <field name="aml_ids" readonly="1">
+                            <tree>
+                                <field name="date" string="Ngày chứng từ"/>
+                                <field name="move_id"/>
+                                <field name="account_id"/>
+                                <field name="partner_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="name"/>
+                                <field name="quantity" sum="total_product_uom_qty"/>
+                                <field name="debit" sum="total_debit"/>
+                                <field name="credit" sum="total_credit"/>
+                                <field name="product_id"/>
+                                <field name="parent_state" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Bút toán" name="am_ids">
+                        <field name="am_ids" readonly="1">
+                            <tree>
+                                <field name="date" string="Ngày chứng từ"/>
+                                <field name="name"/>
+                                <field name="ref"/>
+                                <field name="amount_total" sum="total_amount_total"/>
+                                <field name="state" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Người ký duyệt" name="sign_ids">
+                        <group>
+                            <field name="voter_id"/>
+                            <field name="lead_team_id" attrs="{'invisible': [('is_sale','=',False)]}"/>
+                            <field name="lead_sale_id" attrs="{'invisible': [('is_sale','=',False)]}"/>
+                            <field name="chief_acc_id"/>
+                            <field name="unit_heads_id"/>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="ccv_debt_report_tree_inherit" model="ir.ui.view">
+        <field name="name">ccv.debt.report.tree.inherit</field>
+        <field name="model">ccv.debt.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="ccv_debt_report_cong_no_phai_thu_action" model="ir.actions.act_window">
+        <field name="name">Công nợ phải thu</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.debt.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('type','=','cong_no_phai_thu'),('is_sale','=',False)]</field>
+        <field name="context">{'default_type':'cong_no_phai_thu','default_currency_id':2,}</field>
+    </record>
+    <record id="ccv_debt_report_cong_no_phai_tra_action" model="ir.actions.act_window">
+        <field name="name">Công nợ phải trả</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.debt.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('type','=','cong_no_phai_tra'),('is_sale','=',False)]</field>
+        <field name="context">{'default_type':'cong_no_phai_tra','default_currency_id':2,}</field>
+    </record>
+    <record id="ccv_debt_report_cong_no_phai_thu_sale_action" model="ir.actions.act_window">
+        <field name="name">Công nợ phải thu</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.debt.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('type','=','cong_no_phai_thu'),('is_sale','=',True),('team_id.member_ids','in',[uid])]</field>
+        <field name="context">{'default_type':'cong_no_phai_thu','default_report_type':'team','default_is_sale':True}</field>
+    </record>
+    <record id="ccv_debt_report_cong_no_phai_tra_sale_action" model="ir.actions.act_window">
+        <field name="name">Công nợ phải trả</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.debt.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('type','=','cong_no_phai_tra'),('is_sale','=',True)]</field>
+        <field name="context">{'default_type':'cong_no_phai_tra','default_currency_id':2,}</field>
+    </record>
+
+    <menuitem id="ccv_debt_report_cong_no_phai_thu_menu" name="Công nợ phải thu" action="ccv_debt_report_cong_no_phai_thu_action"
+                parent="ccv_sql.menu_main_alpha_report" sequence="50"/>
+    <menuitem id="ccv_debt_report_cong_no_phai_tra_menu" name="Công nợ phải trả" action="ccv_debt_report_cong_no_phai_tra_action"
+                parent="ccv_sql.menu_main_alpha_report" sequence="50"/>
+
+    <menuitem id="ccv_debt_report_cong_no_phai_thu_sale_menu" name="Công nợ phải thu" action="ccv_debt_report_cong_no_phai_thu_sale_action"
+                parent="sale.menu_sale_report" sequence="50"/>
+    <menuitem id="ccv_debt_report_cong_no_phai_tra_sale_menu" name="Công nợ phải trả" action="ccv_debt_report_cong_no_phai_tra_sale_action"
+                parent="sale.menu_sale_report" sequence="50"/>
+</odoo>

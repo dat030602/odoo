@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+
+        <!-- Form view for adding statement lines on the fly in a popup-->
+        <record id="view_bank_statement_line_form_bank_rec_widget" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.form.bank_rec_widget</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="arch" type="xml">
+                <form string="Add a Transaction">
+                    <field name="state" invisible="1"/>
+                    <field name="statement_complete" invisible="1"/>
+                    <field name="statement_valid" invisible="1"/>
+                    <field name="is_reconciled" invisible="1"/>
+                    <field name="suitable_journal_ids" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"/>
+                            <field name="payment_ref" required="1"
+                                   attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                            <field name="partner_id"
+                                   attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                        </group>
+                        <group>
+                            <field name="amount" attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                            <field name="foreign_currency_id"
+                                   groups="base.group_multi_currency"
+                                   domain="[('id', '!=', currency_id)]"
+                                   options="{'no_open': True, 'no_create': True}"
+                                   attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                            <field name="amount_currency"
+                                   groups="base.group_multi_currency"
+                                   attrs="{'invisible': [('foreign_currency_id', '=', False)], 'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                            <field name="journal_id"
+                                   domain="[('type', 'in', ['bank', 'cash'])]"
+                                   attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"
+                                   readonly="context.get('default_journal_id')"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Save &amp; Close" type="object"
+                                name="action_save_close" class="btn btn-primary"
+                                data-hotkey="c"/>
+                        <button string="Save &amp; New" type="object"
+                                name="action_save_new" class="btn btn-primary"
+                                data-hotkey="n"/>
+                        <button string="Cancel" class="btn-secondary"
+                                special="cancel" data-hotkey="z"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_bank_statement_line_form_bank_rec_widget" model="ir.actions.act_window">
+            <field name="name">Add a Transaction</field>
+            <field name="res_model">account.bank.statement.line</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bank_statement_line_form_bank_rec_widget"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_move_form_bank_rec_widget" model="ir.ui.view">
+            <field name="name">account.move.form.bank_rec_widget</field>
+            <field name="model">account.move</field>
+            <field name="priority">999</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--
+        Form view injected inside the form (view_bank_rec_widget) to perform the reconciliation for a single
+        statement line.
+        -->
+        <record id="view_bank_rec_widget_form_inherit_purchase_list" model="ir.ui.view">
+            <field name="name">bank.rec.widget.form.inherit.purchase.list</field>
+            <field name="model">bank.rec.widget</field>
+            <field name="inherit_id" ref="account_accountant.view_bank_rec_widget_form"/>
+            <field name="arch" type="xml">
+                <field name="form_account_id" position="after">
+                    <field name="product_id" string="Product" options="{'no_create': True}" required="True"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

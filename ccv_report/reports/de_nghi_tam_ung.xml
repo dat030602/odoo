@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <template id="ccv_header">
+            <div class="header">
+                <div class="row" style="report_header_style">
+                    <div class="col-2">
+                        <img t-if="user.company_id.logo"
+                             t-att-src="image_data_uri(user.company_id.logo)"
+                             style="width: auto; max-height: 50px;"
+                             class="float-left" alt="Logo"/>
+                    </div>
+                    <div class="col-2">
+                    </div>
+                    <div class="col-8">
+                        <div class="col-xs-12">
+                            <div style="text-align: right;font-size: 18px; color:red; font-family: Times New Roman">
+                                <strong>CCV HI-TECH AGRICULTURE GROUP</strong>
+                            </div>
+                        </div>
+                        <div class="col-xs-12"
+                             style="text-align: right; font-size: 10px;font-family: Times New Roman">
+                            Trụ sở chính: <t t-esc="user.company_id.partner_id.full_address_vi"/>
+                        </div>
+                        <div class="col-xs-12" style="text-align: right; font-size: 10px;font-family: Times New Roman; padding-top: 1px;">
+                            VPĐD: Villas KL 21, Khu Biệt Thự Kim Long, Nguyễn Hữu Thọ, Nhà Bè, TP.HCM
+                        </div>
+                         <div class="col-xs-12" style="text-align: right; font-size: 10px;font-family: Times New Roman; padding-top: 1px;">
+                            ĐT: 18006126 - website: www.ccv.vn
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="article o_report_layout_standard">
+                <t t-out="0"/>
+            </div>
+            <div class="footer o_standard_footer">
+                <div class="text-center" style="text-align: center">
+                    <div class="text-muted" style="font-size: 12px;font-family: Times New Roman; color: black !important">
+                        Trang: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="de_nghi_tam_ung_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="page" t-value="'A5'"/>
+                    <t t-call="ccv_report.de_nghi_tam_ung_document"
+                       t-lang="user.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+        <template id="de_nghi_tam_ung_template_a4">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="page" t-value="'A4'"/>
+                    <t t-call="ccv_report.de_nghi_tam_ung_document"
+                       t-lang="user.partner_id.lang" />
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="de_nghi_tam_ung_document">
+            <t t-call="ccv_report.ccv_header">
+                <style>
+                    .name-user {
+                        margin-top: 70px;
+                        font-weight: bold;
+                    }
+                </style>
+                <div class="page" style="font-size: 14px;font-family: Times New Roman; padding-top: 10px;">
+                    <div class="row">
+                        <hr style="color:red"/>
+                    </div>
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <div class="col-4" style="text-align: center; font-size: 18px">
+                            <br/>
+                            <strong>GIẤY ĐỀ NGHỊ TẠM ỨNG</strong>
+                        </div>
+                        <div class="col-4" style="text-align:center;font-size: 10px">
+                            <div style="font-weight:bold">Mẫu số B 01 - DN</div>
+                            <div class="font-italic">(Ban hành theo thông tư số 99/2025/TT-BTC<br/>ngày 27/10/2025 của Bộ Tài chính)</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="text-align: left;">
+                            Kính gửi: <strong>BAN TỔNG GIÁM ĐỐC</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8" style="text-align: left;">
+                            Nguời đề nghị tạm ứng: <t t-esc="doc.employee_id.name"/>
+                        </div>
+                        <div class="col-4" style="text-align: left;">
+                            Bộ phận: <t t-esc="doc.department_id.name"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="text-align: left;">
+                            Nội dung tạm ứng: <t t-esc="doc.note"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="text-align: left;">
+                           Tên đơn vị/cá nhân thụ hưởng: <strong><t t-esc="doc.partner_name"/></strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" style="text-align: left;">
+                           STK đơn vị thụ hưởng: <strong><t t-if="doc.partner_bank_id"><t t-esc="doc.partner_bank_id.acc_number"/></t></strong>
+                        </div>
+                        <div class="col-6" style="text-align: left;">
+                            Tại ngân hàng: <strong><t t-if="doc.partner_bank_id"><t t-esc="doc.partner_bank_id.bank_id.name"/></t></strong>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 6px;">
+                        <table class="table table-sm fixed" style="border: solid 1px;width: 100%; font-size: 13px;">
+                            <col width="5%"/>
+                            <col width="10%"/>
+                            <col width="10%"/>
+                            <col width="10%"/>
+                            <col width="48%"/>
+                            <col width="7%"/>
+                            <thead>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle; font-weight: bold; padding: 4px 0px;" rowspan="2" t-esc="'STT'"/>
+                                    <td style="text-align: center; vertical-align: middle; font-weight: bold; padding: 4px 0px;" colspan="3" t-esc="'Chứng từ'"/>
+                                    <td style="text-align: center; vertical-align: middle; font-weight: bold; padding: 4px 0px;" rowspan="2" t-esc="'Diễn giải'"/>
+                                    <td style="text-align: center; vertical-align: middle; font-weight: bold; padding: 4px 0px;" rowspan="2" t-esc="'Số tiền (Đồng)'"/>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle; font-weight: bold; padding: 4px 0px;" t-esc="'Loại'"/>
+                                    <td style="text-align: center; vertical-align: middle; font-weight: bold; padding: 4px 0px;" t-esc="'Ngày'"/>
+                                    <td style="text-align: center; vertical-align: middle; font-weight: bold; padding: 4px 0px;" t-esc="'Số'"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="number" t-value="0"/>
+                                <t t-if="len(doc.payment_note_ids) > 0">
+                                    <tr t-foreach="doc.payment_note_ids" t-as="note_id">
+                                        <t t-set="number" t-value="number + 1"/>
+                                        <td style="text-align: center; vertical-align: middle;"><t t-esc="number"/></td>
+                                        <td></td>
+                                        <td style="text-align: center; vertical-align: middle;"><t t-esc="doc.convert_print(note_id.invoice_date)"/></td>
+                                        <td style="text-align: center; vertical-align: middle;"><t t-esc="note_id.invoice_name"/></td>
+                                        <td><t t-esc="note_id.name"/> </td>
+                                        <td style="text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(note_id.amount_total)"/> </td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr>
+                                        <t t-set="number" t-value="number + 1"/>
+                                        <td style="text-align: center; vertical-align: middle;">1</td>
+                                        <td></td>
+                                        <td style="text-align: center; vertical-align: middle;"><t t-esc="doc.convert_print(doc.date)"/></td>
+                                        <td style="text-align: center; vertical-align: middle;"><t t-esc="doc.name"/></td>
+                                        <td><t t-esc="doc.note"/></td>
+                                        <td style="text-align: right; vertical-align: middle;"><t t-esc="doc.convert_vnd(doc.total_amount)"/> </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="5" style="text-align: left;">
+                                        <strong>Tổng cộng</strong>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="len(doc.payment_note_ids) > 0">
+                                            <span style="padding:0 6px;text-decoration: underline;" t-esc="doc.company_currency_id.sudo().format(sum(doc.payment_note_ids.mapped('amount_total')))"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span style="padding:0 6px;text-decoration: underline;" t-esc="doc.company_currency_id.sudo().format(doc.total_amount)"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12" style="text-align: left;">
+                           Số tiền bằng chữ: &amp;nbsp;<t t-esc="doc.convert_money(sum(doc.payment_note_ids.mapped('amount_total')) or doc.total_amount)"/><t t-esc="doc.company_currency_id.currency_unit_label"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="text-align: left;">
+                           Hình thức thanh toán: <t t-if="doc.type == 'cash'">Tiền mặt</t><t t-else="">Chuyển khoản</t>
+                        </div>
+                    </div>
+                    <t t-if="(len(doc.payment_note_ids) &gt; 1 and page == 'A5') or (len(doc.payment_note_ids) &gt; 7 and page == 'A4')">
+                        <p style="page-break-after:always;"></p>
+                    </t>
+                    <div class="row rowp" style="margin-left: 2px;text-align: center;">
+                        <div class="col-8">
+                        </div>
+                        <div class="col-4">
+                            <span>Đồng Nai, <t t-esc="doc.convert_today()"/> </span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="padding:0px;margin-left: 2px;">
+                        <t t-set="signs" t-value="doc.sudo().get_signer_filter()"/>
+                        <table class="table-borderless" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <t t-foreach="signs" t-as="sign">
+                                        <th style="text-align: center; vertical-align: top; width: 25%;">
+                                            <t t-set="default_title" t-value="'Kế Toán'"/>                                
+                                            <t t-if="sign_index == 2"><t t-set="default_title" t-value="'Kế Toán trưởng'"/></t>
+                                            <t t-elif="sign_index == 3"><t t-set="default_title" t-value="'Thủ trưởng đơn vị'"/></t>
+                                            <strong><t t-esc="sign['title'] if sign['title'] and str(sign['title']).strip() else default_title"/></strong>
+                                        </th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="height: 70px; border: none;">
+                                    <t t-foreach="signs" t-as="sign" t-if="sign['allow_sign'] == 0">
+                                        <td style="vertical-align: middle; text-align: center; width: 25%; height: 70px;">
+                                            <t t-if="sign['is_signed'] and sign['user_id'] and sign['user_id'].sign_signature">
+                                                <img t-att-src="image_data_uri(sign['user_id'].sign_signature)" width="100px" style="max-height: 70px;"/>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr style="border: none;">
+                                    <t t-foreach="signs" t-as="sign" t-if="sign['allow_sign'] == 0">
+                                        <td style="text-align: center; vertical-align: top; width: 25%;">
+                                            <div style="text-align: center;">
+                                                <strong><span t-esc="sign['user_id'].name_without_position or sign['user_id'].name if sign['user_id'] else ''"/></strong>
+                                            </div>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="de_nghi_tam_ung_report" model="ir.actions.report">
+            <field name="name">Đề nghị tạm ứng</field>
+            <field name="model">alpha.internal.account</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_report.de_nghi_tam_ung_template</field>
+            <field name="report_file">ccv_report.de_nghi_tam_ung_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a5_2"/>
+            <field name="print_report_name">'Đề nghị tạm ứng'</field>
+            <field name="binding_model_id" ref="trp_approve.model_alpha_internal_account"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="de_nghi_tam_ung_report_a4" model="ir.actions.report">
+            <field name="name">Đề nghị tạm ứng A4</field>
+            <field name="model">alpha.internal.account</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_report.de_nghi_tam_ung_template_a4</field>
+            <field name="report_file">ccv_report.de_nghi_tam_ung_template_a4</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a4_doc"/>
+            <field name="print_report_name">'Đề nghị tạm ứng'</field>
+            <field name="binding_model_id" ref="trp_approve.model_alpha_internal_account"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

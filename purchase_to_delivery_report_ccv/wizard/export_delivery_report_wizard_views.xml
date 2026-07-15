@@ -1,0 +1,48 @@
+<odoo>
+    <record id="view_export_delivery_report_wizard_form" model="ir.ui.view">
+        <field name="name">export.delivery.report.wizard.form</field>
+        <field name="model">export.delivery.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Delivery Orders Report">
+                <group string="Delivery Orders to Export">
+                    <field name="origin"/>
+                </group>
+                <group string="Chữ ký">
+                    <field name="voter_id"/>
+                    <field name="accounting_department_id"/>
+                    <field name="factory_id"/>
+                    <field name="trade_department_id"/>
+                    <field name="unit_heads_id"/>
+                </group>
+                <field name="delivery_picking_ids" nolabel="1">
+                    <tree string="Delivery Orders">
+                        <field name="name"/>
+                        <field name="stock_date_receipt"/> 
+                        <field name="vehicle_license_plate"/>
+                        <field name="container_number"/>
+                        <field name="seal_number"/>
+                        <field name="partner_id"/>
+                        <field name="location_dest_id"/>
+                        <field name="weight_receipt"/>
+                        <field name="weight_ccv"/>
+                        <field name="weight_port"/>
+                        <field name="bag_number"/>
+                        <field name="sale_id"/>
+                        <field name="state" widget="badge" decoration-success="state == 'done'" decoration-danger="state == 'cancel'" decoration-warning="state == 'draft'"/>
+                    </tree>
+                </field>
+                <footer>
+                    <button name="action_export" type="object" string="Export Excel" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_export_delivery_report_wizard" model="ir.actions.act_window">
+        <field name="name">Export Delivery Orders Report</field>
+        <field name="res_model">export.delivery.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

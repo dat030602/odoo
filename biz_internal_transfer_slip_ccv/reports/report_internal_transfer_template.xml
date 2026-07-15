@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_internal_transfer_accounting_voucher_template">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)" />
+            <t t-set="company" t-value="o.env.company"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px">
+                <div class="row">
+                    <div class="col-2">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%" alt="Logo"/>
+                    </div>
+                    <div class="col-10" style="position:  relative">
+                        <p style="padding-top:20px">Công Ty TNHH Con Cò Vàng  - Mã số thuế: 0305995751</p>
+                    </div>
+                </div>
+            </div>
+            <div class="page" style="font-family: 'Times New Roman';font-size:15px; line-height: 25px">
+                <div class="text-center" style="padding-top:20px">
+                    <h4 class="bold">CHỨNG TỪ KẾ TOÁN</h4>                    
+                </div>
+                <div class="row">
+                    <div class='col-9'>
+                        <div class="row m-0 p-0" style="line-height: normal;">
+                            <div class="m-0 p-0" style="width: 12%; margin-right: 20px;">Tên:</div> 
+                            <div class="m-0 p-0" style="width: 80%;height:15px;"><span style="line-height: 0;">Công Ty TNHH Con Cò Vàng</span></div>
+                        </div>
+                        <div class="row m-0 p-0" style="line-height: normal;margin-top: 5px !important;">
+                            <div class="m-0 p-0" style="width: 12%; margin-right: 20px;">Địa chỉ:</div> 
+                            <div class="m-0 p-0" style="width: 80%;height:15px;"><span style="line-height: 0;">23 Lô B, Đường số 1, Phường Phú Thuận, Quận 7, TP.Hồ Chí Minh</span></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <p>Số: <span style="margin-left: 20px" t-esc="o.number_ctnb"/></p>
+                        <p>Ngày: <span style="margin-left: 10px" t-esc="o.date and o.date.strftime('%d/%m/%Y')"/></p>
+                    </div>
+                </div>
+                <div class="row m-0 p-0" style="padding-top: 5px;">
+                    <div class="m-0 p-0" style="width: 10%">Diễn giải:</div> 
+                    <div class="m-0 p-0" style="width: 80%" t-esc="o.ref"/>
+                </div>
+                <table class="table-main">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Diễn giải</th>
+                            <th>Ghi Nợ</th>
+                            <th>Ghi có</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center vertical-align">1</td>
+                            <td><t t-esc="o.ref"/></td>
+                            <td class="vertical-align"><t t-esc="o.destination_journal_id.default_account_id and o.destination_journal_id.default_account_id.code or ''"/></td>
+                            <td class="vertical-align"><t t-esc="o.journal_id.default_account_id and o.journal_id.default_account_id.code or ''"/></td>
+                            <td class="text-right vertical-align"><t t-esc="'{:,.0f}'.format(o.amount or 0).replace(',', '.')"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center bold">Cộng</td>
+                            <td></td>
+                            <td></td>
+                            <td class="bold text-right"><t t-esc="'{:,.0f}'.format(o.amount or 0).replace(',', '.')"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Thành tiền bằng chữ: <i class="bold" t-esc="amount_to_text(o.amount or 0) + ' đồng'"></i></p>
+                <p>Ghi chú: <span t-if="o.note" t-esc="o.note"/><hr t-else=""/></p>
+                <div class="row text-center mt-3">
+                    <div class="col-4">
+                        <p class="bold">Người lập phiếu</p>
+                        <p><i>(Ký, họ tên)</i></p>
+                        <p class="bold" style="margin-top: 50px"><span t-esc="o.creator_id.name_without_position"/></p>
+                    </div>
+                    <div class="col-4">
+                        <p class="bold">Kế Toán Trưởng</p>
+                        <p><i>(Ký, họ tên)</i></p>
+                        <p class="bold" style="margin-top: 50px"><span t-esc="o.chief_accountant_id.name_without_position"/></p>
+                    </div>
+                    <div class="col-4">
+                        <p class="bold">Thủ trưởng đơn vị</p>
+                        <p><i>(Ký, họ tên, đóng dấu)</i></p>
+                        <p class="bold" style="margin-top: 50px"><span t-esc="o.unit_head_id.name_without_position"/></p>
+                    </div>
+                </div>
+                <style>
+                    .vertical-align {
+                        vertical-align: middle !important;
+                    }
+                    p {
+                        margin-bottom:0;
+                    }
+                    .text-right{
+                        text-align: right;
+                    }
+                    .bold{
+                        font-weight: bold
+                    }
+                    .table-main{
+                        width: 100%;
+                        margin: 5px 0;
+                    }
+                    th{
+                        padding:  7px 10px;
+                        white-space: nowrap;
+                    }
+                    .table-main td{
+                        padding:  7px 10px;
+                        border-bottom: 0 !important;
+                    }
+                    .table-main, .table-main  th, .table-main td{
+                        border:  1px solid black;
+                    }
+                    hr{
+                        margin-top: -6px;
+                        margin-left: 55px;
+                        background: none;
+                        border-bottom: 1px dotted;
+                    }
+                </style>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_i_t_a_v">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang or o.company_id.partner_id.lang"/>
+                <t t-call="biz_internal_transfer_slip_ccv.report_internal_transfer_accounting_voucher_template" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

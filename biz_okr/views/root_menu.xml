@@ -1,0 +1,10 @@
+<odoo>
+	<data>
+		<menuitem id="main_okr_menu" name="OKR"
+			web_icon="biz_okr,static/description/icon.png"
+			groups="base.group_user" sequence="99" />
+		<menuitem id="okr_node_menu" name="OKR Node"
+			parent="main_okr_menu"
+			action="biz_okr.okr_node_action" sequence="1" />
+	</data>
+</odoo>

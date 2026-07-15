@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+        <record id="view_statements_cash_flows_report_tree" model="ir.ui.view">
+            <field name="name">statements.cash.flows.report.tree</field>
+            <field name="model">statements.cash.flows.report</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="previous_id"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="template_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+		<record id="view_statements_cash_flows_report_form" model="ir.ui.view">
+            <field name="name">statements.cash.flows.report.form</field>
+            <field name="model">statements.cash.flows.report</field>
+            <field name="arch" type="xml">
+              	<form>
+                    <header>
+                        <button name="action_calculate" string="Calculate" class="btn-primary" type="object"/>
+                        <button name="action_closed" states="draft" string="Closing" type="object"/>
+                        <button name="action_open" string="Open" states="closed" type="object" />
+                        <field name="state" widget="statusbar"/>                         
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                                <field name="previous_id" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                                <field name="from_date" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                                <field name="to_date" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                                <field name="template_id" domain="[('template_type', '=', 'statements_cash_flows')]" attrs="{'readonly': [('state','=', 'closed')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="line_ids" nolabel="1" colspan="2" attrs="{'readonly': [('state','=', 'closed')]}">
+                                <tree editable="bottom" default_order="stt_calculate asc">
+                                    <field name="balance_id" domain="[('report_type', '=', 'statements_cash_flows')]"/>
+                                    <field name="code"/>
+                                    <field name="stt_calculate" invisible="1"/>
+                                    <field name="number_first_year"/>
+                                    <field name="number_last_year"/>
+                                    <field name="apply_by" invisible="1"/>
+                                    <button attrs="{'invisible': [('apply_by','=','total_categ')]}" name="view_move_line" class="btn-primary" string="View detail" type="object"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+      	</record>
+
+        <record id="view_statements_cash_flows_report_line_tree" model="ir.ui.view">
+            <field name="name">statements.cash.flows.report.line.tree</field>
+            <field name="model">statements.cash.flows.report.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="balance_id"/>
+                    <field name="code"/>
+                    <field name="number_first_year"/>
+                    <field name="number_last_year"/>
+                    <field name="apply_by" invisible="1"/>
+                    <button class="btn-primary" attrs="{'invisible': [('apply_by','=','total_categ')]}" name="view_move_line" string="View detail" type="object"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_statements_cash_flows" model="ir.actions.act_window">
+            <field name="name">Statements Of Cash Flows Report</field>
+            <field name="res_model">statements.cash.flows.report</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">
+                [('template_id.template_type','=','statements_cash_flows')]
+            </field>
+            <field name="context">{'statements_cash_flows': True}</field>
+        </record>
+
+    </data>
+</odoo>

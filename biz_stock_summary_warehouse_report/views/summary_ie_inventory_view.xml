@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_summary_ie_inventory_form" model="ir.ui.view">
+            <field name="name">summary.ie.inventory.form</field>
+            <field name="model">summary.ie.inventory</field>
+            <field name="inherit_id" ref="biz_stock_summary_report.view_summary_ie_inventory_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group/group" position="inside">
+                    <field name="warehouse_ids" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//sheet/notebook" position="inside">
+                    <page string="Chữ ký">
+                        <group>
+                            <field name="voter_id"/>
+                            <field name="chief_finance_id"/>
+                            <field name="director_id"/>
+                        </group>
+                    </page>
+                    <page string="Cấu hình cột">
+                        <field name="column_ids" attrs="{'readonly': [('state','=', 'locked')]}">
+                            <tree editable="bottom" create="0" delete="0">
+                                <field name="sequence" invisible="1"/>
+                                <field name="name" readonly="1"/>
+                                <field name="code" readonly="1"/>
+                                <field name="is_visible"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

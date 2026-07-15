@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_hr_payslip_by_employees_ccv" model="ir.ui.view">
+        <field name="name">hr.payslip.employees.ccv</field>
+        <field name="model">hr.payslip.employees</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_by_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//separator[2]" position="before">
+                <separator string="Department CCV Specifically"/>
+                <div class="o_row">
+                    <p class="text-muted w-50">Set specific departments if you want to select all employees from this department at once.</p>
+                    <field name="department_ids" widget="many2many_tags" nolabel="1"/>
+                </div>  
+            </xpath>
+            <xpath expr="//form//separator[1]" position="before">
+                <separator string="Ignore work entry"/>
+                <div class="o_row">
+                    <p class="text-muted w-50">Ignore work entry</p>
+                    <field name="is_ignore_work_entry"/>
+                </div>  
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

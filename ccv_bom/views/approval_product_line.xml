@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="approval_product_line_view_tree_inherit" model="ir.ui.view">
+        <field name="name">approval.product.line.form.inherit</field>
+        <field name="model">approval.product.line</field>
+        <field name="inherit_id" ref="ccv_custom_field.approval_product_line_view_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='qty_outcome_sale']" position="after">
+                <field name="qty_norm_25kg" attrs="{'column_invisible': [('parent.has_count_norm', '=', 'no')], 'required': [('parent.has_count_norm', '=', 'required'), ('parent.request_status', '!=', 'new')]}"/>
+                <field name="qty_norm_50kg" attrs="{'column_invisible': [('parent.has_count_norm', '=', 'no')], 'required': [('parent.has_count_norm', '=', 'required'), ('parent.request_status', '!=', 'new')]}"/>
+                <field name="qty_km_vehicle" attrs="{'column_invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+                <field name="qty_norm_fuel" attrs="{'column_invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+                <field name="qty_km_vehicle_pre" attrs="{'column_invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+            </xpath>
+            
+            <xpath expr="//tree" position="inside">
+                <field name="over_bom_qty" attrs="{'column_invisible': [('parent.has_count_norm', '=', 'no')]}" decoration-danger="over_bom_qty > 0"/>
+                <field name="over_bom_qty_fuel" attrs="{'column_invisible': [('parent.has_fuel_norm', '=', 'no')]}" decoration-danger="over_bom_qty_fuel > 0"/>
+                <field name="price_over_bom" attrs="{'column_invisible': [('parent.has_count_norm', '=', 'no')]}" decoration-danger="price_over_bom > 0"/>
+                <field name="price_over_bom_fuel" attrs="{'column_invisible': [('parent.has_fuel_norm', '=', 'no')]}" decoration-danger="price_over_bom_fuel > 0"/>
+                <field name="currency_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="approval_product_line_view_form_inherit" model="ir.ui.view">
+        <field name="name">approval.product.line.form.inherit</field>
+        <field name="model">approval.product.line</field>
+        <field name="inherit_id" ref="ccv_custom_field.approval_product_line_view_form_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='qty_outcome_sale']" position="after">
+                <field name="qty_norm_25kg" attrs="{'invisible': [('parent.has_count_norm', '=', 'no')], 'required': [('parent.has_count_norm', '=', 'required'), ('parent.request_status', '!=', 'new')]}"/>
+                <field name="qty_norm_50kg" attrs="{'invisible': [('parent.has_count_norm', '=', 'no')], 'required': [('parent.has_count_norm', '=', 'required'), ('parent.request_status', '!=', 'new')]}"/>
+                <field name="qty_km_vehicle" attrs="{'invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+                <field name="qty_norm_fuel" attrs="{'invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+                <field name="qty_km_vehicle_pre" attrs="{'invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='product_uom_id']" position="after">
+                <field name="over_bom_qty" attrs="{'invisible': [('parent.has_count_norm', '=', 'no')]}"/>
+                <field name="over_bom_qty_fuel" attrs="{'invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+                <field name="price_over_bom" attrs="{'invisible': [('parent.has_count_norm', '=', 'no')]}"/>
+                <field name="price_over_bom_fuel" attrs="{'invisible': [('parent.has_fuel_norm', '=', 'no')]}"/>
+                <field name="currency_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

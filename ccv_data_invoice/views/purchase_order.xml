@@ -1,0 +1,45 @@
+<odoo>
+    <record id="purchase_order_kpis_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.tree.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_status']" position="before">
+                <field name="supplier_invoice_ids" widget="many2many_tags" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="purchase_order_view_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.tree.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_status']" position="before">
+                <field name="supplier_invoice_ids" widget="many2many_tags" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="purchase_order_view_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_supplier_invoice_wizard"
+                    string="Hóa đơn điện tử"
+                    type="object"
+                    class="oe_highlight"
+                    attrs="{'invisible': [('state', 'in', ['cancel'])]}"
+                />
+            </xpath>
+            <xpath expr="//sheet/group[1]/group[1]" position="inside">
+                <field name="supplier_invoice_ids"
+                    widget="many2many_tags"
+                    optional="show"
+                    options="{'no_create': True}"
+                    domain="[('nban_id', '=', partner_id),('state', '!=', 'done')]"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

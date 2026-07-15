@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="menu_kpi_salary_busines"
+        name="Business Salary"
+        parent="biz_kpi_scorecard.menu_kpi_main"
+        sequence="60"
+        />
+
+        <menuitem
+            id="menu_collect_salary_kpi"
+            name="Report Collect Salary"
+            parent="menu_kpi_salary_busines"
+            sequence="10"
+            action="biz_business_salary.action_collect_salary"
+            />
+
+        <menuitem
+            id="menu_report_telesale_kpi"
+            name="KPI Salary for TeleSale"
+            parent="menu_kpi_salary_busines"
+            sequence="20"
+            action="biz_business_salary.action_report_telesale"
+            />
+
+        <menuitem
+            id="menu_config_telesale_kpi"
+            name="Config"
+            parent="menu_kpi_salary_busines"
+            sequence="30"
+            action="biz_business_salary.action_config_telesale"
+            />
+    
+    <!-- Menu Item -->
+    <menuitem id="menu_commission_config_root"
+              name="Hoa hồng"
+              parent="menu_kpi_salary_busines"
+              sequence="25"/>
+
+    <menuitem id="menu_salary_sales_summary"
+              name="Tổng hợp hoa hồng"
+              parent="menu_commission_config_root"
+              action="action_salary_sales_summary"
+              sequence="5"/>
+
+    <!-- Commission Setup Menu -->
+    <menuitem id="menu_commission_setup"
+              name="Setup tỷ lệ hoa hồng"
+              parent="menu_commission_config_root"
+              action="action_salary_commission_setup"
+              sequence="10"/>
+
+
+    <!-- Salary Plan Sales Menu -->
+    <menuitem id="menu_salary_plan_sales"
+              name="Kế hoạch doanh số"
+              parent="menu_commission_config_root"
+              action="action_salary_plan_sales"
+              sequence="30"/>
+
+    <!-- Commission Calculation Menu -->
+    <menuitem id="menu_salary_commission_calculation"
+              name="Tính toán hoa hồng"
+              parent="menu_commission_config_root"
+              action="action_salary_commission_calculation"
+              sequence="40"/>
+
+    <!-- Menu Item -->
+
+    <menuitem id="menu_commission_config_root_salary"
+              name="Hoa hồng"
+              parent="biz_business_salary.menu_common_telesale"
+              sequence="25"/>
+
+    <menuitem id="menu_salary_sales_summary_salary"
+              name="Tổng hợp hoa hồng"
+              parent="menu_commission_config_root_salary"
+              action="action_salary_sales_summary"
+              sequence="5"/>
+
+    <!-- Commission Setup Menu -->
+    <menuitem id="menu_commission_setup_salary"
+              name="Setup tỷ lệ hoa hồng"
+              parent="menu_commission_config_root_salary"
+              action="action_salary_commission_setup"
+              sequence="10"/>
+
+
+    <!-- Salary Plan Sales Menu -->
+    <menuitem id="menu_salary_plan_sales_salary"
+              name="Kế hoạch doanh số"
+              parent="menu_commission_config_root_salary"
+              action="action_salary_plan_sales"
+              sequence="30"/>
+
+    <!-- Commission Calculation Menu -->
+    <menuitem id="menu_salary_commission_calculation_salary"
+              name="Tính toán hoa hồng"
+              parent="menu_commission_config_root_salary"
+              action="action_salary_commission_calculation"
+              sequence="40"/>
+</odoo>

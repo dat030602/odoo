@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_stock_adjustment" model="ir.ui.view">
+            <field name="name">purchase.order.form.stock.adjustment</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <field name="can_finalize_shipment" invisible="1"/>
+                    <field name="purchase_sign_requests_count" invisible="1"/>
+                    <field name="purchase_sign_requests_state" invisible="1"/>
+                    <button name="action_create_picking_po" string="Tạo phiếu nhập" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'purchase')]}"/>
+                    <button name="action_stock_move_wizard"
+                            string="Điều chỉnh chốt lô"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('can_finalize_shipment', '!=', True)]}"/>
+                    <button name="action_create_purchase_sign_request" type="object" string="Trình duyệt" class="btn-primary" attrs="{'invisible': [('purchase_sign_requests_count', '>', 0)]}"/>
+                    <button name="action_resubmit_purchase_sign_request" type="object" string="Trình ký lại" class="btn-secondary" attrs="{'invisible': ['|', ('purchase_sign_requests_count', '=', 0), '|', ('purchase_sign_requests_state', '!=', 'approved'), ('state', 'in', ('cancel', 'done'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="chief_accountant_id"/>
+                    <field name="unit_head_id"/>
+                </xpath>
+                <xpath expr="//sheet/group[1]/group[1]" position="inside">
+                    <field name="approval_request_ids"
+                        widget="many2many_tags"
+                        options="{'no_create': True}"
+                        attrs="{'required': [('id', '=', False)]}"
+                    />
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="purchase_sign_requests" string="Yêu cầu ký">
+                        <field name="purchase_sign_requests_id" invisible="1"/>
+                        <field name="purchase_sign_requests_history_ids" readonly="1" />
+                    </page>
+                </xpath>
+                <button name="action_view_invoice" position="before">
+                    <button name="action_view_purchase_sign_requests" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible': [('purchase_sign_requests_count', '=', 0)]}">
+                        <field name="purchase_sign_requests_count" widget="statinfo" string="Yêu cầu ký"/>
+                    </button>
+                </button>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_tax']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                    <attribute name="readonly">0</attribute>
+                    <attribute name="string">Tiền thuế</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
+                    <xpath expr="//field[@name='order_line']/tree/field[@name='price_tax']" position="move"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

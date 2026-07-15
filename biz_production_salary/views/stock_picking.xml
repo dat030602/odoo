@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="stock_picking_form_view_biz_production_salary" model="ir.ui.view">
+        <field name="name">stock.picking.form.biz_production_salary</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='extra']//field[@name='move_type']" position="after">
+                <field name="department_ids" widget="many2many_tags"/>
+                <field name="employee_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_picking_type_form_view_biz_production_salary" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.biz_production_salary</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <field name="create_backorder" position="after">
+                <field name="user_id"/>
+                <field name="supervisor_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_barcode_view_picking_type_form_biz_production_salary" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.stock_barcode.biz_production_salary</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock_barcode.stock_barcode_view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="salary_information" string="Salary information">
+                    <group>
+                        <field name="apply_unit_pirce_cal_output_worker"/>
+                        <field name="apply_unit_price_goods_sold"/>
+                        <field name="apply_unit_price_goods_imported"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

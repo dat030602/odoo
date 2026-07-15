@@ -1,0 +1,42 @@
+<odoo>
+    <record id="view_rp_production_report_wizard" model="ir.ui.view">
+        <field name="name">rp.production.report.wizard.form</field>
+        <field name="model">rp.production.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Stock Move Report">
+                <group>
+                    <group string="Dữ liệu"> <label for="date_from"/>
+                        <div class="o_row">
+                            <field name="date_from" required="1"/>
+                            -
+                            <field name="date_to" required="1"/>
+                        </div>
+                        <field name="picking_type_ids" widget="many2many_tags"/>
+                    </group>
+                    <group string="Ký tên"> <field name="voter_id"/>
+                        <field name="factory_team_leader_id"/>
+                        <field name="finished_goods_warehouse_keeper_id"/>
+                        <field name="hr_admin_department_id"/>
+                        <field name="chief_finance_id"/>
+                        <field name="director_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="In" type="object" name="action_generate_report" class="oe_highlight"/>
+                    <button string="Hủy" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rp_production_report_wizard_action" model="ir.actions.act_window">
+        <field name="name">Báo cáo sản lượng</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rp.production.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_rp_production_report_wizard"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_rp_production_report_wizard" name="Báo cáo sản lượng" action="view_rp_production_report_wizard_action"
+                parent="mrp.menu_mrp_reporting" sequence="100"/>
+</odoo>

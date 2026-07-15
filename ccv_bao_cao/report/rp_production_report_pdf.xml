@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Paper format landscape A4 -->
+    <record id="format_a4_rp_production_report" model="report.paperformat">
+        <field name="name">CCV A4 ngang - Báo cáo sản lượng</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">15</field>
+        <field name="dpi">96</field>
+        <field name="disable_shrinking" eval="True"/>
+    </record>
+
+    <!-- Wrapper template -->
+    <template id="report_rp_production_report_pdf_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ccv_bao_cao.report_rp_production_report_pdf_document"/>
+            </t>
+        </t>
+    </template>
+
+    <!-- Document template -->
+    <template id="report_rp_production_report_pdf_document">
+        <t t-call="ccv_bao_cao.ccv_header_img">
+            <style>
+                .page * {
+                    font-size: 12px;
+                    line-height: 16px;
+                }
+            </style>
+            <div class="page" style="font-size: 12px; font-family: Times New Roman; padding-top: 20px;">
+                <!-- Tiêu đề -->
+                <div style="text-align: center; margin-bottom: 4px;">
+                    <strong style="font-size: 16px;">
+                        BÁO CÁO SẢN LƯỢNG
+                        <t t-if="doc.picking_type_ids and len(doc.picking_type_ids) == 1">
+                            - NHÀ MÁY <t t-esc="(doc.picking_type_ids[0].factory_name or doc.picking_type_ids[0].name).upper()"/>
+                        </t>
+                    </strong>
+                </div>
+                <div style="text-align: center; margin-bottom: 2px;">
+                    <t t-if="doc.date_from and doc.date_to and doc.date_from != doc.date_to">
+                        <span>Từ ngày <strong><t t-esc="doc.date_from.strftime('%d/%m/%Y')"/></strong> đến ngày <strong><t t-esc="doc.date_to.strftime('%d/%m/%Y')"/></strong></span>
+                    </t>
+                    <t t-elif="doc.date_from">
+                        <span>Ngày <strong><t t-esc="doc.date_from.strftime('%d/%m/%Y')"/></strong></span>
+                    </t>
+                    <t t-if="doc.picking_type_ids and len(doc.picking_type_ids) &gt; 1">
+                        <span> &amp;nbsp;|&amp;nbsp; Nhà máy: <strong t-esc="', '.join(doc.picking_type_ids.mapped('factory_name'))"/></span>
+                    </t>
+                    <t t-if="not doc.picking_type_ids">
+                        <span> &amp;nbsp;|&amp;nbsp; Nhà máy: <strong>Tất cả</strong></span>
+                    </t>
+                </div>
+
+                <!-- Bảng dữ liệu -->
+                <table class="table table-sm table-bordered o_main_table" style="width: 100%; border-collapse: collapse; margin-top: 8px;">
+                    <thead>
+                        <tr style="background-color: #d9e1f2; text-align: center; vertical-align: middle;">
+                            <th style="border: 1px solid #000; padding: 3px; width: 4%;">STT</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 9%;">Ngày dùng tồn</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 13%;">Mã tham chiếu</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 13%;">Mã sản phẩm</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 26%;">Tên sản phẩm</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 7%;">ĐVT</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 10%;">Số lượng sản xuất</th>
+                            <th style="border: 1px solid #000; padding: 3px; width: 18%;">Người phụ trách</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.line_ids.sorted('no')" t-as="line">
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.no"/></td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;">
+                                    <t t-if="line.stock_date_receipt" t-esc="line.stock_date_receipt.strftime('%d/%m/%Y')"/>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.name"/></td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.product_code"/></td>
+                                <td style="border: 1px solid #000; padding: 2px;"><t t-esc="line.product_name"/></td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.uom_id.name"/></td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;">
+                                    <t t-esc="'%.3f' % line.quantity if line.quantity else ''"/>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 2px; text-align: center;"><t t-esc="line.user_id.name_without_position if line.user_id else ''"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfoot>
+                        <tr style="font-weight: bold; background-color: #f2f2f2;">
+                            <td colspan="6" style="border: 1px solid #000; padding: 2px; text-align: right;">TỔNG CỘNG</td>
+                            <td style="border: 1px solid #000; padding: 2px; text-align: center;">
+                                <t t-esc="'%.3f' % sum(doc.line_ids.mapped('quantity'))"/>
+                            </td>
+                            <td style="border: 1px solid #000; padding: 2px;"/>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Ngày tháng -->
+                <div class="row" style="padding-top: 20px;">
+                    <div class="col-12" style="text-align: right;">
+                        <span><t t-esc="'Đồng Nai, Ngày %s Tháng %s năm %s' % (doc.create_date.strftime('%d'), doc.create_date.strftime('%m'), doc.create_date.strftime('%Y'))"/></span>
+                    </div>
+                </div>
+
+                <!-- Ký tên -->
+                <div class="row" style="margin-top: 20px; text-align: center;">
+                    <div class="col-2">
+                        <strong t-esc="doc.sudo()._fields['voter_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.voter_id and doc.voter_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.voter_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.voter_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.voter_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.voter_id.name_without_position"/>
+                        </t>
+                    </div>
+                    <div class="col-2">
+                        <strong t-esc="doc.sudo()._fields['factory_team_leader_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.factory_team_leader_id and doc.factory_team_leader_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.factory_team_leader_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.factory_team_leader_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.factory_team_leader_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.factory_team_leader_id.name_without_position"/>
+                        </t>
+                    </div>
+                    <div class="col-2">
+                        <strong t-esc="doc.sudo()._fields['finished_goods_warehouse_keeper_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.finished_goods_warehouse_keeper_id and doc.finished_goods_warehouse_keeper_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.finished_goods_warehouse_keeper_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.finished_goods_warehouse_keeper_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.finished_goods_warehouse_keeper_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.finished_goods_warehouse_keeper_id.name_without_position"/>
+                        </t>
+                    </div>
+                    <div class="col-2">
+                        <strong t-esc="doc.sudo()._fields['chief_finance_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.chief_finance_id and doc.chief_finance_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.chief_finance_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.chief_finance_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.chief_finance_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.chief_finance_id.name_without_position"/>
+                        </t>
+                    </div>
+                    <div class="col-2">
+                        <strong t-esc="doc.sudo()._fields['director_id'].string"/>
+                        <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                        <t t-if="doc.state == 'approved' and doc.director_id and doc.director_id.sudo().sign_signature">
+                            <br/><br/>
+                            <img t-att-src="image_data_uri(doc.director_id.sudo().sign_signature)" width="120px" height="80px"/>
+                            <br/>
+                            <strong t-esc="doc.director_id.name_without_position"/>
+                        </t>
+                        <t t-elif="doc.director_id">
+                            <br/><br/><br/><br/>
+                            <strong t-esc="doc.director_id.name_without_position"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Report action -->
+    <record id="report_rp_production_report_pdf" model="ir.actions.report">
+        <field name="name">Báo cáo sản lượng (PDF)</field>
+        <field name="model">rp.production.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao.report_rp_production_report_pdf_template</field>
+        <field name="report_file">ccv_bao_cao.report_rp_production_report_pdf_template</field>
+        <field name="print_report_name">'Bao cao san luong'</field>
+        <field name="paperformat_id" ref="format_a4_rp_production_report"/>
+        <field name="binding_model_id" eval="False"/>
+        <field name="attachment_use" eval="False"/>
+    </record>
+</odoo>

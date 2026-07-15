@@ -1,0 +1,48 @@
+<odoo>
+    <record id="view_rp_tf_vehicel_in_out_wizard" model="ir.ui.view">
+        <field name="name">rp.tf.vehicel.in.out.wizard.form</field>
+        <field name="model">rp.tf.vehicel.in.out.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Stock Move Report">
+                <group>
+                    <group string="Dữ liệu">
+                        <field name="date"/>
+                        <field name="date_to"/>
+                        <field name="department_id"/>
+                        <field name="type"/>
+                        <field name="is_next_day_fall_vehicle"/>
+                    </group>
+                    <group string="Ký tên">
+                        <field name="voter_id"/>
+                        <field name="loading_id"/>
+                        <field name="stocker_id"/>
+                        <field name="hr_admin_department_id"/>
+                        <field name="chief_finance_id"/>
+                        <field name="director_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="In" type="object" name="action_generate_report" class="oe_highlight"/>
+                    <button string="Hủy" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rp_internal_tf_materials_wizard_action" model="ir.actions.act_window">
+        <field name="name">Báo cáo sản lượng nhập xuất</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rp.tf.vehicel.in.out.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_rp_tf_vehicel_in_out_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_rp_internal_tf_materials_wizard_action_server" model="ir.actions.server">
+        <field name="name">Báo cáo sản lượng nhập xuất</field>
+        <field name="model_id" ref="ccv_api_connector.model_rp_tf_vehicel_in_out_wizard"/>
+        <field name="binding_model_id" ref="ccv_api_connector.model_sale_vehicle_in_out"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_print_report()</field>
+    </record>
+</odoo>

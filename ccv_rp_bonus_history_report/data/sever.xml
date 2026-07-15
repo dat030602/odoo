@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_server_open_report_wizard" model="ir.actions.server">
+        <field name="name">Báo cáo quỹ dự phòng</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_bonus_price_unit" />
+        <field name="binding_model_id" ref="model_sale_bonus_price_unit" />
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.action_open_report_wizard()
+else:
+    action = model.action_open_report_wizard()
+        </field>
+    </record>
+</odoo>

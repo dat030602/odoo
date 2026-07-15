@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="mail.MessageSeenIndicator" t-inherit-mode="extension">
+        <xpath expr="//span[hasclass('o_MessageSeenIndicator')]" position="replace">
+            <!-- direct message -->
+            <t t-if="messageSeenIndicatorView and messageSeenIndicatorView.messageSeenIndicator and messageSeenIndicatorView.messageViewOwner and messageSeenIndicatorView.messageViewOwner.isDirectMessages">
+                <span class="o_MessageSeenIndicator position-relative d-flex opacity-75-hover opacity-50" t-att-class="{ 'o-all-seen text-odoo': messageSeenIndicatorView.messageSeenIndicator.hasEveryoneSeen }" t-attf-class="{{ className }}" t-att-title="messageSeenIndicatorView.messageSeenIndicator.text" t-ref="root">
+                    <t t-if="!messageSeenIndicatorView.messageSeenIndicator.isMessagePreviousToLastCurrentPartnerMessageSeenByEveryone">
+                        <t t-if="messageSeenIndicatorView.messageSeenIndicator.hasSomeoneFetched or messageSeenIndicatorView.messageSeenIndicator.hasSomeoneSeen">
+                            <i class="o_MessageSeenIndicator_icon o-first fa fa-check ps-1"/>
+                        </t>
+                        <t t-if="messageSeenIndicatorView.messageSeenIndicator.hasSomeoneSeen">
+                            <i class="o_MessageSeenIndicator_icon o-second fa fa-check position-absolute"/>
+                        </t>
+                    </t>
+                </span>
+            </t>
+            <!-- channel -->
+            <t t-else="">
+                <div>
+                    <span class="biz_o_MessageSeenIndicator"  t-att-title="indicatorTitle">
+                        <t t-if="messageSeenIndicatorView.messageSeenIndicator and !messageSeenIndicatorView.messageSeenIndicator.isMessagePreviousToLastCurrentPartnerMessageSeenByEveryone">
+                            <t t-set="checkMessageOfIscusrrentUser" t-value="0"/>
+                            <t t-set="fiveLastSeen" t-value="messageSeenIndicatorView.messageSeenIndicator.thread.fiveLastSeen"/>
+                            <t t-set="lastCount" t-value="messageSeenIndicatorView.messageSeenIndicator.thread.lastCount"/>
+                            <t t-set="partnerSeenChannel" t-value="messageSeenIndicatorView.messageSeenIndicator.thread.partnerSeenChannel"/>
+                            <!-- test -->
+                            <t t-set="lastMessage" t-value="messageSeenIndicatorView.messageSeenIndicator.thread.lastMessage"/>
+                            <t t-set="currentMessage" t-value="messageSeenIndicatorView.messageSeenIndicator.message"/>
+                            <!-- <t t-esc="messageSeenIndicatorView.messageSeenIndicator.thread.lastMessage"/>
+                            <t t-esc="messageSeenIndicatorView.messageSeenIndicator.message"/> -->
+                            <!-- bo test -->
+                            <t t-if="fiveLastSeen and lastMessage==currentMessage">
+                                 <button class="o_MessageReactionGroup btn d-flex p-0 rounded-1"   t-on-click="messageSeenIndicatorView.showPopoverSeenMessage" t-ref="action" style="float: right;">
+                                    <t t-foreach="fiveLastSeen" t-as="fivePartnerSeen" t-key="fivePartnerSeen.localId">
+                                        <t t-foreach="partnerSeenChannel" t-as="partner_seen_reverse" t-key="partner_seen_reverse.localId">
+                                            <t t-if="partner_seen_reverse.id==fivePartnerSeen.partner_id">
+                                                <t t-esc="partner_seen_reverse.display_name">
+                                                    <img class="o_ChannelInvitationForm_selectablePartnerAvatar biz-img-icon rounded-circle biz_o_Message_authorAvatarContainer" style="cursor: pointer; margin-left: 2px !important;" t-att-title="partner_seen_reverse.name" t-att-src="partner_seen_reverse.avatarUrl" alt="Avatar"/> 
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </t>
+                                    <t t-if="lastCount > 0">
+                                        <span style="cursor: pointer; margin-left: 2px !important;">+ <t t-esc="lastCount"/></span>
+                                    </t>
+                                </button>
+                            </t>
+                        </t>
+                    </span>
+                </div>
+            </t>
+           
+        </xpath>
+    </t>
+</templates>

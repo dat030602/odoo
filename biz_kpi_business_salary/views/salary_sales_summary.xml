@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Salary Sales Summary Tree View -->
+    <record id="view_salary_sales_summary_tree" model="ir.ui.view">
+        <field name="name">salary.sales.summary.tree</field>
+        <field name="model">salary.sales.summary</field>
+        <field name="arch" type="xml">
+            <tree string="Tổng hợp hoa hồng">
+                <field name="name" optional="show"/>
+                <field name="month" optional="show"/>
+                <field name="year" optional="show"/>
+                <field name="active" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for salary.sales.summary.total.line -->
+    <record id="action_salary_sales_summary_total_line" model="ir.actions.act_window">
+        <field name="name">Tổng hợp theo khu vực</field>
+        <field name="res_model">salary.sales.summary.total.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_salary_sales_summary_total_line_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <!-- Salary Sales Summary Form View -->
+    <record id="view_salary_sales_summary_form" model="ir.ui.view">
+        <field name="name">salary.sales.summary.form</field>
+        <field name="model">salary.sales.summary</field>
+        <field name="arch" type="xml">
+            <form string="Tổng hợp hoa hồng">
+                <header>
+                    <button name="action_get_data" string="Lấy dữ liệu" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'done')]}" groups="hr_payroll.group_hr_payroll_user"/>
+                    <button name="action_done" string="Hoàn thành" type="object" attrs="{'invisible': [('state', '=', 'done')]}" groups="hr_payroll.group_hr_payroll_user"/>
+                    <button name="action_draft" string="Nháp" type="object" attrs="{'invisible': [('state', '=', 'draft')]}" groups="hr_payroll.group_hr_payroll_user"/>
+                    <button name="push_salary_to_allowance" string="Tính lương" type="object" attrs="{'invisible': [('state', '=', 'done')]}" groups="hr_payroll.group_hr_payroll_user"/>
+                    <button name="action_export_business_salary" string="Xuất bảng lương Kinh doanh" type="object" groups="hr_payroll.group_hr_payroll_user"/>
+                    <button name="action_sync_may_2026_payslips" string="Đồng bộ phiếu lương T5/2026" type="object"
+                            confirm="Thao tác này sẽ cập nhật các dòng lương trên phiếu lương Kinh doanh tháng 5/2026 theo bảng lương đã chốt. Bạn có chắc chắn tiếp tục?"
+                            groups="hr_payroll.group_hr_payroll_manager"/>
+                    <field name="state" widget="statusbar" attrs="{'invisible': [('state', '=', 'done')]}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Hoàn thành" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                    
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" icon="fa-calculator" name="action_open_commission_results" string="Kết quả HH" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader"/>
+                        <button class="oe_stat_button" type="object" icon="fa-sitemap" name="action_open_total_lines" string="Tổng KV"/>
+                        <button class="oe_stat_button" type="object" icon="fa-list" name="action_open_summary_lines" string="Chi tiết tỉnh"/>
+                        <button class="oe_stat_button" type="object" icon="fa-pie-chart" name="action_open_commissions" string="HH khu vực" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader"/>
+                        <button class="oe_stat_button" type="object" icon="fa-users" name="action_open_employee_commissions" string="HH nhân viên" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader"/>
+                        <button class="oe_stat_button" type="object" icon="fa-user-circle" name="action_open_personnel_commissions" string="HH nhân sự KV" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader"/>
+                        <button class="oe_stat_button" type="object" icon="fa-gift" name="action_open_bonus_commissions" string="HH thưởng" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader"/>
+                        <button class="oe_stat_button" type="object" icon="fa-user" name="action_open_sales_commission_employee" string="HH NV Kinh doanh" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader"/>
+                        <button class="oe_stat_button" type="object" icon="fa-leaf" name="action_open_humic_sales_detail" string="Humic"/>
+                        <button class="oe_stat_button" type="object" icon="fa-address-book" name="action_open_customer_open_list" string="KH mở"/>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Thông tin">
+                            <field name="month" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="year" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Chữ ký">
+                            <field name="voter_id"/>
+                            <field name="chief_finance_id"/>
+                            <field name="lead_sale_id"/>
+                            <field name="director_id"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Kết quả tính toán hoa hồng" name="commission_results" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <button name="recalculate_commission_data" string="Tính lại" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'done')]}"/>
+                            <field name="commission_result_ids" nolabel="1" readonly="1"/>
+                        </page>
+
+                        <page string="Tổng theo khu vực" name="total_lines">
+                            <field name="total_line_ids" nolabel="1" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                        </page>
+
+                        <page string="Chi tiết tỉnh" name="lines">
+                            <field name="line_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        
+                        <page string="Hoa hồng khu vực" name="commission" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <field name="commission_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        
+                        <page string="Hoa hồng nhân viên" name="employee_commission" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <field name="employee_commission_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        
+                        <page string="Hoa hồng nhân sự khu vực" name="personnel_commission" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <field name="personnel_commission_ids" nolabel="1" readonly="1">
+                                <tree string="Hoa hồng nhân sự khu vực">
+                                    <field name="team_id" optional="show"/>
+                                    <field name="employee_id" optional="show"/>
+                                    <field name="job_title" optional="show"/>
+                                    <field name="planned_quantity" sum="Tổng sản lượng kế hoạch" optional="show"/>
+                                    <field name="actual_quantity" sum="Tổng sản lượng" optional="show"/>
+                                    <field name="progress_compensation_rate" widget="percentage" optional="show"/>
+                                    <field name="allocation_rate" widget="percentage" optional="show"/>
+                                    <field name="sales_discount_80" sum="Tổng 80% CK bán hàng" optional="show"/>
+                                    <field name="humic_discount_80" sum="Tổng 80% CK humic" optional="show"/>
+                                    <field name="total_amount_80" sum="Tổng nhận 80%" optional="show"/>
+                                    <field name="sales_discount_20" sum="Tổng giữ lại 20% bán hàng" optional="show"/>
+                                    <field name="humic_discount_20" sum="Tổng giữ lại 20% humic" optional="show"/>
+                                    <field name="total_amount_20" sum="Tổng cộng giữ lại 20%" optional="show"/>
+                                    <field name="currency_id" invisible="1" optional="show"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Hoa hồng thưởng thêm" name="bonus_commission" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <field name="bonus_commission_ids" nolabel="1" readonly="1"/>
+                        </page>
+
+                        <page string="Bán hàng Humic" name="humic_sales_detail">
+                            <field name="humic_sales_detail_ids" nolabel="1" readonly="1">
+                                <tree string="Chi tiết bán hàng sản phẩm humic">
+                                    <field name="team_name" optional="show"/>
+                                    <field name="invoice_name" optional="show"/>
+                                    <field name="partner_id" optional="show"/>
+                                    <field name="user_id" optional="show"/>
+                                    <field name="product_id" optional="show"/>
+                                    <field name="product_uom_id" optional="show"/>
+                                    <field name="quantity" sum="Tổng số lượng" optional="show"/>
+                                    <field name="unit_price" invisible="1" optional="show"/>
+                                    <field name="total_amount" sum="Tổng doanh số" optional="show"/>
+                                    <field name="amount_paid" sum="Tổng tiền thu" optional="show"/>
+                                    <field name="commission_unit_price" optional="show"/>
+                                    <field name="commission_amount" sum="Tổng hoa hồng" optional="show"/>
+                                    <field name="employee_commission_amount" sum="Tổng hoa hồng nhân viên" optional="show"/>
+                                    <field name="currency_id" invisible="1" optional="show"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Chiết khấu Humic" name="humic_discount" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <field name="humic_discount_ids" nolabel="1" readonly="1">
+                                <tree string="Chiết khấu Humic">
+                                    <field name="team_id" optional="show"/>
+                                    <field name="name" optional="show"/>
+                                    <field name="employee_ids" widget="many2many_tags" optional="show"/>
+                                    <field name="rate" widget="percentage" optional="show"/>
+                                    <field name="discount_fund" sum="Tổng tiền hoa hồng Humic" optional="hide"/>
+                                    <field name="total_discount" sum="Tổng chiết khấu" optional="show"/>
+                                    <field name="amount_80" sum="Tổng thực nhận 80%" optional="show"/>
+                                    <field name="amount_20" sum="Tổng giữ lại 20%" optional="show"/>
+                                    <field name="currency_id" invisible="1" optional="show"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Khách hàng mở" name="customer_open_list">
+                            <field name="customer_open_list_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        
+                        <page string="Hoa hồng SS" name="sales_commission_employee" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <field name="sales_commission_employee_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        
+                        <page string="Chiết khấu thương mại" name="commercial_discount_detail" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <group>
+                                <field name="team_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="price_unit_commercial" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                            <field name="commercial_discount_detail_ids" nolabel="1" readonly="1"/>
+                        </page>
+
+                        <page string="Chiết khấu bán hàng" name="sales_discount" groups="hr_payroll.group_hr_payroll_user,biz_ccv_account.group_sales_team_leader">
+                            <field name="sales_discount_ids" nolabel="1">
+                                <tree string="Chiết khấu bán hàng" editable="bottom">
+                                    <field name="team_id" optional="show"/>
+                                    <field name="name" optional="show"/>
+                                    <field name="employee_ids" widget="many2many_tags" optional="show"/>
+                                    <field name="rate" widget="percentage" optional="show"/>
+                                    <field name="discount_fund_oc" sum="Tổng quỹ OC" optional="show"/>
+                                    <field name="discount_fund_nc" sum="Tổng quỹ NC" optional="show"/>
+                                    <field name="total_discount" sum="Tổng chiết khấu" optional="show"/>
+                                    <field name="amount_80" sum="Tổng thực nhận 80%" optional="show"/>
+                                    <field name="amount_20" sum="Tổng giữ lại 20%" optional="show"/>
+                                    <field name="currency_id" invisible="1" optional="show"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Salary Sales Summary Search View -->
+    <record id="view_salary_sales_summary_search" model="ir.ui.view">
+        <field name="name">salary.sales.summary.search</field>
+        <field name="model">salary.sales.summary</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm tổng hợp doanh thu">
+                <field name="name" string="Khu vực"/>
+                <field name="month"/>
+                <field name="year"/>
+                <separator/>
+                <filter string="Năm hiện tại" name="current_year" domain="[('year', '=', datetime.datetime.now().year)]"/>
+                <filter string="Tháng hiện tại" name="current_month" domain="[('month', '=', str(datetime.datetime.now().month))]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Tháng" name="group_month" context="{'group_by': 'month'}"/>
+                    <filter string="Năm" name="group_year" context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

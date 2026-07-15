@@ -1,0 +1,982 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* biz_capital_price
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 09:02+0000\n"
+"PO-Revision-Date: 2026-04-03 09:02+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: biz_capital_price
+#: model:ir.actions.report,print_report_name:biz_capital_price.action_costing_rp_pdf
+#: model:ir.actions.report,print_report_name:biz_capital_price.action_costing_rp_xlsx
+msgid "'Báo cáo giá thành'"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.actions.report,print_report_name:biz_capital_price.action_rp_average_period_pdf
+#: model:ir.actions.report,print_report_name:biz_capital_price.action_rp_average_period_xlsx
+msgid "'Kiểm tra chi phí phân bổ'"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__is_finished_products
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__is_finished_products
+msgid "+ Finished products have been manufactured"
+msgstr "+ Thành phẩm có qua sản xuất"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__value_621
+msgid "621 Value"
+msgstr "Giá trị 621"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Số lần chạy ưu tiên</span>"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+msgid ""
+"<span class=\"o_stat_text\">\n"
+"                                    Average Price End Period\n"
+"                                </span>"
+msgstr ""
+"<span class=\"o_stat_text\">\n"
+"                                    Bình quân cuối kỳ\n"
+"                                </span>"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__account_ids
+msgid "Account"
+msgstr "Tài khoản"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__account_counterpart_id
+msgid "Account counterpart"
+msgstr "Tài khoản đối ứng"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__account_consolidated_ids
+msgid "Accounts to be consolidated"
+msgstr "Các tài khoản cần tập hợp"
+
+#. module: biz_capital_price
+#: model:ir.actions.act_window,name:biz_capital_price.action_average_capital_price_end_period
+msgid "Action Average Capital Price End Period"
+msgstr "Tính giá bình quân cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.actions.act_window,name:biz_capital_price.action_average_price_end_period_mass
+msgid "Action Average Capital Price End Period Mass"
+msgstr "Tính giá bình quân cuối kỳ hàng loạt"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__allocated_id
+msgid "Allocated"
+msgstr "Phân bổ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__allocated_value_for_product
+msgid "Allocated Value for Product"
+msgstr "Giá  trị phân bổ cho sản phẩm"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_allocation_details_by_account
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__allocation_details_by_account_ids
+msgid "Allocation Details By Account"
+msgstr "Chi tiết phân bổ theo tài khoản"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__allocation_rate
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__allocation_rate
+msgid "Allocation Rate"
+msgstr "Tỷ lệ phân bổ (%)"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__allocation_cost
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__allocation_cost
+msgid "Allocation cost"
+msgstr "Chi phí phân bổ"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_capital_price_end_period_view_tree
+msgid "Allocation details by account"
+msgstr "Chi tiết phân bổ theo tài khoản"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_average_capital_price_end_period
+msgid "Average Capital Price End Period"
+msgstr "Tính giá bình quân cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_average_capital_price_end_period_line
+msgid "Average Capital Price End Period Line"
+msgstr "Dòng tính giá bình quân cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_bank_statement_line__average_period_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_move__average_period_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_payment__average_period_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_valuation_layer__average_period_id
+msgid "Average Period"
+msgstr "Kỳ trung bình"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_average_price_end_period_mass
+msgid "Average Price End Period Mass"
+msgstr "Tính giá bình quân cuối kỳ hàng loạt"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_res_config_settings
+msgid "Bizapps Fpt Config"
+msgstr "Cấu hình"
+
+#. module: biz_capital_price
+#: model:ir.actions.report,name:biz_capital_price.action_costing_rp_xlsx
+msgid "Báo cáo giá thành (Excel)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.actions.report,name:biz_capital_price.action_costing_rp_pdf
+msgid "Báo cáo giá thành (PDF)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.res_config_settings_view_form
+msgid "Bình quân giá thành"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "BẢNG CHI PHÍ PHÂN BỔ MUA HÀNG"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "BẢNG TÍNH GIÁ THÀNH"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.ui.menu,name:biz_capital_price.menu_action_average_capital_price_end_period
+msgid "Calculate the average cost of capital at the end of the period"
+msgstr "Tính giá bình quân cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.ui.menu,name:biz_capital_price.menu_action_average_price_end_period_mass
+msgid "Calculate the average cost of capital at the end of the period mass"
+msgstr "Tính giá bình quân cuối kỳ hàng loạt"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.view_account_selection_wizard_form
+msgid "Cancel"
+msgstr "Hủy bỏ"
+
+#. module: biz_capital_price
+#. odoo-python
+#: code:addons/biz_capital_price/models/average_price_end_period_mass.py:0
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+#, python-format
+msgid "Carryover"
+msgstr "Kết chuyển"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_bank_statement_line__carryover_mass_period_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_move__carryover_mass_period_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_payment__carryover_mass_period_ids
+msgid "Carryover Mass Period"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__carryover_move_id
+msgid "Carryover Move"
+msgstr "Bút toán kết chuyển"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__name
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__name
+msgid "Char"
+msgstr "Ký tự"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Chi phí khác"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Chi phí khác (TK 6278)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Chi phí mua ngoài (Những TK 627 còn lại)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costs_allocated_directly_customer_view_tree
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.view_account_selection_wizard_form
+msgid "Confirm"
+msgstr "Xác nhận"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__end_cost_allocation_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__end_cost_allocation_ids
+msgid "Cost"
+msgstr "Chi phí"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_cost_allocation
+msgid "Cost allocation"
+msgstr "Vị trí phân bổ chi phí"
+
+#. module: biz_capital_price
+#. odoo-python
+#: code:addons/biz_capital_price/models/stock_laned_cost.py:0
+#, python-format
+msgid ""
+"Cost and adjustments lines do not match. You should maybe recompute the "
+"landed costs."
+msgstr ""
+"Dòng chi phí và điều chỉnh không khớp. Có lẽ bạn nên tính lại chi phí đã "
+"tính."
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__cost_id
+msgid "Cost name"
+msgstr "Tên chi phí"
+
+#. module: biz_capital_price
+#: model:ir.actions.act_window,name:biz_capital_price.action_costs_allocated_directly_items
+#: model:ir.model,name:biz_capital_price.model_costs_allocated_directly_items
+#: model:ir.ui.menu,name:biz_capital_price.menu_action_costs_allocated_directly_items
+msgid "Costs allocated directly to items"
+msgstr "Chi phí phân bổ trực tiếp vào mặt hàng"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__create_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__create_uid
+msgid "Created by"
+msgstr "Tạo bởi"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__create_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__create_date
+msgid "Created on"
+msgstr "Được tạo vào"
+
+#. module: biz_capital_price
+#: model:ir.actions.server,name:biz_capital_price.model_account_move_action_update_cost_layer
+msgid "Cập nhật lại giá trị tính giá thành cho bút toán nhập"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.actions.server,name:biz_capital_price.layer_update_date_account_move
+msgid "Cập nhật ngày bút toán"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__data_quantity_import
+msgid "Data Quantity Import"
+msgstr "Dữ liệu số lượng nhập"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__date
+msgid "Date Incurred"
+msgstr "Ngày phát sinh"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__debit_account_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__carryover_debit_account_id
+msgid "Debit Account"
+msgstr "Tài khoản ghi nợ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__default_carryover_account_ids
+msgid "Default carryover account"
+msgstr "Tài khoản nguyên liệu kết chuyển mặc định"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__display_name
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__end_period_cost_allocation_id
+msgid "End Period Cost Allocation"
+msgstr "Bình quân cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_end_period_cost_allocation
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_capital_price_end_period_view_tree
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+msgid "End of period cost allocation"
+msgstr "Chi phí cuối kỳ phân bổ"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_enter_costs_allocated
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__enter_cost_ids
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costs_allocated_directly_customer_view_tree
+msgid "Enter cost"
+msgstr "Nhập chi phí"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__move_id
+msgid "Entry"
+msgstr "Bút toán"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__ex_warehouse_price
+msgid "Ex-warehouse Price"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__date
+msgid "Expense entry date"
+msgstr "Ngày nhập chi phí"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_capital_price_end_period_view_tree
+msgid "Final information"
+msgstr "Thông tin cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__from_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__from_date
+msgid "From Date"
+msgstr "Từ ngày"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+msgid "General"
+msgstr "Tổng hợp"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Giá thành"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Giá thành đơn vị"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Giá trị NVL"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields.selection,name:biz_capital_price.selection__average_price_end_period_mass__state__done
+msgid "Hoàn thành"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__id
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__id
+msgid "ID"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__initital_quantity
+msgid "Initial Quantity"
+msgstr "Số lượng đầu kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__initital_value
+msgid "Initial Value"
+msgstr "Giá trị đầu kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_valuation_layer__initial_value
+msgid "Initial value"
+msgstr "Giá trị ban đầu"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_capital_price_end_period_view_tree
+msgid "Internal transfer"
+msgstr "Điều chuyển nội bộ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_move_line__internal_transfer_layer_ids
+msgid "Internal transfer layer"
+msgstr "Lớp điều chuyển nội bộ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_valuation_layer__interval_move_id
+msgid "Internal transfer move"
+msgstr "Bút toán điều chuyển nội bộ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_move_line__internal_transfer_price
+msgid "Internal transfer price"
+msgstr "Đơn giá điều chuyển nội bộ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_valuation_layer__interval_stock_move_line_id
+msgid "Interval stock move line"
+msgstr "Dòng dịch chuyển tồn kho khoảng thời gian"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_valuation_layer__is_create_from_average_period
+msgid "Is Create From Average Period"
+msgstr "Được tạo từ kỳ trung bình"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__is_internal
+msgid "Is Internal"
+msgstr "Là nội bộ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__journal_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__carryover_journal_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__journal_id
+msgid "Journal"
+msgstr "Sổ nhật ký"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_account_move
+msgid "Journal Entry"
+msgstr "Bút toán "
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__exclude_begin_period
+msgid "Không tính đầu kỳ"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Khấu hao (TK 6274)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.actions.report,name:biz_capital_price.action_rp_average_period_xlsx
+msgid "Kiểm tra chi phí phân bổ (Excel)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.actions.report,name:biz_capital_price.action_rp_average_period_pdf
+msgid "Kiểm tra chi phí phân bổ (PDF)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Kế toán trường"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Kỳ tính giá thành: Kỳ tính giá thành TP từ ngày"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation____last_update
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated____last_update
+msgid "Last Modified on"
+msgstr "Sửa lần cuối"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__write_uid
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_costs_allocated_directly_items__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__write_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lần cuối lúc"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_capital_price_end_period_view_tree
+msgid "Layer details"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_bank_statement_line__internal_svl_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_move__internal_svl_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_payment__internal_svl_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__stock_valuation_layer_ids
+msgid "Layers"
+msgstr "Định giá"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__error
+#: model:ir.model.fields.selection,name:biz_capital_price.selection__average_price_end_period_mass__state__error
+msgid "Lỗi"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_account_selection_wizard__mass_period_id
+msgid "Mass Period"
+msgstr "Kỳ hàng loạt"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__mass_period_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__mass_period_id
+msgid "Mass period"
+msgstr "Bình quần hàng loạt"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__account_move_ids
+msgid "Move"
+msgstr "Dịch chuyển"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Mã NVL"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Mã hàng"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Mã thành phẩm"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields.selection,name:biz_capital_price.selection__average_price_end_period_mass__state__new
+msgid "Mới"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+msgid "NVL"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "NVL gián tiếp (TK 6272)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "NVL trực tiếp (TK 6211)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_cost_allocation__name
+msgid "Name"
+msgstr "Tên"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Người lập"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Nhân công gián tiếp (TK 6271)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Nhân công trực tiếp (TK 622)"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__note
+msgid "Note"
+msgstr "Ghi chú"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__partner_id
+msgid "Partner"
+msgstr "Đối tác"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_allocation_details_by_account__period_line_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__period_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__period_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__period_id
+msgid "Period"
+msgstr "Giá vốn bình quân cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__period_count
+msgid "Period Count"
+msgstr "Số lượng kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__period_line_ids
+msgid "Period Line"
+msgstr "Dòng giá vốn bình quân cuối kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__previous_period_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__previous_period_ids
+msgid "Previous Period"
+msgstr "Kỳ trước"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_warehouse__priority
+msgid "Priority"
+msgstr "Thứ tự ưu tiên các kho cần tính giá thành trước"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__product_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__product_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__product_ids
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__product_id
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_product_category
+msgid "Product Category"
+msgstr "Danh mục sản phẩm"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_stock_move_line
+msgid "Product Moves (Stock Move Line)"
+msgstr "Dịch chuyển sản phẩm (Dòng dịch chuyển tồn kho)"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_uom_uom
+msgid "Product Unit of Measure"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_product_product
+msgid "Product Variant"
+msgstr "Biến thể sản phẩm"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__sum_quantity_import
+msgid "Quantity Import"
+msgstr "Số lượng nhập"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__quantity_in_period
+msgid "Quantity in the period"
+msgstr "SL nhập trong kỳ"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "STT"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.actions.act_window,name:biz_capital_price.action_account_selection_wizard
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.view_account_selection_wizard_form
+msgid "Select Accounts"
+msgstr "Chọn tài khoản"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_stock_landed_cost
+msgid "Stock Landed Cost"
+msgstr "Chi phí nhập kho"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_stock_move
+msgid "Stock Move"
+msgstr "Dịch chuyển tồn kho"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_stock_valuation_layer
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__stock_valuation_layer_ids
+msgid "Stock Valuation Layer"
+msgstr "Lớp giá trị tồn kho"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+msgid "Storable"
+msgstr "Có kiểm kê"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Số lượng"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Số lượng NVL"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Số lượng thành phẩm"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_res_config_settings__capital_price_priority
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.res_config_settings_view_form
+msgid "Số lần chạy ưu tiên"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.average_price_end_period_mass_view_tree
+msgid "TP"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_enter_costs_allocated__tax_id
+msgid "Tax"
+msgstr "Thuế"
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Thành tiền"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Thứ trưởng đơn vị"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__to_date
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__to_date
+msgid "To Date"
+msgstr "Đến ngày"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__total_cost
+msgid "Total Allocation Cost"
+msgstr "Tổng chi phí phân bổ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__actual_value_import
+msgid "Total Value Import"
+msgstr "Tổng giá trị nhập"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__total_quantity_export
+msgid "Total quantity export"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__total_quantity_import
+msgid "Total quantity import"
+msgstr "Tổng SL Nhập"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__total_allocation_value
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__total_allocation_value
+msgid "Total value allocation cost"
+msgstr "Tổng giá trị phân bổ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__total_value_export
+msgid "Total value export"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__total_value_import
+msgid "Total value import"
+msgstr "Tổng giá trị nhập"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_stock_picking
+msgid "Transfer"
+msgstr "Điều chuyển"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__state
+msgid "Trạng thái"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Tên NVL"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Tên hàng"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Tên thành phẩm"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.actions.server,name:biz_capital_price.stock_move_action_create_internal_transfer_layer
+msgid "Tạo định giá bình quân giá thành nội bộ"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Tổng"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Tổng CP Nhân Công TK 622"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Tổng CP SXC TK 627"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Từ ngày:"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Tỷ lệ phân bổ"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Tỷ lệ thu hồi"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__unit_value
+msgid "Unit Value"
+msgstr "Giá trị nhập trong kỳ"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_stock_valuation_adjustment_lines
+msgid "Valuation Adjustment Lines"
+msgstr "Chi tiết điều chỉnh giá trị"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_end_period_cost_allocation__value
+msgid "Value by Allocation Rate"
+msgstr "Giá trị theo tỷ lệ phân bổ"
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period_line__value_per_unit
+msgid "Value/1 unit"
+msgstr "Giá trị/1 đơn vị"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_stock_warehouse
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_capital_price_end_period__warehouse_id
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__warehouse_ids
+msgid "Warehouse"
+msgstr "Kho hàng"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_account_selection_wizard
+msgid "Wizard for selecting debit and credit accounts"
+msgstr "Trình hướng dẫn chọn tài khoản ghi nợ và ghi có"
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_report_biz_capital_price_costing_rp_pdf
+msgid "costing_rp_pdf"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_report_biz_capital_price_costing_rp_xlsx
+msgid "costing_rp_xlsx"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_report_biz_capital_price_rp_average_period_pdf
+msgid "rp_average_period_pdf"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model,name:biz_capital_price.model_report_biz_capital_price_rp_average_period_xlsx
+msgid "rp_average_period_xlsx"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_average_price_end_period_mass__apply_inventory
+msgid "Áp dụng kiểm kê đầu kỳ"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields.selection,name:biz_capital_price.selection__average_price_end_period_mass__state__loading
+msgid "Đang tải"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Đvt"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_stock_move_line__has_internal_transfer_layer
+msgid "Đã có định giá nội bộ"
+msgstr ""
+
+#. module: biz_capital_price
+#: model:ir.model.fields,field_description:biz_capital_price.field_uom_uom__is_ton
+msgid "Đơn vị Tấn"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "Đơn vị tính"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.rp_average_period_pdf_document
+msgid "Đến ngày:"
+msgstr ""
+
+#. module: biz_capital_price
+#: model_terms:ir.ui.view,arch_db:biz_capital_price.costing_rp_pdf_template
+msgid "đến ngày"
+msgstr ""

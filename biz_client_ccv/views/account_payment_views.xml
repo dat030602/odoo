@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_ccv" model="ir.ui.view">
+        <field name="name">account.payment.form.ccv</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_bank_id']" position="after">
+                <field name="bank_account_contact_id" options="{'no_create': True}" invisible="1"/>
+                <field name="partner_bank_contact_ids" invisible="1"/>
+
+                <label for="exchange_rate" string="Exchange Rate"/>
+                <div class="o_row">
+                    <field name="exchange_rate" options="{'no_quick_create': True, 'no_create_edit': True,'no_open': True}" context="{'order_display': 'name desc'}"/>
+                    <button name="create_new_exchange_rate" string="New" type="object" class="oe_link pt-0"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

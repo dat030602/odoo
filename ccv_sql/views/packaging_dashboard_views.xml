@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Client Action for OWL Dashboard -->
+        <record id="action_packaging_dashboard" model="ir.actions.client">
+            <field name="name">Báo cáo bao bì dưới số lượng tối thiểu</field>
+            <field name="tag">ccv_packaging_dashboard</field>
+            <field name="target">main</field>
+        </record>
+
+        <!-- Menuitem Thống kê inside Inventory -->
+        <menuitem id="menu_ccv_stock_statistics"
+                  name="Thống kê"
+                  parent="stock.menu_stock_root"
+                  sequence="98"/>
+
+        <!-- Menuitem Bao bì dưới số lượng tối thiểu -->
+        <menuitem id="menu_packaging_dashboard"
+                  name="Bao bì dưới số lượng tối thiểu"
+                  parent="menu_ccv_stock_statistics"
+                  action="action_packaging_dashboard"
+                  sequence="10"/>
+        <!-- Inherit orderpoint form view to add qty_on_hand -->
+        <record id="view_warehouse_orderpoint_form_inherit_ccv" model="ir.ui.view">
+            <field name="name">stock.warehouse.orderpoint.form.inherit.ccv</field>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='product_min_qty']" position="before">
+                    <field name="qty_on_hand" readonly="1" decoration-danger="qty_on_hand &lt; product_min_qty" decoration-success="qty_on_hand &gt;= product_min_qty"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

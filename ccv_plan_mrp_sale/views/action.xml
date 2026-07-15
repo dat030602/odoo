@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ccv_sale_plan_export_action" model="ir.actions.act_window">
+        <field name="name">Kế hoạch xuất hàng (Khu vực)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.sale.plan.export</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('ccv_sale_plan_export_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ccv_sale_plan_export_form')})]"/>
+        <field name="domain">[('type','=','team')]</field>
+        <field name="context">{'default_type':'team'}</field>
+    </record>
+    <record id="ccv_sale_plan_export_summary_action" model="ir.actions.act_window">
+        <field name="name">Kế hoạch xuất hàng (Tổng hợp)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.sale.plan.export</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('ccv_sale_plan_export_sumary_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ccv_sale_plan_export_form_sumary')})]"/>
+        <field name="domain">[('type','=','summary')]</field>
+        <field name="context">{'default_type':'summary'}</field>
+    </record>
+    <record id="action_ccv_sale_plan_export_line2_view_tree" model="ir.actions.act_window">
+        <field name="name">Kế hoạch sản xuất</field>
+        <field name="res_model">ccv.sale.plan.export.line2</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="ccv_sale_plan_export_line2_view_tree"/>
+        <field name="search_view_id" ref="ccv_sale_plan_export_line2_search"/>
+    </record>
+    <record id="ccv_mrp_plan_export_action" model="ir.actions.act_window">
+        <field name="name">Kế hoạch sản xuất</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.mrp.plan.export</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="ccv_sale_plan_export_action_view_team" model="ir.actions.act_window">
+        <field name="name">Kế hoạch xuất hàng (Khu vực)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.sale.plan.export</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('ccv_sale_plan_export_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ccv_sale_plan_export_form')})]"/>
+    </record>
+    <record id="ccv_sale_plan_export_action_view_summary" model="ir.actions.act_window">
+        <field name="name">Kế hoạch xuất hàng (Tổng hợp)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.sale.plan.export</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('ccv_sale_plan_export_sumary_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ccv_sale_plan_export_form_sumary')})]"/>
+    </record>
+    <record id="ccv_sale_plan_export_action_view_mrp" model="ir.actions.act_window">
+        <field name="name">Kế hoạch sản xuất</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.mrp.plan.export</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="ccv_secondary_label_action" model="ir.actions.act_window">
+        <field name="name">Loại tem phụ</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ccv.secondary.label</field>
+        <field name="view_mode">tree</field>
+    </record>
+    <record id="factory_product_default_action" model="ir.actions.act_window">
+        <field name="name">Mặc định nhà máy</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">factory.product.default</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="ccv_mrp_plan_export_mrp_menu" name="Kế hoạch sản xuất" action="ccv_mrp_plan_export_action"
+                parent="mrp.mrp_planning_menu_root" sequence="-100"/>
+    <menuitem id="factory_product_default_menu" name="Mặc định nhà máy" action="factory_product_default_action"
+                parent="mrp.mrp_planning_menu_root" sequence="-150"/>
+    <menuitem id="ccv_sale_plan_export_sale_menu" name="Kế hoạch xuất hàng (Khu vực)" action="ccv_sale_plan_export_action"
+                parent="sale.menu_sale_report" sequence="100"/>
+    <menuitem id="ccv_sale_plan_export_sale_summary_menu" name="Kế hoạch xuất hàng (Tổng hợp)" action="ccv_sale_plan_export_summary_action"
+                parent="sale.menu_sale_report" sequence="100"/>
+    <menuitem id="ccv_secondary_label_menu" name="Loại tem phụ" action="ccv_secondary_label_action"
+                parent="sale.menu_sale_config" sequence="100"/>
+</odoo>

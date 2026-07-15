@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record model="ir.ui.view" id="view_employee_form">
+			<field name="name">hr.employee.form</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='address_home_id']"
+					position="after">
+					<div class="text-danger"
+						attrs="{'invisible':[('address_home_id','!=',False)]}">Please specify Private Address before you can set Personal
+						Tax Code
+					</div>
+					<field name="vat"
+						attrs="{'readonly':[('address_home_id','=',False)]}" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

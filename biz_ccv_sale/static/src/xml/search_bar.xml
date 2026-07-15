@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="web.SearchBar.Facets" t-inherit-mode="extension">
+        <xpath expr="//t[@t-foreach='facet.values']" position="replace">
+            <t t-foreach="facet.values" t-as="facetValue" t-key="facetValue_index">
+                <t t-if="!facetValue_first">
+                    <t t-if="env.searchModel.resModel=='product.template'">
+                        and
+                    </t>
+                    <t t-else="">
+                        <span class="o_facet_values_sep" t-esc="facet.separator"/>
+                    </t>
+                </t>
+                <span class="o_facet_value" t-esc="facetValue"/>
+            </t>
+        </xpath>
+    </t>
+</templates>

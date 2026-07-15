@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='invoice_date'][1]" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt','entry'))]}
+                </attribute>
+            </xpath>
+
+            <field name="invoice_date" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('move_type', 'not in', ('entry','out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}
+                </attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- <record id="model_account_move_update_account" model="ir.actions.server">
+        <field name="name">Cập nhật tài khoản</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records._update_account_product()</field>
+    </record> -->
+
+    <record id="model_account_move_update_name" model="ir.actions.server">
+        <field name="name">Recompute name</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.recompute_name()</field>
+    </record>
+
+</odoo>

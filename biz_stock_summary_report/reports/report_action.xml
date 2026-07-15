@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+        <record id="paperformat_a4_stock_slip" model="report.paperformat">
+            <field name="name">A4 Stock</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">22</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">80</field>
+        </record>
+
+        <record id="action_rp_summary_ie_inv_pdf" model="ir.actions.report">
+            <field name="name">Print a report summarizing import and export inventory (PDF)</field>
+            <field name="model">summary.ie.inventory</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">biz_stock_summary_report.rp_summary_ie_inv_pdf</field>
+            <field name="report_file">biz_stock_summary_report.rp_summary_ie_inv_pdf</field>
+            <field name="print_report_name">'Report summarizing import and export inventory'</field>
+            <field name="binding_model_id" ref="model_summary_ie_inventory"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="paperformat_a4_stock_slip"/>
+        </record>
+        
+
+        <record id="action_rp_summary_ie_inv_xlsx" model="ir.actions.report">
+            <field name="name">Print a report summarizing import and export inventory (Excel)</field>
+            <field name="model">summary.ie.inventory</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">biz_stock_summary_report.rp_summary_ie_inv_xlsx</field>
+            <field name="report_file">biz_stock_summary_report.rp_summary_ie_inv_xlsx</field>
+            <field name="print_report_name">'Report summarizing import and export inventory'</field>
+            <field name="binding_type">report</field>
+            <field name="binding_model_id" ref="model_summary_ie_inventory"/>
+        </record>
+
+    </data>
+</odoo>

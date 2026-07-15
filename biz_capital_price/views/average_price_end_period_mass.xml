@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="average_price_end_period_mass_view_form" model="ir.ui.view">
+        <field name="name">average.price.end.period.mass.view.form</field>
+        <field name="model">average.price.end.period.mass</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name='state'/>
+                <field name="error"/>
+            </tree>
+        </field>
+    </record>
+    <record id="average_price_end_period_mass_view_tree" model="ir.ui.view">
+        <field name="name">average.price.end.period.mass.view.tree</field>
+        <field name="model">average.price.end.period.mass</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name='action_confirm' string="Confirm" type="object" class="btn-primary"/>
+                    <button name="action_carryover" 
+                        string="Carryover" 
+                        type="object" class="btn-primary"/> 
+
+                    <button name="action_get_product_nvl"
+                        string="NVL"
+                        type="object" class="btn-primary"/>
+
+                    <button name="action_get_product_tp"
+                        string="TP"
+                        type="object" class="btn-primary"/>
+                    
+                    <button name="action_get_product_storable"
+                        string="Storable"
+                        type="object" class="btn-primary"/>
+                    
+                    
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_open_period"
+                                type="object" icon="fa-bars"
+                            >
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">
+                                    <field name="period_count"/>
+                                </span>                                
+                                <span class="o_stat_text">
+                                    Average Price End Period
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="product_ids" >
+                                <tree limit="20" count_limit="20">
+                                    <field name="default_code"/>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                            <field name="is_finished_products"/>
+                            <field name='apply_inventory'/>
+                            <field name='exclude_begin_period'/>
+                            <field name="from_date" required="1"/>
+                            <field name="to_date" required="1"/>
+                            <field name="error"/>
+                            <field name="sum_quantity_import" invisible="1"/>
+                            <field name="data_quantity_import" invisible="1"/>
+                            
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="End of period cost allocation">
+                            <group>
+                                <group>
+                                    <field name="allocation_rate"/>
+                                    <field name="total_allocation_value"/>
+                                </group>
+                            </group>
+                            <button name="action_general_end_cost" string="General" type='object' class="btn-primary"/>
+                            <field name="end_cost_allocation_ids">
+                                <tree editable="bottom">
+                                    <field name="cost_id"/>
+                                    <field name="date" invisible="1"/>
+                                    <field name="total_cost"/>
+                                    <field name="value"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="Carryover" string="Carryover">
+                            <group>
+                                <group>
+                                    <field name="carryover_move_id"/>
+                                    <field name="carryover_journal_id" attrs="{
+                                            'required': [('is_finished_products', '=', True)],
+                                        }" />
+                                    <field name="carryover_debit_account_id" attrs="{
+                                            'required': [('is_finished_products', '=', True)],
+                                        }" />
+                                    <field name="default_carryover_account_ids" widget="many2many_tags"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="average_price_end_period_mass_view_search" model="ir.ui.view">
+        <field name="name">average.price.end.period.mass.view.search</field>
+        <field name="model">average.price.end.period.mass</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_ids"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_average_price_end_period_mass" model="ir.actions.act_window">
+        <field name="name">Action Average Capital Price End Period Mass</field>
+        <field name="res_model">average.price.end.period.mass</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_action_average_price_end_period_mass"
+              name="Calculate the average cost of capital at the end of the period mass"
+              action="action_average_price_end_period_mass"
+              parent="account.menu_finance_entries"/>
+</odoo>

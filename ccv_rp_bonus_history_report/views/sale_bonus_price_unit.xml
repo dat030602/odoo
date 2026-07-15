@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="sale_bonus_price_unit_form_view_inherit" model="ir.ui.view">
+        <field name="name">sale.bonus.price.unit.form.inherit</field>
+        <field name="model">sale.bonus.price.unit</field>
+        <field name="inherit_id" ref="ccv_sale.sale_bonus_price_unit_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_report_wizard" string="Báo cáo quỹ dự phòng" type="object" class="btn-primary" icon="fa-file-excel-o"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

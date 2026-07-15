@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_purchase_sign_requests_tree" model="ir.ui.view">
+        <field name="name">purchase.sign.requests.tree</field>
+        <field name="model">purchase.sign.requests</field>
+        <field name="arch" type="xml">
+            <tree string="Yêu cầu ký" decoration-info="state == 'approve'" decoration-success="state in ('approved')" decoration-danger="state in ('cancel', 'refuse')">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="purchase_order_id"/>
+                <field name="partner_id"/>
+                <field name="amount_total"/>
+                <field name="state" decoration-info="state == 'approve'" decoration-success="state in ('approved')" decoration-danger="state in ('cancel', 'refuse')" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_purchase_sign_requests_form" model="ir.ui.view">
+        <field name="name">purchase.sign.requests.form</field>
+        <field name="model">purchase.sign.requests</field>
+        <field name="arch" type="xml">
+            <form string="Yêu cầu ký">
+                <header>
+                    <field name="is_user_current" invisible="1"/>
+                    <button name="action_confirm" type="object" string="Trình duyệt" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_agree" type="object" string="Duyệt" attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_refuse" type="object" string="Từ chối" attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_cancel" type="object" string="Hủy" attrs="{'invisible': [('state', 'not in', ('approve'))]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approve,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_purchase_order" type="object" class="oe_stat_button" icon="fa-shopping-cart">
+                            <field name="purchase_order_id" widget="statinfo" string="Đơn mua hàng"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="create_uid" readonly="1" string="Người trình duyệt"/>
+                            <field name="purchase_order_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="description" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="date_planned" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="date_approve" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="debit" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết đơn mua hàng">
+                            <field name="purchase_sign_requests_line_ids" readonly="1" options="{'no_create': True, 'no_open': True}">
+                                <tree>
+                                    <field name="product_image" string="Ảnh" widget="image"/>
+                                    <field name="product_id"/>
+                                    <field name="name" string="Sản phẩm" invisible="1"/>
+                                    <field name="product_uom_qty" sum="amount_total" digits="[16,3]"/>
+                                    <field name="product_uom"/>
+                                    <field name="price_unit"/>
+                                    <field name="tax_id" widget="many2many_tags"/>
+                                    <field name="amount_total"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                            <group name="note_group" col="6" class="mt-2 mt-md-0">
+                                <group colspan="4">
+                                </group>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="purchase_total">
+                                    <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="1"/>
+                                </group>
+                                <div class="clearfix"/>
+                            </group>
+                        </page>
+                        <page name="trp_approve_history" string="Lịch sử duyệt">
+                            <group attrs="{'invisible':[('trp_approve_config_line_id','=', False)]}">
+                                <group>
+                                    <field name="trp_approve_config_line_id" invisible="1"/>
+                                    <field name="current_approve_user_ids" attrs="{'invisible':[('trp_approve_config_line_id','=', False)]}" widget="many2many_tags" groups="base.group_system"/>
+                                    <field name="delegate_approver_ids" attrs="{'invisible':[('trp_approve_config_line_id','=', False)]}" widget="many2many_tags" domain="[('id','not in',current_approve_user_ids)]" groups="base.group_system"/>
+                                </group>
+                            </group>
+                            <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_purchase_sign_requests_search" model="ir.ui.view">
+        <field name="name">purchase.sign.requests.search</field>
+        <field name="model">purchase.sign.requests</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm yêu cầu ký">
+                <field name="name"/>
+                <field name="purchase_order_id"/>
+                <field name="partner_id"/>
+                <field name="create_uid"/>
+                <field name="date"/>
+                <separator/>
+                <filter string="Nháp" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Đang duyệt" name="approve" domain="[('state', '=', 'approve')]"/>
+                <filter string="Đã duyệt" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Từ chối" name="refuse" domain="[('state', '=', 'refuse')]"/>
+                <filter string="Hủy" name="cancel" domain="[('state', '=', 'cancel')]"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('date', '=', context_today())]"/>
+                <filter string="Tuần này" name="this_week" domain="[('date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('date', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Trạng thái" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Ngày" name="group_date" context="{'group_by': 'date'}"/>
+                    <filter string="Nhà cung cấp" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_purchase_sign_requests" model="ir.actions.act_window">
+        <field name="name">Yêu cầu ký</field>
+        <field name="res_model">purchase.sign.requests</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_purchase_sign_requests_search"/>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo yêu cầu ký mới
+            </p>
+            <p>
+                Yêu cầu ký được sử dụng để trình duyệt đơn mua hàng.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_purchase_sign_requests"
+              name="Yêu cầu ký"
+              parent="purchase.menu_procurement_management"
+              action="action_purchase_sign_requests"
+              sequence="20"/>
+
+</odoo>

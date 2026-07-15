@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_stock_quant_tree_editable_inherit" model="ir.ui.view">
+            <field name="name">stock.quant.form.inherit</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree_editable"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='inventory_quantity_auto_apply']" position="after">
+                    <field name="amount_conversion" force_save="1" optional="hide"/>
+                    <field name="conversion_unit" options="{'no_create': True}" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_picking_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='note']" position="after">
+                    <page string="Information on the printout of the stock slip">
+                        <div class="col-xs-12 col-md-12">
+                            <label for="reason_output_input_stock"/>
+                            <field name="reason_output_input_stock"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="founder_id" readonly="1"/>
+                                <field name="regional_head_id" readonly="1"/>
+                                <field name="finance_account_dept_id" readonly="1"/>
+                                <field name="bod_id" readonly="1"/>
+                                <field name="voter_id"/>
+                                <field name="business_department_id"/>
+                                <field name="chief_acc_id"/>
+                                <field name="stocker_id"/>
+                                <field name="unit_heads_id"/>
+                            </group>
+                            <group>
+                                <field name="driver_consignee_id"/>
+                                <field name="load_department_id"/>
+                                <field name="forklift_id"/>
+                                <field name="internal_control_id"/>
+                                <field name="supervision_department_id"/>
+                                <field name="delivery_person_id"/>
+                                <field name="protect_service_id"/>
+                                <field name="implementing_unit"/>
+                                <field name="carrier_person_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Export warehouse for delivery">
+                                <field name="number_of_implementers"/>
+                                <field name="time_start"/>
+                                <field name="time_end"/>
+                                <label for="total_time_vehicle"/>
+                                <div>
+                                    <field name="total_time_vehicle" class="oe_inline"/>
+                                    <span class="oe_inline">Minutes</span>
+                                </div>
+                            </group>
+                            <group string="Material export">
+                                <field name="export_at_ware"/>
+                                <field name="location_export"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//page[@name='operations']/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="before">
+                    <field name="packaging_image" widget="image" class="oe_avatar"/>
+                    <field name="product_image" widget="image" class="oe_avatar" string="Product Image"/>
+                </xpath>
+                <xpath expr="//page[@name='operations']/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+                    <field name="description"/>
+                    <field name="bag_number" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='quantity_done']" position="after">
+                    <field name="bag_done" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_stock_move_line_detailed_operation_tree_ccv" model="ir.ui.view">
+            <field name="name">stock.move.line.operations.tree.ccv</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="before">
+                    <field name="packaging_image" widget="image" class="oe_avatar" />
+                    <field name="product_image" widget="image" class="oe_avatar" string="Product Image"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="model_stock_move_update_bag_number" model="ir.actions.server">
+            <field name="name">Update bag number</field>
+            <field name="model_id" ref="stock.model_stock_move"/>
+            <field name="binding_model_id" ref="stock.model_stock_move"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="state">code</field>
+            <field name="code">action = records.compute_bag_number()</field>
+        </record>
+
+    </data>
+</odoo>

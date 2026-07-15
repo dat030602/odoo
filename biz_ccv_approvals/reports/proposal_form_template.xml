@@ -1,0 +1,196 @@
+<odoo>
+    <template id="proposal_form_template_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="doc" t-value="doc.sudo().with_context(lang=doc.env.user.lang)"/>
+                <t t-set="company" t-value="doc.env.company"/>
+                <div class="header" style="font-family: 'Times New Roman';font-size:12px; padding: 0 60px 0 60px;">
+                    <div class="row" style="border-bottom: 1px solid red; ">
+                        <div class="col-2">
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 80px;max-width: 100%" alt="Logo"/>
+                        </div>
+                        <div class="col-10" style="text-align: right;">
+                            <strong style="font-size: 20px; color: red;font-weight: bold;">CCV HI-TECH AGRICULTURE GROUP</strong><br/>
+                            <span>Trụ sở chính: </span><strong>23 Lô B, Đường Số 1, P.Phú Thuận, Quận 7, TP.HCM</strong><br/>
+                            <span>VPĐD: </span><strong>Villas KL 21, Khu Biệt Thự Kim Long, Nguyễn Hữu Thọ, Phước Kiển, Nhà Bè, TP.HCM</strong><br/>
+                            <div class="row" style="text-align: right;font-size:13px">
+                                <div class="col-8"/> 
+                                <div class="col-2">
+                                    <i class="fa fa-phone"/> <strong>1800 6126</strong>
+                                </div> 
+                                <div class="col-2">
+                                    <i class="fa fa-globe"/> <strong>www.ccv.vn</strong>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page page-ccv" style="padding: 0 30px 0 30px; margin:0xp">
+                    <div class="row">
+                        <div class="col-12 text-center" style="font-size:20px">
+                            <strong>PHIẾU ĐỀ XUẤT</strong>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 text-left">
+                            <span>Kính gửi: </span><strong>BAN TỔNG GIÁM ĐỐC CÔNG TY</strong>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <div class="col-4">
+                            <span>Họ và tên: <t t-esc="doc.request_owner_id.name_without_position"/></span>
+                        </div>
+                        <div class="col-4">
+                            <span>Bộ phận: <t t-esc="doc.request_owner_id.department_id.name"/></span>
+                        </div>
+                        <div class="col-4">
+                            <span>Chức vụ: <t t-esc="doc.request_owner_id.employee_id.job_id.name"/></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span>Kính trình xét duyệt đề xuất với những nội dung sau:</span>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 0px 15px 0 15px;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="vertical-td text-center" style="width: 2%">STT</th>
+                                    <th class="vertical-td text-center" style="width: 65%">Diễn giải</th>
+                                    <th class="vertical-td text-center" style="width: 5%">Số lượng</th>
+                                    <th class="vertical-td text-center" style="width: 28%">
+                                    <t t-if="len(doc.product_line_ids) &gt; 0">Đơn vị tính</t>
+                                    <t t-else="">Ghi chú</t>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <t t-set="count" t-value="0"/>
+                            <tbody style="border-top: 0px;">
+                                <tr t-if="not(doc.reason is False or doc.reason == '') and len(doc.product_line_ids) == 0 and len(doc.request_note_ids) == 0">
+                                    <t t-set="count" t-value="count + 1"/>
+                                    <td class="text-center vertical-td"><span t-esc="count"/></td>
+                                    <td><span t-esc="doc.reason"/></td>
+                                    <td class="vertical-td text-center"><span t-esc="1"/></td>
+                                    <td/>
+                                </tr>
+                                <tr t-foreach="doc.request_note_ids" t-as="line">
+                                    <t t-set="count" t-value="count + 1"/>
+                                    <td class="text-center vertical-td"><span t-esc="count"/></td>
+                                    <td><span t-esc="line.description"/></td>
+                                    <td class="vertical-td text-center"><span t-esc="format_float_number(line.quantity)"/></td>
+                                    <td><span t-esc="line.note"/></td>
+                                </tr>
+                                <tr t-foreach="doc.product_line_ids" t-as="line">
+                                    <t t-set="count" t-value="count + 1"/>
+                                    <td class="text-center vertical-td"><span t-esc="count"/></td>
+                                    <td><span t-esc="line.description"/></td>
+                                    <td class="vertical-td text-center"><span t-esc="format_float_number(line.quantity)"/></td>
+                                    <td class="text-center vertical-td"><span t-esc="line.product_uom_id.name"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span>Thời gian cần thực hiện: <t t-esc="doc.date.strftime('%d/%m/%Y') if doc.date else ''"/></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <span>Kính mong Ban Điều Hành, Tổng Giám Đốc xem xét và phê duyệt.</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-right" style="padding-right: 30px">
+                            <i t-esc="format_today()"/>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="padding:0px;margin-left: 2px;text-align: center;">
+                        <t t-set="approver_count" t-value="len(doc.sudo().trp_approve_history_ids) or 1"/>
+                        <t t-set="col_class" t-value="'col-%d' % (12 // approver_count + 1)"/>
+                        <t t-set="index" t-value="0"/>
+                        <div t-att-class="col_class">
+                            <strong>Người đề nghị</strong>
+                            <br/>`
+                            <t t-if="doc.sudo().create_uid.sign_signature is not False">
+                                <img t-att-src="image_data_uri(doc.sudo().create_uid.sign_signature)" width="110px" height="40px"/>
+                                <br/>
+                                <strong><span t-esc="doc.sudo().create_uid.name_without_position or doc.sudo().create_uid.name"/></strong>
+                            </t>
+                            <t t-else="">
+                                <div class="name-user">
+                                    <span t-esc="doc.sudo().create_uid.name_without_position or doc.sudo().create_uid.name"/>
+                                </div>
+                            </t>
+                        </div>
+                        <t t-foreach="doc.sudo().trp_approve_history_ids" t-as="approve_history_id">
+                            <div t-att-class="col_class">
+                                <span>
+                                    <strong><t t-esc="approve_history_id.title"/></strong>
+                                </span>
+                                <br/>
+                                <t t-if="approve_history_id.approve_user_id and approve_history_id.approve_user_id.sign_signature is not False">
+                                    <img t-att-src="image_data_uri(approve_history_id.approve_user_id.sign_signature)" width="120px" height="80px"/>
+                                    <br/>
+                                    <strong><span t-esc="approve_history_id.approve_user_id.name_without_position"/></strong>
+                                </t>
+                                <t t-else="">
+                                    <div class="name-user">
+                                        <span t-esc="approve_history_id.approve_user_id.name_without_position"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div style="page-break-before: always;">
+                        <h1 style="display: none">Lam de hien full background</h1>
+                    </div>
+                </div>
+                
+                <style>
+                    .text-left {
+                        text-align: left;
+                    }
+                    .text-right {
+                        text-align: right;
+                    }
+                    .name-user {
+                        margin-top: 60px;
+                        font-weight: bold;
+                    }
+                    .table {
+                        border: 1px solid #000;
+                        margin-top: 5px;
+                        margin-bottom: 5px;
+                    }
+                    .table tr th{
+                        border: 1px solid #000;
+                        font-weight: bold;
+                        padding: 4px;
+                    }
+                    .table tr td{
+                        border: 1px solid #000;
+                        padding: 4px;
+                    }
+                    .vertical-td {
+                        vertical-align: middle !important;
+                    }
+                    .page-ccv {
+                        font-family: 'Times New Roman';
+                        font-size:15px; background-image: url(/biz_ccv_approvals/static/src/img/background_page.png);
+                        background-position: center; 
+                        background-size: 245mm 129mm !important;
+                    }
+                </style>
+            </t>
+        </t>
+    </template>
+
+    <template id="proposal_form_template">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="biz_ccv_approvals.proposal_form_template_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </template>
+</odoo>

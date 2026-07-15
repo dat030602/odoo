@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Excel -->
+    <record id="salary_payment_list_report" model="ir.actions.report">
+        <field name="name">Danh sách chi lương</field>
+        <field name="model">salary.payment.list.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.salary_payment_list</field>
+        <field name="report_file">salary_payment_list</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+
+    <record id="report_rp_partner_list_xlsx" model="ir.actions.report">
+        <field name="name">Danh sách liên hệ</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.rp_partner_list_xlsx</field>
+        <field name="report_file">rp_partner_list_xlsx</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="report_rp_internal_tf_materials_report_xlsx" model="ir.actions.report">
+        <field name="name">Sổ Chi tiết Thay thế, Sửa chữa</field>
+        <field name="model">rp.internal.tf.materials.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.rp_internal_tf_materials_report</field>
+        <field name="report_file">rp_internal_tf_materials_report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    
+    <record id="report_rp_production_report_xlsx" model="ir.actions.report">
+        <field name="name">Báo cáo sản lương</field>
+        <field name="model">rp.production.report.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.rp_production_report_xlsx</field>
+        <field name="report_file">rp_production_report_xlsx</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    
+    <record id="tong_hop_cong_no_phai_tra_xlsx_report" model="ir.actions.report">
+        <field name="name">Tổng hợp công nợ phải trả</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.tong_hop_cong_no_phai_tra</field>
+        <field name="report_file">tong_hop_cong_no_phai_tra</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="tong_hop_cong_no_phai_thu_xlsx_report" model="ir.actions.report">
+        <field name="name">Tổng hợp công nợ phải thu</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.tong_hop_cong_no_phai_thu</field>
+        <field name="report_file">tong_hop_cong_no_phai_thu</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="tong_hop_cong_no_phai_tra_usd_xlsx_report" model="ir.actions.report">
+        <field name="name">Tổng hợp công nợ phải trả USD</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.tong_hop_cong_no_phai_tra_usd</field>
+        <field name="report_file">tong_hop_cong_no_phai_tra_usd</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="tong_hop_cong_no_phai_thu_usd_xlsx_report" model="ir.actions.report">
+        <field name="name">Tổng hợp công nợ phải thu USD</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.tong_hop_cong_no_phai_thu_usd</field>
+        <field name="report_file">tong_hop_cong_no_phai_thu_usd</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="chi_tiet_cong_no_phai_thu_usd_xlsx_report" model="ir.actions.report">
+        <field name="name">Chi tiết công nợ phải thu USD</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.chi_tiet_cong_no_phai_thu_usd</field>
+        <field name="report_file">chi_tiet_cong_no_phai_thu_usd</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="chi_tiet_cong_no_phai_tra_usd_xlsx_report" model="ir.actions.report">
+        <field name="name">Chi tiết công nợ phải trả USD</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.chi_tiet_cong_no_phai_tra_usd</field>
+        <field name="report_file">chi_tiet_cong_no_phai_tra_usd</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="danh_sach_chi_tien_von_tu_co_xlsx_report" model="ir.actions.report">
+        <field name="name">Danh sách chi tiền vốn tự có</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.danh_sach_chi_tien_von_tu_co</field>
+        <field name="report_file">danh_sach_chi_tien_von_tu_co</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="chi_tiet_cong_no_phai_thu_xlsx_report" model="ir.actions.report">
+        <field name="name">Chi tiết công nợ phải thu</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.chi_tiet_cong_no_phai_thu</field>
+        <field name="report_file">chi_tiet_cong_no_phai_thu</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="chi_tiet_cong_no_phai_tra_xlsx_report" model="ir.actions.report">
+        <field name="name">Chi tiết công nợ phải trả</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.chi_tiet_cong_no_phai_tra</field>
+        <field name="report_file">chi_tiet_cong_no_phai_tra</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="report_stock_move_xlsx" model="ir.actions.report">
+        <field name="name">Doanh số</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.stock_move_xlsx_report</field>
+        <field name="report_file">ccv_bao_cao.report_stock_move_xlsx</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="report_rp_internal_tf_wizard_xlsx" model="ir.actions.report">
+        <field name="name">Sổ chi tiết nhập hàng</field>
+        <field name="model">rp.internal.tf.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.rp_internal_tf_wizard_report</field>
+        <field name="report_file">ccv_bao_cao.rp_internal_tf_wizard_report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="tong_hop_cong_no_nhan_vien_xlsx_report" model="ir.actions.report">
+        <field name="name">Tổng hợp công nợ nhân viên</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.tong_hop_cong_no_nhan_vien</field>
+        <field name="report_file">tong_hop_cong_no_nhan_vien</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <record id="chi_tiet_cong_no_nhan_vien_xlsx_report" model="ir.actions.report">
+        <field name="name">Chi tiết công nợ nhân viên</field>
+        <field name="model">alpha.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">ccv_bao_cao.chi_tiet_cong_no_nhan_vien</field>
+        <field name="report_file">chi_tiet_cong_no_nhan_vien</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+    <!-- Excel -->
+
+
+    <!-- PDF -->
+    <!-- <record id="giay_de_nghi_thanh_toan_report" model="ir.actions.report">
+        <field name="name">Giấy Đề Nghị Thanh Toán</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao.giay_de_nghi_thanh_toan_template</field>
+        <field name="report_file">ccv_bao_cao.giay_de_nghi_thanh_toan_template</field>
+        <field name="print_report_name">'Giấy Đề Nghị Thanh Toán - %s' % (object.request_owner_id.name)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="hr_expense.model_hr_expense_sheet"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4"/>
+    </record> -->
+    <record id="lenh_dieu_dong_xe_di_cong_tac_report" model="ir.actions.report">
+        <field name="name">Lệnh Điều Động Xe Đi Công Tác</field>
+        <field name="model">approval.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao.lenh_dieu_dong_xe_di_cong_tac_template</field>
+        <field name="report_file">ccv_bao_cao.lenh_dieu_dong_xe_di_cong_tac_template</field>
+        <field name="print_report_name">'Lệnh Điều Động Xe Đi Công Tác - %s' % (object.request_owner_id.name)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="ccv_bao_cao.model_approval_request"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_bao_cao.format_a4_ccv_bao_cao"/>
+    </record>
+
+    <record id="giay_de_nghi_thanh_toan_report" model="ir.actions.report">
+        <field name="name">Giấy Đề Nghị Thanh Toán</field>
+        <field name="model">payment.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao.giay_de_nghi_thanh_toan_template</field>
+        <field name="report_file">ccv_bao_cao.giay_de_nghi_thanh_toan_template</field>
+        <field name="print_report_name">'Giấy Đề Nghị Thanh Toán - %s' % (object.sudo().partner_id.name)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="biz_payment_request.model_payment_request"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a5"/>
+    </record>
+
+    <record id="giay_de_nghi_thanh_toan_report_a4" model="ir.actions.report">
+        <field name="name">Giấy Đề Nghị Thanh Toán A4</field>
+        <field name="model">payment.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ccv_bao_cao.giay_de_nghi_thanh_toan_template_a4</field>
+        <field name="report_file">ccv_bao_cao.giay_de_nghi_thanh_toan_template_a4</field>
+        <field name="print_report_name">'Giấy Đề Nghị Thanh Toán - %s' % (object.sudo().partner_id.name)</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_model_id" ref="biz_payment_request.model_payment_request"/>
+        <field name="binding_view_types">form</field>
+        <field name="paperformat_id" ref="ccv_sql.format_a4_doc"/>
+    </record>
+
+    <record id="action_report_saleorder_new_2025_pdf" model="ir.actions.report">
+        <field name="name">Đơn bán hàng CCV 2025 (PDF)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">sale.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_saleorder_2025_pdf</field>
+        <field name="report_file">py3o_saleorder_2025_pdf</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="py3o_template_fallback">report/mau-don-hang-CCV-new-2025.odt</field>
+    </record>
+    
+    <record id="action_report_purchaseorder_new_2025_pdf" model="ir.actions.report">
+        <field name="name">Đơn mua hàng CCV 2025 (PDF)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">purchase.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_purchaseorder_2025_pdf</field>
+        <field name="report_file">py3o_purchaseorder_2025_pdf</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_purchase_order"/>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="py3o_template_fallback">report/po_ccv_2025.odt</field>
+    </record>
+    <!-- PDF -->
+
+    <!-- Word -->
+    <record id="py3o_purchaseorder_1" model="ir.actions.report">
+        <field name="name">Đơn đặt hàng CCV (mẫu 1)</field>
+        <field name="report_name">ccv_bao_cao.py3o_purchaseorder_1</field>
+        <field name="report_type">py3o</field>
+        <field name="model">purchase.order</field>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="py3o_template_fallback">report/don_dat_hang_1.odt</field>
+    </record>
+    <record id="py3o_purchaseorder_2" model="ir.actions.report">
+        <field name="name">Đơn đặt hàng CCV (mẫu 2)</field>
+        <field name="report_name">ccv_bao_cao.py3o_purchaseorder_2</field>
+        <field name="report_type">py3o</field>
+        <field name="model">purchase.order</field>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="py3o_template_fallback">report/don_dat_hang_2.odt</field>
+    </record>
+    <record id="py3o_purchaseorder_3" model="ir.actions.report">
+        <field name="name">Đơn đặt hàng CCV (mẫu 3)</field>
+        <field name="report_name">ccv_bao_cao.py3o_purchaseorder_3</field>
+        <field name="report_type">py3o</field>
+        <field name="model">purchase.order</field>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="py3o_template_fallback">report/don_dat_hang_3.odt</field>
+    </record>
+    <record id="action_report_saleorder_new_2025_docx" model="ir.actions.report">
+        <field name="name">Đơn bán hàng CCV 2025</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">sale.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_saleorder_2025</field>
+        <field name="report_file">py3o_saleorder_2025</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="py3o_template_fallback">report/mau-don-hang-CCV-new-2025.odt</field>
+    </record>
+    <record id="action_report_saleorder_new_2026_docx" model="ir.actions.report">
+        <field name="name">Đơn bán hàng CCV 2026</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">sale.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_saleorder_2026</field>
+        <field name="report_file">py3o_saleorder_2026</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="py3o_template_fallback">report/mau-don-hang-CCV-new-2026.odt</field>
+    </record>
+    <record id="action_report_purchaseorder_new_2025_docx" model="ir.actions.report">
+        <field name="name">Đơn mua hàng CCV 2025</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">purchase.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_purchaseorder_2025</field>
+        <field name="report_file">py3o_purchaseorder_2025</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_purchase_order"/>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="py3o_template_fallback">report/po_ccv_2025.odt</field>
+    </record>
+    <record id="action_report_purchaseorder_new_2025_xuat_xu_bao_hanh_docx" model="ir.actions.report">
+        <field name="name">Đơn mua hàng CCV 2025 (xuất xứ, bảo hành)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">purchase.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_purchaseorder_xuat_xu_bao_hanh_2025</field>
+        <field name="report_file">py3o_purchaseorder_xuat_xu_bao_hanh_2025</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_purchase_order"/>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="py3o_template_fallback">report/po_ccv_2025_co_xuat_xu.odt</field>
+    </record>
+    <record id="action_quotation_report_docx" model="ir.actions.report">
+        <field name="name">Bảng báo giá</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">quotation.report.wizard</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_quotation_sale_2025</field>
+        <field name="report_file">py3o_quotation_sale_2025</field>
+        <field name="print_report_name">'%s' % (object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_quotation_report_wizard"/>
+        <field name="py3o_filetype">docx</field>
+        <field name="module">ccv_bao_cao</field>
+        <field name="py3o_template_fallback">report/quotation_sale_2025.odt</field>
+    </record>
+
+    <!-- Word -->
+</odoo>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_inherit_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="after">
+                <field name="hide_cancel_button" invisible="1"/>
+                <field name="is_adjusted_pricelist" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="groups">ccv_sale.group_hide_cancel_button</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('sale_sign_requests_state', '=', 'approved'), '&amp;', ('state', 'in', ('sale', 'done')), ('hide_cancel_button', '!=', True)]}</attribute>
+            </xpath>
+            <header position="inside">
+                <field name="sale_sign_requests_count" invisible="1"/>
+                <field name="sale_sign_requests_state" invisible="1"/>
+                <button name="action_create_sale_sign_request" type="object" string="Trình duyệt" class="btn-primary" attrs="{'invisible': ['|',('sale_sign_requests_count', '>', 0),('state', 'in', ('cancel', 'done'))]}"/>
+                <button name="action_resubmit_sale_sign_request" type="object" string="Trình ký lại" class="btn-secondary" attrs="{'invisible': ['|', ('sale_sign_requests_count', '=', 0), '|', ('sale_sign_requests_state', '!=', 'approved'),('state', 'in', ('cancel', 'done'))]}"/>
+            </header>
+            <button name="action_view_invoice" position="before">
+                <button name="action_view_sale_sign_requests" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible': [('sale_sign_requests_count', '=', 0)]}">
+                    <field name="sale_sign_requests_count" widget="statinfo" string="Yêu cầu ký"/>
+                </button>
+            </button>
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="bonus_price_id" options="{'no_open':True,'no_create': True}" required="1" force_save="1"/>
+                <field name="promotion_ccv_id" options="{'no_open':True,'no_create': True}" required="1" force_save="1"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+                <!-- Mở khoá sửa giá gốc (price_unit_src) chỉ khi:
+                     (1) user thuộc nhóm Trưởng khu vực (hide_cancel_button = True)
+                     VÀ (2) đơn hàng đang dùng bảng giá 'BBG Điều Chỉnh' (is_adjusted_pricelist = True)
+                -->
+                <field name="price_unit_src" optional="hide" force_save="1" attrs="{'readonly': ['|', ('parent.hide_cancel_button', '!=', True), ('parent.is_adjusted_pricelist', '!=', True)]}"/>
+                <field name="price_unit_bonus" optional="hide" attrs="{'readonly': [('parent.hide_cancel_button', '!=', True)]}"/>
+                <field name="promotion_ccv_amount" optional="hide" readonly="1"/>
+                <field name="promotion_ccv_id" invisible="1"/>
+                <field name="bonus_price_id" invisible="1"/>
+            </xpath>
+            <!-- Khoa don gia trong tree view: chi nhom quyen dac biet moi sua duoc -->
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('qty_invoiced', '&gt;', 0), ('parent.hide_cancel_button', '!=', True)]}</attribute>
+            </xpath>
+            <!-- Khoa don gia trong form popup: chi nhom quyen dac biet moi sua duoc -->
+            <xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position="attributes">
+                <attribute name="attrs">{'readonly': [('parent.hide_cancel_button', '!=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                <field name="qty_ordered" optional="show" readonly="1" force_save="1"/>
+                <field name="qty_order_delivered" optional="show" readonly="1" force_save="1"/>
+                <field name="qty_can_order" optional="show" readonly="1" force_save="1"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="qr_bank" string="QR">
+                    <group>
+                        <group>
+                            <field name="vietqr_bank_id" options="{'no_create': True,'no_open': True}" domain="[('print_qr_id','!=',False)]"/>
+                            <field name="amount_bank" readonly="0"/>
+                            <field name="bank_info" readonly="0"/>
+                            <field name="is_show_qr" invisible="1"/>
+                            <button name="action_create_qr_code" type="object" string="Tạo QR" attrs="{'invisible':[('is_show_qr','=',False)]}"/>
+                            <field name="qr_url" invisible="1"/>
+                        </group>
+                        <group>
+                            <!-- <field name="qr_image" widget="image" attrs="{'invisible': [('qr_url', '=', False)]}"/> -->
+                        </group>
+                    </group>
+                </page>
+                <page name="sale_sign_requests" string="Yêu cầu ký">
+                    <field name="sale_sign_requests_id" invisible="1"/>
+                    <field name="sale_sign_requests_history_ids" readonly="1" />
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_inherit_sale_sign_requests_state" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="sale_sign_requests_ids" invisible="1"/>
+                <field name="sale_sign_requests_id" invisible="1"/>
+                <field name="sale_sign_requests_state" string="Trạng thái duyệt" widget="badge" decoration-info="sale_sign_requests_state == 'approve'" decoration-success="sale_sign_requests_state in ('approved')" decoration-danger="sale_sign_requests_state in ('cancel', 'refuse')"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

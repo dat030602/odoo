@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_internal_transfer_accounting_voucher_a4" model="report.paperformat">
+        <field name="name">Internal transfer accounting voucher</field>
+        <field name="default" eval="False"/>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_spacing">25</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="action_report_internal_transfer_accounting_voucher" model="ir.actions.report">
+        <field name="name">Internal transfer accounting voucher</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_internal_transfer_slip_ccv.report_i_t_a_v</field>
+        <field name="report_file">biz_internal_transfer_slip_ccv.report_i_t_a_v</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_internal_transfer_accounting_voucher_a4"/>
+    </record>
+    
+    <record id="action_report_internal_transfer_accounting_voucher_invoice" model="ir.actions.report">
+        <field name="name">Internal transfer accounting voucher</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_internal_transfer_slip_ccv.i_report_i_t_a_v</field>
+        <field name="report_file">biz_internal_transfer_slip_ccv.i_report_i_t_a_v</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_internal_transfer_accounting_voucher_a4"/>
+    </record>
+</odoo>

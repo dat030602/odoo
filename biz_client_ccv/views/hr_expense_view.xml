@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_expense_extract_view_form" model="ir.ui.view">
+        <field name="name">hr.expense.extract.view.form</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense_extract.hr_expense_extract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@role='status'][1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<template id="ccv_custom_field.rp_plant_yield_charge_daily_work_document">
+    <t t-call="ccv_bao_cao.ccv_header_img">
+    <style>
+        .page>*{
+            font-size: 16px;
+            font-family: Times New Roman !important;
+        }
+    </style>
+    <main/>
+    <div class="page" style="font-size: 16px;font-family: Times New Roman">
+        <t t-set="date" t-value="o.date"/>
+        <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+            <strong>
+                BÁO CÁO SẢN LƯỢNG CHẤT CÂY - XẠC CÂY - CÔNG NHẬT
+            </strong>
+        </div>
+        <div class="col-xs-12" style="text-align: center; font-size: 16px;">
+            <strong>
+                - PHÒNG BAN: <t t-esc="o.department_id.name.upper()"/> -
+            </strong>
+        </div>
+        <div class="col-xs-12" style="text-align: center;">
+            <span class="fw-bolder fst-italic">Ngày <t t-esc="date.strftime('%d')"/> tháng <t t-esc="date.strftime('%m')"/> năm <t t-esc="date.strftime('%Y')"/></span>
+        </div>
+        <div class="row">
+            <table class="table table-sm" style="padding:0px;border: solid 1px; width: 100%; margin-top: 4px;">
+                <t t-set="uom_ids" t-value="o.product_line_ids.mapped('product_uom_id')"/>
+                <thead>
+                    <tr>
+                        <th rowspan="2">STT</th>
+                        <th rowspan="2">Diễn giải</th>
+                        <th rowspan="2">ĐVT</th>
+                        <th t-att-colspan="len(uom_ids)">Số lượng</th>
+                        <th rowspan="2">Ghi Chú</th>
+                    </tr>
+                    <tr>
+                        <t t-foreach="uom_ids" t-as="uom_id">
+                            <th t-esc="uom_id.name"/>
+                        </t>
+                    </tr>
+                </thead>
+                <tbody style="border-top: 0 !important">
+                    <tr t-foreach="line_ids[str(o.id)]['product_line_ids']" t-as="line">
+                        <td class="text-center"><span t-esc="line_index + 1"/></td>
+                        <td><span t-esc="line['description']"/></td>
+                        <td class="text-center"><span t-esc="line['uom']"/></td>
+                        <t t-foreach="line['quantity']" t-as="quantity">
+                            <td class="text-center">
+                                <span t-if="quantity != 0" t-esc="'%.3f' % float(quantity)"/>
+                            </td>
+                        </t>
+                        <td class="text-center"><span t-esc="line['note']"/></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" class="fw-bold text-center"><strong>Cộng</strong></td>
+                        <t t-foreach="line_ids[str(o.id)]['quantity']" t-as="quantity">
+                            <td class="text-center">
+                                <strong t-if="quantity != 0" t-esc="'%.3f' % float(quantity)"/>
+                            </td>
+                        </t>
+                        <td/>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="" style="padding:0px;text-align: end;">
+            <span>Đồng Nai, Ngày <t t-esc="date.strftime('%d')"/> tháng <t t-esc="date.strftime('%m')"/> năm <t t-esc="date.strftime('%Y')"/></span>
+        </div>
+        <div class="row rowp" style="padding:0px;margin-left: 2px;text-align: center;">
+            <div class="col-2">
+                <span>
+                    <strong>Người lập phiếu</strong>
+                </span>
+                <br/>
+                <div class="name-user">
+                    <span><t t-esc="o.env.user.name_without_position"/></span>
+                </div>
+            </div>
+            <t t-set="env_params" t-value="o.env['ir.config_parameter'].sudo()"/>
+            <t t-set="chief_finance_id" t-value="env_params.get_param('ccv_bao_cao.chief_accountant_id', False)"/>
+            <t t-set="hr_admin_department_id" t-value="env_params.get_param('ccv_bao_cao.hr_admin_department_id', False)"/>
+            <div class="col-2">
+                <span>
+                    <strong>Tổ trưởng BP</strong>
+                </span>
+                <br/>
+                <div class="name-user">
+                    <span><t t-esc="o.request_owner_id.sudo().name_without_position"/></span>
+                </div>
+            </div>
+            <div class="col-2">
+                <span>
+                    <strong>Quản lý sản xuất</strong>
+                </span>
+                <br/>
+                <div class="name-user">
+                    <span></span>
+                </div>
+            </div>
+            <div class="col-2">
+                <span>
+                    <strong>Phòng HCNS</strong>
+                </span>
+                <br/>
+                <div class="name-user">
+                    <span><t t-esc="o.env['res.users'].sudo().browse(int(hr_admin_department_id)).name_without_position"/></span>
+                </div>
+            </div>
+            <div class="col-2">
+                <span>
+                    <strong>Phòng TCKT</strong>
+                </span>
+                <br/>
+                <div class="name-user">
+                    <span><t t-esc="o.env['res.users'].sudo().browse(int(chief_finance_id)).name_without_position"/></span>
+                </div>
+            </div>
+            <div class="col-2">
+                <span>
+                    <strong>Thủ trưởng đơn vị</strong>
+                </span>
+                <br/>
+                <div class="name-user">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .text-left {
+            text-align: left;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .name-user {
+            margin-top: 60px;
+            font-weight: bold;
+        }
+        .table {
+            border: 1px solid #000;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .table tr th{
+            border: 1px solid #000;
+            font-weight: bold;
+            padding: 4px;
+        }
+        .table tr td{
+            border: 1px solid #000;
+            padding: 4px;
+        }
+        .vertical-td {
+            vertical-align: middle !important;
+        }
+        .page-ccv {
+            font-family: 'Times New Roman';
+            font-size:15px; background-image: url(/biz_ccv_approvals/static/src/img/background_page.png);
+            background-position: center; 
+            background-size: 245mm 129mm !important;
+        }
+    </style>
+    </t>
+</template>
+</odoo>

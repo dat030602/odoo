@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="viettel_sinvoice_lookups_tree_view" model="ir.ui.view">
+        <field name="name">viettel.sinvoice.lookups.tree</field>
+        <field name="model">viettel.sinvoice.lookups</field>
+        <field name="arch" type="xml">
+        	<tree string="Viettel Sinvoice">
+        		<field name="name"/>
+        		<field name="sinvoice_type"/>
+		       	<field name="invoice_no"/>
+		       	<field name="buyer_tax_code"/>
+        	</tree>
+        </field>
+    </record>
+    
+    <record id="viettel_sinvoice_lookups_form_view" model="ir.ui.view">
+        <field name="name">viettel.sinvoice.lookups.form</field>
+        <field name="model">viettel.sinvoice.lookups</field>
+        <field name="arch" type="xml">
+            <form string="Viettel Sinvoice">
+            	<header>
+					<button name="action_search_sinvoice" string="Search" type="object"  class="oe_highlight" />
+				</header>
+				<sheet>
+					<group>
+						<group>
+							<field name="company_id"/>
+							<field name="date_start" required="1"/>
+					    	<field name="invoiceType" required="1"/>
+					     	<field name="vsi_template"/>
+					     	<field name="buyer_code"/>
+					     	<field name="buyer_tax_code"/>
+					 	</group>
+					 	<group>
+					 		<field name="vsi_tin"/>
+					    	<field name="date_end" required="1"/>
+					    	<field name="invoice_no"/>
+					     	<field name="vsi_series"/>
+					     	<field name="buyer_name"/>
+					 	</group>
+					</group>
+					<field name="sinvoice_ids" no-edit="1" nolabel="1" readonly="1">
+						<tree>
+							<field name="templateCode"/>
+							<field name="invoiceNo"/>
+							<field name="createTime"/>
+							<field name="buyerName"/>
+							<field name="total"/>
+							<field name="currencyCode"/>
+							<button name="do_download_invoice" type="object" title="Tải Hóa Đơn" icon="fa-print"/>
+						</tree>
+					</field>
+				</sheet>
+				
+            </form>
+        </field>
+    </record>
+    <record id="action_viettel_sinvoice_lookups" model="ir.actions.act_window">
+        <field name="name">Viettel Sinvoice Lookups</field>
+        <field name="res_model">viettel.sinvoice.lookups</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem id="menu_viettel_sinvoice_lookups" parent="menu_viettel_sinvoice" action="action_viettel_sinvoice_lookups" sequence="1"/>
+</odoo>

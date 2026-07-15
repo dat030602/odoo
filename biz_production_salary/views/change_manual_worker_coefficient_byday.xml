@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_change_manual_worker_coefficient_byday_tree" model="ir.ui.view">
+        <field name="name">change.manual.worker.coefficient.byday.tree</field>
+        <field name="model">change.manual.worker.coefficient.byday</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="date"/>
+                <field name="employee_ids" widget="many2many_tags"/>
+                <field name="coefficient"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_change_manual_worker_coefficient_byday_search" model="ir.ui.view">
+        <field name="name">change.manual.worker.coefficient.byday.search</field>
+        <field name="model">change.manual.worker.coefficient.byday</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date" widget="daterange"/>
+                <field name="employee_ids"/>
+                <filter string="Today" name="filter_date_today" domain="[('date', '=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="filter_date_this_month" domain="[('date', '>=', context_today().to_date().replace(day=1).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 7 Days" name="filter_date_last_7_days" domain="[('date', '>=', (context_today().to_date() - relativedelta(days=6)).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 30 Days" name="filter_date_last_30_days" domain="[('date', '>=', (context_today().to_date() - relativedelta(days=29)).strftime('%Y-%m-%d')), ('date', '&lt;=', context_today().to_date().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Date" name="filter_date" domain="[]" context="{'group_by': 'date'}"/>
+                <filter string="Employee" name="filter_employee" domain="[]" context="{'group_by': 'employee_ids'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_change_manual_worker_coefficient_byday" model="ir.actions.act_window">
+        <field name="name">Change manual worker coefficient by day</field>
+        <field name="res_model">change.manual.worker.coefficient.byday</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+        id="menu_change_manual_worker_coefficient_byday"
+        name="Change manual worker coefficient by day"
+        parent="biz_production_salary.menu_common_worker_output_salary"
+        sequence="30"
+        action="action_change_manual_worker_coefficient_byday"
+        />
+    
+</odoo>

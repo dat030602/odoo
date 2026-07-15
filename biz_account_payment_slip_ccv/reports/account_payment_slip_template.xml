@@ -1,0 +1,181 @@
+<odoo>
+    <template id="account_payment_slip_template_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+            <t t-set="doc" t-value="doc.sudo().with_context(lang=doc.env.user.lang)" />
+            <t t-set="company" t-value="doc.env.company"/>
+            <t t-set="move" t-value="doc.move_id"/>
+                <div class="page" style="font-family: Times New Roman;font-size:18px">
+                    <div class="page-one">
+                        <div class="row" style="position: relative;">
+                            <div style="justify-content: left; align-items: center;position: absolute">
+                                <img t-att-src="image_data_uri(move.company_id.logo)" style="height: 85px; width:180px"/>
+                            </div>
+                            <div class="col-12 text-center" style="height: 80px;">
+                                <div class="" style="padding-top: 30px; !important;">
+                                    <span/>Công ty TNHH Con Cò Vàng - Mã số thuế: <span t-esc="move.company_id.vat"/>
+                                </div>
+                                
+                            </div>
+                        </div>   
+                        <div class="row text-center">
+                            <div class="col-12 padding-col">
+                                <p class="content-p" style="font-size: 20px;"><b>CHỨNG TỪ KẾ TOÁN</b></p>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-8">
+                                <p class="content-p">Tên: <span class="span-esc" t-esc="move.partner_id.name"/></p>
+                                <p class="content-p">Địa chỉ: <span class="span-esc" t-esc="get_address(move.partner_id)"/></p>
+                            </div>
+                            <div class="col-4" style="padding-left: 30px;">
+                                <p class="content-p">Số: <span style="padding-left: 35px;" t-esc="move.name"/></p>
+                                <p class="content-p">Ngày: <span class="span-esc" t-esc="move.date.strftime('%d/%m/%Y') if move else ''"/></p>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-8">
+                                
+                            </div>
+                            <div class="col-4">
+                                
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="content-p">Diễn giải: <span class="span-esc" t-esc="doc.ref"/></p>
+                            </div>
+                        </div>    
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 4%">STT</th>
+                                        <th style="width: 50%">Diễn giải</th>
+                                        <th style="width: 13%">Ghi Nợ</th>
+                                        <th style="width: 13%">Ghi Có</th>
+                                        <th style="width: 20%">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="border-top: 0px;">
+                                    <tr t-foreach="get_lines(move)" t-as="line">
+                                        <td class="text-center vertical-td"><span t-esc="line_index + 1"/></td>
+                                        <td><span t-esc="line['name']"/></td>
+                                        <td class="vertical-td"><span t-esc="line['debit']"/></td>
+                                        <td class="vertical-td"><span t-esc="line['credit']"/></td>
+                                        <td class="text-right vertical-td"><span t-esc="format_float_number(line['amount'])"/></td>
+                                    </tr>
+                                    <t t-set="total" t-value="sum(line['amount'] for line in get_lines(move)) "/>
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-center vertical-td"><b>Cộng</b></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-right vertical-td"><b><span t-esc="format_float_number(total)"/></b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="content-p">Thành tiền bằng chữ: <b><i><span class="span-esc" t-esc="amount2text(total)"/>đồng</i></b></p>
+                            </div>
+                        </div>
+                        <t t-if="doc.note">
+                            <div class="row">
+                                <div class="col-1">
+                                    <p class="content-p">Ghi chú:</p>
+                                </div>
+                                <div class="col-11">
+                                    <span t-esc="doc.note"/>
+                                </div>
+                            </div> 
+                        </t>
+                        <t t-else="">
+                            <div class="row" style="height: 22px;">
+                                <div class="col-1">
+                                    <p class="content-p">Ghi chú:</p>
+                                </div>      
+                                <div class="col-11" style="border-bottom: 2px dotted;">
+                                </div>
+                            </div>
+                        </t>        
+                        <br/>
+                        <div class="row" style="page-break-inside: avoid;">
+                            <div class="col-4 text-center">
+                                <span class="title-vi"><b>Người Lập Phiếu</b></span><br/>
+                                <i>(Ký, họ tên)</i><br/>
+                                <div class="name-user">
+                                    <span t-esc="doc.creator_id.name_without_position or doc.creator_id.name"/>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <span class="title-vi"><b>Kế Toán Trưởng</b></span><br/>
+                                <i>(Ký, họ tên)</i><br/>
+                                <div class="name-user">
+                                    <span t-esc="doc.chief_accountant_id.name_without_position or doc.chief_accountant_id.name"/>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <span class="title-vi "><b>Thủ trưởng đơn vị</b></span><br/>
+                                <i>(Ký, họ tên, đóng dấu)</i><br/>
+                                <div class="name-user">
+                                    <span t-esc="doc.unit_head_id.name_without_position or doc.unit_head_id.name"/>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .name-user {
+                        margin-top: 100px;
+                        font-weight: bold;
+                    }
+                    .text-right {
+                        text-align: right;
+                    }
+                    .content-p {
+                        margin-bottom: 0px;
+                        padding: 1px;
+                    }
+                    .bg-tr {
+                        background: #0099FF;
+                    }
+                    .row {
+                        --bs-gutter-x: 0;
+                        --bs-gutter-y: 0;
+                    }
+                    .span-esc {
+                        margin-left: 15px;
+                    }
+                    .padding-col {
+                        padding-left: 5px;
+                    }
+                    .table {
+                        border: 1px solid #000;
+                        margin-top: 5px;
+                        margin-bottom: 5px;
+                    }
+                    .table tr th{
+                        border: 1px solid #000;
+                        font-weight: bold;
+                        padding: 4px;
+                    }
+                    .table tr td{
+                        border: 1px solid #000;
+                        padding: 4px;
+                    }
+                    .vertical-td {
+                        vertical-align: middle !important;
+                    }
+                    
+                </style>
+            </t>
+        </t>
+    </template>
+    <template id="payment_slip_template">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="biz_account_payment_slip_ccv.account_payment_slip_template_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </template>
+</odoo>

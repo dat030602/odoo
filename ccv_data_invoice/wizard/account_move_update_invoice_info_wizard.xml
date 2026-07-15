@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_wz_account_move_update_invoice_info_form" model="ir.ui.view">
+            <field name="name">wz.account.move.update.invoice.info.form</field>
+            <field name="model">wz.account.move.update.invoice.info</field>
+            <field name="arch" type="xml">
+                <form string="Cập nhật thông tin hóa đơn">
+                    <group>
+                        <field name="ref" required="1"/>
+                        <field name="series" required="1"/>
+                        <field name="date_invoice" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_apply" string="Cập nhật" type="object" class="btn-primary"/>
+                        <button string="Hủy" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wz_account_move_update_invoice_info" model="ir.actions.act_window">
+            <field name="name">Cập nhật thông tin hóa đơn</field>
+            <field name="res_model">wz.account.move.update.invoice.info</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

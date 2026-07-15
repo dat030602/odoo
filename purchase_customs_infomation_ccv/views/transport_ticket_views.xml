@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence -->
+    <record id="seq_transport_ticket" model="ir.sequence">
+        <field name="name">Transport Ticket</field>
+        <field name="code">transport.ticket</field>
+        <field name="prefix">PVC/%(y)s%(month)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_transport_ticket_tree" model="ir.ui.view">
+        <field name="name">transport.ticket.tree</field>
+        <field name="model">transport.ticket</field>
+        <field name="arch" type="xml">
+            <tree string="Phiếu vận chuyển" create="false" edit="false">
+                <header>
+                    <button name="action_sync_transport_tickets" string="Đồng bộ Cước vận chuyển" type="object" class="oe_highlight"/>
+                </header>
+                <field name="name"/>
+                <field name="purchase_id"/>
+                <field name="picking_id"/>
+                <field name="partner_id"/>
+                <field name="unload_container_id"/>
+                <field name="quantity"/>
+                <field name="price_unit"/>
+                <field name="amount_total" sum="Tổng tiền cước"/>
+                <field name="move_id"/>
+                <field name="state" widget="badge" decoration-success="state=='invoiced'" decoration-info="state=='draft'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_transport_ticket_form" model="ir.ui.view">
+        <field name="name">transport.ticket.form</field>
+        <field name="model">transport.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Phiếu vận chuyển" create="false" edit="true">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,invoiced"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_move"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('move_id', '=', False)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Hóa đơn</span>
+                            </div>
+                        </button>
+                        <button type="object" name="action_view_landed_cost"
+                            class="oe_stat_button"
+                            icon="fa-bar-chart"
+                            attrs="{'invisible': [('landed_cost_id', '=', False)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Landed Cost</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="purchase_id" readonly="1"/>
+                            <field name="picking_id" readonly="1"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="unload_container_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="quantity" readonly="1"/>
+                            <field name="price_unit" readonly="1"/>
+                            <field name="amount_total" readonly="1"/>
+                            <field name="move_line_id" readonly="1" attrs="{'invisible': [('move_line_id', '=', False)]}"/>
+                            <field name="move_id" readonly="1" attrs="{'invisible': [('move_id', '=', False)]}"/>
+                            <field name="landed_cost_id" readonly="1" attrs="{'invisible': [('landed_cost_id', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <group string="Quyết toán hóa đơn">
+                        <group>
+                            <field name="billing_quantity"/>
+                            <field name="billing_price_unit"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_transport_ticket_search" model="ir.ui.view">
+        <field name="name">transport.ticket.search</field>
+        <field name="model">transport.ticket</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm phiếu vận chuyển">
+                <field name="name"/>
+                <field name="purchase_id"/>
+                <field name="picking_id"/>
+                <field name="partner_id"/>
+                <field name="unload_container_id"/>
+                <filter string="Chưa xuất hóa đơn" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Đã xuất hóa đơn" name="invoiced" domain="[('state','=','invoiced')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Đơn mua hàng" name="group_by_purchase" context="{'group_by':'purchase_id'}"/>
+                    <filter string="Nhà xe" name="group_by_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Trạng thái" name="group_by_state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Server Action: Group Tickets -->
+    <record id="action_group_transport_tickets" model="ir.actions.server">
+        <field name="name">Gộp tạo Hóa đơn (Vendor Bill)</field>
+        <field name="model_id" ref="model_transport_ticket"/>
+        <field name="binding_model_id" ref="model_transport_ticket"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = env['group.transport.invoice.wizard'].with_context(active_ids=records.ids).action_create_invoice()
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_transport_ticket" model="ir.actions.act_window">
+        <field name="name">Phiếu vận chuyển</field>
+        <field name="res_model">transport.ticket</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_transport_ticket_search"/>
+        <field name="context">{'search_default_draft': 1}</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_transport_ticket"
+              name="Phiếu vận chuyển cước"
+              parent="purchase.menu_procurement_management"
+              action="action_transport_ticket"
+              sequence="15"/>
+</odoo>

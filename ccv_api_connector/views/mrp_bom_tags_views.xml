@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View for mrp.bom.tags -->
+    <record id="mrp_bom_tags_tree_view" model="ir.ui.view">
+        <field name="name">mrp.bom.tags.tree</field>
+        <field name="model">mrp.bom.tags</field>
+        <field name="arch" type="xml">
+            <tree string="BOM Tags" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for mrp.bom.tags -->
+    <record id="action_mrp_bom_tags" model="ir.actions.act_window">
+        <field name="name">BOM Tags</field>
+        <field name="res_model">mrp.bom.tags</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new BOM tag
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu item for mrp.bom.tags -->
+    <menuitem id="menu_mrp_bom_tags" name="BOM Tags" parent="mrp.menu_mrp_bom" action="action_mrp_bom_tags" sequence="1"/>
+</odoo>

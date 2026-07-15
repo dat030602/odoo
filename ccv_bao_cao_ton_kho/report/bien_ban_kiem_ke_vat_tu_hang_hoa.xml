@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="ccv_bao_cao_ton_kho_bien_ban_kiem_ke_vat_tu_hang_hoa_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_bao_cao_ton_kho.ccv_bao_cao_ton_kho_bien_ban_kiem_ke_vat_tu_hang_hoa_document"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="ccv_bao_cao_ton_kho_bien_ban_kiem_ke_vat_tu_hang_hoa_document">
+            <t t-call="ccv_sql.ccv_header2">
+                <div class="page" style="font-size: 10px;font-family: Times New Roman">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong style="text-transform: uppercase;" ><t t-esc="doc.report_name"/></strong>
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        - Thời điểm kiểm kê: <t t-esc="doc.parent_id.convert_hour((doc.date+ datetime.timedelta(hours=7)))"/>
+                    </div>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        - Biên bản kiểm kê gồm:
+                    </div>
+                    <t t-foreach="doc.user_ids" t-as="user_id">
+                        <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: left;">
+                            <div class="col-4">
+                                <span>+ Ông / bà: <t t-if="not(user_id.name is False or user_id.name == '')"><t t-esc="user_id.name"/></t></span>
+                            </div>
+                            <div class="col-4">
+                                <span>Chức vụ: <t t-esc="user_id.job"/></span>
+                            </div>
+                            <div class="col-4">
+                                <span>Đại diện:
+                                    <t t-if="user_id.representative is False or user_id.representative == ''">..................................................................</t>
+                                    <t t-else=""><t t-esc="user_id.representative"/></t>
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="row" style="padding-top: 10px; margin-left: 2px">
+                        - Lý do kiểm kê: <t t-esc="doc.description or ''"/>
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>STT</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Mã hàng</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Tên hàng</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" rowspan="2"><strong>Đơn vị tính</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" colspan="3"><strong>Số lượng</strong>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;" colspan="3"><strong>Giá trị</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Theo số kế toán</strong></td>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Theo kiểm kê</strong></td>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Chênh lệch</strong></td>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Theo số kế toán</strong></td>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Theo kiểm kê</strong></td>
+                                    <td style="text-align: center; vertical-align: middle;"><strong>Chênh lệch</strong></td>
+                                </tr>
+                            <t t-set="number" t-value="0"/>
+                            <t t-foreach="doc.line_ids" t-as="line">
+                                <t t-set="number" t-value="number + 1"/>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span style="text-align: center; vertical-align: middle;" t-esc="number"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <span t-esc="line.default_code"/>
+                                    </td>
+                                    <td style="text-align: left; vertical-align: middle">
+                                        <span t-esc="line.product_id.name"/>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle">
+                                        <span t-esc="line.uom_id.name"/>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                        <span t-esc="doc.parent_id.convert_number(line.quantity)"/>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                        <span t-esc="doc.parent_id.convert_number(line.inventory_quantity)"/>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                        <span t-esc="doc.parent_id.convert_number(line.diff_quantity)"/>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle;">
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td colspan="4" style="text-align: left;">
+                                    <strong>Tổng cộng</strong>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('quantity')) > 0">
+                                        <strong><span t-esc="doc.parent_id.convert_number(sum(doc.line_ids.mapped('quantity')))"/></strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('inventory_quantity')) > 0">
+                                        <strong><span t-esc="doc.parent_id.convert_number(sum(doc.line_ids.mapped('inventory_quantity')))"/></strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('diff_quantity')) > 0">
+                                        <strong><span t-esc="doc.parent_id.convert_number(sum(doc.line_ids.mapped('diff_quantity')))"/></strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                </td>
+                                <td style="text-align: right;">
+                                </td>
+                                <td style="text-align: right;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: right;">
+                        <div class="col-12">
+                            <span t-if="doc.date" t-esc="(doc.date+ datetime.timedelta(hours=7)).strftime('Ngày %d tháng %m năm %Y')" class="bold"/>
+                            <span t-else="" t-esc="'Ngày.....tháng.....năm....'"/>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="padding-top: 0; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span><strong>Thủ trưởng đơn vị</strong></span><br/>
+                            <span>Ý kiến giải quyết số chênh lệch</span><br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span><strong>Kế toán trưởng</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span><strong>Thủ kho/Tổ trưởng nhà máy</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span><strong>Ban kiểm kê</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-2">
+                            <span><strong>Người lập phiếu</strong></span><br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="ccv_bao_cao_ton_kho_bien_ban_kiem_ke_vat_tu_hang_hoa_report" model="ir.actions.report">
+            <field name="name">Biên bản kiểm kê vật tư hàng hóa (PDF)</field>
+            <field name="model">stock.ccv.report.line2</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_bao_cao_ton_kho.ccv_bao_cao_ton_kho_bien_ban_kiem_ke_vat_tu_hang_hoa_template</field>
+            <field name="report_file">ccv_bao_cao_ton_kho.ccv_bao_cao_ton_kho_bien_ban_kiem_ke_vat_tu_hang_hoa_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a5"/>
+            <field name="print_report_name">'Biên bản kiểm kê vật tư hàng hóa'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sale_order_type_view_tree" model="ir.ui.view">
+        <field name="name">sale.order.type.tree</field>
+        <field name="model">sale.order.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sale_order_type_view_form" model="ir.ui.view">
+        <field name="name">sale.order.type.form</field>
+        <field name="model">sale.order.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="active" invisible="1"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_order_type_action" model="ir.actions.act_window">
+        <field name="name">Sale Order Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="sale_order_type_menu_action" parent="sale.menu_sale_config" action="biz_ccv_sale.sale_order_type_action"/>
+</odoo>

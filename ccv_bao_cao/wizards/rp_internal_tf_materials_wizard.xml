@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_rp_internal_tf_wizard_materials" model="ir.ui.view">
+        <field name="name">rp.internal.tf.materials.wizard.form</field>
+        <field name="model">rp.internal.tf.materials.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Stock Move Report">
+                <group>
+                    <group string="Dữ liệu">
+                        <label for="date_from"/>
+                        <div class="o_row">
+                            <field name="date_from" required="1"/>
+                            -
+                            <field name="date_to" required="1"/>
+                        </div>
+                        <field name="partner_ids" widget="many2many_tags"/>
+                        <field name="warehouse_ids" widget="many2many_tags"/>
+                        
+                    </group>
+                    <group string="Ký tên">
+                        <field name="voter_id"/>
+                        <field name="stocker_id"/>
+                        <field name="hr_admin_department_id"/>
+                        <field name="chief_finance_id"/>
+                        <field name="director_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="In" type="object" name="action_generate_report" class="oe_highlight"/>
+                    <button string="Hủy" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rp_internal_tf_materials_wizard_action" model="ir.actions.act_window">
+        <field name="name">Sổ Chi tiết Thay thế, Sửa chữa</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rp.internal.tf.materials.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_rp_internal_tf_wizard_materials"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_rp_internal_tf_materials_wizard" name="Sổ Chi tiết Thay thế, Sửa chữa" action="view_rp_internal_tf_materials_wizard_action"
+                  parent="account.account_reports_legal_statements_menu" sequence="100"/>
+</odoo>

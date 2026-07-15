@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sale_order_inherit_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='invoiced_qty']" position="after">
+                <field name="move_amount_invoiced" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_order_tree_inherit_inherit" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="ccv_custom_field.view_order_tree_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_amount_paid']" position="before">
+                <field name="move_amount_invoiced" optional="hide"/>
+                <field name="move_amount_payment" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_status']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_state']" position="before">
+                <field name="move_invoice_status"
+                    decoration-success="move_invoice_status in ('to_invoice','invoiced')"
+                    widget="badge" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

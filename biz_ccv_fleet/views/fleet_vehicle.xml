@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fleet_vehicle_log_services_view_form_ccv" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.ccv.inherit</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+        <field name="arch" type="xml">
+            <field name="purchaser_id" position="after">
+                <field name="type_service"/>
+                <field name="fleet_service_id" invisible="1"/>
+            </field>
+            <xpath expr="//group[1]" position="before">
+                <div class="oe_title">
+                    <h1>
+                        <field name="name_service"/>
+                    </h1>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_log_services_view_tree_ccv" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.tree.ccv.inherit</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="date" position="before">
+                <field name="name_service"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Các dịch vụ  -->
+    <record id='fleet.fleet_vehicle_log_services_action' model='ir.actions.act_window'>
+        <field name="context">{
+            'search_default_groupby_service_type_id': 1
+            'default_type_service': 'service'
+        }</field>
+        <field name="domain">[('type_service','=', 'service')]</field>
+    </record>
+
+    <!-- Dịch vụ  đăng kiểm -->
+    <record id='fleet_vehicle_log_services_registration_action' model='ir.actions.act_window'>
+        <field name="name">Services Registration</field>
+        <field name="res_model">fleet.vehicle.log.services</field>
+        <field name="view_mode">tree,kanban,form,graph,pivot,activity</field>
+        <field name="context">{
+            'search_default_groupby_service_type_id': 1
+            'default_type_service': 'registration'
+        }</field>
+        <field name="domain">[('type_service','=', 'registration')]</field>
+    </record>
+
+    <menuitem action="fleet_vehicle_log_services_registration_action" 
+        parent="fleet.fleet_vehicles" 
+        id="fleet_vehicle_log_services_registration_menu" 
+        groups="fleet.fleet_group_user" sequence="4"/>
+
+    <!-- Dịch vụ bảo dưỡng -->
+    <record id='fleet_vehicle_log_services_maintenance_action' model='ir.actions.act_window'>
+        <field name="name">Services maintenance</field>
+        <field name="res_model">fleet.vehicle.log.services</field>
+        <field name="view_mode">tree,kanban,form,graph,pivot,activity</field>
+        <field name="context">{
+            'search_default_groupby_service_type_id': 1
+            'default_type_service': 'maintenance'
+        }</field>
+        <field name="domain">[('type_service','=', 'maintenance')]</field>
+    </record>
+
+    <menuitem action="fleet_vehicle_log_services_maintenance_action" 
+        parent="fleet.fleet_vehicles" 
+        id="fleet_vehicle_log_services_maintenance_menu" 
+        groups="fleet.fleet_group_user" sequence="4"/>
+
+
+</odoo>

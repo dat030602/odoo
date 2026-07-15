@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paper_format_details_sales_book_by_customer_pdf" model="report.paperformat">
+        <field name="name">Report details sales book by customer(PDF)</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">25</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <report
+        id="action_details_sales_book_by_customer_xlsx"
+        string="Report details sales book by customer(Excel)"
+        model="details.sales.book.by.customer"
+        report_type="xlsx"
+        name="biz_details_sales_book_by_customer.details_book_xlsx"
+        file="biz_details_sales_book_by_customer.details_book_xlsx"
+        print_report_name="'Details sales book by customer (Excel)'"
+        menu="False"
+    />
+    <record id="action_details_sales_book_by_customer_pdf" model="ir.actions.report">
+        <field name="name">Report details sales book by customer(PDF)</field>
+        <field name="model">details.sales.book.by.customer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_details_sales_book_by_customer.details_book_pdf</field>
+        <field name="report_file">biz_details_sales_book_by_customer.details_book_pdf</field>
+        <field name="print_report_name">'Details sales book by customer (PDF)'</field>
+        <field name="paperformat_id" ref='paper_format_details_sales_book_by_customer_pdf'/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

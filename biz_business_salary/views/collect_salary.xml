@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_collect_salary_tree" model="ir.ui.view">
+        <field name="name">collect.salary.tree</field>
+        <field name="model">collect.salary</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_collect_salary_form" model="ir.ui.view">
+        <field name="name">collect.salary.form</field>
+        <field name="model">collect.salary</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Synthetic" name="action_synthetic" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button string="Salary Calculation" name="salary_calculation" type="object" class="oe_highlight"/>
+                    <button string="Open" name="action_open" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=','closed')]}"/>
+                    <button string="Close" name="action_close" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="employee_id" attrs="{'readonly': [('state','=','closed')]}"/>
+                        <field name="date_from" attrs="{'readonly': [('state','=','closed')]}"/>
+                        <field name="date_to" attrs="{'readonly': [('state','=','closed')]}"/>
+                    </group>
+                    <notebook>
+                        <page string="Collect Salary" name="collect_salary">
+                            <field name="line_ids" attrs="{'readonly': [('state','=','closed')]}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_collect_salary" model="ir.actions.act_window">
+        <field name="name">Salary KPI management</field>
+        <field name="res_model">collect.salary</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_collect_salary"
+        name="Salary KPI management"
+        parent="menu_common_telesale"
+        sequence="10"
+        action="action_collect_salary"
+        />
+
+</odoo>

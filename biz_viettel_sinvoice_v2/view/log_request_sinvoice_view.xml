@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_log_request_sinvoice_tree" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.queue.tree</field>
+            <field name="model">viettel.sinvoice.queue</field>
+            <field name="arch" type="xml">
+            	<tree>
+	          		<field name="name"/>
+	          		<field name="url"/>
+	          		<field name="create_date"/>
+	          		<field name="config_id"/>
+	          		<field name="state"/>
+	            </tree>
+	    	</field>
+        </record>
+        <record id="view_log_request_sinvoice_form" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.queue.form</field>
+            <field name="model">viettel.sinvoice.queue</field>
+            <field name="arch" type="xml">
+            	<form>
+            		<header>
+            			<field name="state" widget="statusbar"/>
+            		</header>
+            		<sheet>
+            			<group>
+            				<group>
+            					<field name="name"/>
+				          		<field name="url"/>
+				          		<field name="data"/>
+				          		<field name="message"/>
+				          		<field name="model"/>
+				          		<field name="res_ids"/>
+            				</group>
+            				<group>
+            					<field name="config_id"/>
+            					<field name="headers"/>
+            					<field name="urlencoded"/>
+				          		<field name="params"/>
+            					<field name="response"/>
+            				</group>
+            			</group>
+            		</sheet>
+	            </form>
+	    	</field>
+        </record>
+        
+         <record id="action_log_request_sinvoice" model="ir.actions.act_window">
+	    	<field name="name">Sinvoice Queue</field>
+	     	<field name="res_model">viettel.sinvoice.queue</field>
+	     	<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_log_request_sinvoice" groups="base.group_no_one" parent="biz_viettel_sinvoice_v2.menu_viettel_sinvoice" action="action_log_request_sinvoice" sequence="2"/>
+	</data>
+</odoo>

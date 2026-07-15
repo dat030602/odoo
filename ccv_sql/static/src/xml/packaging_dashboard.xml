@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="ccv_sql.PackagingDashboard" owl="1">
+        <div class="o_action o_view_controller">
+            <div class="o_content bg-view h-100 overflow-auto">
+                <div class="container-fluid py-4">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h2 class="text-primary mb-0">Dashboard Bao bì Dưới Định Mức</h2>
+                            <p class="text-muted">Báo cáo các loại bao bì có số lượng tồn kho thấp hơn định mức tối thiểu</p>
+                        </div>
+                    </div>
+
+                    <!-- Kpi Cards -->
+                    <div class="row mb-4" t-if="state.data">
+                        <div class="col-md-4">
+                            <div class="card shadow-sm border-0 bg-info text-white"
+                                 style="cursor: pointer; user-select: none;" 
+                                 title="Click để xem chi tiết" 
+                                 t-on-click="openAllOrderpoints">
+                                <div class="card-body">
+                                    <h5 class="card-title">Tổng Số Lượng Bao Bì</h5>
+                                    <h2 class="display-4 fw-bold mb-0"><t t-esc="state.data.total_count"/></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm border-0 bg-danger text-white" 
+                                 style="cursor: pointer; user-select: none;" 
+                                 title="Click để xem chi tiết" 
+                                 t-on-click="openMissingOrderpoints">
+                                <div class="card-body">
+                                    <h5 class="card-title">Bao Bì Thiếu Hụt</h5>
+                                    <h2 class="display-4 fw-bold mb-0"><t t-esc="state.data.below_min_count"/></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm border-0 bg-success text-white"
+                                 style="cursor: pointer; user-select: none;" 
+                                 title="Click để xem chi tiết" 
+                                 t-on-click="openSafeOrderpoints">
+                                <div class="card-body">
+                                    <h5 class="card-title">Bao Bì An Toàn</h5>
+                                    <h2 class="display-4 fw-bold mb-0"><t t-esc="state.data.safe_count"/></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div class="row" t-if="!state.data">
+                        <div class="col-12 text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <h5 class="mt-3 text-muted">Đang tải dữ liệu...</h5>
+                        </div>
+                    </div>
+
+                    <!-- Charts Area -->
+                    <div class="row" t-if="state.data">
+                        <!-- Chart 1: Pie -->
+                        <div class="col-lg-6 mb-4">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-white border-0 pt-4 pb-0">
+                                    <h5 class="mb-0 text-dark fw-bold">Tỷ lệ Trạng thái Tồn kho</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas t-ref="chartPie"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 4: Polar Area (Top 10) -->
+                        <div class="col-lg-6 mb-4">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-white border-0 pt-4 pb-0">
+                                    <h5 class="mb-0 text-dark fw-bold">Top 10 Bao Bì Thiếu Hụt (Số Lượng)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas t-ref="chartTop10"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Bar Absolute Missing -->
+                        <div class="col-lg-12 mb-4">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-white border-0 pt-4 pb-0">
+                                    <h5 class="mb-0 text-dark fw-bold">Số lượng Thiếu hụt</h5>
+                                </div>
+                                <div class="card-body" style="height: 400px;">
+                                    <canvas t-ref="chartBarAbs"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3: Line Percent Missing -->
+                        <div class="col-lg-12 mb-4">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-white border-0 pt-4 pb-0">
+                                    <h5 class="mb-0 text-dark fw-bold">Tỷ lệ % Thiếu hụt so với Tối thiểu</h5>
+                                </div>
+                                <div class="card-body" style="height: 400px;">
+                                    <canvas t-ref="chartLinePct"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

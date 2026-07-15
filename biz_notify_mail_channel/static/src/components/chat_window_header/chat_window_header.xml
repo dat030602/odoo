@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="biz_notify_mail_channel.ChatWindowHeader" t-inherit="mail.ChatWindowHeader" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-if='chatWindow.hasCallButtons']" position="before">
+            <t t-if="chatWindow.thread and !chatWindow.isMuteNotify">
+                <div class="o_ChatWindowHeader_command cursor-pointer d-flex align-items-center h-100 px-3 py-0 m-0"
+                     t-att-class="{ 'opacity-50 opacity-100-hover': !messaging.device.isSmall }"
+                     title=""
+                     t-on-click="chatWindow.onClickShowMuteNotifyDialog">
+                    <i class="fa fa-bell"/>
+                </div>
+            </t>
+            <t t-if="chatWindow.thread and chatWindow.isMuteNotify">
+                <div class="o_ChatWindowHeader_command cursor-pointer d-flex align-items-center h-100 px-3 py-0 m-0"
+                     t-att-class="{ 'opacity-50 opacity-100-hover': !messaging.device.isSmall }"
+                     title=""
+                     t-on-click="chatWindow.turnOffChatWindowMuteNotifyMailChannel">
+                    <i class="fa fa-bell-slash"/>
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

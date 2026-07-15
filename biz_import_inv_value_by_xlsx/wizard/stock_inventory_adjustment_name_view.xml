@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stock_inventory_adjustment_name_inherit_form_view" model="ir.ui.view">
+        <field name="name">stock.inventory.adjustment.name.inherit.form.view</field>
+        <field name="model">stock.inventory.adjustment.name</field>
+        <field name="inherit_id" ref="stock.stock_inventory_adjustment_name_form_view"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='show_info']" position="after">
+        		<field name="run_import_value"/>
+        	</xpath>
+        </field>
+    </record>
+</odoo>

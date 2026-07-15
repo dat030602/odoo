@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- có thể chạy nhiều báo cáo pdf-->
+        <template id="tong_hop_cong_no_nhan_vien_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.tong_hop_cong_no_nhan_vien_document"
+                       t-lang="doc.user_id.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- body của báo cáo-->
+        <template id="tong_hop_cong_no_nhan_vien_document">
+            <t t-call="ccv_sql.ccv_header">
+                <div class="page" style="font-size: 10px;font-family: Times New Roman">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong>Tổng Hợp Công Nợ Nhân Viên</strong>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center; margin-top: 10px;">
+                        Tài khoản &amp;nbsp;
+                        <t t-if="len(doc.account_ids) > 0">
+                            <t t-esc="doc.account_ids[0].code"/>
+                        </t>
+                        ; Từ ngày &amp;nbsp;<t
+                            t-esc="doc.convert_print(doc.date_from)"/>&amp;nbsp; đến ngày &amp;nbsp;
+                        <t t-esc="doc.convert_print(doc.date_to)"/>
+                    </div>
+                    <div class="row">
+                        <table class="table table-sm" style="border: solid 1px;width: 100%; margin-top: 10px;">
+                            <tr>
+                                <td style="text-align: center;">
+                                    <strong>STT</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Mã nhân viên</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Tên nhân viên</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Nợ đầu kỳ</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Có đầu kỳ</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Phát sinh nợ</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Phát sinh có</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Nợ cuối kỳ</strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <strong>Có cuối kỳ</strong>
+                                </td>
+                            </tr>
+
+
+                            <t t-set="number" t-value="0"/>
+                            <t t-foreach="doc.line_ids.filtered(lambda l:l.start_debit > 0 or l.start_credit > 0 or l.debit > 0 or l.credit > 0 or l.end_debit > 0 or l.end_credit > 0)" t-as="line">
+                                <t t-set="number" t-value="number + 1"/>
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <span style="text-align: center;" t-esc="number"/>
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <span t-esc="line.employee_code"/>
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <span t-esc="line.employee_id.name"/>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="line.start_debit > 0">
+                                            <span t-esc="doc.convert_vnd(line.start_debit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="line.start_credit > 0">
+                                            <span t-esc="doc.convert_vnd(line.start_credit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="line.debit > 0">
+                                            <span t-esc="doc.convert_vnd(line.debit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="line.credit > 0">
+                                            <span t-esc="doc.convert_vnd(line.credit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="line.end_debit > 0">
+                                            <span t-esc="doc.convert_vnd(line.end_debit)"/>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <t t-if="line.end_credit > 0">
+                                            <span t-esc="doc.convert_vnd(line.end_credit)"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t><!--end for-->
+                            <tr>
+                                <td colspan="3" style="text-align: left;">
+                                    <strong>Tổng cộng</strong>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('start_debit')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(sum(doc.line_ids.mapped('start_debit')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('start_credit')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(sum(doc.line_ids.mapped('start_credit')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('debit')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(sum(doc.line_ids.mapped('debit')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('credit')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(sum(doc.line_ids.mapped('credit')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('end_debit')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(sum(doc.line_ids.mapped('end_debit')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                                <td style="text-align: right;">
+                                    <t t-if="sum(doc.line_ids.mapped('end_credit')) > 0">
+                                        <strong>
+                                            <span t-esc="doc.convert_vnd(sum(doc.line_ids.mapped('end_credit')))"/>
+                                        </strong>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row rowp" style="padding-top: 10px; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-3">
+                        </div>
+                        <div class="col-3">
+                        </div>
+                        <div class="col-3">
+                            <span>Ngày .... tháng .... năm ....</span>
+                            <br/>
+                        </div>
+                    </div>
+                    <div class="row rowp" style="padding-top: 2px; margin-left: 2px;text-align: center;">
+                        <div class="col-3">
+                            <span>
+                                <strong>Người bàn giao</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Thủ kho</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Kế toán trưởng</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                        <div class="col-3">
+                            <span>
+                                <strong>Thủ trưởng đơn vị</strong>
+                            </span>
+                            <br/>
+                            <span>(Ký, họ tên)</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </t>
+        </template>
+
+        <record id="format_a5" model="report.paperformat">
+            <field name="name">CCV format A5</field>
+            <field name="default" eval="False"/>
+            <field name="disable_shrinking" eval="True"/>
+            <field name="format">A5</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">2</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="format_a5_2" model="report.paperformat">
+            <field name="name">CCV format A5 Phiếu thu phiêú chi</field>
+            <field name="default" eval="False"/>
+            <field name="disable_shrinking" eval="True"/>
+            <field name="format">A5</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="format_a4_ngang" model="report.paperformat">
+            <field name="name">CCV format A4 ngang</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="format_a4_doc" model="report.paperformat">
+            <field name="name">CCV format A4 doc</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="format_a4" model="report.paperformat">
+            <field name="name">CCV format A4</field>
+            <field name="default" eval="False"/>
+            <field name="disable_shrinking" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">15</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="tong_hop_cong_no_nhan_vien_report" model="ir.actions.report">
+            <field name="name">Tổng Hợp Công Nợ Nhân Viên</field>
+            <field name="model">alpha.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.tong_hop_cong_no_nhan_vien_template</field>
+            <field name="report_file">ccv_sql.tong_hop_cong_no_nhan_vien_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a5"/>
+            <field name="print_report_name">'Tổng Hợp Công Nợ Nhân Viên'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

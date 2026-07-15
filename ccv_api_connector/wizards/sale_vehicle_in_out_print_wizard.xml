@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_vehicle_in_out_print_wizard_view_form" model="ir.ui.view">
+        <field name="name">sale.vehicle.in.out.print.wizard.form</field>
+        <field name="model">sale.vehicle.in.out.print.wizard</field>
+        <field name="arch" type="xml">
+            <form string="In phiếu theo xe">
+                <sheet>
+                    <group>
+                        <field name="sale_vehicle_id" invisible="1"/>
+                        <field name="print_type" invisible="1"/>
+                        <field name="vehicle_num"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_print" type="object" string="In" class="btn-primary"/>
+                    <button string="Hủy bỏ" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_vehicle_in_out_print_delivery" model="ir.actions.act_window">
+        <field name="name">In phiếu xuất kho giao hàng</field>
+        <field name="res_model">sale.vehicle.in.out.print.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_print_type': 'delivery'}</field>
+    </record>
+
+    <record id="action_sale_vehicle_in_out_print_receipt" model="ir.actions.act_window">
+        <field name="name">In phiếu nhập kho CCV</field>
+        <field name="res_model">sale.vehicle.in.out.print.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_print_type': 'receipt'}</field>
+    </record>
+
+    <record id="action_sale_vehicle_in_out_print_ccv_transfer" model="ir.actions.act_window">
+        <field name="name">In phiếu chuyển kho CCV</field>
+        <field name="res_model">sale.vehicle.in.out.print.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_print_type': 'ccv_transfer'}</field>
+    </record>
+</odoo>

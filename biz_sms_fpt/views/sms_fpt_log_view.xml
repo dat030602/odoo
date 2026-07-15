@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sms_fpt_log_tree_view" model="ir.ui.view">
+            <field name="name">sms.fpt.log.view.tree</field>
+            <field name="model">sms.fpt.log</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="url"/>
+                    <field name="create_on"/>
+                    <field name="data"/>
+                    <field name="data_response"/>
+                    <field name="state"/>
+                    <field name="error"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sms_fpt_log_act_window" model="ir.actions.act_window">
+            <field name="name">API history log</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sms.fpt.log</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+
+    </data>
+</odoo>

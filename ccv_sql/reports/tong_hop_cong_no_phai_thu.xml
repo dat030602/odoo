@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Wrapper template -->
+        <template id="tong_hop_cong_no_phai_thu_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="ccv_sql.tong_hop_cong_no_phai_thu_document"
+                       t-lang="doc.voter_id.partner_id.lang or 'vi_VN'"/>
+                </t>
+            </t>
+        </template>
+
+        <!-- Document body -->
+        <template id="tong_hop_cong_no_phai_thu_document">
+            <t t-call="ccv_sql.ccv_header">
+                <div class="page" style="font-size: 14px; font-family: Times New Roman">
+                    <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                        <strong><t t-esc="doc.name.upper() if doc.name else ''"/></strong>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center; margin-top: 6px;">
+                        <strong>
+                            Từ ngày&amp;nbsp;
+                            <t t-esc="doc.date_from and doc.date_from.strftime('%d/%m/%Y') or ''"/>
+                            &amp;nbsp;đến ngày&amp;nbsp;
+                            <t t-esc="doc.date_to and doc.date_to.strftime('%d/%m/%Y') or ''"/>
+                        </strong>
+                    </div>
+
+                    <div class="row">
+                        <table class="table table-sm fixed"
+                               style="border: solid 1px; width: 100%; margin-top: 10px; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="border:1px solid #000; text-align:center; vertical-align:middle;">STT</th>
+                                    <th rowspan="2" style="border:1px solid #000; text-align:center; vertical-align:middle;">Mã KH</th>
+                                    <th rowspan="2" style="border:1px solid #000; text-align:center; vertical-align:middle;">Tên khách hàng</th>
+                                    <th rowspan="2" style="border:1px solid #000; text-align:center; vertical-align:middle;">Nhóm KH</th>
+                                    <th colspan="2" style="border:1px solid #000; text-align:center;">Số dư đầu kỳ</th>
+                                    <th colspan="2" style="border:1px solid #000; text-align:center;">Phát sinh</th>
+                                    <th colspan="2" style="border:1px solid #000; text-align:center;">Số dư cuối kỳ</th>
+                                    <th rowspan="2" style="border:1px solid #000; text-align:center; vertical-align:middle;">Ghi chú</th>
+                                </tr>
+                                <tr>
+                                    <th style="border:1px solid #000; text-align:center;">Nợ</th>
+                                    <th style="border:1px solid #000; text-align:center;">Có</th>
+                                    <th style="border:1px solid #000; text-align:center;">Nợ</th>
+                                    <th style="border:1px solid #000; text-align:center;">Có</th>
+                                    <th style="border:1px solid #000; text-align:center;">Nợ</th>
+                                    <th style="border:1px solid #000; text-align:center;">Có</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="stt" t-value="0"/>
+                                <t t-set="current_team_id" t-value="None"/>
+                                <t t-set="team_start_debit" t-value="0"/>
+                                <t t-set="team_start_credit" t-value="0"/>
+                                <t t-set="team_ps_debit" t-value="0"/>
+                                <t t-set="team_ps_credit" t-value="0"/>
+                                <t t-set="team_end_debit" t-value="0"/>
+                                <t t-set="team_end_credit" t-value="0"/>
+                                <t t-foreach="doc.line_ids" t-as="line">
+                                    <!-- Khi sang team mới: in dòng tổng team cũ và tiêu đề team mới -->
+                                    <t t-if="line.team_id.id != current_team_id and current_team_id != None">
+                                        <!-- Dòng tổng team cũ -->
+                                        <tr style="background-color: #dce6f1;">
+                                            <td colspan="4" style="border:1px solid #000; text-align:center; font-style:italic;"><strong>Tổng khu vực</strong></td>
+                                            <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                                <t t-if="team_start_debit"><span t-esc="'{:,.0f}'.format(team_start_debit)"/></t>
+                                            </td>
+                                            <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                                <t t-if="team_start_credit"><span t-esc="'{:,.0f}'.format(team_start_credit)"/></t>
+                                            </td>
+                                            <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                                <t t-if="team_ps_debit"><span t-esc="'{:,.0f}'.format(team_ps_debit)"/></t>
+                                            </td>
+                                            <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                                <t t-if="team_ps_credit"><span t-esc="'{:,.0f}'.format(team_ps_credit)"/></t>
+                                            </td>
+                                            <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                                <t t-if="team_end_debit"><span t-esc="'{:,.0f}'.format(team_end_debit)"/></t>
+                                            </td>
+                                            <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                                <t t-if="team_end_credit"><span t-esc="'{:,.0f}'.format(team_end_credit)"/></t>
+                                            </td>
+                                            <td style="border:1px solid #000;"></td>
+                                        </tr>
+                                        <!-- Reset tổng team -->
+                                        <t t-set="team_start_debit" t-value="0"/>
+                                        <t t-set="team_start_credit" t-value="0"/>
+                                        <t t-set="team_ps_debit" t-value="0"/>
+                                        <t t-set="team_ps_credit" t-value="0"/>
+                                        <t t-set="team_end_debit" t-value="0"/>
+                                        <t t-set="team_end_credit" t-value="0"/>
+                                    </t>
+                                    <!-- Khi bắt đầu team mới: in tiêu đề đội -->
+                                    <t t-if="line.team_id.id != current_team_id">
+                                        <t t-set="current_team_id" t-value="line.team_id.id"/>
+                                        <t t-if="line.team_id">
+                                            <tr style="background-color: #f2f2f2;">
+                                                <td colspan="11" style="border:1px solid #000; font-weight:bold; padding-left:5px;">
+                                                    <t t-esc="line.team_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <t t-set="stt" t-value="stt + 1"/>
+                                    <!-- Cộng dồn tổng team -->
+                                    <t t-set="team_start_debit" t-value="team_start_debit + line.start_debit"/>
+                                    <t t-set="team_start_credit" t-value="team_start_credit + line.start_credit"/>
+                                    <t t-set="team_ps_debit" t-value="team_ps_debit + line.ps_debit"/>
+                                    <t t-set="team_ps_credit" t-value="team_ps_credit + line.ps_credit"/>
+                                    <t t-set="team_end_debit" t-value="team_end_debit + line.end_debit"/>
+                                    <t t-set="team_end_credit" t-value="team_end_credit + line.end_credit"/>
+                                    <tr>
+                                        <td style="border:1px solid #000; text-align:center;"><t t-esc="stt"/></td>
+                                        <td style="border:1px solid #000; text-align:center;"><t t-esc="line.customer_code or ''"/></td>
+                                        <td style="border:1px solid #000;"><t t-esc="line.customer_name or (line.partner_id.name or '')"/></td>
+                                        <td style="border:1px solid #000; text-align:center;"><t t-esc="line.customer_group or ''"/></td>
+                                        <td style="border:1px solid #000; text-align:right;">
+                                            <t t-if="line.start_debit"><span t-esc="'{:,.0f}'.format(line.start_debit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right;">
+                                            <t t-if="line.start_credit"><span t-esc="'{:,.0f}'.format(line.start_credit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right;">
+                                            <t t-if="line.ps_debit"><span t-esc="'{:,.0f}'.format(line.ps_debit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right;">
+                                            <t t-if="line.ps_credit"><span t-esc="'{:,.0f}'.format(line.ps_credit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right;">
+                                            <t t-if="line.end_debit"><span t-esc="'{:,.0f}'.format(line.end_debit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right;">
+                                            <t t-if="line.end_credit"><span t-esc="'{:,.0f}'.format(line.end_credit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000;"><t t-esc="line.note or ''"/></td>
+                                    </tr>
+                                </t>
+                                <!-- Dòng tổng của team cuối cùng -->
+                                <t t-if="doc.line_ids and doc.line_ids[-1].team_id">
+                                    <tr style="background-color: #dce6f1;">
+                                        <td colspan="4" style="border:1px solid #000; text-align:center; font-style:italic;"><strong>Tổng khu vực</strong></td>
+                                        <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                            <t t-if="team_start_debit"><span t-esc="'{:,.0f}'.format(team_start_debit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                            <t t-if="team_start_credit"><span t-esc="'{:,.0f}'.format(team_start_credit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                            <t t-if="team_ps_debit"><span t-esc="'{:,.0f}'.format(team_ps_debit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                            <t t-if="team_ps_credit"><span t-esc="'{:,.0f}'.format(team_ps_credit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                            <t t-if="team_end_debit"><span t-esc="'{:,.0f}'.format(team_end_debit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000; text-align:right; font-style:italic;">
+                                            <t t-if="team_end_credit"><span t-esc="'{:,.0f}'.format(team_end_credit)"/></t>
+                                        </td>
+                                        <td style="border:1px solid #000;"></td>
+                                    </tr>
+                                </t>
+                                <!-- Dòng TỔNG CỘNG toàn bộ -->
+                                <tr>
+                                    <td colspan="4" style="border:1px solid #000; text-align:center;"><strong>TỔNG CỘNG</strong></td>
+                                    <td style="border:1px solid #000; text-align:right;">
+                                        <strong t-esc="'{:,.0f}'.format(sum(doc.line_ids.mapped('start_debit')))"/>
+                                    </td>
+                                    <td style="border:1px solid #000; text-align:right;">
+                                        <strong t-esc="'{:,.0f}'.format(sum(doc.line_ids.mapped('start_credit')))"/>
+                                    </td>
+                                    <td style="border:1px solid #000; text-align:right;">
+                                        <strong t-esc="'{:,.0f}'.format(sum(doc.line_ids.mapped('ps_debit')))"/>
+                                    </td>
+                                    <td style="border:1px solid #000; text-align:right;">
+                                        <strong t-esc="'{:,.0f}'.format(sum(doc.line_ids.mapped('ps_credit')))"/>
+                                    </td>
+                                    <td style="border:1px solid #000; text-align:right;">
+                                        <strong t-esc="'{:,.0f}'.format(sum(doc.line_ids.mapped('end_debit')))"/>
+                                    </td>
+                                    <td style="border:1px solid #000; text-align:right;">
+                                        <strong t-esc="'{:,.0f}'.format(sum(doc.line_ids.mapped('end_credit')))"/>
+                                    </td>
+                                    <td style="border:1px solid #000;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Ngày tháng -->
+                    <div class="row" style="padding-top: 20px;">
+                        <div class="col-12" style="text-align: right; font-style: italic;">
+                            <span t-esc="'Đồng Nai, Ngày %s Tháng %s năm %s' % (doc.create_date.strftime('%d'), doc.create_date.strftime('%m'), doc.create_date.strftime('%Y'))"/>
+                        </div>
+                    </div>
+
+                    <!-- Ký tên -->
+                    <div class="row" style="margin-top: 10px; text-align: center; page-break-inside: avoid;">
+                        <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                            <strong>Người Lập Phiếu</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="doc.state == 'approved' and doc.voter_id and doc.voter_id.sudo().sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(doc.voter_id.sudo().sign_signature)" style="max-height: 80px; max-width: 100%;"/>
+                                <br/>
+                                <strong t-esc="doc.voter_id.name"/>
+                            </t>
+                            <t t-elif="doc.voter_id">
+                                <br/><br/><br/><br/>
+                                <strong t-esc="doc.voter_id.name"/>
+                            </t>
+                        </div>
+                        <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                            <strong>Trưởng bộ phận</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="doc.state == 'approved' and doc.chief_dept_id and doc.chief_dept_id.sudo().sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(doc.chief_dept_id.sudo().sign_signature)" style="max-height: 80px; max-width: 100%;"/>
+                                <br/>
+                                <strong t-esc="doc.chief_dept_id.name"/>
+                            </t>
+                            <t t-elif="doc.chief_dept_id">
+                                <br/><br/><br/><br/>
+                                <strong t-esc="doc.chief_dept_id.name"/>
+                            </t>
+                        </div>
+                        <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                            <strong>Kế toán tổng hợp</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="doc.state == 'approved' and doc.debt_accountant_id and doc.debt_accountant_id.sudo().sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(doc.debt_accountant_id.sudo().sign_signature)" style="max-height: 80px; max-width: 100%;"/>
+                                <br/>
+                                <strong t-esc="doc.debt_accountant_id.name"/>
+                            </t>
+                            <t t-elif="doc.debt_accountant_id">
+                                <br/><br/><br/><br/>
+                                <strong t-esc="doc.debt_accountant_id.name"/>
+                            </t>
+                        </div>
+                        <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                            <strong>Kế Toán Trưởng</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên)</span>
+                            <t t-if="doc.state == 'approved' and doc.chief_acc_id and doc.chief_acc_id.sudo().sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(doc.chief_acc_id.sudo().sign_signature)" style="max-height: 80px; max-width: 100%;"/>
+                                <br/>
+                                <strong t-esc="doc.chief_acc_id.name"/>
+                            </t>
+                            <t t-elif="doc.chief_acc_id">
+                                <br/><br/><br/><br/>
+                                <strong t-esc="doc.chief_acc_id.name"/>
+                            </t>
+                        </div>
+                        <div class="col-2" style="width: 20%; flex: 0 0 20%; max-width: 20%;">
+                            <strong>Thủ trưởng đơn vị</strong>
+                            <br/><span style="font-style: italic;">(Ký, họ tên, đóng dấu)</span>
+                            <t t-if="doc.state == 'approved' and doc.unit_heads_id and doc.unit_heads_id.sudo().sign_signature">
+                                <br/><br/>
+                                <img t-att-src="image_data_uri(doc.unit_heads_id.sudo().sign_signature)" style="max-height: 80px; max-width: 100%;"/>
+                                <br/>
+                                <strong t-esc="doc.unit_heads_id.name"/>
+                            </t>
+                            <t t-elif="doc.unit_heads_id">
+                                <br/><br/><br/><br/>
+                                <strong t-esc="doc.unit_heads_id.name"/>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Report action -->
+        <record id="tong_hop_cong_no_phai_thu_report" model="ir.actions.report">
+            <field name="name">Tổng Hợp Công Nợ Phải Thu</field>
+            <field name="model">ccv.tong.hop.cong.no.phai.thu</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ccv_sql.tong_hop_cong_no_phai_thu_template</field>
+            <field name="report_file">ccv_sql.tong_hop_cong_no_phai_thu_template</field>
+            <field name="paperformat_id" ref="ccv_sql.format_a4_ngang"/>
+            <field name="print_report_name">'Tong hop cong no phai thu'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="attachment_use" eval="False"/>
+        </record>
+        <!-- Report action xlsx -->
+        <report
+            id="action_tong_hop_cong_no_phai_thu_xlsx"
+            string="Tổng hợp công nợ phải thu (Excel)"
+            model="ccv.tong.hop.cong.no.phai.thu"
+            report_type="xlsx"
+            name="ccv_sql.tong_hop_cong_no_phai_thu_xlsx"
+            file="ccv_sql.tong_hop_cong_no_phai_thu_xlsx"
+            print_report_name="'Tong hop cong no phai thu'"
+            menu="False"
+        />
+    </data>
+</odoo>

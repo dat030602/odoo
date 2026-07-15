@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_picking_form_inherit_container_number" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.container.number</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other_infos']" position="inside">
+                <field name="container_number"/>
+                <field name="seal_number"/>
+                <field name="weight_ccv"/>
+                <field name="weight_port"/>
+                <field name="purchase_order_id" attrs="{'readonly': ['|',('purchase_order_id','!=',False),'|',('state', '=', 'done'), ('is_locked', '=', True)]}"/>
+            </xpath>
+            <!-- <xpath expr="//page[@name='operations']//field[@name='move_ids_without_package']/tree" position="inside">
+                <field name="bag_number"/>
+            </xpath> Custom field of ccv -->
+        </field>
+    </record>
+    <record id="view_picking_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.tree.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='partner_id']" position="after">
+                <field name="vehicle_license_plate" string="Biển số xe"/>
+                <field name="weight_port" optional="hide" sum="Tổng cộng" digits="[16,3]"/>
+                <field name="weight_ccv" optional="hide" sum="Tổng cộng" digits="[16,3]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

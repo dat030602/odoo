@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_salary_sales_discount_tree" model="ir.ui.view">
+        <field name="name">salary.sales.discount.tree</field>
+        <field name="model">salary.sales.discount</field>
+        <field name="arch" type="xml">
+            <tree string="Chiết khấu bán hàng">
+                <field name="team_id" optional="show"/>
+                <field name="name" optional="show"/>
+                <field name="employee_ids" widget="many2many_tags" optional="show"/>
+                <field name="rate" widget="percentage" optional="show"/>
+                <field name="discount_fund_oc" sum="Tổng quỹ OC" optional="show"/>
+                <field name="discount_fund_nc" sum="Tổng quỹ NC" optional="show"/>
+                <field name="total_discount" sum="Tổng chiết khấu" optional="show"/>
+                <field name="amount_80" sum="Tổng thực nhận 80%" optional="show"/>
+                <field name="amount_20" sum="Tổng giữ lại 20%" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_sales_discount_form" model="ir.ui.view">
+        <field name="name">salary.sales.discount.form</field>
+        <field name="model">salary.sales.discount</field>
+        <field name="arch" type="xml">
+            <form string="Chiết khấu bán hàng">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="summary_id"/>
+                            <field name="team_id"/>
+                            <field name="name"/>
+                            <field name="employee_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="discount_fund_oc"/>
+                            <field name="discount_fund_nc"/>
+                            <field name="rate" widget="percentage"/>
+                            <field name="total_discount"/>
+                            <field name="amount_80"/>
+                            <field name="amount_20"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_salary_sales_discount_search" model="ir.ui.view">
+        <field name="name">salary.sales.discount.search</field>
+        <field name="model">salary.sales.discount</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm chiết khấu bán hàng">
+                <field name="summary_id"/>
+                <field name="team_id"/>
+                <field name="name"/>
+                <field name="employee_ids"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Khu vực" name="group_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Công thức" name="group_formula" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

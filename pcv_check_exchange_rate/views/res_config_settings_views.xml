@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_pcv_check_exchange_rate" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.pcv.check.exchange.rate</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <div id="use_invoice_terms" position="after">
+                <div class="col-xs-12 col-md-6 o_setting_box" id="threshold_amount"
+                    groups="account.group_account_user">
+                    <div class="o_setting_left_pane">
+                        <field name="large_amount_warning_threshold" />
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="large_amount_warning_threshold" />
+                        <span class="fa fa-lg fa-building-o"
+                            title="Values set here are company-specific."
+                            aria-label="Values set here are company-specific." role="img" />
+                        <div class="text-muted">Set a value to warn users when a journal item's
+                            Debit or Credit exceeds this amount.
+                        </div>
+                        <div class="content-group mt-2"
+                            attrs="{'invisible': [('large_amount_warning_threshold', '=', False)]}">
+                            <div class="row">
+                                <label for="threshold_amount"
+                                    class="col-lg-4 o_light_label" />
+                                <field name="threshold_amount" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>

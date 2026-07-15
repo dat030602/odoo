@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_summary_ie_inventory_form" model="ir.ui.view">
+            <field name="name">summary.ie.inventory.form</field>
+            <field name="model">summary.ie.inventory</field>
+            <field name="arch" type="xml">
+                <form string="Summary of import and export inventory">
+                    <header>
+                        <button name="action_general" string="Summary" type="object" class="btn-primary" attrs="{'invisible': [('state','=', 'locked')]}" />
+                        <button name="action_lock" string="Lock" type="object" states="new"/>
+                        <button name="action_unlock" string="UnLock" type="object" states="locked"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet >
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="action_view_detail"
+                                    type="object" icon="fa-bars">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">
+                                        Detail
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" />
+                            <h1>
+                                <field name="name" placeholder="Tên báo cáo" nolabel="1" attrs="{'readonly': [('state','=', 'locked')]}" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="previous_period_id" domain="[('state','=', 'locked'),('to_date','&lt;=', from_date)]" attrs="{'readonly': [('state','=', 'locked')]}" />
+                                <div class="o_row" colspan="2">
+                                    From date <field name="from_date"/> To date <field name="to_date"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="currently_there_are_no_products_available" attrs="{'readonly': [('state','=', 'locked')]}" />
+                                <div class="o_row" colspan="2">Note: When selecting this box, it will display products with no input quantity or output quantity in the period.</div>
+                                <field name="product_category_ids" widget="many2many_tags" attrs="{'readonly': [('state','=', 'locked')]}" />
+                                <field name="separate_warehouse_lines" attrs="{'readonly': [('state','=', 'locked')]}" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Summary of import and export inventory">
+                                <field name="line_ids" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_summary_ie_inventory_tree" model="ir.ui.view">
+            <field name="name">summary.ie.inventory.tree</field>
+            <field name="model">summary.ie.inventory</field>
+            <field name="arch" type="xml">
+                <tree string="Summary of import and export inventory">
+                    <field name="name"/>
+                    <field name="previous_period_id"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_summary_ie_inventory" model="ir.actions.act_window">
+            <field name="name">Summary of import and export inventory</field>
+            <field name="res_model">summary.ie.inventory</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="action_summary_ie_inventory" id="menu_summary_ie_inventory" parent="stock.menu_warehouse_report" sequence="4" 
+            groups='biz_stock_summary_report.group_ie_view_quant'
+            />
+    </data>
+</odoo>

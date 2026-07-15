@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Bonus Commission Views -->
+    <record id="view_salary_bonus_commission_tree" model="ir.ui.view">
+        <field name="name">salary.bonus.commission.tree</field>
+        <field name="model">salary.bonus.commission</field>
+        <field name="arch" type="xml">
+            <tree string="Hoa hồng thưởng thêm" decoration-success="is_qualified">
+                <field name="name" optional="show"/>
+                <field name="team_id" invisible="1"/>
+                <field name="achievement_rate" widget="percentage" optional="show"/>
+                <field name="qualified_lines_count" sum="Tổng đội" optional="show"/>
+                <field name="bonus_amount" sum="Tổng thưởng" optional="show"/>
+                <field name="is_qualified" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_bonus_commission_form" model="ir.ui.view">
+        <field name="name">salary.bonus.commission.form</field>
+        <field name="model">salary.bonus.commission</field>
+        <field name="arch" type="xml">
+            <form string="Hoa hồng thưởng thêm">
+                <header>
+                    <button string="Test" name="action_recompute" type="object"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_team_summary_lines" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="team_id" widget="statinfo" string="Tất cả"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="team_id"/>
+                            <field name="summary_id"/>
+                            <field name="is_qualified"/>
+                        </group>
+                        <group>
+                            <field name="achievement_rate" widget="percentage"/>
+                            <field name="qualified_lines_count"/>
+                            <field name="bonus_amount"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

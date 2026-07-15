@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_report_revenue_reconciliation_wizard" model="ir.ui.view">
+        <field name="name">report.revenue.reconciliation.wizard.form</field>
+        <field name="model">report.revenue.reconciliation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Stock Move Report">
+                <group>
+                    <group>
+                        <label for="date_from"/>
+                        <div class="o_row">
+                            <field name="date_from" required="1"/>
+                            -
+                            <field name="date_to" required="1"/>
+                        </div>
+                        <field name="report_type"/>
+                        <field name="partner_id" attrs="{'invisible':[('report_type','!=','1')],'required':[('report_type','=','1')]}"/>
+                        <field name="team_id" attrs="{'invisible':[('report_type','!=','team')],'required':[('report_type','=','team')]}"/>
+                    </group>
+                    <group string="Chữ ký" name="sign">
+                        <field name="voter_id"/>
+                        <field name="lead_sale_id"/>
+                        <field name="chief_finance_id"/>
+                        <field name="director_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="In" type="object" name="action_generate_report" class="oe_highlight"/>
+                    <button string="Hủy" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_report_revenue_reconciliation_wizard_action" model="ir.actions.act_window">
+        <field name="name">Bảng Kiểm kê Doanh thu</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">report.revenue.reconciliation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_report_revenue_reconciliation_wizard"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_report_revenue_reconciliation_wizard" name="Bảng Kiểm kê Doanh thu" action="view_report_revenue_reconciliation_wizard_action"
+                  parent="account_reports.account_reports_audit_reports_menu" sequence="20"/>
+</odoo>

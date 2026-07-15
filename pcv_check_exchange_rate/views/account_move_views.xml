@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_account_move_inherit_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_set_checked']" position="after">
+                <button name="action_check_manual_exchange_rate" string="Check Manual Exchange Rate"
+                    type="object"
+                    attrs="{'invisible': ['|', '|', ('apply_manual_currency_exchange', '=', False), ('active_manual_currency_rate', '=', False), ('move_type', '!=', 'in_invoice')]}" />
+            </xpath>
+            <field name="invoice_vendor_bill_id" position="after">
+                <field name="tag_ids" widget="many2many_tags" options="{'no_quick_create': True}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_form_biz_custom_invoice" model="ir.ui.view">
+        <field name="name">account.account.form.biz_custom_invoice</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <field name="allowed_journal_ids" position="after">
+                <field name="tax_account_collection_payment"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="cash_flow_report_balance_nt" model="account.report.column">
+        <field name="name">Số dư ngoại tệ</field>
+        <field name="expression_label">foreign_balance</field>
+        <field name="figure_type">monetary</field>
+        <field name='report_id' ref="account_reports.cash_flow_report" />
+    </record>
+    <record id="general_ledger_report_balance_nt" model="account.report.column">
+        <field name="name">Số dư ngoại tệ</field>
+        <field name="expression_label">foreign_balance</field>
+        <field name="figure_type">monetary</field>
+        <field name='report_id' ref="account_reports.general_ledger_report" />
+    </record>
+    <record id="partner_ledger_report_balance_nt" model="account.report.column">
+        <field name="name">Số dư ngoại tệ</field>
+        <field name="expression_label">foreign_balance</field>
+        <field name="figure_type">monetary</field>
+        <field name='report_id' ref="account_reports.partner_ledger_report" />
+    </record>
+    
+    <!-- Báo cáo tình hình tài chính -->
+    <record id="balance_sheet_report_balance_nt" model="account.report.column">
+        <field name="name">Số dư ngoại tệ</field>
+        <field name="expression_label">foreign_balance</field>
+        <field name="figure_type">monetary</field>
+        <field name='report_id' ref="account_reports.balance_sheet" />
+    </record>
+    <record id="account_financial_report_total_assets0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_total_assets0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">CA.balance + FA.balance + PNCA.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_report_current_assets_view0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_current_assets_view0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">BA.balance + REC.balance + CAS.balance + PRE.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_report_equity0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_equity0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">UNAFFECTED_EARNINGS.balance + RETAINED_EARNINGS.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_unaffected_earnings0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_unaffected_earnings0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">CURR_YEAR_EARNINGS.balance + PREV_YEAR_EARNINGS.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_current_year_earnings0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_current_year_earnings0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">CURR_YEAR_EARNINGS_PNL.balance + CURR_YEAR_EARNINGS_ALLOC.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_report_bank_view0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_bank_view0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'asset_cash')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_receivable0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_receivable0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', False)]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_current_assets0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_current_assets0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="['|', ('account_id.account_type', '=', 'asset_current'), '&amp;', ('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', True)]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_prepayements0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_prepayements0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'asset_prepayments')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_fixed_assets_view0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_fixed_assets_view0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'asset_fixed')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_non_current_assets_view0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_non_current_assets_view0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'asset_non_current')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_retained_earnings0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_retained_earnings0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'equity')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">-sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_off_sheet_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_off_sheet"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'off_balance')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">-sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_liabilities_view0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_liabilities_view0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">CL.balance + NL.balance</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_current_liabilities0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_current_liabilities0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">CL1.balance + CL2.balance</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_current_liabilities1_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_current_liabilities1"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="['|', ('account_id.account_type', 'in', ('liability_current', 'liability_credit_card')), '&amp;', ('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', True)]"/>
+        <field name="subformula">-sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_current_liabilities_payable_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_current_liabilities_payable"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', False)]"/>
+        <field name="subformula">-sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_non_current_liabilities0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_non_current_liabilities0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'liability_non_current')]"/>
+        <field name="subformula">-sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_current_year_earnings_line_1_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_current_year_earnings_line_1"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">NEP.balance</field>
+        <field name="date_scope">from_fiscalyear</field>
+        <field name="subformula">cross_report</field>
+    </record>
+    <record id="account_financial_current_year_earnings_line_2_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_current_year_earnings_line_2"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
+        <field name="date_scope">from_fiscalyear</field>
+        <field name="subformula">-sum</field>
+    </record>
+    <record id="account_financial_previous_year_earnings0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_previous_year_earnings0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">PREV_YEAR_EARNINGS.balance_domain + PREV_YEAR_EARNINGS.allocated_earnings - CURR_YEAR_EARNINGS.balance</field>
+    </record>
+    <record id="account_financial_report_liabilities_and_equity_view0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_liabilities_and_equity_view0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">L.balance + EQ.balance</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+
+    <!-- Profit & Loss -->
+    <record id="profit_and_loss_balance_nt" model="account.report.column">
+        <field name="name">Số dư ngoại tệ</field>
+        <field name="expression_label">foreign_balance</field>
+        <field name="figure_type">monetary</field>
+        <field name='report_id' ref="account_reports.profit_and_loss" />
+    </record>
+    <record id="account_financial_report_net_profit0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_net_profit0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">OPINC.balance + OIN.balance - COS.balance - EXP.balance - DEP.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_report_totalincome0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_totalincome0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">OPINC.balance + OIN.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_report_gross_profit0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_gross_profit0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">OPINC.balance - COS.balance</field>
+        <field name="date_scope">normal</field>
+    </record>
+    <record id="account_financial_report_income0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_income0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'income')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">-sum</field>
+    </record>
+    <record id="account_financial_report_cost_sales0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_cost_sales0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'expense_direct_cost')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_other_income0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_other_income0"/>
+    <field name="label">foreign_balance</field>
+    <field name="engine">domain</field>
+    <field name="formula" eval="[('account_id.account_type', '=', 'income_other')]"/>
+    <field name="date_scope">normal</field>
+    <field name="subformula">-sum</field>
+    </record>
+    <record id="account_financial_report_less_expenses0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_less_expenses0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">EXP.balance + DEP.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_expense0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_expense0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'expense')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+    <record id="account_financial_report_depreciation0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_depreciation0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'expense_depreciation')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+    </record>
+
+
+    <!-- Tóm tắt hoạt động -->
+    <record id="executive_summary_balance_nt" model="account.report.column">
+        <field name="name">Số dư ngoại tệ</field>
+        <field name="expression_label">foreign_balance</field>
+        <field name="figure_type">monetary</field>
+        <field name='report_id' ref="account_reports.executive_summary" />
+    </record>
+
+    <record id="account_financial_report_executivesummary_cash_received0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_cash_received0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card')), ('debit', '&gt;', 0.0)]"/>
+        <field name="subformula">sum</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_cash_spent0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_cash_spent0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card')), ('credit', '&gt;', 0.0)]"/>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_cash_surplus0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_cash_surplus0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">CR.balance + CS.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_closing_bank_balance0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_closing_bank_balance0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', 'in', ('asset_cash', 'liability_credit_card'))]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_income0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_income0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">INC.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_direct_costs0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_direct_costs0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">COS.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="green_on_positive" eval="False"/>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_gross_profit0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_gross_profit0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">GRP.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_expenses0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_expenses0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">LEX.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="green_on_positive" eval="False"/>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_profit0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_profit0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">NEP.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_debtors0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_debtors0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'asset_receivable')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_creditors0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_creditors0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">domain</field>
+        <field name="formula" eval="[('account_id.account_type', '=', 'liability_payable')]"/>
+        <field name="date_scope">normal</field>
+        <field name="subformula">sum</field>
+        <field name="green_on_positive" eval="False"/>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_net_assets0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_net_assets0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">EXEC_SUMMARY_NA.na_balance</field>
+        <field name="date_scope">normal</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_gpmargin0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_gpmargin0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">GRP.balance / OPINC.balance * 100</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="figure_type">percentage</field>
+        <field name="auditable" eval="False"/>
+    </record>
+    <record id="account_financial_report_executivesummary_npmargin0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_npmargin0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">NEP.balance / INC.balance * 100</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="figure_type">percentage</field>
+        <field name="auditable" eval="False"/>
+    </record>
+    <record id="account_financial_report_executivesummary_return_investment0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_return_investment0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">NEP.balance / TA.balance * 100</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="figure_type">percentage</field>
+        <field name="auditable" eval="False"/>
+    </record>
+    <record id="account_financial_report_executivesummary_avdebt0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_avdebt0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">DEB.balance / OPINC.balance * AVG_DEBT_DAYS.NDays</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="green_on_positive" eval="False"/>
+        <field name="figure_type">float</field>
+        <field name="auditable" eval="False"/>
+    </record>
+    <record id="account_financial_report_executivesummary_avgcre0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_avgcre0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">-CRE.balance / OPINC.balance * AVG_CRED_DAYS.NDays</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="green_on_positive" eval="False"/>
+        <field name="figure_type">float</field>
+        <field name="auditable" eval="False"/>
+    </record>
+    <record id="account_financial_report_executivesummary_st_cash_forecast0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_st_cash_forecast0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">DEB.balance + CRE.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="auditable" eval="False"/>
+        <field name="blank_if_zero" eval="True"/>
+    </record>
+    <record id="account_financial_report_executivesummary_ca_to_l0_foreign_balance" model="account.report.expression">
+        <field name="report_line_id" ref="account_reports.account_financial_report_executivesummary_ca_to_l0"/>
+        <field name="label">foreign_balance</field>
+        <field name="engine">aggregation</field>
+        <field name="formula">CA.balance / CL.balance</field>
+        <field name="date_scope">normal</field>
+        <field name="subformula">cross_report</field>
+        <field name="figure_type">float</field>
+        <field name="auditable" eval="False"/>
+    </record>
+    
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_sale_vehicle_dashboard" model="ir.actions.client">
+        <field name="name">Tóm tắt đăng ký xe</field>
+        <field name="tag">ccv_vehicle_dashboard</field>
+    </record>
+
+    <menuitem id="menu_sale_vehicle_dashboard" 
+              name="Tóm tắt đăng ký xe" 
+              parent="sale.sale_order_menu" 
+              action="action_sale_vehicle_dashboard" 
+              sequence="105"/>
+</odoo>

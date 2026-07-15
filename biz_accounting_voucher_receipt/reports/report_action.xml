@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Format -->
+    <record id="paperformat_rp_voucher_reciept" model="report.paperformat">
+        <field name="name">Custom Paperformat for CCV  voucher receipt</field>
+        <field name="default" eval="False"/>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_spacing">25</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <!-- Action report -->
+    <record id="action_rp_vourcher_receipt" model="ir.actions.report">
+        <field name="name">Accounting voucher receipt</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_accounting_voucher_receipt.rp_vourcher_receipt</field>
+        <field name="report_file">biz_accounting_voucher_receipt.rp_vourcher_receipt</field>
+        <field name="paperformat_id" ref="paperformat_rp_voucher_reciept"/>
+        <field name="print_report_name">'Chung_tu_ke_toan_phieu_thu_%s' % (object.partner_id.name or 'None')</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_rp_vourcher_receipt_invoice" model="ir.actions.report">
+        <field name="name">Accounting voucher receipt</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_accounting_voucher_receipt.i_rp_vourcher_receipt</field>
+        <field name="report_file">biz_accounting_voucher_receipt.i_rp_vourcher_receipt</field>
+        <field name="paperformat_id" ref="paperformat_rp_voucher_reciept"/>
+        <field name="print_report_name">'Chung_tu_ke_toan_phieu_thu_%s' % (object.partner_id.name or 'None')</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

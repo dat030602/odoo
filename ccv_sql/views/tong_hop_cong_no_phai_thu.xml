@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree view line -->
+        <record id="tree_ccv_tong_hop_cong_no_phai_thu_line" model="ir.ui.view">
+            <field name="name">ccv.tong.hop.cong.no.phai.thu.line.tree</field>
+            <field name="model">ccv.tong.hop.cong.no.phai.thu.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="1"/>
+                    <field name="partner_id"/>
+                    <field name="customer_name"/>
+                    <field name="customer_code"/>
+                    <field name="customer_group"/>
+                    <field name="start_debit" sum="total_start_debit"/>
+                    <field name="start_credit" sum="total_start_credit"/>
+                    <field name="ps_debit" sum="total_ps_debit"/>
+                    <field name="ps_credit" sum="total_ps_credit"/>
+                    <field name="end_debit" sum="total_end_debit"/>
+                    <field name="end_credit" sum="total_end_credit"/>
+                    <field name="note"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Tree view phiếu -->
+        <record id="tree_ccv_tong_hop_cong_no_phai_thu" model="ir.ui.view">
+            <field name="name">ccv.tong.hop.cong.no.phai.thu.tree</field>
+            <field name="model">ccv.tong.hop.cong.no.phai.thu</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="partner_id"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'approved'"
+                           decoration-danger="state in ('cancel','refuse')"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form view phiếu -->
+        <record id="form_ccv_tong_hop_cong_no_phai_thu" model="ir.ui.view">
+            <field name="name">ccv.tong.hop.cong.no.phai.thu.form</field>
+            <field name="model">ccv.tong.hop.cong.no.phai.thu</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="is_user_current" invisible="1"/>
+                        <button name="action_confirm" string="Lấy dữ liệu" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_view_tree" string="Xem chi tiết" type="object"/>
+                        <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                                attrs="{'invisible': [('state','!=','draft')]}"/>
+                        <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_refuse" type="object" string="Từ chối"
+                                attrs="{'invisible': ['|', ('is_user_current','=', False), ('state','not in', ('approve',))]}"/>
+                        <button name="action_cancel" type="object" string="Hủy"
+                                attrs="{'invisible': [('state','not in', ('approve',))]}"/>
+                        <button name="action_undo" type="object" string="Đặt về nháp"
+                                attrs="{'invisible': [('state','not in', ('refuse','cancel'))]}"/>
+                        <button name="action_print_pdf_report" string="In PDF" type="object"/>
+                        <button name="action_print_xlsx_report" string="In Excel" type="object"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,approve,approved"/>
+                    </header>
+                    <sheet>
+                        <widget name="web_ribbon" title="Đã duyệt"
+                                attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                        <widget name="web_ribbon" title="Hủy"
+                                attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                        <widget name="web_ribbon" title="Từ chối"
+                                attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="oe_inline" required="1"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <label for="date_from"/>
+                                <div class="o_row">
+                                    <field name="date_from" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                    -
+                                    <field name="date_to" required="1"
+                                           attrs="{'readonly': [('state','!=','draft')]}"/>
+                                </div>
+                                <field name="page_break"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                            <group string="Nhóm khách hàng">
+                                <field name="report_type"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="account_id"
+                                       attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="partner_state" invisible="1"/>
+                                <field name="partner_id"
+                                       attrs="{'invisible': [('partner_state','!=','1')],
+                                               'required': [('partner_state','=','1')],
+                                               'readonly': [('state','!=','draft')]}"/>
+                                <field name="partner_ids" widget="many2many_tags"
+                                       attrs="{'invisible': [('partner_state','!=','2')],
+                                               'required': [('partner_state','=','2')],
+                                               'readonly': [('state','!=','draft')]}"/>
+                                <field name="team_id" widget="many2many_tags"
+                                       attrs="{'invisible': [('report_type','!=','team')],
+                                               'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Lập phiếu">
+                                <field name="voter_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="chief_dept_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="debt_accountant_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="chief_acc_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                                <field name="unit_heads_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Chi tiết" name="line_ids">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="partner_id" readonly="1"/>
+                                        <field name="customer_name" readonly="1"/>
+                                        <field name="customer_code" readonly="1"/>
+                                        <field name="customer_group" readonly="1"/>
+                                        <field name="start_debit" sum="total_start_debit" readonly="1" digits="[16,3]"/>
+                                        <field name="start_credit" sum="total_start_credit" readonly="1" digits="[16,3]"/>
+                                        <field name="ps_debit" sum="total_ps_debit" readonly="1" digits="[16,3]"/>
+                                        <field name="ps_credit" sum="total_ps_credit" readonly="1" digits="[16,3]"/>
+                                        <field name="end_debit" sum="total_end_debit" readonly="1" digits="[16,3]"/>
+                                        <field name="end_credit" sum="total_end_credit" readonly="1" digits="[16,3]"/>
+                                        <field name="note" attrs="{'readonly': [('parent.state','!=','draft')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="trp_approve_history" string="Lịch sử duyệt">
+                                <group>
+                                    <field name="trp_approve_config_line_id" invisible="1"/>
+                                    <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                    <field name="delegate_approver_ids" widget="many2many_tags"
+                                           domain="[('id','not in',current_approve_user_ids)]"
+                                           groups="base.group_system"/>
+                                </group>
+                                <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                            </page>
+                        </notebook>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" groups="base.group_user"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ccv_tong_hop_cong_no_phai_thu" model="ir.actions.act_window">
+            <field name="name">Báo cáo Tổng hợp công nợ phải thu</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ccv.tong.hop.cong.no.phai.thu</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="menu_ccv_tong_hop_cong_no_phai_thu"
+                  name="Báo cáo Tổng hợp công nợ phải thu"
+                  parent="sale.menu_sale_report"
+                  action="action_ccv_tong_hop_cong_no_phai_thu"
+                  sequence="22"/>
+
+    </data>
+</odoo>

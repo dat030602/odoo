@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mrp_production_consignment_wizard" model="ir.ui.view">
+        <field name="name">mrp.production.consignment.wizard.form</field>
+        <field name="model">mrp.production.consignment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Chuyển sang Kho Ký gửi">
+                <sheet>
+                    <group>
+                        <field name="is_multi" invisible="1"/>
+                        <field name="production_ids" widget="many2many_tags" readonly="1" attrs="{'invisible': [('is_multi', '=', False)]}"/>
+                        
+                        <field name="product_id" readonly="1" attrs="{'invisible': [('is_multi', '=', True)]}"/>
+                        <field name="total_qty" readonly="1" attrs="{'invisible': [('is_multi', '=', True)]}"/>
+                        
+                        <field name="apply_all" attrs="{'invisible': [('is_multi', '=', False)]}"/>
+                        
+                        <field name="consignment_qty" attrs="{'invisible': ['|', ('is_multi', '=', True), ('apply_all', '=', True)]}"/>
+                        <field name="stock_qty" readonly="1" attrs="{'invisible': ['|', ('is_multi', '=', True), ('apply_all', '=', True)]}"/>
+                    </group>
+                    
+                    <div class="alert alert-info" role="alert" attrs="{'invisible': [('is_multi', '=', False)]}">
+                        Bạn đang chọn nhiều Lệnh sản xuất. Nếu chọn "Chuyển toàn bộ", hệ thống sẽ đổi 100% số lượng thành phẩm của các lệnh này sang Kho ký gửi.
+                    </div>
+                    
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Lưu ý:</strong>
+                        <br/>
+                        - Với Lệnh <strong>Chưa Hoàn Thành</strong>: Hệ thống sẽ chia dòng đích đến trong dịch chuyển kho thành phẩm.
+                        <br/>
+                        - Với Lệnh <strong>Đã Hoàn Thành</strong> (ví dụ các lệnh cũ): Hệ thống sẽ giữ nguyên LSX và tự động sinh ra một <strong>Phiếu Dịch Chuyển Nội Bộ</strong> từ Kho Thành Phẩm qua Kho Ký Gửi tương ứng số lượng ký gửi.
+                    </div>
+                </sheet>
+                <footer>
+                    <button string="Xác nhận" name="action_apply_consignment" type="object" class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Server action to open wizard from list view -->
+    <record id="action_server_mrp_consignment" model="ir.actions.server">
+        <field name="name">Chuyển sang Kho Ký gửi</field>
+        <field name="model_id" ref="ccv_custom_mrp.model_mrp_production"/>
+        <field name="binding_model_id" ref="ccv_custom_mrp.model_mrp_production"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'name': 'Chuyển Kho Ký gửi',
+    'type': 'ir.actions.act_window',
+    'res_model': 'mrp.production.consignment.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {
+        'default_production_ids': records.ids,
+        'default_apply_all': True if len(records) > 1 else False,
+    }
+}
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_auto_backup_config_form" model="ir.ui.view">
+            <field name="name">Configure Backup</field>
+            <field name="model">auto.backup</field>
+            <field name="arch" type="xml">
+                <form string="Backups">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="active, inactive" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" />
+                            <h1>
+                                <field name="name" placeholder="Reference" nolabel="1" />
+                            </h1>
+                            <field name="active" invisible="1" />
+                        </div>
+                        <separator string="Backup Mode" />
+                        <group>
+                            <field name="backup_mode" nolabel="1" widget="radio" options="{'horizontal': true}" />
+                        </group>
+                        <div class="oe_edit_only">
+                            <p>
+                                <h4>To Configure Backup Directories:</h4>
+                            </p>
+                            <p attrs="{'invisible': [('backup_mode', '!=', 'local')]}">
+                                <mark>Local: Local Backup Path. Eg: /opt/odoo/backups</mark>
+                            </p>
+                            <p attrs="{'invisible': [('backup_mode', '!=', 'remote')]}">
+                                <mark>Remote: Remote Backup Path Eg: /opt/odoo/backups</mark>
+                            </p>
+                            <p attrs="{'invisible': [('backup_mode', '!=', 'drive')]}">
+                                <mark>Google Drive: The IDs of the parent folders which contain the file.
+                                    If not specified as part of a create request, the file will be placed directly in
+                                    the user's My Drive
+                                    folder.
+                                    If not specified as part of a copy request, the file will inherit any discoverable
+                                    parents of the
+                                    source file.
+                                    Update requests must use the addParents and removeParents parameters to modify the
+                                    parents list.
+                                    Eg: https://drive.google.com/drive/u/0/folders/1vzEwZyIBBthjvgKK97OYiByWAI1u6k4
+                                </mark>
+                            </p>
+                            <p attrs="{'invisible': [('backup_mode', '!=', 'dropbox')]}">
+                                <mark>Dropbox: Path inside your app folder in dropbox. If you specify a path and not
+                                    available, then
+                                    system will create a location. Eg: /ODOO/Backups/DB
+                                    <br />
+                                </mark>
+                            </p>
+                            <p attrs="{'invisible': [('backup_mode', '!=', 's3')]}">
+                                <mark>Amazon S3 Storage:
+                                    <br />
+                                    You can create the credential file yourself. By default, its location is at
+                                    ~/.aws/credentials
+                                    <br />
+                                    File content should be:
+                                    <br />
+                                    <code>
+                                        [default]
+                                        <br />
+                                        aws_access_key_id = YOUR_ACCESS_KEY
+                                        <br />
+                                        aws_secret_access_key = YOUR_SECRET_KEY
+                                    </code>
+                                    <br />
+                                    Or, you need to fill AWS access key and secret key here.
+                                </mark>
+                            </p>
+                        </div>
+                        <separator string="Database" colspan="4" />
+                        <group>
+                            <group>
+                                <field name="db" />
+                                <field name="host" />
+                            </group>
+                            <group>
+                                <field name="user" password="True" />
+                                <field name="db_password" password="True" />
+                            </group>
+
+                            <group>
+                                <field name="backup_dir" />
+                            </group>
+                            <group>
+                                <field name="format" />
+                            </group>
+                        </group>
+                        <separator string="FileStore" colspan="4" />
+                        <group>
+                            <group>
+                                <field name="backup_dir_filestore" />
+                            </group>
+                            <group>
+                                <field name="filestore_path" readonly="1" />
+                            </group>
+                        </group>
+                        <separator string="SFTP" colspan="4" attrs="{'invisible': [('backup_mode', '!=', 'remote')]}" />
+                        <group attrs="{'invisible': [('backup_mode', '!=', 'remote')]}">
+                            <group>
+                                <field name="remote_host"
+                                       attrs="{'invisible': [('backup_mode', '!=', 'remote')], 'required': [('backup_mode', '=', 'remote')]}" />
+                                <field name="remote_user"
+                                       attrs="{'invisible': [('backup_mode', '!=', 'remote')], 'required': [('backup_mode', '=', 'remote')]}" />
+                            </group>
+                            <group>
+                                <field name="remote_password"
+                                       attrs="{'invisible': [('backup_mode', '!=', 'remote')], 'required': [('backup_mode', '=', 'remote')]}"
+                                       password="True" />
+                            </group>
+                            <group>
+                                <button name="test_sftp" type="object" string="Test Connection" icon="fa-television" />
+                            </group>
+                        </group>
+                        <separator string="Dropbox" colspan="4"
+                                   attrs="{'invisible': [('backup_mode', '!=', 'dropbox')]}" />
+                        <group attrs="{'invisible': [('backup_mode', '!=', 'dropbox')]}">
+                            <span>Get an Dropbox authorization code and set it in the field below.</span>
+                            <field name="dropbox_uri"
+                                   class="fa fa-arrow-right mt-1"
+                                   widget="url"
+                                   text="Get Authorization Code"
+                                   attrs="{'invisible': [('backup_mode', '!=', 'dropbox')]}"
+                                   nolabel="1" />
+                            <field name="dropbox_secret"
+                                   password="True" />
+                            <field name="dropbox_token"
+                                   readonly="1"
+                                   password="True"
+                                   force_save="1" />
+                        </group>
+                        <separator string="Amazon S3" colspan="4"
+                                   attrs="{'invisible': [('backup_mode', '!=', 's3')]}" />
+                        <group attrs="{'invisible': [('backup_mode', '!=', 's3')]}">
+                            <mark>Get AWS access key &amp; secret key from
+                                <a href="https://console.aws.amazon.com/iam/home?#/security_credentials$access_key">
+                                    here
+                                </a>
+                                and set it in the field below.
+                            </mark>
+                            <field name="aws_access_key_id"
+                                   password="True" />
+                            <field name="aws_secret_key_id"
+                                   password="True" />
+                            <field name="bucket_name" />
+                        </group>
+                        <group>
+                            <h3 style="color: #e01951;">Specify the number of days to remove the old backup files
+                                automatically.
+                            </h3>
+                            <div>
+                                <field name="x_days" class="oe_inline" nolabel="1" />
+                                <b>Days</b>
+                            </div>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="activity_ids" widget="mail_activity" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_auto_backup_config_tree" model="ir.ui.view">
+            <field name="name">Configure Backup</field>
+            <field name="model">auto.backup</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Backups">
+                    <field name="name" />
+                    <field name="backup_mode" />
+                    <field name="x_days" string="No: of days to remove" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_auto_backup_config_search" model="ir.ui.view">
+            <field name="name">Configure Backup</field>
+            <field name="model">auto.backup</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search options">
+                    <field name="name" />
+                    <field name="backup_mode" />
+                    <field name="x_days" string="No: of days to remove" />
+                </search>
+            </field>
+        </record>
+
+        <record id="action_auto_backup_odoo_config" model="ir.actions.act_window">
+            <field name="name">Configure Backup</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">auto.backup</field>
+        </record>
+
+        <record id="action_auto_backup_odoo_config_view_tree_bind" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence" />
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_auto_backup_config_tree" />
+            <field name="act_window_id" ref="action_auto_backup_odoo_config" />
+        </record>
+
+        <record id="action_auto_backup_odoo_config_view_form_bind" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence" />
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_auto_backup_config_form" />
+            <field name="act_window_id" ref="action_auto_backup_odoo_config" />
+        </record>
+
+
+        <menuitem id="menu_auto_backup_db_psql_config_parent"
+                  name="Backup"
+                  parent="base.menu_administration" sequence="0" />
+
+        <menuitem id="menu_auto_backup_db_psql_config"
+                  parent="menu_auto_backup_db_psql_config_parent"
+                  action="action_auto_backup_odoo_config"
+        />
+    </data>
+</odoo>

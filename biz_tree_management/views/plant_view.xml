@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="tree_management_plant_view_form" model="ir.ui.view">
+            <field name="name">tree.management.plant.form</field>
+            <field name="model">tree.management.plant</field>
+            <field name="arch" type="xml">
+                <form string="Plant">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="e.g. Plant Name " required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="plant_type_id" required="1"/>
+                                <field name="quantity" />
+                            </group>
+                            <group>
+                                <field name="area_id" required="1"/>
+                                <field name="date" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="tree_management_plant_view_tree" model="ir.ui.view">
+            <field name="name">tree.management.plant.tree</field>
+            <field name="model">tree.management.plant</field>
+            <field name="arch" type="xml">
+                <tree string="Plant">
+                    <field name="name" />
+                    <field name="plant_type_id" />
+                    <field name="quantity" />
+                    <field name="area_id" />
+                    <field name="date" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="tree_management_plant_action" model="ir.actions.act_window">
+            <field name="name">Plant</field>
+            <field name="res_model">tree.management.plant</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_tree_management_plant" name="Plant" action="tree_management_plant_action" sequence="13" groups="base.group_user" parent="plant_management_menu"/>
+    </data>
+</odoo>

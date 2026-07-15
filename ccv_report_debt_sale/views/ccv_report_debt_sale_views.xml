@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Main Report Tree View -->
+    <record id="view_ccv_report_debt_sale_tree" model="ir.ui.view">
+        <field name="name">ccv.report.debt.sale.tree</field>
+        <field name="model">ccv.report.debt.sale</field>
+        <field name="arch" type="xml">
+            <tree string="Sổ tổng hợp bán hàng" decoration-success="status == 'locked'">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="voter_id"/>
+                <field name="status" widget="badge" decoration-success="status == 'locked'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Main Report Form View -->
+    <record id="view_ccv_report_debt_sale_form" model="ir.ui.view">
+        <field name="name">ccv.report.debt.sale.form</field>
+        <field name="model">ccv.report.debt.sale</field>
+        <field name="arch" type="xml">
+            <form string="Sổ tổng hợp bán hàng">
+                <header>
+                    <button name="action_confirm" string="Lấy dữ liệu" type="object" class="btn-primary" attrs="{'invisible': [('status', '=', 'locked')]}"/>
+                    <button name="action_lock" string="Khóa" type="object" attrs="{'invisible': [('status', '=', 'locked')]}"/>
+                    <button name="action_unlock" string="Mở khóa" type="object" attrs="{'invisible': [('status', '=', 'draft')]}"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="%(ccv_report_debt_sale.action_ccv_report_debt_sale_line)d"
+                            string="Chi tiết"
+                            type="action"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('line_ids', '=', [])]}" />
+                        <button
+                            name="%(ccv_report_debt_sale.action_ccv_report_debt_sale_total_line)d"
+                            string="Tổng hợp"
+                            type="action"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('line_total_ids', '=', [])]}" />
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="oe_inline" attrs="{'readonly': [('status', '=', 'locked')]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="type_partner" attrs="{'readonly': [('status', '=', 'locked')]}" required="1"/>
+                            <field name="partner_id" attrs="{'required': [('type_partner', '=', '1')], 'invisible': [('type_partner', '!=', '1')], 'readonly': [('status', '=', 'locked')]}"/>
+                            <field name="team_ids" widget="many2many_tags" attrs="{'required': [('type_partner', '=', 'team')], 'invisible': [('type_partner', '!=', 'team')], 'readonly': [('status', '=', 'locked')]}"/>
+                            <field name="order_state_id" attrs="{'required': [('type_partner', '=', 'order_state')], 'invisible': [('type_partner', '!=', 'order_state')], 'readonly': [('status', '=', 'locked')]}"/>
+                        </group>
+                        <group>
+                            <label for="date_from"/>
+                            <div class="o_row">
+                                <field name="date_from" required="1" attrs="{'readonly': [('status','=','locked')]}"/>
+                                -
+                                <field name="date_to" required="1" attrs="{'readonly': [('status','=','locked')]}"/>
+                            </div>
+                            <field name="account_id" attrs="{'readonly': [('status', '=', 'locked')]}" required="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết" name="line_ids">
+                            <field name="line_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        <page string="Tổng hợp" name="line_total_ids">
+                            <field name="line_total_ids" nolabel="1" readonly="1"/>
+                        </page>
+                        <page string="Chữ ký" name="sign">
+                            <group>
+                                <field name="voter_id"/>
+                                <field name="chief_finance_id"/>
+                                <field name="lead_sale_id"/>
+                                <field name="director_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Main Report Search View -->
+    <record id="view_ccv_report_debt_sale_search" model="ir.ui.view">
+        <field name="name">ccv.report.debt.sale.search</field>
+        <field name="model">ccv.report.debt.sale</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm sổ tổng hợp bán hàng">
+                <field name="name" string="Tên"/>
+                <separator/>
+                <filter string="Nháp" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Đã khóa" name="locked" domain="[('status', '=', 'locked')]"/>
+                <group expand="0" string="Nhóm">
+                    <filter string="Nháp" name="group_draft" domain="[('status', '=', 'draft')]"/>
+                    <filter string="Đã khóa" name="group_locked" domain="[('status', '=', 'locked')]"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Main Report Action -->
+    <record id="action_ccv_report_debt_sale" model="ir.actions.act_window">
+        <field name="name">Sổ tổng hợp bán hàng</field>
+        <field name="res_model">ccv.report.debt.sale</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_ccv_report_debt_sale_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo sổ tổng hợp bán hàng mới
+            </p>
+        </field>
+    </record>
+
+    <!-- Main Report Menu -->
+    <menuitem id="menu_ccv_report_debt_sale"
+              name="Sổ tổng hợp bán hàng"
+              action="action_ccv_report_debt_sale"
+              parent="account.account_reports_legal_statements_menu"
+              sequence="10"/>
+    <menuitem id="menu_ccv_report_debt_sale_sale"
+              name="Sổ tổng hợp bán hàng"
+              action="action_ccv_report_debt_sale"
+              parent="sale.menu_sale_report"
+              sequence="10"/>
+</odoo>

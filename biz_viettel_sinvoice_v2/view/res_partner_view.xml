@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<odoo>
+	
+	<record model="ir.ui.view" id="view_partner_form_sinvoice">
+		<field name="name">res.partner.form.client.sinvoice</field>
+	    <field name="model">res.partner</field>
+	    <field name="inherit_id" ref="base.view_partner_form"/>
+	    <field name="arch" type="xml">
+	        <field name="vat" position="attributes">
+	        	<attribute name="attrs">{}</attribute>
+	        </field>
+	        <xpath expr="//div[@class='o_address_format']" position="attributes">
+	        	<attribute name="attrs">{'invisible': [('type', '=', 'invoice')]}</attribute>
+	        </xpath>
+	        <label for="street" position="attributes">
+	        	<attribute name="attrs">{'invisible': [('type', '=', 'invoice')]}</attribute>
+	        </label>
+	        <field name="type" position="after">
+	        	
+	        	<field name="name_vat" placeholder="Contact Name VAT" attrs="{'invisible': [('type', '!=', 'invoice')]}"/>
+	        	<field name="address_invoice_vat" placeholder="Full address..." class="o_address_street" attrs="{'invisible': [('type', '!=', 'invoice')], 'required': [('type', '=', 'invoice')]}"/>
+	        </field>
+	        <xpath expr="//field[@name='child_ids']/form/sheet/group/group" position="attributes">
+               <attribute name="attrs">{'invisible': [('type', '=', 'invoice')]}</attribute>
+            </xpath>
+	    </field>
+	</record>
+	
+</odoo>

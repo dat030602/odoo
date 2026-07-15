@@ -1,0 +1,21 @@
+<template>
+    <t t-name="biz_ccv_sale.add_number" t-inherit="web.ListRenderer.Rows" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-foreach='list.records']" position="before">
+            <t t-set="RowNumber" t-value="1"/>
+        </xpath>
+        <xpath expr="//t[@t-call='{{ constructor.recordRowTemplate }}']" position="after">
+            <t t-set="RowNumber" t-value="RowNumber+1"/>
+        </xpath>
+    </t>
+  <t
+        t-name="biz_ccv_sale.ListRenderer.RecordRowNumber"
+        t-inherit="web.ListRenderer.RecordRow"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//Field" position="replace">
+            <Field t-elif="column.widget == 'sequence_vt'" name="column.name" columnIndex="RowNumber" record="record" type="column.widget" class="getFieldClass(column)" fieldInfo="props.archInfo.fieldNodes[column.name]" setDirty="(isDirty) => this.setDirty(isDirty)"/>
+            <Field t-else="" name="column.name" record="record" type="column.widget" class="getFieldClass(column)" fieldInfo="props.archInfo.fieldNodes[column.name]" setDirty="(isDirty) => this.setDirty(isDirty)"/>
+        </xpath>
+    </t> 
+</template>

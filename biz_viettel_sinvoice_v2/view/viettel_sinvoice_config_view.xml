@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_viettel_sinvoice_config_tree" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.config.tree</field>
+            <field name="model">viettel.sinvoice.config</field>
+            <field name="arch" type="xml">
+            	<tree>
+	          		<field name="company_id"/>
+	          		<field name="vsi_tin"/>
+	          		<field name="vsi_username"/>
+	          		<field name="vsi_password" password="True"/>
+	          		<field name="vsi_type"/>
+	          		<field name="vsi_template"/>
+	          		<field name="vsi_series"/>
+	            </tree>
+	    	</field>
+        </record>
+        <record id="view_viettel_sinvoice_config_form" model="ir.ui.view">
+            <field name="name">viettel.sinvoice.config.form</field>
+            <field name="model">viettel.sinvoice.config</field>
+            <field name="arch" type="xml">
+            	<form>
+            		<header>
+            			<button name="check_vsi_server" string="Checking connection" type="object" class="btn-primary" />
+            			<button name="vsi_get_customer_fields" states="connected" string="get dynamic field information" type="object" />
+            			<field name="state" widget="statusbar"/>
+            		</header>
+            		<sheet>
+            			<group>
+            				<group>
+            					<field name="vsi_domain"/>
+				          		<field name="company_id"/>
+				          		<field name="vsi_tin"/>
+				          		<field name="vsi_username"/>
+				          		<field name="vsi_password"  password="True"/>
+            				</group>
+            				<group>
+				          		<field name="vsi_type"/>
+            					<field name="vsi_template"/>
+            					<field name="vsi_series"/>
+            					<field name="vsi_connected" invisible="1"/>
+            					<field name="vsi_uncheck_data"/>
+            					<field name="allow_create_odoo_inv_adjust"/>
+            				</group>
+            			</group>
+            		</sheet>
+	            </form>
+	    	</field>
+        </record>
+        
+         <record id="action_viettel_sinvoice_config" model="ir.actions.act_window">
+	    	<field name="name">S-Invoice Configuration</field>
+	     	<field name="res_model">viettel.sinvoice.config</field>
+	     	<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_viettel_sinvoice_config_root" name="Configuration" parent="biz_viettel_sinvoice_v2.menu_viettel_sinvoice" sequence="2" groups="biz_viettel_sinvoice_v2.group_viettel_user"/>
+
+		<menuitem id="menu_viettel_sinvoice_config" action='action_viettel_sinvoice_config' parent="biz_viettel_sinvoice_v2.menu_viettel_sinvoice_config_root" sequence="1"/>
+	</data>
+</odoo>

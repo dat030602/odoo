@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Humic Sales Detail Views -->
+    <record id="view_salary_humic_sales_detail_tree" model="ir.ui.view">
+        <field name="name">salary.humic.sales.detail.tree</field>
+        <field name="model">salary.humic.sales.detail</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết bán hàng sản phẩm humic">
+                <field name="team_name" optional="show"/>
+                <field name="invoice_name" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="product_uom_id" optional="show"/>
+                <field name="quantity" sum="Tổng số lượng" optional="show"/>
+                <field name="unit_price" invisible="1" optional="show"/>
+                <field name="total_amount" sum="Tổng doanh số" optional="show"/>
+                <field name="amount_paid" sum="Tổng tiền thu" optional="show"/>
+                <field name="commission_unit_price" optional="show"/>
+                <field name="commission_amount" sum="Tổng hoa hồng" optional="show"/>
+                <field name="employee_commission_amount" sum="Tổng hoa hồng nhân viên" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_humic_sales_detail_form" model="ir.ui.view">
+        <field name="name">salary.humic.sales.detail.form</field>
+        <field name="model">salary.humic.sales.detail</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết bán hàng sản phẩm humic">
+                <sheet>
+                    
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-file-text" string="Hóa đơn" />
+                        <button name="action_view_sale_order" type="object" class="oe_stat_button" icon="fa-shopping-cart" string="Đơn hàng"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="invoice_ids" widget="many2many_tags"/>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                            <field name="product_id"/>
+                            <field name="product_uom_id"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="unit_price"/>
+                            <field name="total_amount"/>
+                            <field name="amount_paid"/>
+                            <field name="commission_unit_price"/>
+                            <field name="commission_amount"/>
+                            <field name="employee_commission_amount"/>
+                            <field name="team_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_salary_humic_sales_detail_search" model="ir.ui.view">
+        <field name="name">salary.humic.sales.detail.search</field>
+        <field name="model">salary.humic.sales.detail</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm chi tiết bán humic">
+                <field name="invoice_name"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="product_id"/>
+                <field name="team_name" string="Khu vực"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Đội" name="group_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Khách hàng" name="group_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Nhân viên" name="group_user" context="{'group_by':'user_id'}"/>
+                    <filter string="Sản phẩm" name="group_product" context="{'group_by':'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

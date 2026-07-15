@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Revenue Lines Tree View -->
+    <record id="view_salary_sales_summary_detail_line_revenue_tree" model="ir.ui.view">
+        <field name="name">salary.sales.summary.detail.line.revenue.tree</field>
+        <field name="model">salary.sales.summary.detail.line</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết doanh thu" create="0" edit="0" delete="0" action="action_view_sale_order" type="object">
+                <field name="name" optional="show"/>
+                <field name="team_id" invisible="1"/>
+                <field name="state_id" optional="show"/>
+                <field name="invoice_vat_sinvoice_number" optional="show"/>
+                <field name="sale_order_ids" widget="many2many_tags" optional="show"/>
+                <field name="product_id" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="is_first_order" optional="show"/>
+                <field name="delivery_date" optional="show"/>
+                <field name="quantity" sum="Tổng số lượng" digits="[16,3]" optional="show"/>
+                <field name="unit_price" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="amount_untaxed" sum="Tổng trước thuế" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="amount_total" sum="Tổng sau thuế" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="amount_tax" sum="Tổng thuế" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Payment Lines Tree View -->
+    <record id="view_salary_sales_summary_detail_line_payment_tree" model="ir.ui.view">
+        <field name="name">salary.sales.summary.detail.line.payment.tree</field>
+        <field name="model">salary.sales.summary.detail.line</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết doanh thu tiền về" create="0" edit="0" delete="0" action="action_view_payment" type="object">
+                <field name="name" optional="show"/>
+                <field name="team_id" invisible="1"/>
+                <field name="state_id" optional="show"/>
+                <field name="payment_id" invisible="1" optional="show"/>
+                <field name="sale_order_ids" widget="many2many_tags" optional="show"/>
+                <field name="is_first_order" optional="show"/>
+                <field name="communication" optional="show"/>
+                <field name="amount" sum="Tổng số tiền" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="payment_date" optional="show"/>
+                <field name="payment_id" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Invoice Lines Tree View -->
+    <record id="view_salary_sales_summary_detail_line_invoice_tree" model="ir.ui.view">
+        <field name="name">salary.sales.summary.detail.line.invoice.tree</field>
+        <field name="model">salary.sales.summary.detail.line</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết xuất hóa đơn trước" create="0" edit="0" delete="0" action="action_view_invoice" type="object">
+                <field name="team_id" optional="show"/>
+                <field name="state_id" optional="show"/>
+                <field name="sale_order_ids" widget="many2many_tags" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="is_first_order" optional="show"/>
+                <field name="invoice_date" optional="show"/>
+                <field name="invoice_vat_sinvoice_number" optional="show"/>
+                <field name="quantity" sum="Tổng số lượng" digits="[16,3]" optional="show"/>
+                <field name="unit_price" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="amount_untaxed" sum="Tổng trước thuế" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="amount_tax" sum="Tổng thuế" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="amount_total" sum="Tổng sau thuế" options="{'currency_field': 'currency_id'}" optional="show"/>
+                <field name="currency_id" invisible="1" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Revenue Search View -->
+    <record id="view_salary_sales_summary_detail_line_revenue_search" model="ir.ui.view">
+        <field name="name">salary.sales.summary.detail.line.revenue.search</field>
+        <field name="model">salary.sales.summary.detail.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm doanh thu">
+                <field name="summary_id"/>
+                <field name="name" string="Khu vực"/>
+                <field name="state_id"/>
+                <field name="sale_order_ids"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="delivery_date"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Đội" name="group_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Tỉnh" name="group_state" context="{'group_by':'state_id'}"/>
+                    <filter string="Khách hàng" name="group_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Sản phẩm" name="group_product" context="{'group_by':'product_id'}"/>
+                    <filter string="Loại" name="group_type" context="{'group_by':'line_type'}"/>
+                    <filter string="Ngày giao" name="group_delivery_date" context="{'group_by':'delivery_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Payment Search View -->
+    <record id="view_salary_sales_summary_detail_line_payment_search" model="ir.ui.view">
+        <field name="name">salary.sales.summary.detail.line.payment.search</field>
+        <field name="model">salary.sales.summary.detail.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm doanh thu tiền về">
+                <field name="summary_id"/>
+                <field name="name" string="Khu vực"/>
+                <field name="state_id"/>
+                <field name="sale_order_ids"/>
+                <field name="communication"/>
+                <field name="amount"/>
+                <field name="payment_date"/>
+                <field name="invoice_vat_sinvoice_number"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Đội" name="group_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Tỉnh" name="group_state" context="{'group_by':'state_id'}"/>
+                    <filter string="Loại" name="group_type" context="{'group_by':'line_type'}"/>
+                    <filter string="Ngày" name="group_payment_date" context="{'group_by':'payment_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Invoice Search View -->
+    <record id="view_salary_sales_summary_detail_line_invoice_search" model="ir.ui.view">
+        <field name="name">salary.sales.summary.detail.line.invoice.search</field>
+        <field name="model">salary.sales.summary.detail.line</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm xuất hóa đơn trước">
+                <field name="summary_id"/>
+                <field name="name" string="Khu vực"/>
+                <field name="state_id"/>
+                <field name="sale_order_ids"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="invoice_date"/>
+                <field name="invoice_vat_sinvoice_number"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Đội" name="group_team" context="{'group_by':'team_id'}"/>
+                    <filter string="Tỉnh" name="group_state" context="{'group_by':'state_id'}"/>
+                    <filter string="Khách hàng" name="group_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Sản phẩm" name="group_product" context="{'group_by':'product_id'}"/>
+                    <filter string="Loại" name="group_type" context="{'group_by':'line_type'}"/>
+                    <filter string="Ngày HĐ" name="group_invoice_date" context="{'group_by':'invoice_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

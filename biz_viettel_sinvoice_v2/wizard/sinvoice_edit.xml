@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record model="ir.ui.view" id="view_sinvoice_edit_info_form">
+			<field name="name">sinvoice.edit.form</field>
+			<field name="model">sinvoice.edit</field>
+			<field name="arch" type="xml">
+				<form string="Cập nhật hóa đơn">
+					<sheet>
+						<group>
+							<field name="sinvoice_edit_type"/>
+							<field name="company_type" invisible="1"/>
+							<field name="company_id" invisible="1"/> 
+							<field name="type" invisible="1"/>
+							<field name="journal_id" invisible="1"/>
+						</group>
+						<group>
+							<group string="Information for old buyers" attrs="{'invisible': [('sinvoice_edit_type','not in',('info'))]}">
+								<field name="buyerName"  readonly="1"/>
+								<field name="buyerCode"  readonly="1"/>
+								<field name="buyerTaxCode"  readonly="1"/>
+								<field name="buyerIdType"  readonly="1"/>
+								<field name="buyerIdNo"  readonly="1"/>
+								<field name="buyerLegalName"  readonly="1"/>
+								<field name="buyerAddressLine"  readonly="1"/>
+							</group>
+							<group string="Buyer Information">
+								<field name="new_buyerName" attrs="{'required': [('company_type', '=', 'person')]}"/>
+								<field name="new_buyerCode"/>
+								<field name="new_buyerTaxCode"/>
+								<field name="new_buyerIdType"/>
+								<field name="new_buyerIdNo"/>
+								<field name="new_buyerLegalName" attrs="{'required': [('company_type', '=', 'company')]}"/>
+								<field name="new_buyerAddressLine"/>
+							</group>
+							<group string="Thông tin chung">
+                        		<field name="vsi_template"  readonly="1"/>
+	                        	<field name="originalInvoiceId"  readonly="1"/>
+	                        	<field name="invoiceIssuedDate"  readonly="1"/>
+                        		<field name="invoiceSignedDate" required="1"/>
+	                        	<field name="additionalReferenceDesc" required="1"/>
+	                        	<field name="additionalReferenceDate" required="1"/>
+	                        </group>
+						</group>
+						<div attrs="{'invisible': [('sinvoice_edit_type','not in',('amount','replace'))]}">
+							<h5 class="o_form_label" style="width: 100%;border-bottom: 1px solid #e6e6e6;">Invoice details</h5>
+							<field name="sinvoice_data_ids" widget="section_and_note_one2many" nolabel="1" on_change="1" context="{'type': type, 'journal_id': journal_id, 'default_invoice_id': id}">
+                        		<tree editable="bottom">
+									<control>
+										<create name="add_line_control" string="Add a line"/>
+										<create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+										<create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+									</control>
+									<field name="sequence" widget="handle" />
+                        			<field name="sinvoice_edit_type" invisible="1"/>
+                        			<field name="edit_type" 
+                        				attrs="{'column_invisible': [('parent.sinvoice_edit_type','=','replace')],'required': [('sinvoice_edit_type','in',('amount'))]}"
+                        			/>
+                        			<field name="product_id" attrs="{'readonly': [('parent.sinvoice_edit_type','=', 'amount')]}" force_save="1"/>
+                        			<field name="vsi_item_type" required="1"/>
+                        			<field name="name" attrs="{'readonly': [('parent.sinvoice_edit_type','=', 'amount')]}" force_save="1"/>
+                        			<field name="product_uom_id" groups="uom.group_uom" attrs="{'readonly': [('parent.sinvoice_edit_type','=', 'amount')]}" force_save="1"/>
+                        			<field name="quantity"/>
+                        			<field name="price_unit"/>
+                        			<field name="price_subtotal" attrs="{'readonly': [('parent.sinvoice_edit_type','=', 'amount')]}" force_save="1"/>
+                        			<field name="tax_ids" widget="many2many_tags" />
+									<field name="display_type" invisible="1"/>	
+                        		</tree>
+                        		<form>
+				                    <group>
+                                        <field name="price_total" invisible="1"/>
+                                        <field name="sinvoice_edit_type" invisible="1"/>
+                                        <field name="sinvoice_id" invisible="1"/>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="name"/>
+                                            <field name="account_id" groups="account.group_account_user" domain="[('company_id', '=', parent.company_id), ('deprecated', '=', False)]"/>
+                                            <field name="product_uom_id" groups="uom.group_uom"/>
+                                        </group>
+                                        <group>
+                                            <field name="quantity"/>
+                                            <field name="price_unit" string="Price"/>
+                                            <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}" context="{'type':parent.type, 'tree_view_ref': 'account.account_tax_view_tree', 'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id', '=', parent.company_id)]"/>
+                                            <field name="price_subtotal" string="Subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <field name="price_total" string="Total" groups="account.group_show_line_subtotals_tax_included"/>
+                                        </group>
+                                    </group>
+                        		</form>
+                        	</field>
+						</div>
+                        <!-- <group string="Chi tiết hóa đơn">  	
+                        </group> -->
+						<footer>
+	                        <button string="Action" name="do_edit" type="object" default_focus="1" class="btn-primary"/>
+	                        <button string="Preview" name="do_edit_preview" type="object" default_focus="1" class="btn-primary"/>
+	                        <button string="Discard" class="btn-secondary" special="cancel"/>
+	                    </footer>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_sinvoice_edit" model="ir.actions.act_window">
+			<field name="name">Lập hóa đơn điều chỉnh thông tin</field>
+			<field name="res_model">sinvoice.edit</field>
+			<field name="target">new</field>
+			<field name="view_mode">form</field>
+		</record>
+		
+    </data>
+</odoo>

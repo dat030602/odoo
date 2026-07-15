@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="current_user_pinned_channel_view_tree" model="ir.ui.view">
+        <field name="name">current.user.pinned.channel.tree</field>
+        <field name="model">current.user.pinned.channel</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="user_id"/>
+                <field name="is_pinned"/>
+                <field name="channel_id"/>
+                <field name="sequence"/>
+            </tree>
+        </field>
+    </record>
+    
+</odoo>

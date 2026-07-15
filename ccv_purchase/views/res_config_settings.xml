@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_purchase_ccv" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.purchase.ccv</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='purchase_setting_container']" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box" id="purchase_approvers">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Người phê duyệt mua hàng</span>
+                        <div class="text-muted">Thiết lập người phê duyệt mặc định cho đơn mua hàng</div>
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="default_chief_accountant_id" class="col-lg-5 o_light_label" string="Kế toán trưởng"/>
+                                <field name="default_chief_accountant_id"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="default_unit_head_id" class="col-lg-5 o_light_label" string="Thủ trưởng đơn vị"/>
+                                <field name="default_unit_head_id"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

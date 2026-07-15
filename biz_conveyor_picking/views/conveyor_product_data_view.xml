@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_conveyor_product_data_tree" model="ir.ui.view">
+        <field name="name">conveyor.product.data.tree</field>
+        <field name="model">conveyor.product.data</field>
+        <field name="arch" type="xml">
+            <tree string="Dữ liệu sản phẩm băng tải" decoration-info="difference != 0" decoration-warning="completion_rate &lt; 100" create="false">
+                <field name="conveyor_data_id"/>
+                <field name="pro_code"/>
+                <field name="pro_name"/>
+                <field name="product_id"/>
+                <field name="mo_plan_num" sum="Tổng kế hoạch"/>
+                <field name="mo_real_num" sum="Tổng thực tế"/>
+                <field name="mo_start_num"/>
+                <field name="difference"/>
+                <field name="completion_rate" widget="percentage"/>
+                <field name="index_0"/>
+                <field name="index_1"/>
+                <field name="index_2"/>
+                <field name="index_3"/>
+                <field name="index_4"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_conveyor_product_data_form" model="ir.ui.view">
+        <field name="name">conveyor.product.data.form</field>
+        <field name="model">conveyor.product.data</field>
+        <field name="arch" type="xml">
+            <form string="Dữ liệu sản phẩm băng tải" create="false">
+                <header>
+                    <button name="action_view_product" type="object" string="Xem sản phẩm" 
+                            icon="fa-external-link" attrs="{'invisible': [('product_id', '=', False)]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Thông tin liên kết">
+                            <field name="conveyor_data_id"/>
+                            <field name="product_id"/>
+                        </group>
+                        <group string="Thông tin sản phẩm">
+                            <field name="pro_code"/>
+                            <field name="pro_name"/>
+                            <field name="mo_plan_num"/>
+                            <field name="mo_real_num"/>
+                            <field name="mo_start_num"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Dữ liệu API Index">
+                            <field name="index_0"/>
+                            <field name="index_1"/>
+                            <field name="index_2"/>
+                            <field name="index_3"/>
+                            <field name="index_4"/>
+                        </group>
+                        <group string="Tính toán">
+                            <field name="difference"/>
+                            <field name="completion_rate" widget="percentage"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_conveyor_product_data_search" model="ir.ui.view">
+        <field name="name">conveyor.product.data.search</field>
+        <field name="model">conveyor.product.data</field>
+        <field name="arch" type="xml">
+            <search string="Tìm kiếm dữ liệu sản phẩm băng tải">
+                <field name="conveyor_data_id"/>
+                <field name="pro_code"/>
+                <field name="pro_name"/>
+                <field name="product_id"/>
+                <separator/>
+                <filter string="Có chênh lệch" name="has_difference" domain="[('difference', '!=', 0)]"/>
+                <filter string="Chưa hoàn thành" name="incomplete" domain="[('completion_rate', '&lt;', 100)]"/>
+                <filter string="Hoàn thành 100%" name="complete" domain="[('completion_rate', '=', 100)]"/>
+                <separator/>
+                <filter string="Hôm nay" name="today" domain="[('create_date', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Tuần này" name="this_week" domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="Tháng này" name="this_month" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-01'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Dữ liệu băng tải" name="group_conveyor_data" context="{'group_by': 'conveyor_data_id'}"/>
+                    <filter string="Mã sản phẩm" name="group_pro_code" context="{'group_by': 'pro_code'}"/>
+                    <filter string="Sản phẩm Odoo" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Ngày tạo" name="group_create_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_conveyor_product_data" model="ir.actions.act_window">
+        <field name="name">Dữ liệu sản phẩm băng tải</field>
+        <field name="res_model">conveyor.product.data</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có dữ liệu sản phẩm băng tải nào
+            </p>
+            <p>
+                Dữ liệu sản phẩm băng tải sẽ được tạo tự động khi có hoạt động trên băng tải.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <!-- <menuitem id="menu_conveyor_product_data"
+              name="Dữ liệu sản phẩm băng tải"
+              parent="stock.menu_stock_config_settings"
+              action="action_conveyor_product_data"
+              sequence="101"/> -->
+</odoo> 

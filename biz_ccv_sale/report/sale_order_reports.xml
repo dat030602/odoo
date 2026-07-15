@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <record id="action_report_saleorder_docx" model="ir.actions.report">-->
+<!--        <field name="name">Quotation / Order(docx)</field>-->
+<!--        <field name="type">ir.actions.report</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="binding_type">report</field>-->
+<!--        <field name="report_type">py3o</field>-->
+<!--        <field name="report_name">py3o_saleorder</field>-->
+<!--        <field name="report_file">py3o_saleorder</field>-->
+<!--        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>-->
+<!--        <field name="binding_model_id" ref="model_sale_order"/>-->
+
+<!--        <field name="py3o_filetype">docx</field>-->
+<!--        <field name="module">biz_ccv_sale</field>-->
+<!--        <field name="py3o_template_fallback">report/mau-don-hang-CCV.odt</field>-->
+
+<!--    </record>-->
+
+    <record id="action_report_saleorder_new_docx" model="ir.actions.report">
+        <field name="name">Quotation / Order(docx - 2.0)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">sale.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_saleorder</field>
+        <field name="report_file">py3o_saleorder</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+
+        <field name="py3o_filetype">docx</field>
+        <field name="module">biz_ccv_sale</field>
+        <field name="py3o_template_fallback">report/mau-don-hang-CCV-new-2024.odt</field>
+
+    </record>
+    <record id="action_report_saleorder_quotation_docx" model="ir.actions.report">
+        <field name="name">Quotation (docx - 2.0)</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">sale.order</field>
+        <field name="binding_type">report</field>
+        <field name="report_type">py3o</field>
+        <field name="report_name">py3o_saleorder_quotation</field>
+        <field name="report_file">py3o_saleorder_quotation</field>
+        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+
+        <field name="py3o_filetype">docx</field>
+        <field name="module">biz_ccv_sale</field>
+        <field name="py3o_template_fallback">report/mau-bao-gia-CCV-2024.odt</field>
+
+    </record>
+<!--    <record id="action_print_file_world_act_window" model="ir.actions.act_window">-->
+<!--        <field name="name">Tải ĐH file world(act_window)</field>-->
+<!--        <field name="type">ir.actions.act_window</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="binding_model_id" ref="model_sale_order"/>-->
+<!--        <field name="binding_view_types">form</field>-->
+<!--    </record>-->
+
+<!--    <record id="action_report_saleorder_docx" model="ir.actions.server">-->
+<!--        <field name="name">Quotation / Order(docx)</field>-->
+<!--        <field name="model_id" ref="sale.model_sale_order"/>-->
+<!--        <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+<!--        <field name="binding_view_types">form</field>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">-->
+<!--            action = {-->
+<!--                'type': 'ir.actions.act_url',-->
+<!--                'url': '/biz_ccv_sale/saleorder/%d/docx' % record.id,-->
+<!--                'target': 'self',-->
+<!--            }-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="sale_order_print_file_world" model="ir.actions.report">-->
+<!--        <field name="name">Tải ĐH file world</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="report_type">qweb-pdf</field>-->
+<!--        <field name="report_name">biz_ccv_sale.print_sale_order_file_world</field>-->
+<!--        <field name="report_file">biz_ccv_sale.print_sale_order_file_world</field>-->
+<!--        <field name="print_report_name">'%s - %s' % (object.name, object.partner_id.name)</field>-->
+<!--        <field name="binding_model_id" ref="model_sale_order"/>-->
+<!--        <field name="binding_type">report</field>-->
+<!--    </record>-->
+
+<!--    <template id="print_sale_order_file_world">-->
+<!--        <t t-call="web.basic_layout">-->
+<!--            <div class="page">-->
+<!--                <t t-foreach="docs" t-as="sale">-->
+<!--                </t>-->
+<!--            </div>-->
+<!--        </t>-->
+<!--    </template>-->
+</odoo>

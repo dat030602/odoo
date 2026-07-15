@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ccv_mrp_plan_export_form_inherit" model="ir.ui.view">
+        <field name="name">ccv.mrp.plan.export.form.inherit</field>
+        <field name="model">ccv.mrp.plan.export</field>
+        <field name="inherit_id" ref="ccv_plan_mrp_sale.ccv_mrp_plan_export_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='line_ids']/tree/field[@name='bom_id']" position="after">
+                <field name="tag_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="ccv_sale_plan_export_line2_view_tree_inherit">
+        <field name="name">tree_ccv_sale_plan_export_line2_inherit</field>
+        <field name="model">ccv.sale.plan.export.line2</field>
+        <field name="inherit_id" ref="ccv_plan_mrp_sale.ccv_sale_plan_export_line2_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bom_id']" position="after">
+                <field name="tag_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

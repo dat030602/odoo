@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_tree_inherit_biz_ccv_sale" model="ir.ui.view">
+            <field name="name">sale.order.tree.inherit.biz.ccv.sale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="total_number_of_products" optional="hide"/>
+                    <field name="total_amount_conversion" optional="hide"/>
+                    <field name="total_product_uom_qty" optional="hide"/>
+                    <field name="total_qty_delivered" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_quotation_tree_inherit_biz_ccv_sale" model="ir.ui.view">
+            <field name="name">view.quotation.tree.inherit.biz.ccv.sale</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="total_number_of_products" optional="hide"/>
+                    <field name="total_amount_conversion" optional="hide"/>
+                    <field name="total_product_uom_qty" optional="hide"/>
+                    <field name="total_qty_delivered" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_order_form_sale_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.sale.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='product_uom']" position="replace">
+                   <field name="product_uom"  groups="!uom.group_uom"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='product_uom_qty']" position="before">
+                    <field name="amount_conversion" sum="Total Amount Conversion" force_save="1" optional="hide" />
+                    <field name="conversion_unit" options="{'no_create': True}"  attrs="{'invisible': [('product_uom', '=', False)]}" domain="[('category_id', '=', product_uom_category_id)]" optional="hide" />
+                    <field name="specification" optional="hide"/>
+                </xpath>
+
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="old_order_code"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="transportation"/>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="contact_representative"/>
+                    <field name="contact_phone"/>
+                    <field name="contact_total_due"/>
+                </xpath>
+                <xpath expr="//form" position="attributes">
+                    <attribute name="js_class">sign_form</attribute>
+                </xpath>
+                <field name="payment_term_id" position="after">
+                    <field name="payment_time"/>
+                    <field name="domain_sign_request" invisible="1"/>
+                    <field name="sign_request_id" options="{'no_create': True}"/>
+                    <field name="sale_order_type_id"/>
+                </field>
+                <field name="payment_time" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+
+                <xpath expr="//tree/field[@name='qty_delivered']" position="attributes">
+                    <attribute name="sum">Total Delivery Quantity</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="sum">Total Quantity</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="is_promotional_product" optional="hide"/>
+                </xpath>
+                <field name="code_contact" position="before">
+                    <field name="order_state_id"/>
+                </field>
+                <group name="note_group" position="before">
+                    <group>
+                        <field name="total_number_of_products"/>
+                    </group>
+                </group>
+                <xpath expr="//field[@name='order_line']//form//field[@name='product_id']" position="before">
+                    <field name="packaging_image" widget="image" class="oe_avatar" readonly="1" force_save="1" string="Product Image"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree//field[@name='product_id']" position="before">
+                    <field name="packaging_image" widget="image" class="oe_avatar" readonly="0" force_save="1" string="Product Image"/>
+                </xpath>
+                <xpath expr="//page[@name='customer_signature']" position="after">
+                    <page name="quota_oder_signatory" string="Signatory">
+                        <group>
+                            <group>
+                                <field name="founder_id" string="Founder"/>
+                                <field name="regional_head_id" string="Regional Head"/>
+                            </group>
+                            <group>
+                                <field name="finance_account_dept_id" string="Finance - Accounting Department"/>
+                                <field name="sale_manager_id" string="Sales Manager"/>
+                                <field name="bod_id" string="Board of Directors"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <field name="origin" position="replace" />
+                <field name="sale_order_type_id" position="after">
+                    <field name="origin" />
+                </field>
+            </field>
+        </record>
+
+        <record id="view_sale_order_line_procduct_image_inherit_ccv" model="ir.ui.view">
+            <field name="name">sale.order.line.procduct.image.inherit.ccv</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_invoice_product_image_app.view_sale_order_line_procduct_image"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//form//field[@name='product_image']" position="attributes">
+                    <attribute name="string">Packaging Image</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree//field[@name='product_image']" position="attributes">
+                    <attribute name="string">Packaging Image</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sales_order_filter_inherited" model="ir.ui.view">
+            <field name="name">sale.order.list.select.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <field name="order_line" position="after">
+                    <field name="sign_request_id"/>
+                    <field name="sale_order_type_id"/>
+                    <filter string="Sales Order Type" name="filter_sale_order_type" domain="[('sale_order_type_id', '!=', False)]"/>
+                </field>
+                <group position="inside">
+                    <filter string="Sign Request" name="group_sign_request" domain="[]" context="{'group_by': 'sign_request_id'}"/>
+                    <filter string="Sales Order Type" name="group_sale_order_type" domain="[]" context="{'group_by': 'sale_order_type_id'}"/>
+                </group>
+            </field>
+        </record>
+    </data>
+</odoo>

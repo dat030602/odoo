@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="trp_approve_history_tree" model="ir.ui.view">
+            <field name="name">trp_approve_history_tree</field>
+            <field name="model">trp.approve.history</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" decoration-danger="reason!=False">
+                    <field name="type"/>
+                    <field name="user_id" optional="show"/>
+                    <field name="date"/>
+                    <field name="approve_user_id"/>
+                    <field name="approve_date"/>
+                    <field name="approve_user_ids" widget="many2many_tags"/>
+                    <field name="manager_type" optional="hide"/>
+                    <field name="user_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="job_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="delegate_approver_ids" widget="many2many_tags" optional="show"/>
+                    <field name="reason_id" optional="hide"/>
+                    <field name="reason"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

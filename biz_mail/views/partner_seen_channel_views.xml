@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="partner_seen_channel_view_tree" model="ir.ui.view">
+        <field name="name">partner.seen.channel.tree</field>
+        <field name="model">partner.seen.channel</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id"/>
+                <field name="seen_time"/>
+                <field name="channel_id"/>
+            </tree>
+        </field>
+    </record>
+    
+</odoo>

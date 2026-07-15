@@ -1,0 +1,1 @@
+from . import rp_payslip_salary_payment

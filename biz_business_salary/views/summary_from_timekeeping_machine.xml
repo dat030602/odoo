@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_summary_from_timekeeping_machine_tree" model="ir.ui.view">
+        <field name="name">summary.from.timekeeping.machine.tree</field>
+        <field name="model">summary.from.timekeeping.machine</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="worksheet_name"/>
+                <field name="month"/>
+                <field name="year"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_summary_from_timekeeping_machine_form" model="ir.ui.view">
+        <field name="name">summary.from.timekeeping.machine.form</field>
+        <field name="model">summary.from.timekeeping.machine</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Work Summary" name="action_work_sumary" type="object" class="oe_highlight"/>
+                    <button string="Salary Calculation" name="salary_calculation" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="worksheet_name"/>
+                       <field name="month"/>
+                       <field name="year"/>
+                       <field name="employee_ids" widget="many2many_tags"/>
+                       <field name="standard_working_days"/> 
+                    </group>
+                    <notebook>
+                        <page string="Summary Common" name="summary_common">
+                            <field name="summary_common_ids">
+                                <tree editable="bottom" class="custom-width-tree">
+                                    <field name="employee_id"/>
+                                    <field name="position"/>
+                                    <field name="date_1" string="1"/>
+                                    <field name="date_2" string="2"/>
+                                    <field name="date_3" string="3"/>
+                                    <field name="date_4" string="4"/>
+                                    <field name="date_5" string="5"/>
+                                    <field name="date_6" string="6"/>
+                                    <field name="date_7" string="7"/>
+                                    <field name="date_8" string="8"/>
+                                    <field name="date_9" string="9"/>
+                                    <field name="date_10" string="10"/>
+                                    <field name="date_11" string="11"/>
+                                    <field name="date_12" string="12"/>
+                                    <field name="date_13" string="13"/>
+                                    <field name="date_14" string="14"/>
+                                    <field name="date_15" string="15"/>
+                                    <field name="date_16" string="16"/>
+                                    <field name="date_17" string="17"/>
+                                    <field name="date_18" string="18"/>
+                                    <field name="date_19" string="19"/>
+                                    <field name="date_20" string="20"/>
+                                    <field name="date_21" string="21"/>
+                                    <field name="date_22" string="22"/>
+                                    <field name="date_23" string="23"/>
+                                    <field name="date_24" string="24"/>
+                                    <field name="date_25" string="25"/>
+                                    <field name="date_26" string="26"/>
+                                    <field name="date_27" string="27"/>
+                                    <field name="date_28" string="28"/>
+                                    <field name="date_29" string="29"/>
+                                    <field name="date_30" string="30"/>
+                                    <field name="date_31" string="31"/>
+                                    <field name="standard_working_days"/>
+                                    <field name="nc_hc" sum="Total NC HC"/>
+                                    <field name="nc_l" sum="Total NC L"/>
+                                    <field name="nn_p" sum="Total NN P"/>
+                                    <field name="nn_pn" sum="Total NN PN"/>
+                                    <field name="nn_k" sum="Total NN K"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Summary Overtime" name="summary_overtime">
+                            <field name="summary_overtime_ids" class="custom-width-tree">
+                                <tree editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="position"/>
+                                    <field name="date_1" string="1"/>
+                                    <field name="date_2" string="2"/>
+                                    <field name="date_3" string="3"/>
+                                    <field name="date_4" string="4"/>
+                                    <field name="date_5" string="5"/>
+                                    <field name="date_6" string="6"/>
+                                    <field name="date_7" string="7"/>
+                                    <field name="date_8" string="8"/>
+                                    <field name="date_9" string="9"/>
+                                    <field name="date_10" string="10"/>
+                                    <field name="date_11" string="11"/>
+                                    <field name="date_12" string="12"/>
+                                    <field name="date_13" string="13"/>
+                                    <field name="date_14" string="14"/>
+                                    <field name="date_15" string="15"/>
+                                    <field name="date_16" string="16"/>
+                                    <field name="date_17" string="17"/>
+                                    <field name="date_18" string="18"/>
+                                    <field name="date_19" string="19"/>
+                                    <field name="date_20" string="20"/>
+                                    <field name="date_21" string="21"/>
+                                    <field name="date_22" string="22"/>
+                                    <field name="date_23" string="23"/>
+                                    <field name="date_24" string="24"/>
+                                    <field name="date_25" string="25"/>
+                                    <field name="date_26" string="26"/>
+                                    <field name="date_27" string="27"/>
+                                    <field name="date_28" string="28"/>
+                                    <field name="date_29" string="29"/>
+                                    <field name="date_30" string="30"/>
+                                    <field name="date_31" string="31"/>
+                                    <field name="time_tc" sum="Total Time TC" widget="float_time"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_summary_from_timekeeping_machine" model="ir.actions.act_window">
+        <field name="name">Work days</field>
+        <field name="res_model">summary.from.timekeeping.machine</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem
+        id="menu_summary_from_timekeeping_machine"
+        name="Work days"
+        parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
+        sequence="50"
+        action="action_summary_from_timekeeping_machine"
+        />
+</odoo>

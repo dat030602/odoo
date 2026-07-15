@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="summary_accounts_payable_book_form" model="ir.ui.view">
+        <field name="name">summary.accounts.payable.book.form</field>
+        <field name="model">summary.accounts.payable.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="is_user_current" invisible="1"/>
+                    <button name="action_confirm" string="Lấy dữ liệu" type="object" class="btn-primary"
+                            attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_sign" string="Trình duyệt" type="object" class="btn-primary"
+                            attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_agree" type="object" string="Duyệt" class="btn-primary"
+                            attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_refuse" type="object" string="Từ chối"
+                            attrs="{'invisible':['|', ('is_user_current','=', False), ('state','not in', ('approve'))]}"/>
+                    <button name="action_cancel" type="object" string="Hủy"
+                            attrs="{'invisible': [('state', 'not in', ('approve'))]}"/>
+                    <button name="action_undo" type="object" string="Đặt về Nháp"
+                            attrs="{'invisible': [('state', 'not in', ('refuse', 'cancel'))]}"/>
+                    <button string="In PDF" name="action_print_pdf" type="object"/>
+                    <button string="In Excel" name="action_print_excel" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approve,approved"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Đã duyệt" attrs="{'invisible': [('state','!=','approved')]}" bg_color="bg-success"/>
+                    <widget name="web_ribbon" title="Hủy" attrs="{'invisible': [('state','!=','cancel')]}" bg_color="bg-danger"/>
+                    <widget name="web_ribbon" title="Từ chối" attrs="{'invisible': [('state','!=','refuse')]}" bg_color="bg-danger"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="oe_inline" required="1"
+                                   attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin">
+                            <field name="date_from" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="date_to" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="account_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="check_have_mount" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                        <group string="Nhóm khách hàng" name='report_type'>
+                            <field name="report_type" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="partner_state" invisible="1"/>
+                            <field name="partner_id" force_save="1" attrs="{'invisible': [('partner_state', '!=', '1')], 'required': [('partner_state', '=', '1')], 'readonly': [('state','!=','draft')]}"/>
+                            <field name="partner_ids" force_save="1" widget="many2many_tags" attrs="{'invisible': [('partner_state', '!=', '2')], 'required': [('partner_state', '=', '2')], 'readonly': [('state','!=','draft')]}"/>
+                            <field name="team_id" widget="many2many_tags" attrs="{'invisible': [('report_type', 'not in', ('team'))], 'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                        <group string="Người ký">
+                            <field name="voter_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="department_head_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="chief_accountant_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                            <field name="director_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết" name="line_ids">
+                            <field name="line_ids" attrs="{'readonly': [('state','!=','draft')]}">
+                                <tree>
+                                    <field name="partner_id" string="Nhà cung cấp"/>
+                                    <field name="customer_name"/>
+                                    <field name="customer_code"/>
+                                    <field name="vat"/>
+                                    <field name="address"/>
+                                    <field name="start_debit" sum="Tổng Nợ đầu kỳ"/>
+                                    <field name="start_credit" sum="Tổng Có đầu kỳ"/>
+                                    <field name="ps_debit" sum="Tổng PS nợ"/>
+                                    <field name="ps_credit" sum="Tổng PS có"/>
+                                    <field name="end_debit" sum="Tổng Nợ cuối kỳ"/>
+                                    <field name="end_credit" sum="Tổng Có cuối kỳ"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="trp_approve_history" string="Lịch sử duyệt">
+                            <group>
+                                <field name="trp_approve_config_line_id" invisible="1"/>
+                                <field name="current_approve_user_ids" widget="many2many_tags" groups="base.group_system"/>
+                                <field name="delegate_approver_ids" widget="many2many_tags"
+                                       domain="[('id','not in',current_approve_user_ids)]" groups="base.group_system"/>
+                            </group>
+                            <field name="trp_approve_history_ids" nolabel="1" readonly="1"/>
+                        </page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="summary_accounts_payable_book_tree" model="ir.ui.view">
+        <field name="name">summary.accounts.payable.book.tree</field>
+        <field name="model">summary.accounts.payable.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="account_id"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-warning="state == 'approve'"
+                       decoration-danger="state == 'cancel' or state == 'refuse'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_summary_accounts_payable_book" model="ir.actions.act_window">
+        <field name="name">Báo cáo tổng hợp công nợ phải trả</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">summary.accounts.payable.book</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_summary_accounts_payable_book"
+              name="Báo cáo tổng hợp công nợ phải trả"
+              action="action_summary_accounts_payable_book"
+              parent="purchase.purchase_report_main"
+              sequence="150"/>
+</odoo>

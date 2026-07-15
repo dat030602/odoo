@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_total_amount_received_byday_tree" model="ir.ui.view">
+        <field name="name">total.amount.received.byday.tree</field>
+        <field name="model">total.amount.received.byday</field>
+        <field name="arch" type="xml">
+            <tree edit="0" create="0" delete="0">
+                <field name="production_date"/>
+                <field name="employee_id"/>
+                <field name="position_id"/>
+                <field name="amount_received"/>
+                <field name="currency_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_total_amount_received_byday_search" model="ir.ui.view">
+        <field name="name">total.amount.received.byday.search</field>
+        <field name="model">total.amount.received.byday</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="position_id"/>
+                <field name="production_date"/>
+                <filter string="Production Date" name="filter_production_date" domain="[]" context="{'group_by': 'production_date'}"/>
+                <filter string="Employee" name="filter_employee" domain="[]" context="{'group_by': 'employee_id'}"/>
+                <filter string="Position" name="filter_position" domain="[]" context="{'group_by': 'position_id'}"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_total_amount_received_byday" model="ir.actions.act_window">
+        <field name="name">Total amount received by day</field>
+        <field name="res_model">total.amount.received.byday</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

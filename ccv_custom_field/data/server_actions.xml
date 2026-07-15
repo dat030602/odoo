@@ -1,0 +1,33 @@
+<odoo>
+    <record id="server_action_create_picking" model="ir.actions.server">
+        <field name="name">Tạo phiếu kho</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="model_stock_picking"/>
+        <field name="binding_type">action</field>
+        <field name="code">
+action = env['stock.picking'].browse(record.id).action_create_picking_wizard()
+        </field>
+    </record>
+    <record id="server_action_remove_internal_picking_mrp" model="ir.actions.server">
+        <field name="name">Xóa phiếu nội bộ</field>
+        <field name="model_id" ref="model_mrp_production"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="model_mrp_production"/>
+        <field name="binding_type">action</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Xóa phiếu nội bộ',
+    'res_model': 'remove.internal.picking.mrp.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': {
+        'default_mrp_production_ids': [(6, 0, records.ids)],
+        'default_picking_type_id': records[0].picking_type_id.id,
+    },
+}
+        </field>
+    </record>
+    
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Format -->
+    <record id="paperformat_rp_other_business" model="report.paperformat">
+        <field name="name">Custom Paperformat for CCV receipt</field>
+        <field name="default" eval="False"/>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">30</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_spacing">25</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <!-- Action report -->
+    <record id="action_rp_accounting_other_business" model="ir.actions.report">
+        <field name="name">Other business accounting documents</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biz_accounting_other_business.rp_account_other_busi</field>
+        <field name="report_file">biz_accounting_other_business.rp_account_other_busi</field>
+        <field name="paperformat_id" ref="paperformat_rp_other_business"/>
+        <field name="print_report_name">'%s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

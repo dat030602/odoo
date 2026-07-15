@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="details_book_pdf_template">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <t t-set="company" t-value="o.env.company"/>
+            <div class="header" style="font-family: 'Times New Roman';font-size:15px;">
+                <div class="row" style="position: relative;">
+                    <div style="justify-content: left; align-items: center;position: absolute">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;max-width: 90%"/>
+                    </div>
+                    <div class="col-12" style="height: 0px;">
+                        <div class="" style="padding: 30px 0px 0 130px !important;">
+                            <span/><span t-esc="company.name"/> - Mã số thuế: <span t-esc="company.vat"/>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <!-- <t t-set="get_lines" t-value="get_lines(o)"/> -->
+            <t t-set="sum_qty_invoiced" t-value="0"/>
+            <t t-set="sum_price_subtotal" t-value="0"/>
+            <t t-set="sum_amount_tax" t-value="0"/>
+            <t t-set="sum_price_subtotal_tax" t-value="0"/>
+            <t t-set="stt" t-value="0"/>
+                <div class="page" style="font-family: 'Times New Roman';font-size:13px; line-height: 25px">
+                    <div class="text-center">
+                        <h5 class="bold">SỔ CHI TIẾT BÁN HÀNG THEO KHÁCH HÀNG</h5> 
+                        <h6 class="bold italic">Từ ngày <span t-esc="o.date_from and o.date_from.strftime('%d/%m/%Y')or ''"/> đến ngày <span t-esc="o.date_to and o.date_to.strftime('%d/%m/%Y')or ''"/></h6> 
+                    </div>
+                    <table class="table-line">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 2%">STT</th>
+                                <th class="text-center" style="width: 4%">Số chứng từ</th>
+                                <th class="text-center" style="width: 4%">Số hoá đơn</th>
+                                <th class="text-center" style="width: 4%">Ngày hoá đơn</th>
+                                <th class="text-center" style="width: 4%">Ngày chứng từ</th>
+                                <th class="text-center" style="width: 8%">Diễn giải chung</th>
+                                <th class="text-center" style="width: 6%">Mã khách hàng</th>
+                                <th class="text-center" style="width: 11%">Tên khách hàng</th>
+                                <th class="text-center" style="width: 5%">Mã hàng</th>
+                                <th class="text-center" style="width: 10%">Tên hàng</th>
+                                <th class="text-center" style="width: 3%">ĐVT</th>
+                                <th class="text-center" style="width: 4%">Tổng SL bán</th>
+                                <th class="text-center" style="width: 5%">Đơn giá</th>
+                                <th class="text-center" style="width: 6%">Doanh số chưa thuế</th>
+                                <th class="text-center" style="width: 5%">Giá trị thuế</th>
+                                <th class="text-center" style="width: 6%">Doanh số sau thuế</th>
+                                <th class="text-center" style="width: 6%">Nhân viên bán hàng</th>
+                                <th class="text-center" style="width: 5%">Xã/Phường</th>
+                                <th class="text-center" style="width: 5%">Tỉnh/Thành phố</th>
+                                <th class="text-center" style="width: 6%">Đơn hàng</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <t t-foreach="o.line_ids" t-as="line">
+                                <t t-set="stt" t-value="stt + 1"/>
+                                    <tr>
+                                        <td class="text-center vertical"><span t-esc="stt"/></td>
+                                        <td class="text-left vertical word" style="color: #0000FF;"><span t-esc="line.reference or ''"/></td>
+                                        <td class="text-left vertical word" ><span t-esc="line.vat_sinvoice_number or ''"/></td>
+                                        <td class="text-center vertical word"><span t-esc="line.vat_sinvoice_date and line.vat_sinvoice_date.strftime('%d/%m/%Y') or ''"/></td>
+                                        <td class="text-center vertical word"><span t-esc="line.date and line.date.strftime('%d/%m/%Y') or ''"/></td>
+                                        <td class="text-left"><span t-esc="line.stock_sale_export or ''"/></td>
+                                        <td class="text-left vertical word"><span t-esc="line.partner_id and line.partner_id.code_contact or ''"/></td>
+                                        <td class="text-left vertical"><span t-esc="line.partner_id and line.partner_id.name or ''"/></td>
+                                        <td class="text-left vertical word"><span t-esc="line.product_id and line.product_id.default_code or ''"/></td>
+                                        <td class="text-left vertical"><span t-esc="line.product_id and line.product_id.name or ''"/></td>
+                                        <td class="text-left vertical"><span t-esc="line.product_uom and line.product_uom.name.upper() or ''"/></td>
+                                        <td class="text-right vertical">
+                                            <span t-esc="format_float_number(line.qty_invoiced,f_covert=3)"/>
+                                        </td>
+                                        <td class="text-right vertical"><span t-esc="format_float_number(line.price_unit)"/></td>
+                                        <td class="text-right vertical">
+                                            <span t-esc="format_float_number(line.price_subtotal)"/>
+                                        </td>
+                                        <td class="text-right vertical">
+                                            <span t-esc="format_float_number(line.amount_tax)"/>
+                                        </td>
+                                        <td class="text-right vertical">
+                                            <span t-esc="format_float_number(line.price_subtotal_tax)"/>
+                                        </td>
+                                        <td class="text-left vertical"><span t-esc="line.user_id and line.user_id.name_without_position or line.user_id.name or ''"/></td>
+                                        <td class="text-center vertical"><span t-esc="line.partner_ward_district or ''"/></td>
+                                        <td class="text-center vertical"><span t-esc="line.order_state_id and line.order_state_id.name or ''"/></td>
+                                        <td class="text-left vertical word"><span t-esc="line.sale_line_id and line.sale_line_id.order_id and line.sale_line_id.order_id.name or ''"/></td>
+                                    </tr>
+                                    <t t-set="sum_qty_invoiced" t-value="sum_qty_invoiced + line.qty_invoiced"/>
+                                    <t t-set="sum_price_subtotal" t-value="sum_price_subtotal + line.price_subtotal"/>
+                                    <t t-set="sum_amount_tax" t-value="sum_amount_tax + line.amount_tax"/>
+                                    <t t-set="sum_price_subtotal_tax" t-value="sum_price_subtotal_tax + line.price_subtotal_tax"/>
+                                </t> 
+                                <tr>
+                                    <td colspan="11" class="text-center bold">Tổng cộng</td>
+                                    <td class="text-right bold">
+                                        <span t-esc="format_float_number(sum_qty_invoiced,f_covert=3)"/>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right bold">
+                                        <span t-esc="format_float_number(sum_price_subtotal)"/>
+                                    </td>
+                                    <td class="text-right bold">
+                                        <span t-esc="format_float_number(sum_amount_tax)"/>
+                                    </td>
+                                    <td class="text-right bold">
+                                        <span t-esc="format_float_number(sum_price_subtotal_tax)"/>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        </tbody>
+                        
+                    </table>
+                </div>
+                <div style="page-break-inside: avoid; font-family: 'Times New Roman';font-size:14px; line-height: 25px" class="mt-3">
+                    <div class="row italic text-right">
+                        <div class="col-10"/>
+                        <div class="col-2 text-center">
+                            <p>Đồng Nai, ngày <span t-esc="datetime.datetime.now().strftime('%d')"/> tháng <span t-esc="datetime.datetime.now().strftime('%m')"/> năm <span t-esc="datetime.datetime.now().strftime('%Y')"/></p>
+                        </div>
+                    </div>
+                    <div class="row text-center" style="page-break-inside: avoid;">
+                        <div class="col-3">
+                            <p class="bold margin-p">Người lập biểu</p>
+                            <p class="italic">(Ký, họ tên)</p>
+                            <t t-set="is_sign" t-value="o.state == 'approved' and o.creator_id.sign_signature"/>
+                            <img t-if="is_sign" t-att-src="image_data_uri(o.creator_id.sudo().sign_signature)" height="50px"/>
+                            <div t-att-class="'name-user' if not is_sign else 'name-user-sign'">
+                                <span t-esc="o.creator_id.name_without_position or o.creator_id.name or ''"/>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <p class="bold margin-p">Thống kê BĐH</p>
+                            <p class="italic">(Ký, họ tên)</p>
+                            <t t-set="is_sign" t-value="o.state == 'approved' and o.statistics_id.sign_signature"/>
+                            <img t-if="is_sign" t-att-src="image_data_uri(o.statistics_id.sudo().sign_signature)" height="50px"/>
+                            <div t-att-class="'name-user' if not is_sign else 'name-user-sign'">
+                                <span t-esc="o.statistics_id.name_without_position or o.statistics_id.name or ''"/>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <p class="bold margin-p">Phòng kế toán</p>
+                            <p class="italic">(Ký, họ tên)</p>
+                            <t t-set="is_sign" t-value="o.state == 'approved' and o.account_liability_id.sign_signature"/>
+                            <img t-if="is_sign" t-att-src="image_data_uri(o.account_liability_id.sudo().sign_signature)" height="50px"/>
+                            <div t-att-class="'name-user' if not is_sign else 'name-user-sign'">
+                                <span t-esc="o.account_liability_id.name_without_position or o.account_liability_id.name or ''"/>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <p class="bold margin-p">Kế Toán Trưởng</p>
+                            <p class="italic">(Ký, họ tên)</p>
+                            <t t-set="is_sign" t-value="o.state == 'approved' and o.accountant_chief_id.sign_signature"/>
+                            <img t-if="is_sign" t-att-src="image_data_uri(o.accountant_chief_id.sudo().sign_signature)" height="50px"/>
+                            <div t-att-class="'name-user' if not is_sign else 'name-user-sign'">
+                                <span t-esc="o.accountant_chief_id.name_without_position or o.accountant_chief_id.name or ''"/>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <p class="bold margin-p">Thủ trưởng đơn vị</p>
+                            <p class="italic">(Ký, họ tên, đóng dấu)</p>
+                            <t t-set="is_sign" t-value="o.state == 'approved' and o.unit_head_id.sign_signature"/>
+                            <img t-if="is_sign" t-att-src="image_data_uri(o.unit_head_id.sudo().sign_signature)" height="50px"/>
+                            <div t-att-class="'name-user' if not is_sign else 'name-user-sign'">
+                                <span t-esc="o.unit_head_id.name_without_position or o.unit_head_id.name or ''"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-break"/>
+            <!-- </t> -->
+            
+            <div class="footer">
+                <div class="row" style="font-family: 'Times New Roman'; font-size: 13px;">
+                    <div class="col-12 text-right" style="text-align: right;">
+                        <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+            <style> 
+                .table-line {
+                    width: 100%;
+                    font-size: 11px;
+                }
+                .table-line > :not(:first-child) {
+                    border-top: 0px solid currentColor;
+                }
+                .table-line tr , th,  td{
+                    border: 1px solid #000;
+                    padding: 2px;
+                    
+                }
+                .table-line > thead > tr > th {
+                    line-height: normal;
+                    vertical-align: middle;
+                }
+                .vertical {
+                    vertical-align: middle;
+                }
+                <!-- Tự cắt dòng khi max width -->
+                .word { 
+                    sword-wrap: break-word; 
+                    word-break: break-word; 
+                    white-space: normal;
+                }
+
+                .text-center {
+                    text-align: center;
+                }
+                .text-right {
+                    text-align: right;
+                }
+                .text-left {
+                    text-align: left;
+                }
+                .italic {
+                    font-style: italic;
+                }
+                .bold {
+                    font-weight: bold;
+                }
+                .margin-p {
+                    margin: 0px
+                }
+                .page-break {
+                    page-break-before: always;
+                }
+                .tfoot > tr > td {
+                    border: 0px solid #fff !important;
+                    padding: 15px 0 0 0;
+                }
+                .tfoot > tr {
+                    border: 0px solid #fff !important;
+                }
+                .name-user {
+                    margin-top: 60px;
+                    font-weight: bold;
+                }
+                .name-user-sign {
+                    margin-top: 10px;
+                    font-weight: bold;
+                }
+            </style>
+        </t>
+    </template>
+    <template id="details_book_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="biz_details_sales_book_by_customer.details_book_pdf_template" t-lang="o.env.user.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

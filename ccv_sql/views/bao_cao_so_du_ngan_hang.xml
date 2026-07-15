@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="search_bao_cao_so_du_ngan_hang" model="ir.ui.view">
+            <field name="name">search_bao_cao_so_du_ngan_hang</field>
+            <field name="model">alpha.report.line6</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Chi tiết công nợ phải trả">
+                    <field name="number_bank"/>
+                    <field name="name_bank"/>
+                    <field name="branch_bank"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_bao_cao_so_du_ngan_hang">
+            <field name="name">tree_bao_cao_so_du_ngan_hang</field>
+            <field name="model">alpha.report.line6</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_id" invisible="1"/>
+                    <field name="number_bank"/>
+                    <field name="name_bank"/>
+                    <field name="branch_bank"/>
+                    <field name="end_debit"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

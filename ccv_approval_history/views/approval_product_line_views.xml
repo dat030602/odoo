@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_approval_product_line_tree_history_button" model="ir.ui.view">
+        <field name="name">approval.product.line.tree.history.button</field>
+        <field name="model">approval.product.line</field>
+        <field name="inherit_id" ref="approvals.approval_product_line_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <button name="action_open_product_request_history"
+                        type="object"
+                        string="Lịch sử đề xuất"
+                        attrs="{'invisible': [('product_id', '=', False)]}"
+                        class="btn-link"
+                        icon="fa-history"/>
+            </xpath>
+            <xpath expr="//field[@name='quantity']" position="after">
+                <field name="qty_approved" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approval_product_line_view_tree_popup" model="ir.ui.view">
+        <field name="name">approval.product.line.view.tree.popup</field>
+        <field name="model">approval.product.line</field>
+        <field name="arch" type="xml">
+            <tree string="Chi tiết sản phẩm đề xuất" create="false" edit="false" delete="false">
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="description"/>
+                <field name="quantity"/>
+                <field name="qty_approved"/>
+                <field name="qty_available" />
+                <field name="product_uom_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="approval_request_tree_popup" model="ir.ui.view">
+        <field name="name">approval.request.tree.popup</field>
+        <field name="model">approval.request</field>
+        <field name="arch" type="xml">
+            <tree string="Phê duyệt đề xuất" create="false" edit="false" delete="false">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="category_id"/>
+                <field name="request_owner_id"/>
+                <field name="request_status"/>
+                <field name="company_id" invisible="1"/>
+                <field name="has_product" invisible="1"/>
+                <button name="action_open_request_product_lines"
+                        type="object"
+                        string="Sản phẩm"
+                        attrs="{'invisible': [('has_product', '=', 'no')]}"
+                        class="btn-link"
+                        icon="fa-cubes"/>
+            </tree>
+        </field>
+    </record>
+    
+</odoo>
+

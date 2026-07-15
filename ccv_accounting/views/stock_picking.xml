@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_stock_picking_inherit_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <div class="alert alert-warning mb-0" role="alert" attrs="{'invisible': [('partner_credit_warning', '=', '')]}">
+                    <field name="partner_credit_warning"/>
+                </div>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <field name="is_sale" invisible="1"/>
+                <field name="is_purchase" invisible="1"/>
+                <!-- <button name="auto_create_invoice" type="object" string="Tạo hóa đơn mua hàng" attrs="{'invisible':['|',('is_purchase','=',False),('need_create_invoice','=',False)]}"/> -->
+                <button name="action_create_invoice" type="object" string="Tạo hóa đơn bán hàng" attrs="{'invisible':['|',('is_sale','=',False),('need_create_invoice','=',False)]}"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside" >
+                <button name="action_view_invoice" string="Hóa đơn" type="object" class="oe_stat_button" icon="fa-pencil-square-o" groups="account.group_account_readonly"/>
+                <button name="action_get_account_moves" icon="fa-usd" class="oe_stat_button" string="Bút toán" type="object" groups="account.group_account_readonly"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="need_create_invoice" attrs="{'invisible':[('is_sale','=',False),('is_purchase','=',False)]}"/>
+                <field name="analytic_account_id" options="{'no_create': True}" />
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='company_id']" position="after">
+                <field name="account_id" readonly="1" groups="account.group_account_readonly" optional="show"/>
+                <field name="account_dest_ids" widget="many2many_tags" readonly="1" groups="account.group_account_readonly" optional="show"/>
+                <field name="analytic_account_id" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='quantity_done']" position="after">
+                <field name="price_unit" optional="hide" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

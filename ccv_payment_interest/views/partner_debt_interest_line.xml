@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="partner_debt_interest_line_tree" model="ir.ui.view">
+        <field name="name">partner.debt.interest.line.tree</field>
+        <field name="model">partner.debt.interest.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="interest_id" invisible="1"/>
+                <field name="partner_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="rate" invisible="1"/>
+                <field name="rate_penalty" invisible="1"/>
+                <field name="invoice_code"/>
+                <field name="move_id" invisible="0"/>
+                <field name="date"/>
+                <field name="type" invisible="1"/>
+                <field name="amount" sum="total_amount" invisible="1"/>
+                <field name="amount_buy" sum="total_amount_buy"/>
+                <field name="amount_pay" sum="total_amount_pay"/>
+                <field name="balance_amount" invisible="1"/>
+                <field name="balance_amount_debit"/>
+                <field name="balance_amount_credit"/>
+                <field name="payment_due_date"/>
+                <field name="interest_calc_date" invisible="1"/>
+                <field name="delay_days" sum="total_delay_days"/>
+                <field name="late_interest" sum="total_late_interest"/>
+                <field name="penalty_debt" sum="total_penalty_debt"/>
+                <field name="total_debt"/>
+            </tree>
+        </field>
+    </record>
+    <record id="partner_debt_interest_line_action" model="ir.actions.act_window">
+        <field name="name">Chi tiết lãi trả chậm</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">partner.debt.interest.line</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="view_purchase_requisition_purchase_order_form_customs_information" model="ir.ui.view">
+        <field name="name">purchase.order.form.purchase_requisition</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_requisition.purchase_order_form_inherit"/>
+        <field name="arch" type="xml">
+            <field name="requisition_id" position="replace"/>
+            <field name="partner_ref"  position="after">
+                <field name="custom_declaration_number"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_purchase_order_form_customs_information" model="ir.ui.view">
+        <field name="name">purchase.order.form.customs.information</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <field name="has_unload_container" invisible="1"/>
+                <button name="action_create_delivery_cost" type="object" string="Tạo chi phí hạ cảng" attrs="{'invisible': [('has_unload_container','=', False)]}"/>
+                <button name="action_create_transport_cost" type="object" string="Tạo chi phí vận chuyển" invisible="1"/>
+            </header>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object" name="action_view_unload_invoices"
+                    class="oe_stat_button"
+                    icon="fa-file-text-o"
+                    attrs="{'invisible': [('inv_unload_container_count', '=', 0)]}">
+                    <field name="inv_unload_container_count" widget="statinfo" string="Chi phí hạ cảng"/>
+                </button>
+                <button type="object" name="action_view_transport_invoices"
+                    class="oe_stat_button"
+                    icon="fa-file-text-o"
+                    attrs="{'invisible': [('inv_transport_cost_count', '=', 0)]}">
+                    <field name="inv_transport_cost_count" widget="statinfo" string="Hóa đơn vận chuyển"/>
+                </button>
+                <button type="object" name="action_view_transport_landed_costs"
+                    class="oe_stat_button"
+                    icon="fa-bar-chart">
+                    <field name="transport_landed_cost_count" widget="statinfo" string="Chi phí trích trước"/>
+                </button>
+                <button type="object" name="action_view_transport_tickets"
+                    class="oe_stat_button"
+                    icon="fa-truck">
+                    <field name="transport_ticket_count" widget="statinfo" string="Phiếu vận chuyển"/>
+                </button>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Customs Information" name="customs_information">
+                    <group name="attachments">
+                        <group>
+                            <field name="customs_attachment_ids" widget="many2many_binary" options="{'accept': '.pdf,.xlsx,.xls'}" nolabel="1" colspan="2"/>
+                        </group>
+                    </group>
+                    <group name="customs_info">
+                        <group>
+                            <field name="carrier_name" string="Carrier"/>
+                            <field name="bl_number" string="B/L Number"/>
+                            <field name="vessel_name"/>
+                            <field name="voyage_number"/>
+                            <field name="arrival_date_estimated"/>
+                            <field name="partner_unload_container_id"/>
+                            <field name="unload_container_id"/>
+                        </group>
+                        <group>
+                            <field name="port_storage_duration"/>
+                            <field name="transfer_qty_total" string="Total Transfer Qty" readonly="1"/>
+                            <field name="custom_declaration_number" string="Customs Declaration #"/>
+                            <field name="custom_declaration_date" string="Customs Declaration Date"/>
+                        </group>
+                    </group>
+                    
+                    <field name="stock_input_ids" nolabel="1">
+                        <tree editable="bottom" string="Container Details">
+                            <field name="container_number" string="Container #"/>
+                            <field name="seal_number" string="Seal #"/>
+                            <field name="product_id" string="Product" options="{'no_create': True}" optional="hide"/>
+                            <field name="product_uom_qty" string="Qty" optional="hide"/>
+                            <field name="product_uom_id" string="UoM" options="{'no_create': True}" optional="hide"/>
+                            <field name="location_dest_id" string="Destination" options="{'no_create': True}"/>
+                            <field name="carrier_tracking_ref" string="Tracking #"/>
+                            <field name="is_sale" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="sale_order_id" string="Sale Order" options="{'no_create': True}" optional="hide"/>
+                            <field name="unload_container_id"/>
+                            <field name="state" widget="badge" decoration-danger="state=='cancel'" decoration-info="state== 'assigned'" decoration-muted="state == 'draft'" decoration-success="state == 'done'" decoration-warning="state not in ('draft','cancel','done','assigned')"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Phiếu vận chuyển" name="transport_tickets">
+                    <field name="transport_ticket_ids" readonly="1">
+                        <tree string="Danh sách phiếu vận chuyển">
+                            <field name="name"/>
+                            <field name="picking_id"/>
+                            <field name="partner_id"/>
+                            <field name="unload_container_id"/>
+                            <field name="quantity"/>
+                            <field name="price_unit"/>
+                            <field name="amount_total" sum="Tổng tiền cước"/>
+                            <field name="move_id"/>
+                            <field name="state" widget="badge" decoration-success="state=='invoiced'" decoration-info="state=='draft'"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

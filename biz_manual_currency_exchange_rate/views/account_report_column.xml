@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="general_ledger_report_date" model="account.report.column">
+        <field name="name">Date</field>
+        <field name="expression_label">date</field>
+        <field name="figure_type">none</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="general_ledger_report_communication" model="account.report.column">
+        <field name="name">Communication</field>
+        <field name="expression_label">communication</field>
+        <field name="figure_type">none</field>
+        <field name="sequence">2</field>
+    </record>
+
+    <record id="general_ledger_report_partner_name" model="account.report.column">
+        <field name="name">Partner</field>
+        <field name="expression_label">partner_name</field>
+        <field name="figure_type">none</field>
+        <field name="sequence">3</field>
+    </record>
+
+    <record id="general_ledger_report_amount_currency" model="account.report.column">
+        <field name="name">Currency</field>
+        <field name="expression_label">amount_currency</field>
+        <field name="figure_type">float</field>
+        <field name="sequence">4</field>
+    </record>
+
+    <record id="general_ledger_report_debit" model="account.report.column">
+        <field name="name">Receipt</field>
+        <field name="expression_label">debit</field>
+        <field name="figure_type">float</field>
+        <field name="sequence">6</field>
+    </record>
+
+    <record id="general_ledger_report_credit" model="account.report.column">
+        <field name="name">Payment</field>
+        <field name="expression_label">credit</field>
+        <field name="figure_type">float</field>
+        <field name="sequence">7</field>
+    </record>
+
+    <record id="general_ledger_report_balance" model="account.report.column">
+        <field name="name">Inventory</field>
+        <field name="expression_label">balance</field>
+        <field name="figure_type">float</field>
+        <field name="sequence">8</field>
+    </record>
+
+    <record id="account_reports.general_ledger_report" model="account.report">
+        <field name="column_ids" eval="[
+        ref('biz_manual_currency_exchange_rate.general_ledger_report_date'),
+        ref('biz_manual_currency_exchange_rate.general_ledger_report_communication'),
+        ref('biz_manual_currency_exchange_rate.general_ledger_report_partner_name'),
+        ref('biz_manual_currency_exchange_rate.general_ledger_report_amount_currency'),
+        ref('biz_manual_currency_exchange_rate.general_ledger_report_debit'),
+        ref('biz_manual_currency_exchange_rate.general_ledger_report_credit'),
+        ref('biz_manual_currency_exchange_rate.general_ledger_report_balance'),
+    ]"/>
+    </record>
+    <record id="general_ledger_report_balance_currency_rate" model="account.report.column">
+        <field name="name">Currency Rate</field>
+        <field name="expression_label">currency_rate</field>
+        <field name="figure_type">integer</field>
+        <field name="sequence">5</field>
+        <field name='report_id' ref="account_reports.general_ledger_report" />
+    </record>
+</odoo>

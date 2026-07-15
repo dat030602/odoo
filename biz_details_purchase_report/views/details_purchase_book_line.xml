@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_details_purchase_book_line_tree" model="ir.ui.view">
+        <field name="name">details.purchase.book.line.view.tree</field>
+        <field name="model">details.purchase.book.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="date" optional="show"/>
+                <field name="name" optional="show"/>
+                <field name="partner_name" optional="show"/>
+                <field name="product_code" optional="show"/>
+                <field name="product_name" optional="show"/>
+                <field name="product_uom_id" optional="show"/>
+                <field name="quantity" optional="show" sum="Tổng" digits="[16,3]"/>
+                <field name="exchange_rate" optional="hide"/>
+                <field name="unit_price_nt" optional="hide"/>
+                <field name="unit_price" optional="show"/>
+                <field name="purchase_value_nt" optional="hide"/>
+                <field name="purchase_value" optional="show"/>
+                <field name="location_dest_id" optional="show"/>
+                <field name="account_debit" optional="hide"/>
+                <field name="account_credit" optional="hide"/>
+                <field name="order_name" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_details_purchase_book_line_search" model="ir.ui.view">
+        <field name="name">details.purchase.book.line.view.search</field>
+        <field name="model">details.purchase.book.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_name"/>
+                <field name="product_name"/>
+                <field name="order_name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id='action_details_purchase_book_line' model='ir.actions.act_window'>
+        <field name='name'>Chi tiết sổ chi tiết mua hàng</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name='res_model'>details.purchase.book.line</field>
+        <field name='view_mode'>tree</field>
+        <field name='target'>current</field>
+    </record>
+</odoo>
