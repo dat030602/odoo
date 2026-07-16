@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_excel_report_form" model="ir.ui.view">
+        <field name="name">excel.report.form</field>
+        <field name="model">excel.report</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report">
+                <sheet>
+                    <header>
+                        <field name="state" widget="statusbar" clickable="1" statusbar_colors='{"draft": "blue", "confirmed": "green"}'/>
+                    </header>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Report Name" readonly="state == 'confirmed'"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="model_id" options="{'no_create': True}" readonly="state == 'confirmed'"/>
+                        <field name="report_action" readonly="state == 'confirmed'"/>
+                    </group>
+                    <notebook>
+                        <page string="Columns">
+                            <field name="column_ids" context="{'default_report_id': active_id}" readonly="state == 'confirmed'">
+                                <list string="Columns" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="field_id"/>
+                                    <field name="width"/>
+                                    <field name="function_id"/>
+                                    <field name="group"/>
+                                    <field name="merge_row"/>
+                                    <field name="merge_col"/>
+                                    <field name="format_ids" widget="many2many_tags"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Signatures">
+                            <field name="signature_ids" readonly="state == 'confirmed'">
+                                <tree string="Signatures" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="user_id" readonly="fixed_text"/>
+                                    <field name="fixed_text" readonly="user_id" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_excel_report_list" model="ir.ui.view">
+        <field name="name">excel.report.list</field>
+        <field name="model">excel.report</field>
+        <field name="arch" type="xml">
+            <list string="Excel Reports">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <menuitem id="menu_excel_report_base_root" name="Excel Report Base" sequence="20"/>
+    <menuitem id="menu_excel_report_base_main" parent="menu_excel_report_base_root" name="Reports" sequence="10"/>
+</odoo>
