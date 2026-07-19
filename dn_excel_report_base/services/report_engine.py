@@ -1,264 +1,221 @@
-import base64
+# -*- coding: utf-8 -*-
+from odoo import models, api
+import xlsxwriter
 import io
-
-from odoo import api, fields, models
+import base64
 
 
 class ReportEngine(models.AbstractModel):
-    _name = "report.engine"
-    _description = "Report Engine"
-    _inherit = "report.abstract.report"
+    _name = 'report.engine'
+    _description = 'Dynamic Excel Report Abstract Engine'
 
-    @staticmethod
-    def _init_sum(columns):
-        """Initialize a dictionary to hold the sum of specified columns."""
-        return {col['field']: 0 for col in columns if col.get('sum')}
-
-    @staticmethod
-    def _format_workbook(workbook, **kwargs):
-        """Format the given workbook with specified formatting options."""
-        format = workbook.add_format()
-
-        for key, value in kwargs.items():
-            method_name = f"set_{key}"
-            if hasattr(format, method_name):
-                getattr(format, method_name)(value)
-            else:
-                raise ValueError(f"Invalid keyword argument: {method_name}")
-
-        return format
-
-    def _prepare_formats(self, workbook, columns):
-        """Prepare and return a dictionary of formats for the given columns."""
-        res = {}
-        for column in columns:
-            if column.format_id:
-                format = column.format_id
-                res[format.name] = self._format_workbook(workbook, **format.get_format_dict())
-        res.update({
-            # Signature
-            "signature_name": self._format_workbook(workbook, 12, bold=True, align="center", text_wrap=True, valign="vcenter"),
-            "signature_note": self._format_workbook(workbook, 12, italic=True, align="center", text_wrap=True),
-            "signature_date": self._format_workbook(workbook, 11, italic=True, align="center", text_wrap=True),
-        })
-        return res
-
-    def _get_title(self, report):
-        """Get the title for the given report."""
-        return report.name if report.name else report._description
-
-    def _get_report_data(self, object):
-        """Get the data for the given object."""
-        model = self.env[object.model_id.model]
-        return model.search([])
-
-    def _setup_worksheet_print(self, worksheet):
-        """Set up the worksheet for printing.
-        Example:
-            worksheet.set_landscape()
-            worksheet.set_paper(9)
-            worksheet.fit_to_pages(1, 0)
-            worksheet.center_horizontally()
-            worksheet.set_margins(left=0.3, right=0.3, top=0.5, bottom=0.5)
+    def generate_excel(self, report_code, data_records):
         """
-        pass
+        Main hook to generate the Excel file based on configuration.
+        :param report_code: Code of the excel.report record
+        :param data_records: List of dictionaries or recordset containing the prepared data
+        :return: Base64 string of the generated file
+        """
+        report_config = self.env['excel.report'].search([('code', '=', report_code)], limit=1)
+        if not report_config:
+            raise ValueError(f"Report configuration with code '{report_code}' not found.")
 
-    def _get_columns(self, report):
-        """Get the columns for the given report, sorted by sequence."""
-        return report.column_ids.sorted(key=lambda c: c.sequence)
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        sheet = workbook.add_worksheet(report_config.name)
 
-    def _prepare_header(self, report_id, worksheet, formats, current_row):
-        """Prepare the header for the report."""
-        title = self._get_title(report_id)
-        self.write_merged_cells(
-            worksheet,
-            current_row,
-            0,
-            current_row,
-            len(self._get_columns(report_id)) - 1,
-            title,
-            formats.get("header", self._format_workbook(worksheet, 14, bold=True, align="center", text_wrap=True)),
-        )
-        current_row += 1
-        return current_row
+        # 1. Setup layout & Page Setup
+        self._prepare_worksheet(sheet, report_config)
+        
+        # 2. Compile Formats
+        formats = self._prepare_formats(workbook, report_config)
+        
+        # 3. Render Flow
+        current_row = 0
+        current_row = self._render_header(sheet, formats, report_config, current_row)
+        current_row = self._render_title(sheet, formats, report_config, current_row)
+        current_row = self._render_table(sheet, formats, report_config, data_records, current_row)
+        current_row = self._render_footer(sheet, formats, report_config, current_row)
+        self._render_signature(sheet, formats, report_config, current_row)
 
-    def _prepare_body(self, report_id, worksheet, formats, current_row):
-        """Prepare the body for the report."""
-        # Implement body preparation logic here
-        return current_row
+        workbook.close()
+        output.seek(0)
+        return base64.b64encode(output.read())
 
-    def _prepare_header_table(self, report_id, worksheet, formats, columns, current_row, records):
-        """Prepare the header table for the report."""
-        row_group = 5 if obj.month and obj.year else 5
-        row_detail = 6 if obj.month and obj.year else 6
+    def _prepare_worksheet(self, sheet, report_config):
+        """Setup worksheet layout, page orientation, paper size, margins, and column widths based on UI configuration"""
+        sheet.set_landscape()
+        sheet.set_paper(9)  # A4
+        sheet.fit_to_pages(1, 0)
+        sheet.center_horizontally()
+        sheet.set_margins(left=0.3, right=0.3, top=0.5, bottom=0.5)
 
-        # Điều chỉnh nếu có dòng tháng/năm
-        if obj.month and obj.year:
-            row_group = 6
-            row_detail = 7
+        # Set column widths based on the configuration, only for visible columns
+        for i, col in enumerate(report_config.column_ids.filtered('is_visible')):
+            sheet.set_column(i, i, col.width)
 
-        col = 0
-        last_group = None
-        group_start_col = 0
+    def _prepare_formats(self, workbook, report_config):
+        """Setup all formats from UI Configuration into Workbook"""
+        formats = {}
+        for fmt in report_config.format_ids:
+            formats[fmt.id] = workbook.add_format(fmt.get_format_dict())
+        
+        # Provide default formats if missing
+        if 'header' not in formats:
+            formats['header'] = workbook.add_format({'bold': True, 'align': 'center', 'border': 1, 'valign': 'vcenter', 'text_wrap': True})
+        if 'title' not in formats:
+            formats['title'] = workbook.add_format({'bold': True, 'align': 'center', 'size': 14, 'valign': 'vcenter'})
+        if 'default' not in formats:
+            formats['default'] = workbook.add_format({'border': 1, 'align': 'left', 'valign': 'vcenter'})
+            
+        # Add specific signature formats from the old code
+        formats.update({
+            "signature_name": workbook.add_format({'bold': True, 'align': 'center', 'text_wrap': True, 'valign': 'vcenter', 'size': 12}),
+            "signature_note": workbook.add_format({'italic': True, 'align': 'center', 'text_wrap': True, 'size': 12}),
+            "signature_date": workbook.add_format({'italic': True, 'align': 'center', 'text_wrap': True, 'size': 11}),
+        })
+        return formats
 
-        i = 0
-        for column in columns:
-            group = column.merge_row
+    def _render_header(self, sheet, formats, report_config, start_row):
+        """Can be overridden in child modules to draw company header information (Name, Tax ID, Address)"""
+        return start_row
 
-            if not column.merge_row:
-                worksheet.merge_range(row_group, col, row_detail, col, column.name, formats["header"])
-            else:
-                worksheet.merge_range(row_group, col, row_detail, col, column.name, formats["header"])
-            i += 1
-            col += 1
+    def _render_title(self, sheet, formats, report_config, start_row):
+        """Write the main and sub titles of the report"""
+        visible_columns = report_config.column_ids.filtered('is_visible')
+        cols_count = max(0, len(visible_columns) - 1)
+        
+        if report_config.report_title:
+            title_fmt = formats.get('title')
+            self._write_merged_cells(sheet, start_row, 0, start_row, cols_count, report_config.report_title, title_fmt, formats)
+            start_row += 1
+            
+        if report_config.report_subtitle:
+            sub_fmt = formats.get('signature_date')
+            self._write_merged_cells(sheet, start_row, 0, start_row, cols_count, report_config.report_subtitle, sub_fmt, formats)
+            start_row += 2
+            
+        return start_row
 
-        return current_row
+    def _render_table(self, sheet, formats, report_config, data_records, start_row):
+        """Render the main data table with headers, body, and totals if applicable."""
+        visible_columns = report_config.column_ids.filtered('is_visible')
+        if not visible_columns:
+            return start_row
+        
+        # 1. Vẽ dòng Header của Bảng
+        for col_idx, col in enumerate(visible_columns):
+            header_fmt = formats.get(col.format_id.id, formats['header'])
+            sheet.write(start_row, col_idx, col.name, header_fmt)
+        start_row += 1
 
-    def _prepare_table(self, report_id, worksheet, formats, current_row, records):
-        """Prepare the table for the report."""
-        # Implement table preparation logic here
-        return current_row
+        # 1. Initialize totals dictionary for columns that require summation
+        totals = {col.field_name: 0 for col in visible_columns if col.is_sum}
 
-    def _prepare_footer(self, report_id, worksheet, formats, current_row):
-        """Prepare the footer for the report."""
-        # Implement footer preparation logic here
-        return current_row
+        # 2. Render data rows
+        for record in data_records:
+            is_dict = isinstance(record, dict)
+            
+            for col_idx, col in enumerate(visible_columns):
+                raw_value = record.get(col.field_name, '') if is_dict else getattr(record, col.field_name, '')
+                
+                if col.function_id:
+                    raw_value = col.function_id.execute(raw_value)
 
-    def _get_signature_blocks(self, report_id):
-        """Get the signature blocks for the report."""
-        signers = report_id.signer_ids
-        signature_blocks = []
-        for signer in signers:
-            signature_blocks.append({
-                "role": signer.name,
-                "signer": signer.user_id.name or signer.fixed_name,
-            })
-        return signature_blocks
+                if col.is_sum and isinstance(raw_value, (int, float)):
+                    totals[col.field_name] += raw_value
 
-    def _get_signature_blocks(self, report):
-        """Get the signature blocks for the report."""
-        signers = report.signer_ids
-        blocks = []
-        for signer in signers:
-            blocks.append({
-                "role": signer.name,
-                "signer": signer.user_id.name or signer.fixed_name,
-            })
-        return blocks
+                cell_fmt = formats.get(col.format_id.id, formats['default'])
+                self._write_cell(sheet, start_row, col_idx, raw_value, cell_fmt, formats)
+            start_row += 1
 
-    def _prepare_signature(self, report_id, worksheet, formats, columns, current_row):
-        """Prepare the signature section for the report."""
-        # Position the signature section 3 rows below the maximum filled row
-        current_row = worksheet.dim_rowmax + 3
+        if totals:
+            sheet.write(start_row, 0, "TỔNG CỘNG / TOTAL", formats['header'])
+            # Điền trống các ô còn lại thuộc cột không tính tổng để giữ nguyên đường viền gridline
+            for col_idx, col in enumerate(visible_columns):
+                if col_idx == 0:
+                    continue
+                cell_fmt = formats.get(col.format_id.id, formats['header'])
+                if col.is_sum:
+                    sheet.write(start_row, col_idx, totals.get(col.field_name, 0), cell_fmt)
+                else:
+                    sheet.write(start_row, col_idx, "", cell_fmt)
+            start_row += 1
 
-        last_col_idx = len(columns) - 1
-        total_cols = len(columns)
+        return start_row
 
-        # Calculate merge columns for the date line (aligning to the right)
+    def _render_footer(self, sheet, formats, report_config, start_row):
+        """Can be overridden in child modules to write footer notes or additional terms"""
+        return start_row + 1
+
+    def _render_signature(self, sheet, formats, report_config, start_row):
+        """Render the signature section automatically aligned based on the number of signers (from the old _prepare_signature function)"""
+        signatures = report_config.signature_ids
+        if not signatures:
+            return start_row
+        
+        # Ensure that the signature section starts at least 3 rows below the last data row to avoid overlap
+        start_row = max(start_row, sheet.dim_rowmax + 3)
+        
+        visible_columns = report_config.column_ids.filtered('is_visible')
+        total_cols = len(visible_columns)
+        last_col_idx = max(0, total_cols - 1)
+        
+        # 1. Write the date row (Right-aligned, default merge 3 last columns)
         date_start_col = max(0, last_col_idx - 2)
-        date_end_col = last_col_idx
-
-        # Write the international date placeholder using helper method
-        self.write_merged_cells(
-            worksheet,
-            current_row,
-            date_start_col,
-            current_row,
-            date_end_col,
-            "Date: .........................",
-            formats["signature_date"]
+        self._write_merged_cells(
+            sheet, start_row, date_start_col, start_row, last_col_idx,
+            "Date: " + report_config.signature_date if report_config.signature_date else "Date: ..............................",
+            formats["signature_date"], formats,
         )
+        start_row += 1
+        
+        # 2. Calculate the width of each signature block based on the number of signatures and total columns
+        num_blocks = len(signatures)
+        block_width = max(1, total_cols // num_blocks)
+        
+        # 2. Write Roles (Phase 1: Render Roles)
+        current_col = 0
+        for i, sig in enumerate(signatures):
+            start_col = current_col
+            end_col = last_col_idx if i == num_blocks - 1 else start_col + block_width - 1
+            
+            sig_data = sig.get_signature_data()
+            self._write_merged_cells(sheet, start_row, start_col, start_row, end_col, sig_data['title'], formats["signature_name"], formats)
+            current_col = end_col + 1
+            
+        # Leave some space for physical signature
+        start_row += 5
+        
+        # 3. Write Signers' Names (Phase 2: Render Signers' Names)
+        current_col = 0
+        for i, sig in enumerate(signatures):
+            start_col = current_col
+            end_col = last_col_idx if i == num_blocks - 1 else start_col + block_width - 1
+            
+            sig_data = sig.get_signature_data()
+            self._write_merged_cells(sheet, start_row, start_col, start_row, end_col, sig_data['value'], formats["signature_name"], formats)
+            current_col = end_col + 1
+            
+        return start_row
 
-        current_row += 1
-
-        # Retrieve signature blocks
-        sig_blocks = self._get_signature_blocks(report)
-        num_blocks = len(sig_blocks)
-
-        # Calculate the column width allocation for each signature block
-        col_width = max(1, total_cols // num_blocks)
-
-        # Phase 1: Render the Roles (e.g., Creator, Approver)
-        col_idx = 0
-        for i, block in enumerate(sig_blocks):
-            start_col = col_idx
-            end_col = last_col_idx if i == num_blocks - 1 else start_col + col_width - 1
-
-            self.write_merged_cells(
-                worksheet,
-                current_row,
-                start_col,
-                current_row,
-                end_col,
-                block["role"],
-                formats["signature_name"]
-            )
-
-            col_idx = end_col + 1
-
-        # Leave a vertical gap of 4 rows for physical signatures
-        current_row += 5
-
-        # Phase 2: Render the Signers' Names
-        col_idx = 0
-        for i, block in enumerate(sig_blocks):
-            start_col = col_idx
-            end_col = last_col_idx if i == num_blocks - 1 else start_col + col_width - 1
-
-            self.write_merged_cells(
-                worksheet,
-                current_row,
-                start_col,
-                current_row,
-                end_col,
-                block["signer"],
-                formats["signature_name"],
-            )
-
-            col_idx = end_col + 1
-
-        return current_row
-
-    def write_cell(self, worksheet, row, col, cell_value, cell_format):
+    def _write_cell(self, sheet, row, col, cell_value, cell_format, formats):
+        """Core function to analyze data types (base64 images, formula cells =, regular strings)"""
         if isinstance(cell_value, dict) and cell_value.get('type') == 'image':
-            worksheet.write(row, col, "", cell_format)
+            sheet.write(row, col, "", cell_format)
             b64_data = cell_value.get('data')
             if b64_data:
                 try:
                     image_buffer = io.BytesIO(base64.b64decode(b64_data))
-                    # worksheet.insert_image(row, col, 'image.png', {
-                    #     'image_data': image_buffer
-                    # })
-                    worksheet.embed_image(row, col, 'image.png', {
-                        'image_data': image_buffer
-                    })
-                except Exception as e:
-                    worksheet.write(row, col, "", cell_format)
-
+                    sheet.embed_image(row, col, 'image.png', {'image_data': image_buffer})
+                except Exception:
+                    sheet.write(row, col, "", cell_format)
         elif isinstance(cell_value, str) and cell_value.startswith('='):
-            worksheet.write_formula(row, col, cell_value, cell_format)
+            sheet.write_formula(row, col, cell_value, cell_format)
         else:
-            worksheet.write(row, col, cell_value, cell_format)
+            sheet.write(row, col, cell_value, cell_format)
 
-    def write_merged_cells(self, worksheet, r1, c1, r2, c2, cell_value, cell_format):
-        worksheet.merge_range(r1, c1, r2, c2, "", cell_format)
-        self.write_cell(worksheet, r1, c1, cell_value, cell_format)
-
-    @api.model
-    def generate(self, workbook, worksheet):
-        report_id = self.env['excel.report'].search([('technical_name', '=', self._name)], limit=1)
-        self._setup_worksheet_print(worksheet)
-        self._setup_column_widths(worksheet)
-        current_row = 0
-
-        columns = self._get_columns(report_id)
-        formats = self._prepare_formats(workbook, columns)
-
-        data_records = self._get_report_data(report_id)
-
-        current_row = self._prepare_header(report_id, worksheet, formats, current_row)
-        current_row = self._prepare_body(report_id, worksheet, formats, current_row)
-        current_row = self._prepare_header_table(report_id, worksheet, formats, columns, current_row, data_records)
-        current_row = self._prepare_table(report_id, worksheet, formats, current_row, data_records)
-        current_row = self._prepare_footer(report_id, worksheet, formats, current_row)
-        current_row = self._prepare_signature(report_id, worksheet, formats, columns, current_row)
+    def _write_merged_cells(self, sheet, r1, c1, r2, c2, cell_value, cell_format, formats):
+        """Function to write merged cells with proper formatting and value handling"""
+        sheet.merge_range(r1, c1, r2, c2, "", cell_format)
+        self._write_cell(sheet, r1, c1, cell_value, cell_format, formats)

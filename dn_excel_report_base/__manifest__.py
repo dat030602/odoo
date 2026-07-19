@@ -1,12 +1,22 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'Excel Report Base',
-    'version': '1.0',
-    'category': 'Tools',
-    'summary': 'Base module for creating and managing Excel reports in Odoo',
-    'description': """A base module to create and manage Excel reports in Odoo using a configuration-based approach instead of coding.""",
+    'name': 'Dynamic Excel Report Base',
+    'version': '19.0.1.0.0',
+    'category': 'Reporting',
+    'summary': 'Framework to generate dynamic Excel Reports based on UI configuration',
+    'description': """
+        This is the Base module for the Excel Report Builder[cite: 1].
+        It provides the core Engine, Formats, Functions, Columns, and Signatures configuration models.
+    """,
+    'author': 'Your Name',
     'depends': ['mail', 'report_xlsx'],
     'data': [
-        'views/excel_report_views.xml',
+        'security/ir.model.access.csv',
+        'views/excel_report_column.xml',
+        'views/excel_report_signature.xml',
+        'views/excel_report_view.xml',
     ],
     'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
 }

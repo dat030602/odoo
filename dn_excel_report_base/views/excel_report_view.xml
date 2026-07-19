@@ -21,28 +21,10 @@
                     </group>
                     <notebook>
                         <page string="Columns">
-                            <field name="column_ids" context="{'default_report_id': active_id}" readonly="state == 'confirmed'">
-                                <list string="Columns" editable="bottom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="name"/>
-                                    <field name="field_id"/>
-                                    <field name="width"/>
-                                    <field name="function_id"/>
-                                    <field name="group"/>
-                                    <field name="merge_row"/>
-                                    <field name="merge_col"/>
-                                    <field name="format_ids" widget="many2many_tags"/>
-                                </list>
-                            </field>
+                            <field name="column_ids" context="{'default_report_id': id}" readonly="state == 'confirmed'"/>
                         </page>
                         <page string="Signatures">
-                            <field name="signature_ids" readonly="state == 'confirmed'">
-                                <tree string="Signatures" editable="bottom">
-                                    <field name="name"/>
-                                    <field name="user_id" readonly="fixed_text"/>
-                                    <field name="fixed_text" readonly="user_id" />
-                                </tree>
-                            </field>
+                            <field name="signature_ids" readonly="state == 'confirmed'"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -60,6 +42,6 @@
         </field>
     </record>
 
-    <menuitem id="menu_excel_report_base_root" name="Excel Report Base" sequence="20"/>
+    <menuitem id="menu_excel_report_base_root" name="Excel Report Base" sequence="50"/>
     <menuitem id="menu_excel_report_base_main" parent="menu_excel_report_base_root" name="Reports" sequence="10"/>
 </odoo>

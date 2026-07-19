@@ -9,7 +9,7 @@ class ExcelReport(models.AbstractModel):
 
     name = fields.Char(string="Name", required=True, tracking=True)
     technical_name = fields.Char(string="Technical Name", required=True, tracking=True, help="Technical name in the format 'module_name.report_name'")
-    model_id = fields.Many2one('ir.model', string="Model", required=True, tracking=True)
+    model_id = fields.Many2one('ir.model', string="Model", required=True, tracking=True, help="The model on which this report is based.", ondelete='cascade')
     column_ids = fields.One2many('excel.report.column', 'report_id', string='Columns')
     signature_ids = fields.One2many('excel.report.signature', 'report_id', string='Signatures')
     state = fields.Selection(string="State", selection=[('draft', 'Draft'), ('confirmed', 'Confirmed')], default='draft', tracking=True)
