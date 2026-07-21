@@ -5,7 +5,7 @@
         <field name="model">excel.report.signature</field>
         <field name="arch" type="xml">
             <list string="Signatures" editable="bottom">
-                <field name="is_readonly" invisible="1"/>
+                <field name="is_readonly" column_invisible="True"/>
                 <field name="name"/>
                 <field name="user_id" readonly="is_readonly"/>
                 <field name="fixed_text" readonly="not is_readonly" />

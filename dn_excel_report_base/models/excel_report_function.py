@@ -24,6 +24,46 @@ class ExcelReportFunction(models.Model):
         required=True,
         help="Write custom scripts. Expose output via variable 'result'."
     )
+    description = fields.Text(string="Description")
+    active = fields.Boolean(default=True)
+
+    @api.model
+    def _register_hook(self):
+        res = super()._register_hook()
+        self._sync_builtin_functions()
+        return res
+
+    @api.model
+    def _sync_builtin_functions(self):
+        existed = set(self.search([]).mapped("name"))
+
+        vals = []
+
+        for name, func in inspect.getmembers(helper, inspect.isfunction):
+            if name.startswith("_"):
+                continue
+
+            if name in existed:
+                continue
+
+            signature = str(inspect.signature(func))
+            doc = inspect.getdoc(func) or "No description."
+
+            description = (
+                f"Signature:\n"
+                f"{name}{signature}\n\n"
+                f"Description:\n"
+                f"{doc}"
+            )
+
+            vals.append({
+                "name": name,
+                "code": inspect.getsource(func),
+                "description": description,
+            })
+
+        if vals:
+            self.create(vals)
 
     def execute(self, localdict=None):
         self.ensure_one()

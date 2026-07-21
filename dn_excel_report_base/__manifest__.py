@@ -8,14 +8,16 @@
         This is the Base module for the Excel Report Builder[cite: 1].
         It provides the core Engine, Formats, Functions, Columns, and Signatures configuration models.
     """,
-    'author': 'Your Name',
+    'author': 'Dat Nguyen',
     'depends': ['mail', 'report_xlsx'],
     'data': [
         'security/ir.model.access.csv',
         'views/excel_report_column.xml',
+        'views/excel_report_format.xml',
         'views/excel_report_signature.xml',
         'views/excel_report_view.xml',
     ],
+    "post_init_hook": "post_init_hook",
     'installable': True,
     'application': False,
     'license': 'LGPL-3',

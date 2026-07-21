@@ -5,10 +5,11 @@
         <field name="model">excel.report</field>
         <field name="arch" type="xml">
             <form string="Excel Report">
+                <header>
+                    <button name="action_create_report_action" type="object" string="Confirm" class="btn-primary" invisible="state == 'confirmed' or report_action"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_colors='{"draft": "blue", "confirmed": "green"}'/>
+                </header>
                 <sheet>
-                    <header>
-                        <field name="state" widget="statusbar" clickable="1" statusbar_colors='{"draft": "blue", "confirmed": "green"}'/>
-                    </header>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1>
@@ -17,6 +18,7 @@
                     </div>
                     <group>
                         <field name="model_id" options="{'no_create': True}" readonly="state == 'confirmed'"/>
+                        <field name="technical_name" readonly="state == 'confirmed'"/>
                         <field name="report_action" readonly="state == 'confirmed'"/>
                     </group>
                     <notebook>
@@ -42,6 +44,17 @@
         </field>
     </record>
 
-    <menuitem id="menu_excel_report_base_root" name="Excel Report Base" sequence="50"/>
-    <menuitem id="menu_excel_report_base_main" parent="menu_excel_report_base_root" name="Reports" sequence="10"/>
+    <record id="action_excel_report" model="ir.actions.act_window">
+        <field name="name">Excel Templates</field>
+        <field name="res_model">excel.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Excel Template
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_excel_report_base_root" name="Excel Report Base" sequence="50" parent="base.menu_custom"/>
+    <menuitem id="menu_excel_report_base_main" parent="menu_excel_report_base_root" name="Templates" sequence="10" action="action_excel_report"/>
 </odoo>

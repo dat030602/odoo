@@ -1,49 +1,58 @@
 from odoo import api, fields, models
 
+FIELD_SELECTIONS = [
+    # Font Properties
+    ('font_name', 'Font Name'),
+    ('font_size', 'Font Size'),
+    ('font_color', 'Font Color'),
+    ('bold', 'Bold'),
+    ('italic', 'Italic'),
+    ('underline', 'Underline'),
+    ('font_strikeout', 'Strikeout'),
+    ('font_script', 'Superscript/Subscript'),
+    # Alignment Properties
+    ('align', 'Horizontal Alignment'),
+    ('valign', 'Vertical Alignment'),
+    ('text_wrap', 'Wrap Text'),
+    ('rotation', 'Rotation'),
+    ('indent', 'Indent'),
+    # Border Properties
+    ('border', 'All Borders'),
+    ('border_color', 'All Border Color'),
+    ('top', 'Top Border'),
+    ('top_color', 'Top Border Color'),
+    ('bottom', 'Bottom Border'),
+    ('bottom_color', 'Bottom Border Color'),
+    ('left', 'Left Border'),
+    ('left_color', 'Left Border Color'),
+    ('right', 'Right Border'),
+    ('right_color', 'Right Border Color'),
+    # Pattern and Fill Properties
+    ('pattern', 'Fill Pattern'),
+    ('bg_color', 'Background Color'),
+    ('fg_color', 'Foreground Pattern Color'),
+    # Number Format & Others
+    ('num_format', 'Number Format'),
+    ('locked', 'Locked Cell'),
+    ('hidden', 'Hide Formulas'),
+]
 
 class ExcelReportFormat(models.Model):
     _name = "excel.report.format"
     _description = "Excel Report Format"
+    _rec_names_search = ['name', 'type']
 
     name = fields.Char(string="Format Name", required=True)
+    type = fields.Selection(FIELD_SELECTIONS, string="Format Type", required=True, help="Select which format property this record configures")
 
-    # --- TRƯỜNG TYPE ĐỂ LỰA CHỌN THUỘC TÍNH ĐỊNH DẠNG ---
-    type = fields.Selection([
-        # Font Properties
-        ('font_name', 'Font Name'),
-        ('font_size', 'Font Size'),
-        ('font_color', 'Font Color'),
-        ('bold', 'Bold'),
-        ('italic', 'Italic'),
-        ('underline', 'Underline'),
-        ('font_strikeout', 'Strikeout'),
-        ('font_script', 'Superscript/Subscript'),
-        # Alignment Properties
-        ('align', 'Horizontal Alignment'),
-        ('valign', 'Vertical Alignment'),
-        ('text_wrap', 'Wrap Text'),
-        ('rotation', 'Rotation'),
-        ('indent', 'Indent'),
-        # Border Properties
-        ('border', 'All Borders'),
-        ('border_color', 'All Border Color'),
-        ('top', 'Top Border'),
-        ('top_color', 'Top Border Color'),
-        ('bottom', 'Bottom Border'),
-        ('bottom_color', 'Bottom Border Color'),
-        ('left', 'Left Border'),
-        ('left_color', 'Left Border Color'),
-        ('right', 'Right Border'),
-        ('right_color', 'Right Border Color'),
-        # Pattern and Fill Properties
-        ('pattern', 'Fill Pattern'),
-        ('bg_color', 'Background Color'),
-        ('fg_color', 'Foreground Pattern Color'),
-        # Number Format & Others
-        ('num_format', 'Number Format'),
-        ('locked', 'Locked Cell'),
-        ('hidden', 'Hide Formulas'),
-    ], string="Format Type", required=True, help="Select which format property this record configures")
+    @api.depends(lambda self: [field for field, _ in FIELD_SELECTIONS] + ['type'])
+    def _compute_display_name(self):
+        key_to_field = [field for field, _ in FIELD_SELECTIONS]
+        for record in self:
+            if record.type in key_to_field:
+                record.display_name = f"{record.type.replace('_', ' ').title()}: {getattr(record, record.type)}"
+            else:
+                record.display_name = False
 
     # --- 1. FONT PROPERTIES ---
     font_name = fields.Char(string="Font Name", default="Arial")

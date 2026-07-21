@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 
 
-class ExcelReportSignature(models.AbstractModel):
+class ExcelReportSignature(models.Model):
     _name = "excel.report.signature"
     _description = "Excel Report Signature"
 
