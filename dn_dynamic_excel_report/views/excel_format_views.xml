@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Excel Cell Format Form View -->
+    <record id="view_excel_cell_format_form" model="ir.ui.view">
+        <field name="name">excel.cell.format.form</field>
+        <field name="model">excel.cell.format</field>
+        <field name="arch" type="xml">
+            <form string="Excel Cell Format">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Format Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Font Settings">
+                            <group>
+                                <group>
+                                    <field name="font_name"/>
+                                    <field name="font_size"/>
+                                    <field name="font_bold"/>
+                                    <field name="font_italic"/>
+                                    <field name="font_underline"/>
+                                </group>
+                                <group>
+                                    <field name="font_color" widget="color"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Alignment">
+                            <group>
+                                <group>
+                                    <field name="horizontal_align"/>
+                                    <field name="vertical_align"/>
+                                    <field name="text_wrap"/>
+                                    <field name="rotation"/>
+                                </group>
+                                <group>
+                                    <field name="indent"/>
+                                    <field name="shrink_to_fit"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Background">
+                            <group>
+                                <group>
+                                    <field name="bg_color" widget="color"/>
+                                    <field name="bg_pattern"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Borders">
+                            <group>
+                                <group string="Borders">
+                                    <field name="border_left"/>
+                                    <field name="border_right"/>
+                                    <field name="border_top"/>
+                                    <field name="border_bottom"/>
+                                </group>
+                                <group string="Border Colors">
+                                    <field name="border_left_color" widget="color"/>
+                                    <field name="border_right_color" widget="color"/>
+                                    <field name="border_top_color" widget="color"/>
+                                    <field name="border_bottom_color" widget="color"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Number Format">
+                            <group>
+                                <group>
+                                    <field name="num_format_category"/>
+                                    <field name="number_format" 
+                                           attrs="{'invisible': [('num_format_category', '!=', 'custom')]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Protection">
+                            <group>
+                                <group>
+                                    <field name="locked"/>
+                                    <field name="hidden"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Description">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Excel Cell Format Tree View -->
+    <record id="view_excel_cell_format_tree" model="ir.ui.view">
+        <field name="name">excel.cell.format.tree</field>
+        <field name="model">excel.cell.format</field>
+        <field name="arch" type="xml">
+            <tree string="Excel Cell Formats">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="font_bold"/>
+                <field name="num_format_category"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Excel Cell Format Search View -->
+    <record id="view_excel_cell_format_search" model="ir.ui.view">
+        <field name="name">excel.cell.format.search</field>
+        <field name="model">excel.cell.format</field>
+        <field name="arch" type="xml">
+            <search string="Search Excel Cell Formats">
+                <field name="name"/>
+                <field name="code"/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="bold" string="Bold" domain="[('font_bold', '=', True)]"/>
+                <group>
+                    <filter name="category_group" string="Number Format" context="{'group_by': 'num_format_category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Excel Cell Format Action -->
+    <record id="action_excel_cell_format" model="ir.actions.act_window">
+        <field name="name">Excel Cell Formats</field>
+        <field name="res_model">excel.cell.format</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Excel cell format
+            </p>
+            <p>
+                Define reusable cell formats for Excel reports.
+            </p>
+        </field>
+    </record>
+</odoo>

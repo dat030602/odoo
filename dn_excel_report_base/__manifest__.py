@@ -1,24 +1,46 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Dynamic Excel Report Base',
-    'version': '19.0.1.0.0',
-    'category': 'Reporting',
-    'summary': 'Framework to generate dynamic Excel Reports based on UI configuration',
-    'description': """
-        This is the Base module for the Excel Report Builder[cite: 1].
-        It provides the core Engine, Formats, Functions, Columns, and Signatures configuration models.
+    'name'        : 'Base Excel Report',
+    'version'     : '16.0.1.0.0',
+    'category'    : 'Technical',
+    'summary'     : 'Base framework for template-based Excel report generation.',
+    'description' : """
+Base Excel Report Framework
+============================
+
+Provides a reusable, inheritable pipeline for generating Excel reports
+from pre-designed templates stored as Odoo ir.attachment records.
+
+Key Features:
+-------------
+* Template-based: Design reports visually in Excel, not in Python code.
+* Marker-driven: Uses <TABLE_START> cell marker to locate insertion point.
+* Placeholder replacement: {{KEY}} syntax for dynamic Header/Footer values.
+* Auto row insertion: Inserts the exact number of rows needed, preserving
+  all content above and below the table.
+* Style copy: Propagates font, border, fill, alignment from the template row
+  to all newly inserted rows (Normal Mode).
+* Auto-fit columns: Adjusts column widths based on actual data length.
+* Fast Mode: Skips heavy per-cell operations for datasets exceeding
+  the configured threshold, ensuring server stability at scale.
+* Fully inheritable: Child modules only override 3-4 hook methods.
+
+Dependencies:
+-------------
+    pip install openpyxl
     """,
-    'author': 'Dat Nguyen',
-    'depends': ['mail', 'report_xlsx'],
-    'data': [
+    'author'   : 'Your Company',
+    'website'  : 'https://your-website.com',
+    'depends'  : ['base', 'web'],
+    'data'     : [
         'security/ir.model.access.csv',
-        'views/excel_report_column.xml',
-        'views/excel_report_format.xml',
-        'views/excel_report_signature.xml',
-        'views/excel_report_view.xml',
+        'views/base_excel_report_views.xml',
     ],
-    "post_init_hook": "post_init_hook",
-    'installable': True,
-    'application': False,
-    'license': 'LGPL-3',
+    'external_dependencies': {
+        'python': ['openpyxl'],
+    },
+    'installable'  : True,
+    'application'  : False,
+    'auto_install' : False,
+    'license'      : 'LGPL-3',
 }

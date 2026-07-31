@@ -11,8 +11,6 @@
     'data': [
         'security/ir.model.access.csv',
         'security/attachment_manager_rules.xml',
-        'wizards/attachment_cleanup_wizard.xml',
-        'wizards/attachment_delete_selected.xml',
         'wizards/attachment_move_trash.xml',
         'wizards/attachment_restore_selected.xml',
         'views/attachment_views.xml',

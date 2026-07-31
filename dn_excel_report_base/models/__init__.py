@@ -1,5 +1,2 @@
-from . import excel_report
-from . import excel_report_column
-from . import excel_report_format
-from . import excel_report_function
-from . import excel_report_signature
+# -*- coding: utf-8 -*-
+from . import base_excel_report

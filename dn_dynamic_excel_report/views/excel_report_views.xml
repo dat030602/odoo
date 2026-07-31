@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Excel Report Form View -->
+    <record id="view_excel_report_form" model="ir.ui.view">
+        <field name="name">excel.report.form</field>
+        <field name="model">excel.report</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report Configuration">
+                <header>
+                    <button name="action_preview" string="Preview" type="object" class="btn-primary"/>
+                    <button name="action_export" string="Export" type="object" class="btn-primary"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Report Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="model_id"/>
+                            <field name="provider"/>
+                            <field name="template_id"/>
+                        </group>
+                        <group>
+                            <field name="sheet_name"/>
+                            <field name="report_file_pattern"/>
+                            <field name="company_id"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Layout Configuration">
+                            <group>
+                                <group string="Header">
+                                    <field name="header_layout_id"/>
+                                </group>
+                                <group string="Footer">
+                                    <field name="footer_layout_id"/>
+                                </group>
+                            </group>
+                            <group string="Body Layouts">
+                                <field name="body_layout_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="layout_type"/>
+                                        <field name="row_count"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Table Configuration">
+                            <field name="column_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="display_name"/>
+                                    <field name="field_name"/>
+                                    <field name="data_type"/>
+                                    <field name="column_width"/>
+                                    <field name="summary_type"/>
+                                    <field name="visible"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Settings">
+                            <group>
+                                <group string="Table Settings">
+                                    <field name="auto_filter"/>
+                                    <field name="freeze_panes"/>
+                                    <field name="header_row_height"/>
+                                    <field name="data_row_height"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Description">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Excel Report Tree View -->
+    <record id="view_excel_report_tree" model="ir.ui.view">
+        <field name="name">excel.report.tree</field>
+        <field name="model">excel.report</field>
+        <field name="arch" type="xml">
+            <tree string="Excel Reports">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="model_name"/>
+                <field name="provider"/>
+                <field name="state"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Excel Report Search View -->
+    <record id="view_excel_report_search" model="ir.ui.view">
+        <field name="name">excel.report.search</field>
+        <field name="model">excel.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Excel Reports">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="model_name"/>
+                <field name="provider"/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="ready" string="Ready" domain="[('state', '=', 'ready')]"/>
+                <filter name="published" string="Published" domain="[('state', '=', 'published')]"/>
+                <group>
+                    <filter name="state_group" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="model_group" string="Model" context="{'group_by': 'model_name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Excel Report Action -->
+    <record id="action_excel_report" model="ir.actions.act_window">
+        <field name="name">Excel Reports</field>
+        <field name="res_model">excel.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Excel Report configuration
+            </p>
+            <p>
+                Configure dynamic Excel reports with low-code interface.
+            </p>
+        </field>
+    </record>
+</odoo>

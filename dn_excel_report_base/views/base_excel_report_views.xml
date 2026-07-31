@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Base Wizard Form View
+        =====================
+        Provides a two-state form:
+          - 'choose' : User configures parameters, clicks Generate.
+          - 'download': File is ready; download widget is visible.
+
+        Child modules should inherit this view and inject filter fields
+        inside the <div name="filter_area"> group using view inheritance.
+
+        Odoo 16 syntax used below.
+        For Odoo 17+, replace attrs="{'invisible': ...}" with
+        the direct invisible="..." expression attribute.
+    -->
+    <record id="view_base_excel_report_form" model="ir.ui.view">
+        <field name="name">base.excel.report.form</field>
+        <field name="model">base.excel.report</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report">
+
+                <!-- Hidden state field used for conditional visibility -->
+                <field name="state" invisible="1"/>
+
+                <!-- ── Configure State ─────────────────────────────────── -->
+                <div
+                    name="configure_area"
+                    attrs="{'invisible': [('state', '!=', 'choose')]}">
+
+                    <!-- Child modules inject filter fields here via inheritance -->
+                    <group name="filter_area"/>
+
+                    <div class="text-muted mt8">
+                        <i class="fa fa-info-circle"/>
+                        Click <b>Generate Report</b> to create the Excel file from the template.
+                    </div>
+                </div>
+
+                <!-- ── Download State ──────────────────────────────────── -->
+                <div
+                    name="download_area"
+                    attrs="{'invisible': [('state', '!=', 'download')]}">
+
+                    <div class="alert alert-success" role="status">
+                        <i class="fa fa-check-circle"/>
+                        <strong> Report generated successfully!</strong>
+                        Click the file name below to download.
+                    </div>
+
+                    <group>
+                        <field
+                            name="excel_file"
+                            widget="binary"
+                            filename="file_name"
+                            string="Download File"/>
+                        <field name="file_name" invisible="1"/>
+                    </group>
+                </div>
+
+                <!-- ── Footer Buttons ──────────────────────────────────── -->
+                <footer>
+                    <button
+                        name="action_generate_excel"
+                        string="Generate Report"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('state', '!=', 'choose')]}"/>
+
+                    <button
+                        string="Cancel"
+                        class="btn-secondary"
+                        special="cancel"
+                        attrs="{'invisible': [('state', '!=', 'choose')]}"/>
+
+                    <button
+                        string="Done"
+                        class="btn-primary"
+                        special="cancel"
+                        attrs="{'invisible': [('state', '!=', 'download')]}"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+</odoo>

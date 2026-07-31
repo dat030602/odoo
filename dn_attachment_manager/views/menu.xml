@@ -33,17 +33,9 @@
 		<field name="view_id" ref="view_attachment_list"/>
 	</record>
 
-	<record id="action_attachment_cleanup_wizard" model="ir.actions.act_window">
-		<field name="name">Cleanup Wizard</field>
-		<field name="res_model">attachment.cleanup.wizard</field>
-		<field name="view_mode">form</field>
-		<field name="target">new</field>
-		<field name="view_id" ref="view_attachment_cleanup_wizard_form"/>
-	</record>
-
 	<!-- Move to Trash action for selection -->
 	<record id="action_attachment_move_to_trash" model="ir.actions.act_window">
-		<field name="name">Move to Trash (Attachment Manager)</field>
+		<field name="name">Move to Trash</field>
 		<field name="res_model">attachment.move.trash</field>
 		<field name="view_mode">form</field>
 		<field name="target">new</field>
@@ -53,7 +45,7 @@
 
 	<!-- Restore action for selection -->
 	<record id="action_attachment_restore_selected" model="ir.actions.act_window">
-		<field name="name">Restore Selected (Attachment Manager)</field>
+		<field name="name">Restore Selected</field>
 		<field name="res_model">attachment.restore.selected</field>
 		<field name="view_mode">form</field>
 		<field name="target">new</field>
@@ -71,12 +63,11 @@
 	</record>
 
 	<!-- Menu -->
-	<menuitem id="menu_attachment_manager_root" name="Attachment Manager" sequence="100"/>
+	<menuitem id="menu_attachment_manager_root" name="Attachment Manager" sequence="100" web_icon="dn_attachment_manager,static/description/icon-app.png"/>
 	<menuitem id="menu_attachment_all" name="All Attachments" parent="menu_attachment_manager_root" action="action_attachment_all"/>
 	<menuitem id="menu_attachment_large" name="Large Files" parent="menu_attachment_manager_root" action="action_attachment_large"/>
 	<menuitem id="menu_attachment_duplicates" name="Duplicate Files" parent="menu_attachment_manager_root" action="action_attachment_duplicates"/>
 	<menuitem id="menu_attachment_orphan" name="Orphan Files" parent="menu_attachment_manager_root" action="action_attachment_orphan"/>
-	<menuitem id="menu_attachment_cleanup" name="Cleanup Wizard" parent="menu_attachment_manager_root" action="action_attachment_cleanup_wizard"/>
 	<menuitem id="menu_attachment_recycle" name="Recycle Bin" parent="menu_attachment_manager_root" action="action_attachment_recycle_bin"/>
 
 </odoo>

@@ -11,8 +11,7 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "dn_smart_search/static/src/js/dn_smart_search.js",
-            "dn_smart_search/static/src/xml/dn_smart_search.xml",
+            "dn_smart_search/static/src/**/*",
         ],
     },
     "post_init_hook": "post_init_hook",

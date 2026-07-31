@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_excel_report_form" model="ir.ui.view">
+        <field name="name">sale.excel.report.form</field>
+        <field name="model">sale.excel.report</field>
+        <!-- Inherit base view, inject filter fields only -->
+        <field name="inherit_id" ref="dn_excel_report_base.view_base_excel_report_form"/>
+        <field name="arch" type="xml">
+            <group name="filter_area" position="inside">
+                <field name="date_from"/>
+                <field name="date_to"/>
+            </group>
+        </field>
+    </record>
+
+    <record id="action_sale_excel_report" model="ir.actions.act_window">
+        <field name="name">Sale Order Excel Report</field>
+        <field name="res_model">sale.excel.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
