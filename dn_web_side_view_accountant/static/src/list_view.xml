@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dn.BankRecReconcileDialogListView" t-inherit="account_accountant.BankRecReconcileDialogListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+    <t t-name="dn.AttachmentPreviewListView" t-inherit="account_accountant.AttachmentPreviewListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-component='props.Renderer']" position="replace">
+            <t t-call="dn.ListViewSide" />
+        </xpath>
+    </t>
+</templates>
+ 
