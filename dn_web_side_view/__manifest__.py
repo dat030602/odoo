@@ -1,47 +1,69 @@
+# -*- coding: utf-8 -*-
 {
-     'name': 'Advanced Dynamic Approval',
-     'summary': 'Dynamic approval workflow builder with visual stage hierarchy and Python conditional routing',
-     'description': """
-     Advanced approval workflow engine for Odoo 19 that extends the existing Approval module 
-     while completely replacing the default approval execution flow.
-     Features:
-     - Visual workflow builder using hierarchy view
-     - Multi-stage approval process
-     - Python-based conditional routing (if/else)
-     - Dynamic form and list view generation
-     - One approval category = one generated approval interface
-     - Automatic menu and action generation
-     - Dynamic field behavior based on current approval stage
-     """,
-     'author': 'Dat Nguyen',
-     'website': 'https://www.datnguyen.dev',
-     'category': 'Tools',
-     'version': '19.0.1.0.0',
-     'license': 'OPL-1',
-     'depends': [
-         'base',
-         'approvals',
-         'web_hierarchy',
-     ],
-     'data': [
-         'security/ir.model.access.csv',
-         'views/workflow_config_views.xml',
-         'views/workflow_stage_views.xml',
-         'views/approval_history_views.xml',
-         'wizards/approval_reason_wizard_views.xml',
-     ],
-     'images': [
-         'static/description/screenshot_workflow.png',
-         'static/description/screenshot_workflow_stages.png',
-         'static/description/screenshot_workflow_stages_form.png',
-         'static/description/screenshot_approval_form.png',
-         'static/description/screenshot_approval_action_model.png',
-     ],
-     'assets': {},
-     'demo': [],
-     'installable': True,
-     'application': False,
-     'auto_install': False,
-     'price': 15.00,
-     'currency': 'EUR',
+    # Display name shown in Odoo Apps / Apps Menu
+    'name': 'Web Side View',
+
+    # Short summary of features (1 sentence, shown in app search list)
+    'summary': 'Enhance Odoo list views with split screen and popup form viewing modes',
+
+    # Detailed description (can be omitted if static/description/index.html exists)
+    'description': """
+Web Side View enhances the standard Odoo 19 List View by adding flexible
+record viewing modes without changing the default workflow.
+
+Features:
+- Default mode with standard Odoo list behavior
+- Split View mode: display list view on the left and form view on the right
+- Popup mode: open form views in modal windows or separate targets
+- Improved productivity when reviewing and editing multiple records
+- Seamless integration with existing Odoo web client
+- Lightweight frontend extension using Odoo OWL framework
+    """,
+
+    # Author and website (required by App Store)
+    'author': 'Dat Nguyen',
+    'website': 'https://www.datnguyen.dev',
+
+    # Module category on Odoo Store
+    'category': 'Tools',
+
+    # Version format: [Odoo version].[module version]
+    'version': '19.0.1.0.0',
+
+    # License (MUST be OPL-1 for paid apps)
+    'license': 'OPL-1',
+
+    # Dependencies (modules this module requires)
+    'depends': [
+        'web',
+    ],
+
+    # Data files loaded at install/upgrade
+    'data': [],
+
+    # App screenshots / icons
+    'images': [
+        'static/description/icon.png',
+    ],
+
+    # Static assets (JS, CSS, SCSS, QWeb templates)
+    'assets': {
+        'web.assets_backend': [
+            'web_side_view/static/src/*.xml',
+            'web_side_view/static/src/*.scss',
+            'web_side_view/static/src/*.js',
+        ],
+    },
+
+    # Demo data (only loaded in demonstration mode)
+    'demo': [],
+
+    # Installation configuration
+    'installable': True,       # Whether the module can be installed
+    'application': False,      # Utility module, not a standalone application
+    'auto_install': False,     # Do not auto-install with dependencies
+
+    # Pricing (for paid apps on Odoo Store)
+    'price': 15.00,
+    'currency': 'EUR',
 }

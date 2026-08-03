@@ -44,13 +44,8 @@ Features:
         # 3. Wizards
         'wizards/approval_reason_wizard_views.xml',
     ],
-    # Screenshots / promotional images for the App Store listing
     'images': [
-        'static/description/screenshot_workflow.png',
-        'static/description/screenshot_workflow_stages.png',
-        'static/description/screenshot_workflow_stages_form.png',
-        'static/description/screenshot_approval_form.png',
-        'static/description/screenshot_approval_action_model.png',
+        'static/description/icon.png',
     ],
     # Static assets (JS, CSS, SCSS, QWeb templates)
     'assets': {

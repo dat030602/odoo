@@ -23,6 +23,10 @@
             'dn_web_side_view_expense/static/src/*.xml',
         ],
     },
+    # App screenshots / icons
+    'images': [
+        'static/description/icon.png',
+    ],
     'price': 0.00,
     'currency': 'EUR',
 }

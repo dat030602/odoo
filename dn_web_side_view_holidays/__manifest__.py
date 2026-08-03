@@ -20,6 +20,10 @@
             'dn_web_side_view_holidays/static/src/*.xml',
         ],
     },
+    # App screenshots / icons
+    'images': [
+        'static/description/icon.png',
+    ],
     'demo': [],
     'installable': True,
     'application': False,
