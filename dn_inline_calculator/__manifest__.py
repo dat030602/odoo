@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Inline Calculator',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Tools',
     'summary': 'In-line Calculator for Numeric Fields',
     'description': """

@@ -11,7 +11,7 @@
     'author': 'Dat Nguyen',
     'website': 'https://www.datnguyen.dev',
     'category': 'Hidden',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'license': 'LGPL-3',
     'depends': ['dn_web_side_view', 'project'],
     'data': [],

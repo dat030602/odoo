@@ -7,7 +7,7 @@ This module provides functionality to detect and prevent duplicate customer entr
     'author': 'Dat Nguyen',
     
     'category': 'Hidden',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'license': 'OPL-1',
     'depends': ['sale','purchase','account','crm','contacts'],
     'data': [

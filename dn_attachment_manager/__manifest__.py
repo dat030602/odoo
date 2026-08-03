@@ -1,6 +1,6 @@
 {
     'name': 'Attachment Manager',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Tools',
     'summary': 'Dynamic attachment manager system with configurable keywords and activities',
     'description': """Attachment Manager for Odoo""",

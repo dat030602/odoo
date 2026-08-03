@@ -24,7 +24,7 @@ Features:
     # Module category on Odoo Store (Tools / Miscellaneous recommended for utility modules)
     'category': 'Tools',
     # Version format: [Odoo version].[module version] (19.0 -> Odoo 19)
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     # License (MUST be OPL-1 for paid apps; LGPL-3/GPL-3 only for free open-source apps)
     'license': 'OPL-1',
     # Dependencies (modules this module requires)

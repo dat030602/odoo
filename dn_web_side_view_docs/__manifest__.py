@@ -7,7 +7,7 @@
         - Split View Mode (Splits screen: List on the left, Form on the right).
         - Popup Mode (Opens the Form view in a modal/target new).
     """,
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'author': 'Dat Nguyen',
     'website': 'https://www.datnguyen.dev',
     'category': 'Hidden',

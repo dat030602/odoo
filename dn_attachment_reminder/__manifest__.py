@@ -1,6 +1,6 @@
 {
     'name': 'Attachment Reminder',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Tools',
     'summary': 'Dynamic attachment reminder system with configurable keywords and activities',
     'description': """
