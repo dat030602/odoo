@@ -49,9 +49,9 @@ Features:
     # Static assets (JS, CSS, SCSS, QWeb templates)
     'assets': {
         'web.assets_backend': [
-            'web_side_view/static/src/*.xml',
-            'web_side_view/static/src/*.scss',
-            'web_side_view/static/src/*.js',
+            'dn_web_side_view/static/src/*.xml',
+            'dn_web_side_view/static/src/*.scss',
+            'dn_web_side_view/static/src/*.js',
         ],
     },
 
