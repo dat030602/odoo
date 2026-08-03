@@ -289,4 +289,4 @@ dn_advanced_dynamic_approval/
 
 ---
 
-*Advanced Dynamic Approval v19.0.1.0.0 — replace Odoo's default approval flow with a powerful, visually configured, Python-routed stage engine.*
+*Advanced Dynamic Approval v19.0.1.0.1 — replace Odoo's default approval flow with a powerful, visually configured, Python-routed stage engine.*
