@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name'        : 'Base Excel Report',
-    'version'     : '16.0.1.0.0',
+    'version'     : '19.0.1.0.0',
     'category'    : 'Technical',
     'summary'     : 'Base framework for template-based Excel report generation.',
     'description' : """
@@ -29,8 +29,7 @@ Dependencies:
 -------------
     pip install openpyxl
     """,
-    'author'   : 'Your Company',
-    'website'  : 'https://your-website.com',
+    'author'   : 'Dat Nguyen',
     'depends'  : ['base', 'web'],
     'data'     : [
         'security/ir.model.access.csv',

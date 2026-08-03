@@ -27,8 +27,8 @@
                             </group>
                         </group>
                         <group>
-                            <field name="value" password="True" attrs="{'invisible': [('encrypt', '=', False)]}"/>
-                            <field name="value" attrs="{'invisible': [('encrypt', '=', True)]}"/>
+                            <field name="value" password="True" invisible="encrypt == False"/>
+                            <field name="value" invisible="encrypt == True"/>
                         </group>
                         <notebook>
                             <page string="Description">

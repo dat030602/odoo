@@ -30,10 +30,8 @@
                                     <field name="row"/>
                                     <field name="col"/>
                                     <field name="content_type"/>
-                                    <field name="static_text" 
-                                           attrs="{'invisible': [('content_type', '!=', 'static')]}"/>
-                                    <field name="variable_name" 
-                                           attrs="{'invisible': [('content_type', '!=', 'variable')]}"/>
+                                    <field name="static_text" invisible="content_type != 'static'"/>
+                                    <field name="variable_name" invisible="content_type != 'variable'"/>
                                     <field name="merge_rows"/>
                                     <field name="merge_cols"/>
                                     <field name="format_id"/>

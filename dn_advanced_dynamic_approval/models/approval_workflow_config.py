@@ -152,6 +152,8 @@ action['res_id'] = request_id.id
                     },
                 )
                 rec.server_id = server_action
+                rec.server_id.create_action()
+
 
     def action_open_server_action(self):
         return {
@@ -195,8 +197,8 @@ action['res_id'] = request_id.id
             <header>
                 <button name="action_custom_approve" string="Send for Approval" type="object" class="btn-primary" invisible="custom_request_status != 'new'"/>
                 <button name="action_custom_approve" string="Approve" type="object" class="btn-primary" invisible="not can_click_approval or custom_request_status != 'pending'"/>
-                <button name="dn_advanced_dynamic_approval.action_approval_reason_wizard" string="Reject" type="action" class="btn-danger" context="{'default_approval_request_id': id, 'default_action': 'reject'}" invisible="not can_click_approval or custom_request_status != 'pending'"/>
-                <button name="dn_advanced_dynamic_approval.action_approval_reason_wizard" string="Cancel" type="action" class="btn-secondary" context="{'default_approval_request_id': id, 'default_action': 'cancel'}" invisible="custom_request_status in ['cancel', 'approved']"/>
+                <button name="action_open_reject_wizard" string="Reject" type="object" class="btn-danger" invisible="not can_click_approval or custom_request_status != 'pending'"/>
+                <button name="action_open_cancel_wizard" string="Cancel" type="object" class="btn-secondary" invisible="custom_request_status in ['cancel', 'approved']"/>
                 <field name="custom_request_status" widget="statusbar" statusbar_visible="new,pending,approved"/>
             </header>
             <sheet>

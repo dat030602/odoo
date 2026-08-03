@@ -75,8 +75,7 @@
                             <group>
                                 <group>
                                     <field name="num_format_category"/>
-                                    <field name="number_format" 
-                                           attrs="{'invisible': [('num_format_category', '!=', 'custom')]}"/>
+                                    <field name="number_format" invisible="num_format_category != 'custom'"/>
                                 </group>
                             </group>
                         </page>

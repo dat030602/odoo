@@ -9,8 +9,8 @@
             <field name="arch" type="xml">
                 <form string="Connector Execution">
                     <header>
-                        <button name="retry" string="Retry" type="object" states="failed" class="btn-primary"/>
-                        <button name="cancel" string="Cancel" type="object" states="pending,running" class="btn-secondary"/>
+                        <button name="retry" string="Retry" type="object" invisible="state != 'failed'" class="btn-primary"/>
+                        <button name="cancel" string="Cancel" type="object" invisible="state not in ['pending', 'running']" class="btn-secondary"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>

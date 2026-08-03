@@ -224,3 +224,21 @@ class ApprovalRequest(models.Model):
         else:
             # If no pending record exists, create a new one
             self._custom_create_approval_history(status, approver, None)
+
+    def action_open_cancel_wizard(self):
+        self.ensure_one()
+        action = self.env.ref('dn_advanced_dynamic_approval.action_approval_reason_wizard').sudo().read()[0]
+        action['context'] = {'default_approval_request_id': self.id, 'default_action': 'cancel'}
+        return action
+
+    def action_open_reject_wizard(self):
+        self.ensure_one()
+        action = self.env.ref('dn_advanced_dynamic_approval.action_approval_reason_wizard').sudo().read()[0]
+        action['context'] = {'default_approval_request_id': self.id, 'default_action': 'reject'}
+        return action
+
+    def unlink(self):
+        for rec in self:
+            if rec.custom_request_status not in ['new', 'cancel'] and rec.workflow_id:
+                raise UserError(_("You can only delete approval requests that are in 'To Submit' or 'Canceled' status."))
+        return super().unlink()

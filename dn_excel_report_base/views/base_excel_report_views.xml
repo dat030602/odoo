@@ -25,8 +25,7 @@
 
                 <!-- ── Configure State ─────────────────────────────────── -->
                 <div
-                    name="configure_area"
-                    attrs="{'invisible': [('state', '!=', 'choose')]}">
+                    name="configure_area" invisible="state != 'choose'">
 
                     <!-- Child modules inject filter fields here via inheritance -->
                     <group name="filter_area"/>
@@ -38,9 +37,7 @@
                 </div>
 
                 <!-- ── Download State ──────────────────────────────────── -->
-                <div
-                    name="download_area"
-                    attrs="{'invisible': [('state', '!=', 'download')]}">
+                <div name="download_area" invisible="state != 'download'">
 
                     <div class="alert alert-success" role="status">
                         <i class="fa fa-check-circle"/>
@@ -65,19 +62,19 @@
                         string="Generate Report"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': [('state', '!=', 'choose')]}"/>
+                        invisible="state != 'choose'"/>
 
                     <button
                         string="Cancel"
                         class="btn-secondary"
                         special="cancel"
-                        attrs="{'invisible': [('state', '!=', 'choose')]}"/>
+                        invisible="state != 'choose'"/>
 
                     <button
                         string="Done"
                         class="btn-primary"
                         special="cancel"
-                        attrs="{'invisible': [('state', '!=', 'download')]}"/>
+                        invisible="state != 'download'"/>
                 </footer>
 
             </form>

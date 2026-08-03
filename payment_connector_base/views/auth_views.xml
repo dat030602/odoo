@@ -21,7 +21,7 @@
                                 <field name="active"/>
                             </group>
                         </group>
-                        <group attrs="{'invisible': [('type', '!=', 'custom')]}">
+                        <group invisible="type != 'custom'">
                             <field name="python_class" placeholder="module.ClassName"/>
                         </group>
                         <notebook>

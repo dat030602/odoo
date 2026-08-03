@@ -28,8 +28,8 @@ class SaleExcelReport(models.TransientModel):
     _description = 'Sale Order Excel Report'
 
     # ── Filter fields specific to this report ────────────────────────────────
-    date_from = fields.Date(string='From Date')
-    date_to   = fields.Date(string='To Date')
+    date_from = fields.Date(string='From Date', default=fields.Date.today)
+    date_to   = fields.Date(string='To Date', default=fields.Date.today)
 
     # ── Column offset constants (relative to start_col returned by marker scan)
     # Keeps _write_table_data readable and easy to reorder later.

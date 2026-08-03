@@ -27,7 +27,7 @@
                             <page string="Description">
                                 <field name="description"/>
                             </page>
-                            <page string="Python Code" attrs="{'invisible': [('type', '!=', 'custom')]}">
+                            <page string="Python Code" invisible="type != 'custom'">
                                 <field name="python_code" widget="code"/>
                             </page>
                         </notebook>
