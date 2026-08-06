@@ -56,7 +56,7 @@ Features:
     'installable': True,           # Whether the module can be installed
     'application': False,          # False: treated as a utility module, not a standalone app
     'auto_install': False,         # True: auto-installs when all dependencies are installed
-    # Pricing (for paid apps on Odoo Store — MUST use OPL-1 license)
-    'price': 100.00,
+    # Pricing (for paid apps on Odoo Store - MUST use OPL-1 license)
+    'price': 80.00,
     'currency': 'EUR',
 }

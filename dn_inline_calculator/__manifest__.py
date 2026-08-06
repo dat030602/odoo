@@ -1,43 +1,71 @@
 # -*- coding: utf-8 -*-
 {
+    # Display name shown in Odoo Apps / Apps Menu
     'name': 'Inline Calculator',
-    'version': '19.0.1.0.1',
-    'category': 'Tools',
-    'summary': 'In-line Calculator for Numeric Fields',
-    'description': """
-Inline Calculator for Odoo 19
-==============================
 
-This module allows users to enter mathematical expressions directly into numeric input fields
-and have them automatically calculated and validated without errors.
+    # Short summary shown in Apps list
+    'summary': 'Type mathematical expressions directly into numeric fields',
+
+    # Detailed description (optional when using static/description/index.html)
+    'description': """
+Inline Calculator for Odoo 19 allows users to enter mathematical expressions
+directly into Float, Integer, and Monetary fields.
+
+Instead of using an external calculator, users can type formulas such as
+"15 * 1.1", "(100 + 50) / 2", or "250 - 15" directly into numeric fields.
+The expression is automatically evaluated when the field loses focus.
 
 Features:
-* Enter expressions like "15*1.1" directly into quantity or price fields
-* Automatic calculation and validation without red border errors
-* Supports basic arithmetic operations: +, -, *, /
-* Works with decimal numbers and parentheses
-* No need to use external calculator tools
-* Uses modern OWL framework for seamless integration
-
-Usage:
-1. Navigate to any form with numeric fields (quantity, price, etc.)
-2. Type a mathematical expression (e.g., "15*1.1" or "100+50*0.1")
-3. Press Tab or click outside the field
-4. The result will be automatically calculated and validated
-
-This feature is commonly found in professional accounting software and greatly
-improves data entry efficiency.
+- Supports Float, Integer and Monetary fields
+- Automatic expression evaluation
+- Supports +, -, *, / operators
+- Supports parentheses
+- Safe validation before evaluation
+- Falls back to the standard Odoo parser for invalid expressions
+- Lightweight OWL component patch
+- No server-side modifications required
     """,
-    'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
+
+    # Author information
+    'author': 'Dat Nguyen',
+    'website': 'https://www.datnguyen.dev',
+
+    # Module category
+    'category': 'Tools',
+
+    # Version format: OdooVersion.ModuleVersion
+    'version': '19.0.1.0.1',
+
+    # License for free module
     'license': 'LGPL-3',
-    'depends': ['base', 'web'],
+
+    # Dependencies
+    'depends': [
+        'base',
+        'web',
+    ],
+
+    # Data files
+    'data': [
+    ],
+
+    # App image
+    'images': [
+        'static/description/icon.png',
+    ],
+
+    # Static assets
     'assets': {
         'web.assets_backend': [
             'dn_inline_calculator/static/src/js/inline_calculator.js',
         ],
     },
+
+    # Demo data
+    'demo': [],
+
+    # Installation
     'installable': True,
-    'application': True,
+    'application': False,
     'auto_install': False,
 }

@@ -47,7 +47,7 @@ class SmartSearchConfig(models.Model):
             ("sale.order", "Sale Orders", "name,client_order_ref,partner_id", "partner_id"),
             ("purchase.order", "Purchase Orders", "name,partner_ref,partner_id", "partner_id"),
             ("account.move", "Invoices", "name,ref,invoice_origin", "partner_id"),
-            ("res.partner", "Contacts", "name,email,phone,mobile,ref", "email"),
+            ("res.partner", "Contacts", "name,email,phone,ref", "email"),
             ("stock.picking", "Transfers", "name,origin,partner_id", "partner_id"),
             ("project.task", "Tasks", "name,description,partner_id", "partner_id"),
             ("product.product", "Products", "default_code,name,barcode", "default_code"),
