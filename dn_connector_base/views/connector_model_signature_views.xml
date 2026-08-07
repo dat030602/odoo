@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Connector Model Signature Views -->
+    <record id="view_connector_model_signature_form" model="ir.ui.view">
+        <field name="name">connector.model.signature.form</field>
+        <field name="model">connector.model.signature</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="endpoint_id"/>
+                        <field name="target_model_name"/>
+                        <field name="parent_signature_id"/>
+                        <field name="json_path_key"/>
+                        <field name="use_custom_discovery"/>
+                        <field name="code" attrs="{'invisible': [('use_custom_discovery', '=', False)]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_connector_model_signature_list" model="ir.ui.view">
+        <field name="name">connector.model.signature.list</field>
+        <field name="model">connector.model.signature</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="endpoint_id"/>
+                <field name="target_model_name"/>
+                <field name="json_path_key"/>
+                <field name="use_custom_discovery"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_connector_model_signature_search" model="ir.ui.view">
+        <field name="name">connector.model.signature.search</field>
+        <field name="model">connector.model.signature</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="target_model_name"/>
+                <field name="endpoint_id"/>
+            </search>
+        </field>
+    </record>
+
+    <act_window id="action_connector_model_signature"
+        name="Model Signatures"
+        res_model="connector.model.signature"
+        view_mode="list,form"/>

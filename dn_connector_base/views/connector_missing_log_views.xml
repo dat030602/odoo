@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Connector Missing Log Views -->
+    <record id="view_connector_missing_log_list" model="ir.ui.view">
+        <field name="name">connector.missing.log.list</field>
+        <field name="model">connector.missing.log</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="create_date"/>
+                <field name="endpoint_id"/>
+                <field name="model_name"/>
+                <field name="field_names"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_connector_missing_log_form" model="ir.ui.view">
+        <field name="name">connector.missing.log.form</field>
+        <field name="model">connector.missing.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="endpoint_id"/>
+                        <field name="model_name"/>
+                        <field name="create_date"/>
+                    </group>
+                    <separator string="Missing Fields"/>
+                    <field name="field_names"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_connector_missing_log_search" model="ir.ui.view">
+        <field name="name">connector.missing.log.search</field>
+        <field name="model">connector.missing.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="endpoint_id"/>
+                <field name="model_name"/>
+            </search>
+        </field>
+    </record>
+
+    <act_window id="action_connector_missing_log"
+        name="Missing Field Logs"
+        res_model="connector.missing.log"
+        view_mode="list,form"
+        context="{'search_default_group_by': 'create_date'}"/>

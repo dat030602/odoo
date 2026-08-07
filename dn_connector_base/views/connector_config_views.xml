@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Connector Config Views -->
+    <record id="view_connector_config_form" model="ir.ui.view">
+        <field name="name">connector.config.form</field>
+        <field name="model">connector.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="base_url"/>
+                        <field name="auth_type"/>
+                        <field name="active"/>
+                        <field name="auto_create_schema"/>
+                    </group>
+                    <group>
+                        <field name="default_headers"/>
+                    </group>
+                    <separator string="Authentication Details"/>
+                    <group>
+                        <field name="token" attrs="{'invisible': [('auth_type', 'not in', ['bearer', 'api_key'])]}"/>
+                        <field name="api_key_header" attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"/>
+                        <field name="username" attrs="{'invisible': [('auth_type', '!=', 'basic')]}"/>
+                        <field name="password" attrs="{'invisible': [('auth_type', '!=', 'basic')]}"/>
+                        <field name="oauth_client_id" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
+                        <field name="oauth_client_secret" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
+                        <field name="oauth_token_url" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
+                        <field name="oauth_access_token" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
+                        <field name="oauth_refresh_token" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
+                        <field name="oauth_expires_at" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
+                    </group>
+                    <separator string="Endpoints"/>
+                    <field name="endpoint_ids" context="{'default_connector_id': active_id}" mode="list"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_connector_config_list" model="ir.ui.view">
+        <field name="name">connector.config.list</field>
+        <field name="model">connector.config</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="base_url"/>
+                <field name="auth_type"/>
+                <field name="active"/>
+                <field name="auto_create_schema"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_connector_config_search" model="ir.ui.view">
+        <field name="name">connector.config.search</field>
+        <field name="model">connector.config</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="auth_type"/>
+                <field name="active"/>
+            </search>
+        </field>
+    </record>
+
+    <act_window id="action_connector_config"
+        name="Connector Configurations"
+        res_model="connector.config"
+        view_mode="list,form"
+        context="{'search_default_active': 1}"/>

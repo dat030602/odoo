@@ -7,7 +7,7 @@
 ## 0. Cấu trúc module
 
 ```
-connector_base/
+dn_connector_base/
 ├── __manifest__.py
 ├── models/
 │   ├── connector_config.py          # Config kết nối (base_url, auth...)
@@ -456,10 +456,10 @@ class ConnectorSchemaBuilder(models.AbstractModel):
 ```python
     def _generate_views(self, model_cache):
         for model in model_cache.values():
-            self._generate_tree_view(model)
+            self._generate_list_view(model)
             self._generate_form_view(model)
 
-    def _generate_tree_view(self, model):
+    def _generate_list_view(self, model):
         fields_ = self.env["ir.model.fields"].sudo().search([
             ("model_id", "=", model.id), ("ttype", "!=", "one2many"),
         ])
@@ -467,8 +467,8 @@ class ConnectorSchemaBuilder(models.AbstractModel):
         for i, f in enumerate(fields_):
             optional = "show" if i < 5 else "hide"
             arch_fields.append(f'<field name="{f.name}" optional="{optional}"/>')
-        arch = f'<tree>{"".join(arch_fields)}</tree>'
-        self._create_or_update_view(model, "tree", arch)
+        arch = f'<list>{"".join(arch_fields)}</list>'
+        self._create_or_update_view(model, "list", arch)
 
     def _generate_form_view(self, model):
         own_fields = self.env["ir.model.fields"].sudo().search([
@@ -479,8 +479,8 @@ class ConnectorSchemaBuilder(models.AbstractModel):
         ])
         group_fields = "".join(f'<field name="{f.name}"/>' for f in own_fields)
         notebook_pages = "".join(
-            f'<page string="{f.field_description}"><field name="{f.name}"><tree editable="bottom">'
-            f'</tree></field></page>' for f in child_o2m
+            f'<page string="{f.field_description}"><field name="{f.name}"><list editable="bottom">'
+            f'</list></field></page>' for f in child_o2m
         )
         arch = f'<form><sheet><group>{group_fields}</group>' \
                f'<notebook>{notebook_pages}</notebook></sheet></form>'

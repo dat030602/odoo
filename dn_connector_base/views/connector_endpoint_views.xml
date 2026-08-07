@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Connector Endpoint Views -->
+    <record id="view_connector_endpoint_form" model="ir.ui.view">
+        <field name="name">connector.endpoint.form</field>
+        <field name="model">connector.endpoint</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="connector_id"/>
+                        <field name="name"/>
+                        <field name="method"/>
+                        <field name="path"/>
+                        <field name="target_json_path"/>
+                        <field name="root_model_id"/>
+                    </group>
+                    <separator string="Pagination"/>
+                    <group>
+                        <field name="pagination_type"/>
+                        <field name="pagination_param_page"/>
+                        <field name="pagination_param_limit"/>
+                        <field name="pagination_page_size"/>
+                        <field name="pagination_next_path"/>
+                    </group>
+                    <separator string="Custom Request Preparation"/>
+                    <group>
+                        <field name="use_custom_prepare_request"/>
+                        <field name="code" attrs="{'invisible': [('use_custom_prepare_request', '=', False)]}"/>
+                    </group>
+                    <div class="oe_button_box" name="button_box" string="Actions">
+                        <button name="button_sync" type="object" string="Sync Now"
+                            class="oe_highlight" attrs="{'invisible': [('use_custom_prepare_request', '=', True)]}"/>
+                        <button name="button_execute_from_record" type="object" string="Execute from Record"
+                            class="oe_highlight" attrs="{'invisible': [('use_custom_prepare_request', '=', False)]}"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_connector_endpoint_list" model="ir.ui.view">
+        <field name="name">connector.endpoint.list</field>
+        <field name="model">connector.endpoint</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="method"/>
+                <field name="path"/>
+                <field name="pagination_type"/>
+                <field name="use_custom_prepare_request"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_connector_endpoint_search" model="ir.ui.view">
+        <field name="name">connector.endpoint.search</field>
+        <field name="model">connector.endpoint</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="connector_id"/>
+                <field name="pagination_type"/>
+            </search>
+        </field>
+    </record>
+
+    <act_window id="action_connector_endpoint"
+        name="Connector Endpoints"
+        res_model="connector.endpoint"
+        view_mode="list,form"
+        domain="[('connector_id.active', '=', True)]"/>

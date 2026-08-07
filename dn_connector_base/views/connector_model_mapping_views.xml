@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Connector Model Mapping Views -->
+    <record id="view_connector_model_mapping_list" model="ir.ui.view">
+        <field name="name">connector.model.mapping.list</field>
+        <field name="model">connector.model.mapping</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="parent_signature_id"/>
+                <field name="json_path_key"/>
+                <field name="child_model_name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_connector_model_mapping_form" model="ir.ui.view">
+        <field name="name">connector.model.mapping.form</field>
+        <field name="model">connector.model.mapping</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="parent_signature_id"/>
+                        <field name="json_path_key"/>
+                        <field name="child_model_name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_connector_model_mapping"
+        name="Model Mappings"
+        res_model="connector.model.mapping"
+        view_mode="list,form"/>

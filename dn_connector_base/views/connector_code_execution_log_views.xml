@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Connector Code Execution Log Views -->
+    <record id="view_connector_code_execution_log_list" model="ir.ui.view">
+        <field name="name">connector.code.execution.log.list</field>
+        <field name="model">connector.code.execution.log</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="create_date"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="user_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_connector_code_execution_log_form" model="ir.ui.view">
+        <field name="name">connector.code.execution.log.form</field>
+        <field name="model">connector.code.execution.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="res_model"/>
+                        <field name="res_id"/>
+                        <field name="user_id"/>
+                        <field name="state"/>
+                        <field name="create_date"/>
+                    </group>
+                    <separator string="Code"/>
+                    <field name="code_snapshot"/>
+                    <separator string="Result / Error"/>
+                    <group>
+                        <field name="result_summary"/>
+                        <field name="error_message"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_connector_code_execution_log_search" model="ir.ui.view">
+        <field name="name">connector.code.execution.log.search</field>
+        <field name="model">connector.code.execution.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="res_model"/>
+                <field name="state"/>
+                <field name="user_id"/>
+            </search>
+        </field>
+    </record>
+
+    <act_window id="action_connector_code_execution_log"
+        name="Code Execution Logs"
+        res_model="connector.code.execution.log"
+        view_mode="list,form"
+        context="{'search_default_group_by': 'create_date'}"/>
