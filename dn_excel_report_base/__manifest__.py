@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Base Excel Report V2',
+    'name': 'Base Excel Report',
     'version': '19.0.2.0.0',
     'category': 'Technical',
     'summary': 'Template-based Excel report engine with Jinja-like syntax for Odoo.',
     'description': """
-Base Excel Report V2
+Base Excel Report
 ====================
 
 A modern, template-driven Excel report engine for Odoo that eliminates the need

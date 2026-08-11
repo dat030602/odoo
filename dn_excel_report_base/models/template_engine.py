@@ -302,6 +302,13 @@ class TemplateEngine:
             offset = copy_idx * body_height
             item_context = dict(context)
             item_context[block.var_name] = items[copy_idx]
+            item_context['loop'] = {
+                'index': copy_idx + 1,
+                'index0': copy_idx,
+                'first': copy_idx == 0,
+                'last': copy_idx == n - 1,
+                'length': n,
+            }
 
             # Process child if blocks within this copy (bottom-up to handle shifts)
             for child_block in reversed(block.children):
@@ -563,7 +570,16 @@ class TemplateEngine:
                     # to str so the marker doesn't contain b'...' repr
                     if isinstance(value, bytes):
                         value = value.decode('utf-8', errors='replace')
-                    return f'__IMAGE__:{value}'
+                    # Parse optional height/width params: image:height=100,width=200
+                    params = {}
+                    if arg:
+                        for pair in arg.split(','):
+                            k, _, v = pair.partition('=')
+                            params[k.strip()] = v.strip()
+                    marker = f'__IMAGE__:{value}'
+                    if params:
+                        marker += '|' + ','.join(f'{k}={v}' for k, v in params.items())
+                    return marker
             return '' if value is None else str(value)
 
         rendered = PLACEHOLDER_RE.sub(_sub, text)
@@ -646,8 +662,19 @@ class TemplateEngine:
                     continue
 
                 image_data = cell.value[len('__IMAGE__:'):]
+                # Parse optional params appended after |
+                params = {}
+                if '|' in image_data:
+                    image_data, _, param_str = image_data.partition('|')
+                    for pair in param_str.split(','):
+                        k, _, v = pair.partition('=')
+                        params[k.strip()] = v.strip()
+
                 img = self._load_image(image_data)
                 if img:
+                    # Apply optional resize
+                    if HAS_PIL and ('height' in params or 'width' in params):
+                        img = self._resize_image(img, params)
                     self.sheet.add_image(img, cell.coordinate)
                     cell.value = None
                     # Adjust cell dimensions to fit the image ("Place in Cell")
@@ -700,16 +727,67 @@ class TemplateEngine:
         img_width_px = img.width
         img_height_px = img.height
 
-        # Set row height (points) to match image height
-        # Default Excel font (Calibri 11) has ~15 pixels per row
-        # 1 point = 1/72 inch, 1 pixel ≈ 0.75 points
-        row_height_pt = img_height_px * 0.75
-        self.sheet.row_dimensions[row].height = row_height_pt
+        # Calculate desired dimensions from image
+        desired_row_height = img_height_px * 0.75
+        desired_col_width = img_width_px / 7.0
 
-        # Set column width (character units) to match image width
-        # Approximate: 1 character width ≈ 7 pixels for default font
-        col_width_chars = img_width_px / 7.0
-        self.sheet.column_dimensions[get_column_letter(col)].width = col_width_chars
+        # Only increase cell size if image is larger than current cell
+        # Get current row height (default ~15px ≈ 11.25pt if not set)
+        current_row_height = self.sheet.row_dimensions[row].height
+        if current_row_height is None:
+            current_row_height = 15 * 0.75  # default row height in points
+        if desired_row_height > current_row_height:
+            self.sheet.row_dimensions[row].height = desired_row_height
+
+        # Get current column width (default ~8.43 chars if not set)
+        col_letter = get_column_letter(col)
+        current_col_width = self.sheet.column_dimensions[col_letter].width
+        if current_col_width is None:
+            current_col_width = 8.43
+        if desired_col_width > current_col_width:
+            self.sheet.column_dimensions[col_letter].width = desired_col_width
+
+    def _resize_image(self, img, params: dict):
+        """Resize an openpyxl Image using PIL.
+
+        Args:
+            img: The openpyxl Image object.
+            params: Dict with optional 'height' and/or 'width' keys (in pixels).
+
+        Returns:
+            A new openpyxl Image object with adjusted dimensions.
+        """
+        if not HAS_PIL:
+            return img
+
+        target_w = int(params.get('width', 0)) or None
+        target_h = int(params.get('height', 0)) or None
+
+        if not target_w and not target_h:
+            return img
+
+        pil_img = PILImage.open(BytesIO(img._data()))
+        orig_w, orig_h = pil_img.size
+
+        if target_w and target_h:
+            new_w, new_h = target_w, target_h
+        elif target_w:
+            ratio = target_w / orig_w
+            new_w, new_h = target_w, int(orig_h * ratio)
+        else:
+            ratio = target_h / orig_h
+            new_w, new_h = int(orig_w * ratio), target_h
+
+        pil_img = pil_img.resize((new_w, new_h), PILImage.LANCZOS)
+
+        buf = BytesIO()
+        pil_img.save(buf, format=pil_img.format or 'PNG')
+        buf.seek(0)
+
+        new_img = OpenpyxlImage(buf)
+        new_img.width = new_w
+        new_img.height = new_h
+        return new_img
 
     # ------------------------------------------------------------------ #
     # 5.6  Path resolution

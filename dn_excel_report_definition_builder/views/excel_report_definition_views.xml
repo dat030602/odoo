@@ -1,0 +1,87 @@
+<odoo>
+    <record id="view_excel_report_definition_form" model="ir.ui.view">
+        <field name="name">excel.report.definition.form</field>
+        <field name="model">excel.report.definition</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary" invisible="state == 'confirmed'"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_open_server_action" class="oe_stat_button" icon="fa-cogs" invisible="not server_action_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Server Action</span>
+                            </div>
+                        </button>
+                        <button type="object" name="action_open_generated_view" class="oe_stat_button" icon="fa-eye" invisible="not generated_view_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">View</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <group>
+                        <field name="name"/>
+                        <field name="target_model_id" invisible="target_model_is_new" readonly="state == 'confirmed'"/>
+                        <field name="target_model_is_new" invisible="1"/>
+                    </group>
+
+                    <group string="New Model" invisible="target_model_id">
+                        <field name="new_model_name" readonly="state == 'confirmed'"/>
+                        <field name="new_model_technical_name" readonly="state == 'confirmed'"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Fields">
+                            <field name="field_ids" readonly="state == 'confirmed'">
+                                <list editable="bottom">
+                                    <field name="field_label"/>
+                                    <field name="field_technical_name"/>
+                                    <field name="field_type"/>
+                                    <field name="relation_model_id"/>
+                                    <field name="selection_value_text"/>
+                                    <field name="required"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Server Action">
+                            <group>
+                                <field name="server_action_id" domain="[('state', '=', 'excel_template')]"/>
+                                <field name="code"/>
+                            </group>
+                        </page>
+                        <page string="Trigger">
+                            <group>
+                                <field name="trigger_type"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_excel_report_definition_tree" model="ir.ui.view">
+        <field name="name">excel.report.definition.list</field>
+        <field name="model">excel.report.definition</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="target_model_id"/>
+                <field name="server_action_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_excel_report_definition" model="ir.actions.act_window">
+        <field name="name">Excel Report Definitions</field>
+        <field name="res_model">excel.report.definition</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_excel_report_definition_root" name="Excel Report Builder" parent="" sequence="100" groups="group_excel_report_builder" action="action_excel_report_definition"/>
+</odoo>

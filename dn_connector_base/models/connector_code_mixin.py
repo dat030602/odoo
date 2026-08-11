@@ -9,6 +9,24 @@ import logging
 import datetime
 import dateutil
 import json
+import ast
+import base64
+import requests
+import random
+import urllib
+import hashlib
+import hmac
+import re
+import io
+import xmlrpc.client
+import http.client
+import socket
+import sys
+import datetime
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.safe_eval import safe_eval
 
 from odoo import models, fields, _
 from odoo.exceptions import ValidationError
@@ -45,6 +63,8 @@ class ConnectorCodeMixin(models.AbstractModel):
             "context, log(msg), datetime, dateutil, json.\n"
             "Code MUST assign the variable `result` at the end."
         ),
+        default="""
+""",
     )
 
     def _get_eval_context(self, extra_context=None):
@@ -54,6 +74,13 @@ class ConnectorCodeMixin(models.AbstractModel):
         :return: A dictionary containing all available variables for code execution.
         """
         self.ensure_one()
+
+        def _dynamic_import(mod):
+            modules_list = sys.modules
+            if mod in modules_list:
+                return sys.modules[mod]
+            __import__(mod)
+            return sys.modules[mod]
         ctx = {
             "env": self.env,
             "record": self.env.context.get("active_record"),
@@ -62,11 +89,28 @@ class ConnectorCodeMixin(models.AbstractModel):
             "log": lambda msg: _logger.info(
                 "[connector.code][%s#%s] %s", self._name, self.id, msg
             ),
-            "datetime": datetime,
-            "dateutil": dateutil,
-            "json": json,
             "result": None,
+            '_import': _dynamic_import,
+            're': re,
+            'datetime': datetime,
+            'json': json,
+            'random': random,
+            'io': io,
+            'hashlib': hashlib,
+            'hmac': hmac,
+            'urllib': urllib,
+            'ast': ast,
+            'requests': requests,
+            'base64': base64,
+            'xmlrpc.client': xmlrpc.client,
+            'http.client': http.client,
+            'socket': socket,
+            'env': self.env,
+            'user': self.env.user,
+            "UserError": UserError,
+            "ValidationError": ValidationError,
         }
+        ctx.update(self._get_python_eval_context())
         if extra_context:
             ctx.update(extra_context)
         return ctx

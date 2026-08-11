@@ -28,10 +28,11 @@ Features:
     'category': 'Tools',
 
     # Version format: [Odoo version].[module version]
-    'version': '19.0.1.0.1',
+    'version': '19.0.1.0.0',
 
     # License (MUST be OPL-1 for paid apps)
     'license': 'OPL-1',
+
 
     # Dependencies (modules this module requires)
     'depends': [
