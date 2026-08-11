@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Server Action Form Extension
+        ============================
+        Adds the Excel Template field to the Server Action form view,
+        visible only when the action state is 'excel_template'.
+
+        Odoo 19 form views use the invisible/required string-expression
+        attribute syntax (not the old attrs="{...}" dict syntax from ≤16).
+    -->
+    <record id="view_server_action_form_excel" model="ir.ui.view">
+        <field name="name">ir.actions.server.form.excel.template</field>
+        <field name="model">ir.actions.server</field>
+        <field name="inherit_id" ref="base.view_server_action_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <group>
+                    <field name="excel_template_name"
+                        invisible="state != 'excel_template'"
+                        required="state == 'excel_template'"
+                    />
+                    <field name="excel_template_attachment"
+                       invisible="state != 'excel_template'"
+                       widget="file" options="{'no_open': True}"
+                    />
+                </group>
+            </xpath>
+            <xpath expr="//page[1]" position="attributes">
+                <attribute name="invisible">state not in ['excel_template', 'code']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="attributes">
+                <attribute name="invisible">state not in ['excel_template', 'code']</attribute>
+            </xpath>
+            <xpath expr="//button[@name='run']" position="attributes">
+                <attribute name="invisible">model_name != 'ir.actions.server' or state not in ['excel_template', 'code']</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

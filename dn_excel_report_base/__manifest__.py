@@ -1,45 +1,54 @@
 # -*- coding: utf-8 -*-
 {
-    'name'        : 'Base Excel Report',
-    'version'     : '19.0.1.0.0',
-    'category'    : 'Technical',
-    'summary'     : 'Base framework for template-based Excel report generation.',
-    'description' : """
-Base Excel Report Framework
-============================
+    'name': 'Base Excel Report V2',
+    'version': '19.0.2.0.0',
+    'category': 'Technical',
+    'summary': 'Template-based Excel report engine with Jinja-like syntax for Odoo.',
+    'description': """
+Base Excel Report V2
+====================
 
-Provides a reusable, inheritable pipeline for generating Excel reports
-from pre-designed templates stored as Odoo ir.attachment records.
+A modern, template-driven Excel report engine for Odoo that eliminates the need
+for hand-written row insertion and cell mapping code in child modules.
 
 Key Features:
 -------------
-* Template-based: Design reports visually in Excel, not in Python code.
-* Marker-driven: Uses <TABLE_START> cell marker to locate insertion point.
-* Placeholder replacement: {{KEY}} syntax for dynamic Header/Footer values.
-* Auto row insertion: Inserts the exact number of rows needed, preserving
-  all content above and below the table.
-* Style copy: Propagates font, border, fill, alignment from the template row
-  to all newly inserted rows (Normal Mode).
-* Auto-fit columns: Adjusts column widths based on actual data length.
-* Fast Mode: Skips heavy per-cell operations for datasets exceeding
-  the configured threshold, ensuring server stability at scale.
-* Fully inheritable: Child modules only override 3-4 hook methods.
+* Template-based: Design reports visually in Excel using Jinja-like syntax.
+* Jinja-like syntax: {% for %}, {% if %}, {{ placeholder }}, and filters.
+* Single hook: Child modules only implement _get_report_context() returning a dict.
+* No LibreOffice dependency: Pure openpyxl + simpleeval.
+* Aggregate filters: {{ lines | sum:'amount' }} generates live SUBTOTAL formulas.
+* Style preservation: Row styles are copied automatically during expansion.
+* Fast Mode: Skips heavy per-cell operations for large datasets.
+
+Template Syntax:
+---------------
+    {{ company.name }}              Value substitution (dot-path resolution)
+    {{ line.amount | fmt:'#,##0.00' }}  Number/date formatting
+    {% for line in lines %} ... {% endfor %}  Loop blocks
+    {% if line.amount > 1000 %} ... {% endif %}  Conditional blocks
+    {{ lines | sum:'amount' }}      =SUBTOTAL(9, ...) over expanded range
+    {{ lines | count:'amount' }}    =SUBTOTAL(2, ...)
+    {{ lines | avg:'amount' }}      =SUBTOTAL(1, ...)
+    {{ lines | max:'amount' }}      =SUBTOTAL(4, ...)
+    {{ lines | min:'amount' }}      =SUBTOTAL(5, ...)
 
 Dependencies:
 -------------
-    pip install openpyxl
-    """,
-    'author'   : 'Dat Nguyen',
-    'depends'  : ['base', 'web'],
-    'data'     : [
+    pip install openpyxl simpleeval
+""",
+    'author': 'Dat Nguyen',
+    'depends': ['base', 'web'],
+    'data': [
         'security/ir.model.access.csv',
         'views/base_excel_report_views.xml',
+        'views/ir_actions_server_views.xml',
     ],
     'external_dependencies': {
-        'python': ['openpyxl'],
+        'python': ['openpyxl', 'simpleeval', 'Pillow', 'requests'],
     },
-    'installable'  : True,
-    'application'  : False,
-    'auto_install' : False,
-    'license'      : 'LGPL-3',
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'license': 'LGPL-3',
 }
