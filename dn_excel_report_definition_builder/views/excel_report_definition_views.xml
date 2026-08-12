@@ -5,9 +5,10 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary" invisible="state == 'confirmed'"/>
-                    <button name="action_reset_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
-                    <field name="state" widget="statusbar"/>
+                    <button name="action_create_model" type="object" string="Create Model" class="btn-primary" invisible="can_create_new_model == False"/>
+                    <button name="action_create_fields" type="object" string="Create Fields" class="btn-primary" invisible="can_create_new_fields == False"/>
+                    <button name="action_generate_view" type="object" string="Generate View" class="btn-primary" invisible="not target_model_id"/>
+                    <button name="action_setup_trigger" type="object" string="Setup Trigger" class="btn-primary" invisible="not target_model_id or not server_action_id"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -25,38 +26,38 @@
 
                     <group>
                         <field name="name"/>
-                        <field name="target_model_id" invisible="target_model_is_new" readonly="state == 'confirmed'"/>
+                        <field name="target_model_id" invisible="target_model_is_new" readonly="1"/>
                         <field name="target_model_is_new" invisible="1"/>
                     </group>
 
                     <group string="New Model" invisible="target_model_id">
-                        <field name="new_model_name" readonly="state == 'confirmed'"/>
-                        <field name="new_model_technical_name" readonly="state == 'confirmed'"/>
+                        <field name="new_model_name" readonly="target_model_id"/>
+                        <field name="new_model_technical_name" readonly="target_model_id"/>
+                    </group>
+                    
+                    <group string="Trigger">
+                        <field name="trigger_type"/>
                     </group>
 
                     <notebook>
-                        <page string="Fields">
-                            <field name="field_ids" readonly="state == 'confirmed'">
-                                <list editable="bottom">
-                                    <field name="field_label"/>
-                                    <field name="field_technical_name"/>
-                                    <field name="field_type"/>
-                                    <field name="relation_model_id"/>
-                                    <field name="selection_value_text"/>
-                                    <field name="required"/>
-                                </list>
-                            </field>
-                        </page>
                         <page string="Server Action">
                             <group>
                                 <field name="server_action_id" domain="[('state', '=', 'excel_template')]"/>
-                                <field name="code"/>
+                                <field name="code" widget="code" options="{'mode': 'python'}" />
                             </group>
                         </page>
-                        <page string="Trigger">
-                            <group>
-                                <field name="trigger_type"/>
-                            </group>
+                        <page string="Fields">
+                            <field name="field_ids" readonly="not target_model_id">
+                                <list editable="bottom">
+                                    <field name="field_label" readonly="field_id"/>
+                                    <field name="field_technical_name" readonly="field_id"/>
+                                    <field name="field_type" readonly="field_id"/>
+                                    <field name="relation_model_id" readonly="1"/>
+                                    <field name="selection_value_text" readonly="field_id"/>
+                                    <field name="required" readonly="field_id"/>
+                                    <field name="field_id" readonly="1"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
@@ -72,7 +73,6 @@
                 <field name="name"/>
                 <field name="target_model_id"/>
                 <field name="server_action_id"/>
-                <field name="state"/>
             </list>
         </field>
     </record>
@@ -83,5 +83,5 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_excel_report_definition_root" name="Excel Report Builder" parent="" sequence="100" groups="group_excel_report_builder" action="action_excel_report_definition"/>
+    <menuitem id="menu_excel_report_definition_root" name="Excel Report Builder" sequence="100" groups="group_excel_report_builder,base.group_system" action="action_excel_report_definition"/>
 </odoo>

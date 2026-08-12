@@ -7,7 +7,6 @@
     'author': 'Dat Nguyen',
     'depends': ['dn_excel_report_base'],
     'data': [
-        'security/excel_report_security.xml',
         'security/ir.model.access.csv',
         'views/excel_report_definition_views.xml',
     ],

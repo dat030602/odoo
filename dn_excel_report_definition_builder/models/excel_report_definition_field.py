@@ -1,4 +1,5 @@
 from odoo import fields, models
+from odoo.exceptions import ValidationError
 
 
 class ExcelReportDefinitionField(models.Model):
@@ -35,3 +36,15 @@ class ExcelReportDefinitionField(models.Model):
         help='One value per line as key:Label.',
     )
     required = fields.Boolean()
+    field_id = fields.Many2one(
+        'ir.model.fields',
+        string='Field',
+        help='The field in the target model that this definition field corresponds to.',
+    )
+
+    def unlink(self):
+        for record in self:
+            if record.field_id:
+                msg = "Cannot delete a field that is linked to an existing model field."
+                raise ValidationError(msg)
+        return super().unlink()
