@@ -41,7 +41,6 @@ class ExcelReportDefinition(models.Model):
     )
     code = fields.Text(
         related='server_action_id.code',
-        readonly=False,
         help='Edit the linked server action code directly.',
     )
 
@@ -52,18 +51,37 @@ class ExcelReportDefinition(models.Model):
     )
     menu_id = fields.Many2one('ir.ui.menu', readonly=True, copy=False)
     generated_view_id = fields.Many2one('ir.ui.view', readonly=True, copy=False)
-
-    state = fields.Selection(
-        [('draft', 'Draft'), ('confirmed', 'Confirmed')],
-        default='draft',
-        required=True,
-        copy=False,
+    
+    can_create_new_model = fields.Boolean(
+        compute='_compute_can_create_new_model',
+        help='Indicates whether the user can create a new model.',
     )
+
+    @api.depends('target_model_id')
+    def _compute_can_create_new_model(self):
+        for record in self:
+            record.can_create_new_model = not record.target_model_id and self.env.user.has_group('base.group_system')
+    
+    can_create_new_fields = fields.Boolean(
+        compute='_compute_can_create_new_fields',
+        help='Indicates whether the user can create new fields on the target model.',
+    )
+
+    @api.depends('target_model_id', 'field_ids.field_id')
+    def _compute_can_create_new_fields(self):
+        for record in self:
+            access_model = self.env['ir.model'].check_access_rights('write', raise_exception=False)
+            access_field = self.env['ir.model.fields'].check_access_rights('create', raise_exception=False)
+            if not record.target_model_id or not access_model or not access_field:
+                record.can_create_new_fields = False
+                continue
+            if len([field for field in record.field_ids if not field.field_id]) > 0:
+                record.can_create_new_fields = True
 
     @api.depends('target_model_id')
     def _compute_target_model_is_new(self):
         for record in self:
-            if record.target_model_id and record.state == 'confirmed':
+            if record.target_model_id:
                 record.target_model_is_new = True
             else:
                 record.target_model_is_new = False
@@ -75,25 +93,32 @@ class ExcelReportDefinition(models.Model):
                 raise ValidationError(_(
                     'Select an existing model or provide the technical name for a new one.'
                 ))
-
-    def action_confirm(self):
+    
+    def action_create_model(self):
         self.ensure_one()
-        if self.state == 'confirmed':
-            return
-        if not self.server_action_id:
-            raise UserError(_('Please select or create a server action before confirming.'))
-        if not self.env.user.has_group('base.group_system'):
-            raise UserError(_('This action requires System Administrator privileges.'))
-
+        if not self.can_create_new_model:
+            raise UserError(_('You do not have permission to create a new model.'))
         self._ensure_target_model()
-        self._create_fields()
-        self._maybe_generate_view()
-        self._setup_trigger()
-        self.state = 'confirmed'
 
-    def action_reset_draft(self):
+    def action_create_fields(self):
         self.ensure_one()
-        self.state = 'draft'
+        if not self.can_create_new_fields:
+            raise UserError(_('You do not have permission to create new fields.'))
+        self._create_fields()
+    
+    def action_generate_view(self):
+        self.ensure_one()
+        if not self.target_model_id:
+            raise UserError(_('Please create or select a target model first.'))
+        self._maybe_generate_view()
+    
+    def action_setup_trigger(self):
+        self.ensure_one()
+        if not self.target_model_id:
+            raise UserError(_('Please create or select a target model first.'))
+        if not self.server_action_id:
+            raise UserError(_('Please select or create a server action first.'))
+        self._setup_trigger()
 
     def action_open_server_action(self):
         self.ensure_one()
@@ -180,7 +205,8 @@ class ExcelReportDefinition(models.Model):
             if line.field_type == 'selection':
                 vals['selection'] = line.selection_value_text or '[]'
 
-            Fields.create(vals)
+            field = Fields.create(vals)
+            line.field_id = field.id
 
         self.env.flush_all()
         self.env.registry.setup_models(self.env.cr)
@@ -228,7 +254,7 @@ class ExcelReportDefinition(models.Model):
             self.server_action_id.sudo().write({
                 'binding_model_id': self.target_model_id.id,
                 'binding_type': 'action',
-                'binding_view_types': 'list,form',
+                'binding_view_types': 'list',
             })
 
     def _normalize_field_name(self, value):
@@ -238,3 +264,9 @@ class ExcelReportDefinition(models.Model):
         if not technical_name.startswith('x_'):
             technical_name = 'x_' + technical_name
         return technical_name
+
+    def unlink(self):
+        for record in self:
+            if record.state == 'confirmed':
+                raise UserError(_('Cannot delete a confirmed report definition.'))
+        return super().unlink()
