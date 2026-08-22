@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_sale_advance_payment_inv_inherit" model="ir.ui.view">
+        <field name="name">sale.advance.payment.inv.inherit</field>
+        <field name="model">sale.advance.payment.inv</field>
+        <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+        <field name="arch" type="xml">
+            <xpath expr="//footer" position="before">
+                <field name="custom_line_ids" invisible="advance_payment_method != 'select_lines'">
+                    <list editable="bottom" create="0">
+                        <field name="is_select" />
+                        <field name="sale_line_id" column_invisible="1"/>
+                        <field name="sequence" column_invisible="1"/>
+                        <field name="product_id" optional="show"/>
+                        <field name="qty_to_invoice" optional="show"/>
+                        <field name="price_unit" optional="show" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="tax_ids" optional="show" widget="many2many_tags"/>
+                        <field name="price_tax" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="price_subtotal" optional="show"/>
+                        <field name="price_total" optional="hide"/>
+                        <field name="currency_id" column_invisible="1"/>
+                    </list>
+                </field>
+            </xpath>
+        </field>
+    </record>
+</odoo>
