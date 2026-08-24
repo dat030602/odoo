@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Schema (Model & Fields) List and Form Views -->
+    <record id="view_meta_blueprint_schema_list" model="ir.ui.view">
+        <field name="name">meta.blueprint.schema.list</field>
+        <field name="model">meta.blueprint.schema</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="item_type" widget="badge"
+                       decoration-success="item_type == 'model'"
+                       decoration-info="item_type == 'field'"/>
+                <field name="model_name"/>
+                <field name="name"/>
+                <field name="label"/>
+                <field name="ttype"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_meta_blueprint_schema_form" model="ir.ui.view">
+        <field name="name">meta.blueprint.schema.form</field>
+        <field name="model">meta.blueprint.schema</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="item_type" widget="radio"/>
+                            <field name="model_name" string="Target Model"/>
+                            <field name="label" string="Human Label"/>
+
+                            <!-- Model-specific fields -->
+                            <field name="is_transient" invisible="item_type != 'model'"/>
+
+                            <!-- Field-specific fields -->
+                            <field name="name" string="Field Technical Name"
+                                   invisible="item_type == 'model'"
+                                   required="item_type == 'field'"/>
+                            <field name="ttype"
+                                   invisible="item_type == 'model'"
+                                   required="item_type == 'field'"/>
+                        </group>
+                        <group invisible="item_type == 'model'">
+                            <field name="relation"
+                                   invisible="ttype not in ('many2one','one2many','many2many')"/>
+                            <field name="relation_field" invisible="ttype != 'one2many'"/>
+                            <field name="related"/>
+                            <field name="store"/>
+                        </group>
+                    </group>
+                    <group invisible="item_type == 'model'">
+                        <field name="depends" placeholder="e.g. x_qty, x_price"/>
+                        <field name="compute" widget="ace" options="{'mode': 'python'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

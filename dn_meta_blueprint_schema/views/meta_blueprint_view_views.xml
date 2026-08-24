@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- View List and Form Views -->
+    <record id="view_meta_blueprint_view_list" model="ir.ui.view">
+        <field name="name">meta.blueprint.view.list</field>
+        <field name="model">meta.blueprint.view</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="xmlid"/>
+                <field name="name"/>
+                <field name="model_name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_meta_blueprint_view_form" model="ir.ui.view">
+        <field name="name">meta.blueprint.view.form</field>
+        <field name="model">meta.blueprint.view</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="xmlid"/>
+                        <field name="name"/>
+                        <field name="model_name"/>
+                        <field name="arch_resolve"
+                               placeholder="{'action_id': 'module.action_xmlid'}"/>
+                    </group>
+                    <field name="arch" widget="ace" options="{'mode': 'xml'}"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Blueprint Form View -->
+    <record id="view_meta_blueprint_form" model="ir.ui.view">
+        <field name="name">meta.blueprint.form</field>
+        <field name="model">meta.blueprint</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_build" type="object" string="EXECUTE BUILD" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Blueprint Name..."/></h1>
+                    </div>
+
+                    <!-- Deployment Configuration -->
+                    <group>
+                        <group>
+                            <field name="deploy_target" widget="radio"/>
+                        </group>
+                        <group invisible="deploy_target == 'local'">
+                            <field name="remote_url" required="deploy_target == 'remote'"/>
+                            <field name="remote_db" required="deploy_target == 'remote'"/>
+                            <field name="remote_user" required="deploy_target == 'remote'"/>
+                            <field name="remote_password" password="True" required="deploy_target == 'remote'"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- Main Tab: Schema (Models & Fields) -->
+                        <page string="Schema (Models &amp; Fields)">
+                            <field name="schema_ids">
+                                <list>
+                                    <!-- Handle widget for drag-and-drop reordering -->
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="item_type" widget="badge"
+                                           decoration-success="item_type == 'model'"
+                                           decoration-info="item_type == 'field'"/>
+                                    <field name="model_name"/>
+                                    <field name="name" placeholder="Field Name..."/>
+                                    <field name="label"/>
+                                    <field name="ttype"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="item_type" widget="radio"/>
+                                            <field name="model_name" string="Target Model"/>
+                                            <field name="label" string="Human Label"/>
+
+                                            <!-- Model-specific fields -->
+                                            <field name="is_transient" invisible="item_type != 'model'"/>
+
+                                            <!-- Field-specific fields -->
+                                            <field name="name" string="Field Technical Name"
+                                                   invisible="item_type == 'model'"
+                                                   required="item_type == 'field'"/>
+                                            <field name="ttype"
+                                                   invisible="item_type == 'model'"
+                                                   required="item_type == 'field'"/>
+                                        </group>
+                                        <group invisible="item_type == 'model'">
+                                            <field name="relation"
+                                                   invisible="ttype not in ('many2one','one2many','many2many')"/>
+                                            <field name="relation_field" invisible="ttype != 'one2many'"/>
+                                            <field name="related"/>
+                                            <field name="store"/>
+                                        </group>
+                                    </group>
+                                    <group invisible="item_type == 'model'">
+                                        <field name="depends" placeholder="e.g. x_qty, x_price"/>
+                                        <field name="compute" widget="ace" options="{'mode': 'python'}"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!-- Tab: Server Actions -->
+                        <page string="Server Actions">
+                            <field name="action_ids">
+                                <list>
+                                    <field name="xmlid"/>
+                                    <field name="name"/>
+                                    <field name="model_name"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="xmlid"/>
+                                        <field name="name"/>
+                                        <field name="model_name"/>
+                                        <field name="binding_model_name"/>
+                                        <field name="state" invisible="1"/>
+                                    </group>
+                                    <field name="code" widget="ace" options="{'mode': 'python'}"/>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!-- Tab: Views (UI) -->
+                        <page string="Views (UI)">
+                            <field name="view_ids">
+                                <list>
+                                    <field name="xmlid"/>
+                                    <field name="name"/>
+                                    <field name="model_name"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="xmlid"/>
+                                        <field name="name"/>
+                                        <field name="model_name"/>
+                                        <field name="arch_resolve"
+                                               placeholder="{'action_id': 'module.action_xmlid'}"/>
+                                    </group>
+                                    <field name="arch" widget="ace" options="{'mode': 'xml'}"/>
+                                </form>
+                            </field>
+                        </page>
+
+                        <!-- Tab: Access Rights -->
+                        <page string="Access Rights">
+                            <field name="access_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="model_name"/>
+                                    <field name="group_xmlid"/>
+                                    <field name="perm_read"/>
+                                    <field name="perm_write"/>
+                                    <field name="perm_create"/>
+                                    <field name="perm_unlink"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Blueprint List View -->
+    <record id="view_meta_blueprint_list" model="ir.ui.view">
+        <field name="name">meta.blueprint.list</field>
+        <field name="model">meta.blueprint</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action Menu -->
+    <record id="action_meta_blueprint" model="ir.actions.act_window">
+        <field name="name">Meta Builders</field>
+        <field name="res_model">meta.blueprint</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_meta_builder_root" name="Meta Builder" sequence="100"/>
+    <menuitem id="menu_meta_builder_blueprints" name="Blueprints"
+              parent="menu_meta_builder_root"
+              action="action_meta_blueprint"/>
+</odoo>

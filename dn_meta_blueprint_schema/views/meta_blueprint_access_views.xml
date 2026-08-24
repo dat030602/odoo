@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Access List and Form Views -->
+    <record id="view_meta_blueprint_access_list" model="ir.ui.view">
+        <field name="name">meta.blueprint.access.list</field>
+        <field name="model">meta.blueprint.access</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="model_name"/>
+                <field name="group_xmlid"/>
+                <field name="perm_read"/>
+                <field name="perm_write"/>
+                <field name="perm_create"/>
+                <field name="perm_unlink"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_meta_blueprint_access_form" model="ir.ui.view">
+        <field name="name">meta.blueprint.access.form</field>
+        <field name="model">meta.blueprint.access</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="model_name"/>
+                        <field name="group_xmlid"/>
+                        <field name="perm_read"/>
+                        <field name="perm_write"/>
+                        <field name="perm_create"/>
+                        <field name="perm_unlink"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
