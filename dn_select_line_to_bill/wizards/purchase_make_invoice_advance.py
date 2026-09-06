@@ -14,7 +14,7 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
             ('delivered', "Regular invoice"),
             ('percentage', "Down payment (percentage)"),
             ('fixed', "Down payment (fixed amount)"),
-            ('select_lines', "Select lines to bill (Custom)"),
+            ('select_lines', "Select lines to bill"),
         ],
         string="Create Bill",
         default='delivered',
@@ -54,11 +54,9 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
     display_draft_invoice_warning = fields.Boolean(compute="_compute_display_draft_invoice_warning")
     
     # Custom Lines for "Select Lines"
-    custom_line_ids = fields.One2many(
-        'purchase.advance.payment.inv.line', 'wizard_id', string="Custom Line Details"
-    )
+    custom_line_ids = fields.One2many('purchase.advance.payment.inv.line', 'wizard_id', string="Custom Line Details")
 
-    #=== COMPUTE METHODS ===#
+    # === COMPUTE METHODS === #
 
     @api.depends('purchase_order_ids')
     def _compute_count(self):
@@ -97,18 +95,19 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
         for wizard in self:
             wizard.amount_invoiced = sum(wizard.purchase_order_ids._origin.mapped('amount_invoiced'))
 
-    #=== ONCHANGE METHODS ===#
+    # === ONCHANGE METHODS ===#
 
     @api.onchange('advance_payment_method')
     def _onchange_advance_payment_method(self):
         if self.advance_payment_method == 'percentage':
             amount = self.default_get(['amount']).get('amount')
-            return {'value': {'amount': amount}}
+            self.amount = amount if amount else 0.0
             
         if self.advance_payment_method == 'select_lines' and self.purchase_order_ids:
             lines = []
             for order in self.purchase_order_ids:
-                for line in order.order_line.filtered(lambda l: not l.display_type and l.qty_to_invoice > 0):
+                order_line = order.order_line.filtered(lambda m: not m.display_type and m.qty_to_invoice > 0)
+                for line in order_line:
                     lines.append((0, 0, {
                         'purchase_line_id': line.id,
                         'qty_to_invoice': line.qty_to_invoice,
@@ -117,16 +116,16 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
         else:
             self.custom_line_ids = False
 
-    #=== CONSTRAINT METHODS ===#
+    # === CONSTRAINT METHODS === #
 
     def _check_amount_is_positive(self):
         for wizard in self:
             if wizard.advance_payment_method == 'percentage' and wizard.amount <= 0.00:
                 raise UserError(_('The value of the down payment amount must be positive.'))
-            elif wizard.advance_payment_method == 'fixed' and wizard.fixed_amount <= 0.00:
+            if wizard.advance_payment_method == 'fixed' and wizard.fixed_amount <= 0.00:
                 raise UserError(_('The value of the down payment amount must be positive.'))
 
-    #=== ACTION METHODS ===#
+    # === ACTION METHODS === #
 
     def create_invoices(self):
         self._check_amount_is_positive()
@@ -143,7 +142,7 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
             'domain': [('line_ids.purchase_line_id.order_id', 'in', self.purchase_order_ids.ids), ('state', '=', 'draft')],
         }
 
-    #=== BUSINESS METHODS ===#
+    # === BUSINESS METHODS === #
 
     def _create_invoices(self, purchase_orders):
         self.ensure_one()
@@ -159,7 +158,7 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
                 move_vals = order._prepare_invoice()
                 move_vals['invoice_line_ids'] = []
                 
-                order_selected_lines = selected_lines.filtered(lambda l: l.purchase_line_id.order_id.id == order.id)
+                order_selected_lines = selected_lines.filtered(lambda m: m.purchase_line_id.order_id == order)
                 for wiz_line in order_selected_lines:
                     if wiz_line.qty_to_invoice > 0:
                         line_vals = wiz_line.purchase_line_id._prepare_account_move_line()
@@ -224,7 +223,7 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
             invoice_sudo = self.env['account.move'].sudo().create(invoice_values)
 
             invoice = invoice_sudo.sudo(self.env.su)
-            poster = self.env.user._is_internal() and self.env.user.id or SUPERUSER_ID
+            poster = (self.env.user._is_internal() and self.env.user.id) or SUPERUSER_ID
             invoice.with_user(poster).message_post_with_source(
                 'mail.message_origin_link',
                 render_values={'self': invoice, 'origin': order},
@@ -275,4 +274,3 @@ class PurchaseAdvancePaymentInv(models.TransientModel):
             fiscal_pos=self.purchase_order_ids.fiscal_position_id
         )
         return product_account.get('expense')
-

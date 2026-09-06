@@ -12,7 +12,7 @@ class PurchaseAdvancePaymentInvLine(models.TransientModel):
     purchase_line_id = fields.Many2one('purchase.order.line', string="PO line", required=True)
     product_id = fields.Many2one(related='purchase_line_id.product_id', string="Product", readonly=True)
     max_qty = fields.Float(related='purchase_line_id.qty_to_invoice', string="Max Qty", readonly=True)
-    qty_to_invoice = fields.Float(string="Quantity", required=True)
+    qty_to_invoice = fields.Float(string="Quantity", required=True, digits='Product Unit', default=0.0)
     price_unit = fields.Float(related='purchase_line_id.price_unit', string="Unit Price", readonly=True)
     price_subtotal = fields.Float(string="Subtotal", readonly=True)
     price_total = fields.Float(string="Total", readonly=True)

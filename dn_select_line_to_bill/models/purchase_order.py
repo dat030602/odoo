@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, Command, _
-from odoo.exceptions import UserError
 
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
@@ -13,9 +12,9 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     amount_invoiced = fields.Monetary(
-        string="Amount Invoiced", 
+        string="Amount Invoiced",
         compute='_compute_amount_invoiced',
-        help="Sum of invoiced amounts."
+        help="Sum of invoiced amounts.",
     )
 
     @api.depends('invoice_ids.state', 'invoice_ids.amount_total')
@@ -34,14 +33,14 @@ class PurchaseOrder(models.Model):
             'target': 'new',
             'context': {
                 'default_purchase_order_ids': [Command.set(self.ids)],
-            }
+            },
         }
 
     # === DOWN PAYMENT HELPER METHODS (Mimicking Sale Order Core 19) === #
 
     def _create_down_payment_section_line_if_needed(self):
         self.ensure_one()
-        if not self.order_line.filtered(lambda l: l.display_type == 'line_section' and l.name == _('Down Payments')):
+        if not self.order_line.filtered(lambda m: m.display_type == 'line_section' and m.name == _('Down Payments')):
             self.env['purchase.order.line'].create({
                 'order_id': self.id,
                 'display_type': 'line_section',
@@ -61,4 +60,3 @@ class PurchaseOrder(models.Model):
                 'is_downpayment': True,
             })
         return po_lines
-
