@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="fal_vprocess_tree_view" model="ir.ui.view">
+        <field name="active" eval="True" />
+        <field name="mode">primary</field>
+        <field name="name">fal_vprocess.tree</field>
+        <field name="model">fal.vprocess</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <list string="fal.vprocess">
+                <field name="name" />
+                <field name="model_id" />
+                <field name="trigger_id" optional="hide"/>
+                <field name="trigger_domain" optional="show"/>
+                <field name="filter_id" optional="hide"/>
+                <field name="filter_domain" optional="show"/>
+                <field name="disable_edit" optional="hide"/>
+                <field name="allow_restart_after_approved" optional="hide"/>
+                <field name="allow_restart_after_cancelled" optional="hide"/>
+                <field name="log_message_to_object" optional="hide"/>
+                <field name="process_activity_type_id" />
+                <field name="count_step" optional="hide"/>
+                <field name="count_rule" optional="hide"/>
+            </list>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="fal_vprocess_form_view">
+        <field name="mode">primary</field>
+        <field name="name">fal_vprocess.form</field>
+        <field name="model">fal.vprocess</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="fal.vprocess">
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" invisible="active == True" />
+                    <div name="button_box" class="oe_button_box" role="group">
+                        <field name="count_rule" invisible="1" />
+                        <field name="count_step" invisible="1" />
+                        <button name="action_vprocess_step" type="object" string="Steps" icon="fa-list" invisible="count_step == 0" />
+                        <button name="action_vprocess_rule" type="object" string="Rules" icon="fa-cog" invisible="count_rule == 0" />
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1" />
+                        </h1>
+                    </div>
+                    <group name="main_group">
+                        <group name="group_left">
+                            <field name="model_id" />
+                            <field name="trigger_id" domain="[('model_id', '=', model_name)]"
+                                context="{'default_model_id': model_name}" />
+                            <field name="filter_id" domain="[('model_id', '=', model_name)]"
+                                context="{'default_model_id': model_name}" />
+                            <field name="model_name" />
+                            <field name="trigger_domain" />
+                            <field name="filter_domain" />
+                        </group>
+
+                        <group name="group_right">
+                            <field name="disable_edit"/>
+                            <field name="allow_restart_after_approved" />
+                            <field name="allow_restart_after_cancelled" />
+                            <field name="log_message_to_object" />
+                            <field name="process_activity_type_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="steps" string="Steps">
+                            <field name="step_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+    <record id="fal_vprocess_search_view" model="ir.ui.view">
+        <field name="active" eval="True" />
+        <field name="mode">primary</field>
+        <field name="name">fal_vprocess.search</field>
+        <field name="model">fal.vprocess</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <search string="fal.vprocess">
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="trigger_id"/>
+                <field name="filter_id"/>
+                <separator/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]" />
+            </search>
+        </field>
+    </record>
+
+    <menuitem name="Validation Process" id="menu_validation_process"
+        web_icon="fa fa-sitemap,#f1c40f,#34495e" />
+
+    <record id="action_validation_process" model="ir.actions.act_window">
+        <field name="name">Validation Process</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fal.vprocess</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_validation_process_vprocess" name="Validation Process"
+        parent="menu_validation_process" action="action_validation_process" />
+</odoo>

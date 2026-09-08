@@ -1,0 +1,18 @@
+<odoo>
+  <record id="ir_cron_monthly_snapshot" model="ir.cron">
+    <field name="name">Stock: Monthly Snapshot</field>
+    <field name="model_id" ref="model_stock_snapshot"/>
+    <field name="state">code</field>
+    <field name="code">
+import calendar
+today = datetime.date.today()
+last_day = calendar.monthrange(today.year, today.month)[1]
+if today.day == last_day:
+    model.run_monthly_snapshot()
+    </field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="numbercall">-1</field>
+    <field name="active">True</field>
+  </record>
+</odoo>

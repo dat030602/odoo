@@ -1,0 +1,400 @@
+/* =========================================================================
+ * Office Approval Process — action bar theme
+ * -------------------------------------------------------------------------
+ * Cau truc DOM/JS/QWeb GIU NGUYEN khong doi:
+ *   #validationProcess_processActionBar
+ *     button.validationProcess_actionBtn[data-vp-action="confirm|back|restart|cancel|pending|approved|cancelled"]
+ *       i.o_button_icon.validationProcess_{green|black|red|orange}
+ *       .o_stat_info > .o_stat_text (title) + .o_stat_text.small (subtitle)
+ *   body.validationProcess_lock_edit                       -> khoa field form
+ *   body.validationProcess_lock_actions                      -> khoa action menu
+ *   body.validationProcess_checking                    -> dang cho RPC dau tien
+ *
+ * File nay CHI doi CSS. Khong can sua Python/JS/QWeb.
+ * Muc tieu: nhin giong 1 phan tu NATIVE cua Odoo (cung chieu cao/canh le
+ * voi cac oe_stat_button khac), dung mau ngu nghia Bootstrap cua chinh
+ * Odoo (tu dong dung theme sang/toi cua Odoo, khong doan qua
+ * prefers-color-scheme cua he dieu hanh), va sua vai loi pham vi selector
+ * qua rong cua ban cu (anh huong ca nhung form khong lien quan).
+ * ======================================================================= */
+
+/* -------------------------------------------------------------------------
+ * 1) Design tokens — lay tu bien Bootstrap 5 co san trong web client Odoo.
+ *    Neu Odoo doi theme (light/dark, hoac theme cua Enterprise), cac nut
+ *    tu dong doi mau theo, khong can media query rieng.
+ *    Fallback hex chi dung khi bien Bootstrap khong ton tai (vd xem file
+ *    o ngoai Odoo).
+ * ---------------------------------------------------------------------- */
+#validationProcess_processActionBar {
+    --vp-radius: var(--border-radius, 6px);
+    --vp-border: var(--bs-border-color, #d8dee3);
+    --vp-surface: var(--bs-body-bg, #ffffff);
+    --vp-surface-muted: var(--bs-tertiary-bg, #f4f6f8);
+    --vp-text: var(--bs-body-color, #2b3338);
+    --vp-text-muted: var(--bs-secondary-color, #6c757d);
+
+    --vp-confirm: var(--bs-success, #17a34a);
+    --vp-confirm-bg: color-mix(in srgb, var(--vp-confirm) 12%, transparent);
+    --vp-back: var(--bs-info, #2f8fb0);
+    --vp-back-bg: color-mix(in srgb, var(--vp-back) 12%, transparent);
+    --vp-cancel: var(--bs-danger, #d9534f);
+    --vp-cancel-bg: color-mix(in srgb, var(--vp-cancel) 12%, transparent);
+    --vp-pending: var(--bs-warning, #d98e04);
+    --vp-pending-bg: color-mix(in srgb, var(--vp-pending) 16%, transparent);
+    --vp-neutral: var(--bs-secondary, #6c757d);
+}
+
+/* -------------------------------------------------------------------------
+ * 2) Sua pham vi anh huong toan cuc cua ban cu.
+ *    Truoc day `.oe_button_box { height:44px; overflow-y:hidden }` va
+ *    `.o_stat_text i.fa { color:green }` la selector TRAN, ap dung cho
+ *    MOI form/stat-button trong Odoo (khong lien quan module nay).
+ *    Dung :has() de chi ap dung cho dung button-box dang chua thanh nut
+ *    cua module, khong dong cham cac form khac. Khong can sua JS: JS van
+ *    tim/tao `.oe_button_box` binh thuong, CSS chi "nhin vao trong" no.
+ * ---------------------------------------------------------------------- */
+.oe_button_box:has(#validationProcess_processActionBar) {
+    height: 44px;
+    overflow-y: hidden;
+}
+
+#validationProcess_processActionBar .o_stat_text i.fa {
+    margin-right: 3px;
+    margin-top: 2px;
+}
+
+/* Cac class mau/nen dung chung (giu nguyen ten class cu de khong phai sua
+   QWeb), nhung gia tri mau gio tro toi token o Muc 1. */
+.validationProcess_green { color: var(--vp-confirm); }
+.validationProcess_red { color: var(--vp-cancel); }
+.validationProcess_black { color: var(--vp-back); }
+.validationProcess_orange { color: var(--vp-pending); }
+.validationProcess_grey,
+.validationProcess_grey_dark { color: var(--vp-text-muted); }
+.validationProcess_light_grey_bg { background-color: var(--vp-surface-muted); }
+.validationProcess_light_blue_bg { background-color: var(--vp-back-bg); }
+.validationProcess_light_green_bg { background-color: var(--vp-confirm-bg); }
+.validationProcess_light_red_bg { background-color: var(--vp-cancel-bg); }
+
+/* -------------------------------------------------------------------------
+ * 3) Thanh hanh dong chinh — nhin nhu 1 stat-button-box native cua Odoo:
+ *    khong vien ngoai to, khong bong do nang, chi 1 duong ke mong ngan
+ *    cach voi cac nut oe_stat_button khac trong cung button box.
+ * ---------------------------------------------------------------------- */
+#validationProcess_processActionBar {
+    display: flex;
+    align-items: stretch;
+    float: left;
+    max-height: 44px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: 1px solid var(--vp-border);
+    margin-right: 4px;
+    padding-right: 4px;
+    box-shadow: none;
+}
+
+#validationProcess_processActionBar .validationProcess_actionBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    min-width: 96px;
+    width: auto !important;
+    padding: 0 10px !important;
+    border: 0;
+    background: transparent;
+    color: var(--vp-text);
+    border-radius: var(--vp-radius);
+    transition: background-color 120ms ease, color 120ms ease, opacity 120ms ease;
+}
+
+#validationProcess_processActionBar .validationProcess_actionBtn:hover:not(:disabled) {
+    background-color: var(--vp-surface-muted);
+}
+
+#validationProcess_processActionBar .validationProcess_actionBtn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+#validationProcess_processActionBar .validationProcess_actionBtn:focus-visible {
+    outline: 2px solid var(--vp-back);
+    outline-offset: 1px;
+}
+
+/* Icon ke thua mau tu chinh nut (khong con hardcode 1 mau cho tat ca) */
+#validationProcess_processActionBar .validationProcess_actionBtn .o_button_icon {
+    color: currentColor;
+    font-size: 14px;
+}
+
+#validationProcess_processActionBar .o_stat_info {
+    line-height: 1.15;
+}
+
+#validationProcess_processActionBar .o_stat_text.small {
+    color: var(--vp-text-muted);
+    font-size: 11px;
+}
+
+/* -------------------------------------------------------------------------
+ * 4) Vai tro theo tung action — dung `data-vp-action` (thuoc tinh da co
+ *    san tren nut, khong can them gi) thay vi doan mau qua class chung
+ *    chung, de nut Confirm/Back/Cancel co ban sac ro rang, giong Odoo
+ *    (Save = primary/success, Discard/Back = neutral, huy = danger).
+ * ---------------------------------------------------------------------- */
+#validationProcess_processActionBar [data-vp-action="confirm"] {
+    color: var(--vp-confirm);
+}
+#validationProcess_processActionBar [data-vp-action="confirm"]:hover:not(:disabled) {
+    background-color: var(--vp-confirm-bg);
+}
+
+#validationProcess_processActionBar [data-vp-action="back"],
+#validationProcess_processActionBar [data-vp-action="restart"] {
+    color: var(--vp-back);
+}
+#validationProcess_processActionBar [data-vp-action="back"]:hover:not(:disabled),
+#validationProcess_processActionBar [data-vp-action="restart"]:hover:not(:disabled) {
+    background-color: var(--vp-back-bg);
+}
+
+#validationProcess_processActionBar [data-vp-action="cancel"] {
+    color: var(--vp-cancel);
+}
+#validationProcess_processActionBar [data-vp-action="cancel"]:hover:not(:disabled) {
+    background-color: var(--vp-cancel-bg);
+}
+
+#validationProcess_processActionBar [data-vp-action="history"] {
+    color: var(--bs-primary, #2f8fb0);
+}
+#validationProcess_processActionBar [data-vp-action="history"]:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--bs-primary, #2f8fb0) 12%, transparent);
+}
+
+#validationProcess_processActionBar [data-vp-action="confirm"],
+#validationProcess_processActionBar [data-vp-action="cancel"],
+#validationProcess_processActionBar [data-vp-action="approved"] {
+    margin: 6px 4px;
+    padding: 0 10px !important;
+}
+
+/* -------------------------------------------------------------------------
+ * 5) Trang thai khong the bam (pending / approved / cancelled): day la
+ *    THONG BAO, khong phai hanh dong, nen cho no nhin nhu 1 "chip/badge"
+ *    thay vi 1 nut xam mo (nhin than thien va ro nghia hon la disabled
+ *    button). Van la button[disabled] that ve mat DOM/JS, chi doi giao
+ *    dien.
+ * ---------------------------------------------------------------------- */
+#validationProcess_processActionBar [data-vp-action="pending"]:disabled,
+#validationProcess_processActionBar [data-vp-action="approved"]:disabled,
+#validationProcess_processActionBar [data-vp-action="cancelled"]:disabled {
+    opacity: 1;
+    cursor: default;
+    margin: 6px 4px;
+    padding: 0 10px !important;
+    border-radius: 999px;
+    min-width: unset;
+}
+
+#validationProcess_processActionBar [data-vp-action="pending"]:disabled {
+    color: var(--vp-pending);
+    background-color: var(--vp-pending-bg);
+}
+#validationProcess_processActionBar [data-vp-action="approved"]:disabled {
+    color: var(--vp-confirm);
+    background-color: var(--vp-confirm-bg);
+}
+#validationProcess_processActionBar [data-vp-action="cancelled"]:disabled {
+    color: var(--vp-cancel);
+    background-color: var(--vp-cancel-bg);
+}
+
+#validationProcess_processActionBar button:disabled:not([data-vp-action="pending"]):not([data-vp-action="approved"]):not([data-vp-action="cancelled"]) {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* -------------------------------------------------------------------------
+ * 6) Khoa form khi co execution dang cho duyet — chi khoa field widget,
+ *    khong khoa ca sheet (chatter, approval bar, history van tuong tac duoc).
+ * ---------------------------------------------------------------------- */
+body.validationProcess_lock_edit .o_form_view .o_form_sheet .o_form_label,
+body.validationProcess_lock_edit .o_form_view .o_form_sheet > div:not(.o_notebook) .o_field_widget,
+body.validationProcess_lock_edit .o_form_view .o_form_sheet > .o_notebook > .o_notebook_content .o_field_widget:not(.o_field_one2many):not(.o_field_many2many),
+body.validationProcess_lock_edit .o_form_view .o_form_sheet > .o_notebook > .o_notebook_content .o_data_row > td,
+body.validationProcess_lock_edit .o_form_view .o_form_sheet > .o_notebook > .o_notebook_content a[role="button"],
+body.validationProcess_lock_edit .o_form_view .o_form_sheet > .o_notebook > .o_notebook_content button:not([data-vp-action]) {
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+body.validationProcess_lock_edit .o_form_view .o_form_button_edit,
+body.validationProcess_lock_edit .o_form_view .o_statusbar_buttons {
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+body.validationProcess_lock_edit .o_form_view #validationProcess_processActionBar,
+body.validationProcess_lock_edit .o_form_view #validationProcess_processActionBar * {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+body.validationProcess_lock_actions .o_cp_action_menus {
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+/* -------------------------------------------------------------------------
+ * 7) Trang thai "checking" (dang cho RPC dau tien tra ve). Thay vi chi
+ *    doi con tro chuot (de bi bo qua), them 1 thanh tien trinh mong,
+ *    thuan CSS, o dinh trang — khong can JS them.
+ * ---------------------------------------------------------------------- */
+body.validationProcess_checking {
+    cursor: wait;
+}
+
+body.validationProcess_checking::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 40%;
+    z-index: 2000;
+    background-color: var(--bs-primary, #2f8fb0);
+    animation: vp-checking-bar 1.1s ease-in-out infinite;
+}
+
+@keyframes vp-checking-bar {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.validationProcess_checking::before {
+        animation: none;
+        opacity: 0.6;
+    }
+    #validationProcess_processActionBar .validationProcess_actionBtn {
+        transition: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+ * 8) Responsive — MOT breakpoint duy nhat (ban cu co 2 breakpoint
+ *    (768px va 600px) voi rule mau thuan nhau: 768px bat flex+width:auto,
+ *    600px lai ep width co dinh 45px va float — tren man hinh 601-768px
+ *    ca hai cung khop nen ket qua phu thuoc thu tu nguon, de gay loi vat
+ *    ly). Duoi 768px: giu icon, an subtitle de tiet kiem cho, van cuon
+ *    ngang duoc thay vi vo layout.
+ * ---------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    #validationProcess_processActionBar {
+        max-width: 55vw;
+    }
+
+    #validationProcess_processActionBar .validationProcess_actionBtn {
+        min-width: 40px;
+        padding: 0 8px !important;
+    }
+
+    #validationProcess_processActionBar .o_stat_text.small,
+    #validationProcess_processActionBar [data-vp-action="pending"]:disabled .o_stat_text:not(.small),
+    #validationProcess_processActionBar [data-vp-action="approved"]:disabled .o_stat_text.small,
+    #validationProcess_processActionBar [data-vp-action="cancelled"]:disabled .o_stat_text.small {
+        display: none;
+    }
+}
+
+/* -------------------------------------------------------------------------
+ * 9) Cac class con lai tu ban cu (thanh info/history, cac co "o_stat_text
+ *    i.fa" mac dinh, v.v.) duoc giu nguyen o day KHONG doi, phong khi con
+ *    duong code nao khac (vd bar info/history cu) van tham chieu toi,
+ *    tranh vo giao dien noi khac. Neu du an da xac nhan khong con dung
+ *    info/history bar (Muc 6-7 cua SERVER_RENDERED_UI_PLAN.md), co the xoa
+ *    khoi phan nay o mot commit dep dep rieng.
+ * ---------------------------------------------------------------------- */
+.validationProcess_infoBtn,
+.validationProcess_historyBtn {
+    float: left;
+    border-right-color: var(--vp-border);
+}
+
+#validationProcess_processHistoryBar,
+#validationProcess_processInfoBar {
+    display: none;
+    border-radius: var(--vp-radius);
+    background-color: var(--vp-surface-muted);
+}
+
+#validationProcess_processHistoryBar.validationProcess_historyVisible {
+    display: block;
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    border-bottom: 1px solid var(--vp-border);
+    color: var(--vp-text);
+    font-size: 13px;
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyTable th,
+#validationProcess_processHistoryBar .validationProcess_historyTable td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--vp-border);
+    text-align: left;
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyTable th:first-child,
+#validationProcess_processHistoryBar .validationProcess_historyTable td:first-child,
+#validationProcess_processHistoryBar .validationProcess_historyTable th:last-child,
+#validationProcess_processHistoryBar .validationProcess_historyTable td:last-child {
+    text-align: center;
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyTable th {
+    background: var(--vp-surface-muted);
+    font-weight: 600;
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyRow:last-child td {
+    border-bottom: 0;
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyBadge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyBadge_approve,
+#validationProcess_processHistoryBar .validationProcess_historyBadge_start {
+    background: var(--vp-confirm-bg);
+    color: var(--vp-confirm);
+}
+
+#validationProcess_processHistoryBar .validationProcess_historyBadge_cancel {
+    background: var(--vp-cancel-bg);
+    color: var(--vp-cancel);
+}
+
+@media (max-width: 768px) {
+    #validationProcess_processHistoryBar .validationProcess_historyRow {
+        min-width: 620px;
+    }
+}
+
+.validationProcess_processInfoStepBar {
+    overflow: hidden !important;
+}
+
+i.fa.fal-strikethrough {
+    color: var(--vp-cancel);
+}

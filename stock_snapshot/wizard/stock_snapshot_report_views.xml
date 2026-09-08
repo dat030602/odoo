@@ -1,0 +1,47 @@
+<odoo>
+  <record id="view_stock_snapshot_report_form" model="ir.ui.view">
+    <field name="name">stock.snapshot.report.form</field>
+    <field name="model">stock.snapshot.report</field>
+    <field name="arch" type="xml">
+      <form string="Stock Balance Report">
+        <sheet>
+
+          <group string="Filters">
+            <group>
+              <field name="date"/>
+              <field name="location_ids" widget="many2many_tags"
+                     options="{'no_create': True}"/>
+              <field name="product_ids" widget="many2many_tags"
+                     context="{'active_test': show_archived}"
+                     options="{'no_create': True}"/>
+            </group>
+            <group>
+              <field name="show_zero_qty"/>
+              <field name="show_archived"/>
+            </group>
+          </group>
+
+          <footer>
+            <button name="action_compute"
+                    string="Compute"
+                    type="object"
+                    class="btn-primary"/>
+          </footer>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_stock_snapshot_report" model="ir.actions.act_window">
+    <field name="name">Stock Balance Report</field>
+    <field name="res_model">stock.snapshot.report</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+  <menuitem id="menu_stock_snapshot_report"
+            name="Stock Balance Report"
+            parent="stock.menu_stock_reports"
+            action="action_stock_snapshot_report"
+            sequence="20"/>
+</odoo>

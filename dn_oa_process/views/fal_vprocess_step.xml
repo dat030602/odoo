@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="fal_vprocess_step_tree_view" model="ir.ui.view">
+        <field name="name">fal_vprocess_step.tree</field>
+        <field name="model">fal.vprocess.step</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <list string="fal.vprocess.step">
+                <field name="sequence" widget="handle" />
+                <field name="process_id" optional="hide"/>
+                <field name="name" />
+                <field name="auto_confirm_no_conditions" optional="show"/>
+                <field name="allow_anyone_no_conditions" optional="show"/>
+                <field name="auto_confirm_no_active_rules" optional="show"/>
+                <field name="buttons_back" optional="show"/>
+                <field name="buttons_reset" optional="show"/>
+                <field name="back_to_step_id" optional="show" domain="[('process_id', '=', process_id),('id', '!=', id),('sequence', '&lt;=', sequence)]"/>
+                <field name="enable_activity" optional="show" />
+                <field name="disable_edit" optional="hide"/>
+                <field name="action_string_confirm"  optional="hide"/>
+                <field name="action_string_cancel"  optional="hide"/>
+                <field name="action_string_back"  optional="hide"/>
+                <field name="action_string_reset"  optional="hide"/>
+                <field name="field_string_confirm"  optional="hide"/>
+                <field name="field_string_cancel"  optional="hide"/>
+                <field name="field_string_back"  optional="hide"/>
+                <field name="field_string_reset"  optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="fal_vprocess_step_form_view">
+        <field name="name">fal_vprocess_step.form</field>
+        <field name="model">fal.vprocess.step</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="fal.vprocess.step">
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" invisible="active == True" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1" />
+                        </h1>
+                    </div>
+                    <group name="main_group">
+                        <group name="group_left">
+                            <field name="sequence" />
+                            <field name="auto_confirm_no_conditions" />
+                            <field name="allow_anyone_no_conditions" />
+                            <field name="auto_confirm_no_active_rules" />
+                            <field name="buttons_back" />
+                            <field name="back_to_step_id" invisible="not buttons_back" domain="[('process_id', '=', process_id), ('id', '!=', id), ('sequence', '&lt;=', sequence)]"/>
+                            <field name="buttons_reset" />
+                            <field name="enable_activity" />
+                        </group>
+                        <group name="group_right">
+                            <field name="disable_edit" />
+                            <field name="action_string_confirm" />
+                            <field name="action_string_cancel" />
+                            <field name="action_string_back" />
+                            <field name="action_string_reset" />
+                            <field name="field_string_confirm" />
+                            <field name="field_string_cancel" />
+                            <field name="field_string_back" />
+                            <field name="field_string_reset" />
+                        </group>
+                    </group>
+                    <h4>Rules</h4>
+                    <field name="rule_ids" />
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="fal_vprocess_step_search_view" model="ir.ui.view">
+        <field name="name">fal_vprocess_step.search</field>
+        <field name="model">fal.vprocess.step</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <search string="fal.vprocess.step">
+                <field name="name"/>
+                <field name="process_id"/>
+                <separator/>
+                <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Process" name="process" domain="[]" context="{'group_by':'process_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vprocess_step" model="ir.actions.act_window">
+        <field name="name">Steps</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fal.vprocess.step</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_vprocess_step" name="Steps" parent="menu_validation_process"
+        action="action_vprocess_step" />
+</odoo>

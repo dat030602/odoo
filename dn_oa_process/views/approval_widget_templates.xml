@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="approval_action_bar" name="Approval action bar">
+        <div t-att-id="payload['container_id']" class="validationProcess_actionBar clearfix">
+            <t t-foreach="payload['buttons']" t-as="button">
+                <button type="button"
+                        t-att-id="'validationProcess_' + button['action']"
+                        t-att-data-vp-action="button['action']"
+                        t-att-disabled="not button['enabled'] and 'disabled' or None"
+                        t-att-class="'btn oe_stat_button validationProcess_actionBtn validationProcess_' + button['color']">
+                    <i t-att-class="'fa fa-fw o_button_icon fa-' + button['icon']"/>
+                    <div class="o_field_widget o_stat_info o_readonly_modifier">
+                        <span class="o_stat_text" t-esc="button['label']"/>
+                        <span class="o_stat_text small" t-esc="button['subtitle']"/>
+                    </div>
+                </button>
+            </t>
+        </div>
+    </template>
+
+    <template id="approval_history" name="Approval history">
+        <div id="validationProcess_processHistoryBar" class="validationProcess_processHistoryBar">
+            <table class="validationProcess_historyTable">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Date</th>
+                        <th>Approver</th>
+                        <th>Job Position</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="rows" t-as="row">
+                        <tr class="validationProcess_historyRow">
+                            <td t-esc="row_index + 1"/>
+                            <td t-esc="row['date']"/>
+                            <td>
+                                <strong t-esc="row['user']"/>
+                                <span t-if="row['employee']" t-esc="' (' + row['employee'] + ')'"/>
+                            </td>
+                            <td t-esc="row['job_position']"/>
+                            <td>
+                                <span t-att-class="'validationProcess_historyBadge validationProcess_historyBadge_' + row['action'].lower()"
+                                      t-esc="row['action']"/>
+                            </td>
+                        </tr>
+                    </t>
+                    <tr t-if="not rows" class="validationProcess_historyRow">
+                        <td colspan="5">No history</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</odoo>

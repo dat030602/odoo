@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_fal_vprocess_history_wizard_form" model="ir.ui.view">
+        <field name="name">fal.vprocess.history.wizard.form</field>
+        <field name="model">fal.vprocess.history.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Approval History" create="false" edit="false" delete="false">
+                <sheet>
+                    <field name="history_html" widget="html" nolabel="1" readonly="1"/>
+                </sheet>
+                <footer>
+                    <button string="Close" special="cancel" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

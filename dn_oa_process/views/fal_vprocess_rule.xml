@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="fal_vprocess_rule_tree_view" model="ir.ui.view">
+    <field name="name">fal_vprocess_rule.tree</field>
+    <field name="model">fal.vprocess.rule</field>
+    <field name="arch" type="xml">
+      <list string="fal.vprocess.rule">
+        <field name="sequence" widget="handle"/>
+        <field name="step_id" optional="hide"/>
+        <field name="name" />
+        <field name="filter_id" optional="hide"/>
+        <field name="domain" optional="show"/>
+        <field name="user_filter_id" optional="hide"/>
+        <field name="user_filter_domain" optional="show"/>
+        <field name="user_domain_type"  optional="show"/>
+        <field name="custom_user_domain"  optional="hide"/>
+        <field name="server_id"  optional="hide"/>
+        <field name="user_ids" widget="many2many_tags_avatar" optional="hide"/>
+      </list>
+    </field>
+  </record>
+  <record model="ir.ui.view" id="fal_vprocess_rule_form_view">
+    <field name="name">fal_vprocess_rule.form</field>
+    <field name="model">fal.vprocess.rule</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet string="fal.vprocess.step">
+          <widget name="web_ribbon" text="Archived" bg_color="bg-danger" invisible="active == True" />
+          <div class="oe_title">
+            <h1>
+              <field name="name" required="1"/>
+            </h1>
+          </div>
+          <group name="main_group">
+            <group name="group_left">
+              <field name="sequence"/>
+              <field name="filter_id"/>
+              <field name="user_filter_id"/>
+              <field name="user_domain_type" />
+              <field name="custom_user_domain" string="Users Domain" widget="domain" options="{'foldable': True, 'model': 'res.users', 'allow_expressions':True}"  invisible="user_domain_type != 'domain'" />
+              <field name="server_id" invisible="user_domain_type != 'server'" required="user_domain_type == 'server'"/>
+            </group>
+            <group name="group_right">
+              <field name="domain" />
+              <field name="user_filter_domain" />
+            </group>
+          </group>
+          <notebook>
+            <page name="authorized_users" string="Authorized users" invisible="user_domain_type != 'custom'">
+              <field name="user_ids" />
+            </page>
+          </notebook>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+
+  <record id="fal_vprocess_rule_search_view" model="ir.ui.view">
+    <field name="name">fal_vprocess_rule.search</field>
+    <field name="model">fal.vprocess.rule</field>
+    <field name="arch" type="xml">
+      <search string="fal.vprocess.rule">
+        <field name="name" />
+        <field name="filter_id" />
+        <field name="user_filter_id" />
+        <field name="server_id" />
+        <separator/>
+        <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+        <group>
+            <filter string="Applies on" name="group_filter_id" domain="[]" context="{'group_by':'filter_id'}" />
+            <filter string="User Filter" name="group_user_filter_id" domain="[]" context="{'group_by':'user_filter_id'}" />
+            <filter string="Server" name="group_server_id" domain="[]" context="{'group_by':'server_id'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="action_vprocess_rule" model="ir.actions.act_window">
+    <field name="name">Rules</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">fal.vprocess.rule</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <menuitem id="menu_vprocess_rule" name="Rules" parent="menu_validation_process" action="action_vprocess_rule"/>
+</odoo>
