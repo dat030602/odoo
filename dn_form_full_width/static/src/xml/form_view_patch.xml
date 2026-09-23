@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="web.FormView" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_form_view_container')]" position="after">
+            <button t-if="!env.inDialog"
+                    class="btn rounded-circle shadow dn_full_width_toggle" 
+                    t-on-click="() => this.toggleDnFullWidth()"
+                    t-att-class="this.dnFullWidthState.isActive ? 'btn-primary text-white' : 'btn-light text-dark'"
+                    title="Toggle Full Width">
+                <i class="fa fa-arrows-h"/>
+            </button>
+        </xpath>
+    </t>
+</templates>

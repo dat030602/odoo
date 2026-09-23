@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dn_hide_chatter_activity_rule_tree" model="ir.ui.view">
+        <field name="name">dn.hide.chatter.activity.rule.list</field>
+        <field name="model">dn.hide.chatter.activity.rule</field>
+        <field name="arch" type="xml">
+            <list string="Hide Chatter/Activity Rules">
+                <field name="model_id" />
+                <field name="hide_chatter" />
+                <field name="hide_activity" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dn_hide_chatter_activity_rule_form" model="ir.ui.view">
+        <field name="name">dn.hide.chatter.activity.rule.form</field>
+        <field name="model">dn.hide.chatter.activity.rule</field>
+        <field name="arch" type="xml">
+            <form string="Hide Chatter/Activity Rule">
+                <sheet>
+                    <group>
+                        <field name="model_id" options="{'no_create': True}" />
+                        <field name="hide_chatter" />
+                        <field name="hide_activity" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dn_hide_chatter_activity_rule" model="ir.actions.act_window">
+        <field name="name">Hide Chatter/Activity</field>
+        <field name="res_model">dn.hide.chatter.activity.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_dn_hide_chatter_activity_rule"
+              name="Hide Chatter/Activity"
+              parent="base.menu_custom"
+              action="action_dn_hide_chatter_activity_rule"
+              sequence="100"/>
+</odoo>

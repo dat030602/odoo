@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="web.X2ManyField" t-inherit-mode="extension" owl="1">
+        <xpath expr="//ListRenderer" position="before">
+            <div class="d-flex justify-content-end mb-1 w-100">
+                <button type="button" class="btn btn-sm btn-light border dn_x2m_action_btn" 
+                        t-on-click="() => this.openFullscreenAction()"
+                        title="Mở Action (Fullscreen)">
+                    <i class="fa fa-external-link"/>
+                </button>
+            </div>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,43 @@
+/* Fullscreen mode for X2Many fields */
+body.dn_x2many_fullscreen_active {
+    overflow: hidden !important; /* Prevent body scrolling */
+}
+
+body.dn_x2many_fullscreen_active .dn_x2many_fullscreen_target {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 10000 !important; /* Above Odoo navbar and dialogs */
+    background-color: var(--o-view-background-color, white) !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5) !important;
+}
+
+body.dn_x2many_fullscreen_active .dn_x2many_fullscreen_target > .o_list_renderer,
+body.dn_x2many_fullscreen_active .dn_x2many_fullscreen_target > .o_kanban_renderer,
+body.dn_x2many_fullscreen_active .dn_x2many_fullscreen_target .o_list_view,
+body.dn_x2many_fullscreen_active .dn_x2many_fullscreen_target .o_kanban_view {
+    flex-grow: 1 !important;
+    height: auto !important;
+    overflow: auto !important;
+}
+
+/* Ensure the control panel stays at the top */
+body.dn_x2many_fullscreen_active .dn_x2many_fullscreen_target > .o_x2m_control_panel {
+    margin-bottom: 10px !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Make sure the fullscreen button is visible */
+.dn_x2m_fullscreen_btn {
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
