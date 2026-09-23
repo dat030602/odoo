@@ -1,0 +1,124 @@
+<odoo>
+
+    <record id="view_meta_migration_job_form" model="ir.ui.view">
+        <field name="name">meta.migration.job.form</field>
+        <field name="model">meta.migration.job</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_run" type="object" string="Chạy Migration" class="btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="source_connection_id"/>
+                            <field name="target_connection_id"/>
+                        </group>
+                        <group>
+                            <field name="migration_type"/>
+                            <field name="on_conflict"/>
+                        </group>
+                    </group>
+
+                    <group string="Content to Migrate" invisible="migration_type != 'content'">
+                        <field name="do_field"/>
+                        <field name="do_view"/>
+                        <field name="do_server_action"/>
+                    </group>
+
+                    <group string="View Types" invisible="not do_view">
+                        <field name="create_list_view"/>
+                        <field name="create_form_view"/>
+                        <field name="create_search_view"/>
+                    </group>
+
+                    <group string="Menus">
+                        <field name="create_menu"/>
+                    </group>
+
+                    <group string="Security" invisible="migration_type != 'model_only'">
+                        <field name="copy_access_rights"/>
+                        <field name="copy_record_rules"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Models" invisible="migration_type != 'model_only'">
+                            <field name="model_line_ids" context="{'default_job_id': id}">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="model_name" placeholder="e.g. sale.order, x_my_model"/>
+                                    <field name="target_model_name" placeholder="Empty = keep source name"/>
+                                    <field name="state"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Fields" invisible="not do_field">
+                            <field name="field_line_ids" context="{'default_job_id': id}">
+                                <list editable="bottom">
+                                    <field name="model_name" placeholder="e.g. sale.order"/>
+                                    <field name="field_name" placeholder="e.g. x_my_field"/>
+                                    <field name="state"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Views" invisible="not do_view">
+                            <field name="view_line_ids" context="{'default_job_id': id}">
+                                <list editable="bottom">
+                                    <field name="model_name" placeholder="e.g. sale.order"/>
+                                    <field name="state"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Menus" invisible="not create_menu or migration_type != 'content'">
+                            <field name="menu_line_ids" context="{'default_job_id': id}">
+                                <list editable="bottom">
+                                    <field name="model_name" placeholder="e.g. sale.order"/>
+                                    <field name="state"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Server Actions" invisible="not do_server_action">
+                            <field name="action_line_ids" context="{'default_job_id': id}">
+                                <list editable="bottom">
+                                    <field name="xml_id" placeholder="e.g. my_module.action_my_action"/>
+                                    <field name="state"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Log">
+                            <field name="log_text" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_meta_migration_job_list" model="ir.ui.view">
+        <field name="name">meta.migration.job.list</field>
+        <field name="model">meta.migration.job</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="source_connection_id"/>
+                <field name="target_connection_id"/>
+                <field name="migration_type"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_meta_migration_job" model="ir.actions.act_window">
+        <field name="name">Migration Jobs</field>
+        <field name="res_model">meta.migration.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
