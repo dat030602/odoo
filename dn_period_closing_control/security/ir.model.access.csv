@@ -1,6 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_period_lock_user,period.lock.user,model_period_lock,base.group_user,1,0,0,0
 access_period_lock,period.lock,model_period_lock,dn_period_closing_control.group_period_lock_manager,1,1,1,1
+access_period_lock_line_user,period.lock.line.user,model_period_lock_line,base.group_user,1,0,0,0
 access_period_lock_line,period.lock.line,model_period_lock_line,dn_period_closing_control.group_period_lock_manager,1,1,1,1
-access_period_unlock_request_user,period.unlock.request.user,model_period_unlock_request,base.group_user,1,0,1,0
+access_period_unlock_request_user,period.unlock.request.user,model_period_unlock_request,base.group_user,1,1,1,0
 access_period_unlock_request_manager,period.unlock.request.manager,model_period_unlock_request,dn_period_closing_control.group_period_lock_manager,1,1,1,1
 access_period_unlock_log,period.unlock.log,model_period_unlock_log,base.group_user,1,0,1,0

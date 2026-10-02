@@ -35,15 +35,22 @@ class SaleOrder(models.Model):
                 'credit_block_reason': reason,
                 'credit_exposure_snapshot': order.partner_id.commercial_partner_id.credit_exposure,
             })
-            order.activity_schedule(
-                'mail.mail_activity_data_todo',
-                note=_("Please review credit hold: %s") % reason,
-                user_id=self.env.ref('base.user_admin').id # Usually Chief Accountant
-            )
+            admin_user = self.env.ref('base.user_admin', False)
+            if admin_user:
+                order.sudo().activity_schedule(
+                    'mail.mail_activity_data_todo',
+                    note=_("Please review credit hold: %s") % reason,
+                    user_id=admin_user.id
+                )
+
+    def _check_approver_rights(self):
+        if not self.env.user.has_group('dn_credit_sale_control.group_credit_approver') and not self.env.is_admin():
+            raise UserError(_("Only Credit Approvers can approve or reject credit hold."))
 
     def action_approve_credit(self):
+        self._check_approver_rights()
         for order in self:
-            self.env['credit.release.log'].create({
+            self.env['credit.release.log'].sudo().create({
                 'partner_id': order.partner_id.commercial_partner_id.id,
                 'sale_order_id': order.id,
                 'release_type': 'sale_order',
@@ -60,7 +67,10 @@ class SaleOrder(models.Model):
                 'credit_approved_date': fields.Datetime.now()
             })
             order.with_context(skip_credit_check=True).action_confirm()
+        return True
 
     def action_reject_credit(self):
+        self._check_approver_rights()
         for order in self:
             order.write({'state': 'cancel'})
+        return True

@@ -14,13 +14,13 @@ class ResPartner(models.Model):
 
     def _compute_credit_exposure(self):
         for partner in self:
-            commercial_partner = partner.commercial_partner_id
+            commercial_partner = partner.commercial_partner_id.sudo()
             
             # Receivable
             receivable = commercial_partner.credit
             
             # Uninvoiced SO
-            uninv_so = sum(self.env['sale.order'].search([
+            uninv_so = sum(self.env['sale.order'].sudo().search([
                 ('partner_id.commercial_partner_id', '=', commercial_partner.id),
                 ('state', 'in', ('sale', 'done')),
                 ('invoice_status', '=', 'to invoice')
@@ -30,8 +30,8 @@ class ResPartner(models.Model):
 
     def _compute_overdue(self):
         for partner in self:
-            commercial_partner = partner.commercial_partner_id
-            invoices = self.env['account.move'].search([
+            commercial_partner = partner.commercial_partner_id.sudo()
+            invoices = self.env['account.move'].sudo().search([
                 ('partner_id.commercial_partner_id', '=', commercial_partner.id),
                 ('state', '=', 'posted'),
                 ('move_type', '=', 'out_invoice'),

@@ -1,0 +1,125 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dn_hr_vietnam_id
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-02 14:40+0000\n"
+"PO-Revision-Date: 2026-10-02 14:40+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese\n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields,field_description:dn_hr_vietnam_id.field_hr_employee__vn_id_type
+msgid "ID Card Type"
+msgstr "Loại giấy tờ định danh"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields.selection,name:dn_hr_vietnam_id.selection__hr_employee__vn_id_type__cccd
+msgid "Citizen Identity Card (CCCD/12 digits)"
+msgstr "Căn cước công dân / Thẻ căn cước (12 số)"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields.selection,name:dn_hr_vietnam_id.selection__hr_employee__vn_id_type__cmnd
+msgid "Identity Card (CMND/9 digits)"
+msgstr "Chứng minh nhân dân (9 số)"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields.selection,name:dn_hr_vietnam_id.selection__hr_employee__vn_id_type__other
+msgid "Other Identification"
+msgstr "Giấy tờ định danh khác"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields,field_description:dn_hr_vietnam_id.field_hr_employee__vn_id_number
+#: model_terms:ir.ui.view,arch_db:dn_hr_vietnam_id.view_employee_filter_vietnam_id
+msgid "ID Card Number"
+msgstr "Số CMND / CCCD"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields,field_description:dn_hr_vietnam_id.field_hr_employee__vn_id_issue_date
+msgid "Issue Date"
+msgstr "Ngày cấp"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields,field_description:dn_hr_vietnam_id.field_hr_employee__vn_id_issue_place
+msgid "Place of Issue"
+msgstr "Nơi cấp"
+
+#. module: dn_hr_vietnam_id
+#: model_terms:ir.ui.view,arch_db:dn_hr_vietnam_id.view_employee_form_vietnam_id
+msgid "e.g. Police Department of Administrative Management of Social Order"
+msgstr "vd: Cục Cảnh sát QLHC về TTXH"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields,field_description:dn_hr_vietnam_id.field_hr_employee__vn_id_expiry_date
+msgid "Expiry Date"
+msgstr "Ngày hết hạn"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields,field_description:dn_hr_vietnam_id.field_hr_employee__vn_id_image_front
+msgid "Front Image"
+msgstr "Ảnh mặt trước"
+
+#. module: dn_hr_vietnam_id
+#: model:ir.model.fields,field_description:dn_hr_vietnam_id.field_hr_employee__vn_id_image_back
+msgid "Back Image"
+msgstr "Ảnh mặt sau"
+
+#. module: dn_hr_vietnam_id
+#: model_terms:ir.ui.view,arch_db:dn_hr_vietnam_id.view_employee_form_vietnam_id
+msgid "Vietnam Identification"
+msgstr "Định danh Việt Nam (CMND/CCCD)"
+
+#. module: dn_hr_vietnam_id
+#: model_terms:ir.ui.view,arch_db:dn_hr_vietnam_id.view_employee_form_vietnam_id
+msgid "ID Card Images"
+msgstr "Hình ảnh CMND / CCCD"
+
+#. module: dn_hr_vietnam_id
+#: code:addons/dn_hr_vietnam_id/models/hr_employee.py:0
+#, python-format
+msgid "Citizen Identity Card (CCCD) number must contain exactly 12 digits. Provided: %(number)s"
+msgstr "Số Căn cước công dân (CCCD) phải bao gồm đúng 12 chữ số. Số đã nhập: %(number)s"
+
+#. module: dn_hr_vietnam_id
+#: code:addons/dn_hr_vietnam_id/models/hr_employee.py:0
+#, python-format
+msgid "Identity Card (CMND) number must contain exactly 9 digits. Provided: %(number)s"
+msgstr "Số Chứng minh nhân dân (CMND) phải bao gồm đúng 9 chữ số. Số đã nhập: %(number)s"
+
+#. module: dn_hr_vietnam_id
+#: code:addons/dn_hr_vietnam_id/models/hr_employee.py:0
+#, python-format
+msgid "The ID Card Number '%(number)s' is duplicated within the submitted records (employees '%(name1)s' and '%(name2)s')."
+msgstr "Số CMND/CCCD '%(number)s' bị trùng lặp trong danh sách gửi lên (nhân viên '%(name1)s' và '%(name2)s')."
+
+#. module: dn_hr_vietnam_id
+#: code:addons/dn_hr_vietnam_id/models/hr_employee.py:0
+#, python-format
+msgid "The ID Card Number '%(number)s' is already registered for active employee '%(name)s'."
+msgstr "Số CMND/CCCD '%(number)s' đã được đăng ký cho nhân viên đang hoạt động '%(name)s'."
+
+#. module: dn_hr_vietnam_id
+#: code:addons/dn_hr_vietnam_id/models/hr_employee.py:0
+#, python-format
+msgid "The ID card issue date cannot be in the future."
+msgstr "Ngày cấp CMND/CCCD không thể lớn hơn ngày hiện tại."
+
+#. module: dn_hr_vietnam_id
+#: code:addons/dn_hr_vietnam_id/models/hr_employee.py:0
+#, python-format
+msgid "The ID card expiry date must be strictly after the issue date."
+msgstr "Ngày hết hạn CMND/CCCD phải sau ngày cấp."
+
+#. module: dn_hr_vietnam_id
+#: code:addons/dn_hr_vietnam_id/models/hr_employee.py:0
+#, python-format
+msgid "The ID card issue date cannot be earlier than the date of birth."
+msgstr "Ngày cấp CMND/CCCD không thể trước ngày sinh."

@@ -10,7 +10,7 @@ class PeriodLockMixin(models.AbstractModel):
             return
             
         company_id = self.env.company.id
-        lock = self.env['period.lock'].search([('company_id', '=', company_id), ('active', '=', True)], limit=1)
+        lock = self.env['period.lock'].sudo().search([('company_id', '=', company_id), ('active', '=', True)], limit=1)
         if not lock:
             return
             
@@ -32,7 +32,7 @@ class PeriodLockMixin(models.AbstractModel):
             return
             
         company_id = self.env.company.id
-        lock = self.env['period.lock'].search([('company_id', '=', company_id), ('active', '=', True)], limit=1)
+        lock = self.env['period.lock'].sudo().search([('company_id', '=', company_id), ('active', '=', True)], limit=1)
         if not lock:
             return
             
@@ -66,15 +66,15 @@ class PeriodLockMixin(models.AbstractModel):
         ]
         if record:
             domain_with_res = domain + [('res_model', '=', record._name), ('res_id', '=', record.id)]
-            request = self.env['period.unlock.request'].search(domain_with_res, limit=1)
+            request = self.env['period.unlock.request'].sudo().search(domain_with_res, limit=1)
             if not request:
-                request = self.env['period.unlock.request'].search(domain + [('res_model', '=', False)], limit=1)
+                request = self.env['period.unlock.request'].sudo().search(domain + [('res_model', '=', False)], limit=1)
         else:
-            request = self.env['period.unlock.request'].search(domain + [('res_model', '=', False)], limit=1)
+            request = self.env['period.unlock.request'].sudo().search(domain + [('res_model', '=', False)], limit=1)
             
         if request:
             # Log it
-            self.env['period.unlock.log'].create({
+            self.env['period.unlock.log'].sudo().create({
                 'request_id': request.id,
                 'res_model': record._name if record else self._name,
                 'res_id': record.id if record else 0,

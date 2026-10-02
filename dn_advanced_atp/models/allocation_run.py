@@ -48,9 +48,9 @@ class AllocationRun(models.Model):
     def _is_protected(self, move):
         if not self.rule_id.protect_started_picking:
             return False
-        # If the picking has some done quantity, protect it
+        # If the picking has started (lines picked), protect it
         for line in move.picking_id.move_line_ids:
-            if line.quantity > 0:
+            if line.picked:
                 return True
         return False
 
@@ -59,8 +59,11 @@ class AllocationRun(models.Model):
         moves = self._get_candidate_moves()
         moves = moves.filtered(lambda m: not self._is_protected(m))
         
-        # Simulate logic (simplified)
         self.line_ids.unlink()
+        if not moves:
+            self.write({'state': 'simulated'})
+            return True
+
         lines = []
         for move in moves:
             score = self.rule_id._score(move)
@@ -71,21 +74,27 @@ class AllocationRun(models.Model):
                 'partner_id': move.picking_id.partner_id.id,
                 'score': score,
                 'demand_qty': move.product_uom_qty,
-                'reserved_before': move.product_qty, # simplified
-                'reserved_after': move.product_qty,
+                'reserved_before': move.quantity,
+                'reserved_after': move.quantity,
                 'delta_qty': 0,
             }))
         self.write({'line_ids': lines, 'state': 'simulated'})
+        return True
 
     def action_apply(self):
         self.ensure_one()
         moves = self._get_candidate_moves()
         moves = moves.filtered(lambda m: not self._is_protected(m))
         
+        self.line_ids.unlink()
+        if not moves:
+            self.write({'state': 'applied'})
+            return True
+
         # Lock moves
         self.env.cr.execute("SELECT id FROM stock_move WHERE id IN %s FOR UPDATE NOWAIT", (tuple(moves.ids),))
         
-        snapshot = {m.id: m.product_qty for m in moves} # simplified reservation tracking
+        snapshot = {m.id: m.quantity for m in moves}
         
         scored = sorted(moves, key=lambda m: self.rule_id._score(m), reverse=True)
         
@@ -94,12 +103,11 @@ class AllocationRun(models.Model):
             move._action_assign()
             
         # Write results
-        self.line_ids.unlink()
         lines = []
         rank = 1
         for move in scored:
             reserved_before = snapshot.get(move.id, 0.0)
-            reserved_after = move.product_qty
+            reserved_after = move.quantity
             lines.append((0, 0, {
                 'move_id': move.id,
                 'picking_id': move.picking_id.id,
@@ -117,6 +125,7 @@ class AllocationRun(models.Model):
                 move.picking_id.message_post(body=_("Reservation changed from %s to %s due to ATP re-allocation #%s") % (reserved_before, reserved_after, self.name))
                 
         self.write({'line_ids': lines, 'state': 'applied'})
+        return True
 
 class AllocationRunLine(models.Model):
     _name = 'allocation.run.line'
