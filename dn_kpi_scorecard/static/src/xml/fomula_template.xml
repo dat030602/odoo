@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="dn_kpi_scorecard.formulaWidgetTemplate" owl="1">
+        <div class="kpi-formula-builder w-100">
+            <!-- Formula Display Area -->
+            <div class="formula-display bg-white p-2 border rounded mb-3 d-flex flex-wrap gap-2 align-items-center" style="min-height: 50px;">
+                <t t-if="state.formulaParts.length == 0">
+                    <span class="text-muted fst-italic">Click variables or operators below to build formula...</span>
+                </t>
+                <t t-foreach="state.formulaParts" t-as="part" t-key="part_index">
+                    <span t-attf-class="badge rounded-pill d-flex align-items-center fs-6 {{ part.extra_class || 'bg-secondary' }}" style="padding: 6px 12px;">
+                        <t t-esc="part.name"/>
+                        <i class="fa fa-times ms-2 text-white" style="cursor: pointer; opacity: 0.8;" t-on-click="() => this._removePart(part_index)"/>
+                    </span>
+                </t>
+            </div>
+            
+            <!-- Variables Toolbox -->
+            <div class="row kpi-variables-container g-2">
+                <!-- Operators -->
+                <div class="col-md-2">
+                    <h6 class="fw-bold border-bottom pb-1">Operators</h6>
+                    <div class="d-flex flex-wrap gap-1">
+                        <t t-foreach="state.operands" t-as="op" t-key="op">
+                            <button class="btn btn-sm btn-outline-dark" t-on-click="() => this._addOperator(op)">
+                                <t t-esc="op"/>
+                            </button>
+                        </t>
+                        <div class="input-group input-group-sm mt-2">
+                            <input type="number" class="form-control" t-model="state.customNumber" placeholder="#"/>
+                            <button class="btn btn-outline-dark" type="button" t-on-click="_addNumber">Add</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Measurements -->
+                <div class="col-md-3">
+                    <h6 class="fw-bold border-bottom pb-1">Measurements</h6>
+                    <input type="text" class="form-control form-control-sm mb-2" placeholder="Search..." t-model="state.searchMeasure"/>
+                    <div class="d-flex flex-wrap gap-1 pe-1" style="max-height: 250px; overflow-y: auto;">
+                        <t t-foreach="_filterList(state.measures, state.searchMeasure)" t-as="m" t-key="m.id">
+                            <button class="btn btn-sm btn-info text-white text-start w-100 text-truncate" t-att-title="m.description" t-on-click="() => this._addPart('MEASURE(' + m.id + ')', m.name, 'bg-info')">
+                                <t t-esc="m.name"/>
+                            </button>
+                        </t>
+                    </div>
+                </div>
+                
+                <!-- Other KPIs -->
+                <div class="col-md-4">
+                    <h6 class="fw-bold border-bottom pb-1">Other KPIs</h6>
+                    <input type="text" class="form-control form-control-sm mb-2" placeholder="Search..." t-model="state.searchKpi"/>
+                    <div class="d-flex flex-wrap gap-1 pe-1" style="max-height: 250px; overflow-y: auto;">
+                        <t t-foreach="_filterList(state.kpis, state.searchKpi)" t-as="k" t-key="k.id">
+                            <button class="btn btn-sm btn-success text-white text-start w-100 text-truncate" t-att-title="k.description" t-on-click="() => this._addPart('KPI(' + k.id + ')', k.name, 'bg-success')">
+                                <t t-esc="k.name"/>
+                            </button>
+                        </t>
+                    </div>
+                </div>
+                
+                <!-- Constants -->
+                <div class="col-md-3">
+                    <h6 class="fw-bold border-bottom pb-1">Constants</h6>
+                    <input type="text" class="form-control form-control-sm mb-2" placeholder="Search..." t-model="state.searchConst"/>
+                    <div class="d-flex flex-wrap gap-1 pe-1" style="max-height: 250px; overflow-y: auto;">
+                        <t t-foreach="_filterList(state.constants, state.searchConst)" t-as="c" t-key="c.id">
+                            <button class="btn btn-sm btn-warning text-dark text-start w-100 text-truncate" t-att-title="c.description" t-on-click="() => this._addPart('CONST(' + c.id + ')', c.name, 'bg-warning text-dark')">
+                                <t t-esc="c.name"/>
+                            </button>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

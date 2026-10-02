@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <menuitem name="KPI"
+              id="menu_kpi_main"
+              sequence="50"
+              groups="base.group_user"
+              web_icon="dn_kpi_scorecard,static/description/icon.png"
+    />  
+    <menuitem name="KPI Scorecard"
+              id="menu_kpi_scorecard"
+              parent="menu_kpi_main"
+              action="dn_kpi_scorecard.kpi_scorecard_line_action"
+              sequence="10"
+              groups="base.group_user"
+    />
+    <menuitem name="Periods"
+              id="menu_kpi_period"
+              parent="menu_kpi_main"
+              action="dn_kpi_scorecard.kpi_period_action"
+              sequence="10"
+              groups="dn_kpi_scorecard.group_kpi_admin"
+    />
+    <menuitem name="KPIs"
+              id="menu_kpi_kpi"
+              parent="menu_kpi_main"
+              action="dn_kpi_scorecard.kpi_item_action"
+              sequence="20"
+              groups="dn_kpi_scorecard.group_kpi_admin,dn_kpi_scorecard.group_kpi_user_see_all_kpi"
+    />
+    <!-- Measurements -->
+    <menuitem name="Measurements"
+              id="menu_kpi_measurements_general"
+              sequence="50"
+              parent="menu_kpi_main"
+              groups="dn_kpi_scorecard.group_kpi_admin"
+    />
+    <menuitem name="Measurements (Variables)"
+              id="menu_kpi_measures"
+              parent="menu_kpi_measurements_general"
+              action="dn_kpi_scorecard.kpi_measure_item_action"
+              sequence="10"
+              groups="dn_kpi_scorecard.group_kpi_admin"
+    />
+    <menuitem name="Constants"
+              id="menu_kpi_constants"
+              parent="menu_kpi_measurements_general"
+              action="dn_kpi_scorecard.kpi_constant_action"
+              sequence="20"
+              groups="dn_kpi_scorecard.group_kpi_admin"
+    />
+    <menuitem name="Basic Measurements"
+              id="menu_kpi_basic_measures"
+              parent="menu_kpi_measurements_general"
+              action="dn_kpi_scorecard.kpi_measure_action"
+              sequence="30"
+              groups="dn_kpi_scorecard.group_kpi_admin"
+    />
+    <!-- Configuration -->
+    <menuitem name="Configuration"
+              id="menu_kpi_conf"
+              sequence="100"
+              parent="menu_kpi_main"
+              groups="dn_kpi_scorecard.group_kpi_admin"
+    />
+    <menuitem name="KPI Categories"
+              id="menu_kpi_categories"
+              parent="menu_kpi_conf"
+              action="dn_kpi_scorecard.kpi_category_action"
+              sequence="10"
+              groups="dn_kpi_scorecard.group_kpi_admin"
+    />
+</odoo>
