@@ -13,7 +13,7 @@
                         <field name="parent_signature_id"/>
                         <field name="json_path_key"/>
                         <field name="use_custom_discovery"/>
-                        <field name="code" attrs="{'invisible': [('use_custom_discovery', '=', False)]}"/>
+                        <field name="code" invisible="use_custom_discovery == False"/>
                     </group>
                 </sheet>
             </form>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_credit_release_log_tree" model="ir.ui.view">
+        <field name="name">credit.release.log.tree</field>
+        <field name="model">credit.release.log</field>
+        <field name="arch" type="xml">
+            <list string="Credit Release Logs">
+                <field name="partner_id"/>
+                <field name="release_type"/>
+                <field name="sale_order_id"/>
+                <field name="picking_id"/>
+                <field name="approved_by"/>
+                <field name="date"/>
+            </list>
+        </field>
+    </record>
+</odoo>

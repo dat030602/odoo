@@ -26,7 +26,7 @@
         <field name="source"/>
         <filter string="Non-Zero"
                 domain="[('quantity', '!=', 0)]"/>
-        <group expand="0" string="Group By">
+        <separator/>
           <filter string="Product"
                   name="group_by_product"
                   context="{'group_by': 'product_id'}"/>
@@ -36,7 +36,7 @@
           <filter string="Date"
                   name="group_by_date"
                   context="{'group_by': 'date'}"/>
-        </group>
+        
       </search>
     </field>
   </record>

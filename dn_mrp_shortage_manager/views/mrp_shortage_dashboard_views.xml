@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mrp_shortage_dashboard_form" model="ir.ui.view">
+        <field name="name">mrp.shortage.dashboard.form</field>
+        <field name="model">mrp.shortage.dashboard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_compute" string="Compute Shortages" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="warehouse_id"/>
+                            <field name="include_forecast_receipts"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Shortages">
+                            <field name="line_ids">
+                                <list decoration-danger="not next_eta or next_eta &gt; earliest_mo_date">
+                                    <field name="product_id"/>
+                                    <field name="blocked_mo_count"/>
+                                    <field name="required_qty"/>
+                                    <field name="available_qty"/>
+                                    <field name="shortage_qty"/>
+                                    <field name="incoming_qty"/>
+                                    <field name="next_eta"/>
+                                    <field name="covered_by_po"/>
+                                    <field name="earliest_mo_date"/>
+                                    <button name="action_create_rfq" string="Create RFQ" type="object" icon="fa-shopping-cart"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_shortage_dashboard" model="ir.actions.act_window">
+        <field name="name">Shortage Manager</field>
+        <field name="res_model">mrp.shortage.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_mrp_shortage_dashboard" name="Shortage Manager" parent="mrp.menu_mrp_manufacturing" action="action_mrp_shortage_dashboard"/>
+
+    
+    
+
+    <record id="view_mrp_shortage_dashboard_search" model="ir.ui.view">
+        <field name="name">mrp.shortage.dashboard.search</field>
+        <field name="model">mrp.shortage.dashboard</field>
+        <field name="arch" type="xml">
+            <search string="Search Shortages">
+                <field name="warehouse_id"/>
+                <filter string="Include Forecast" name="forecast" domain="[('include_forecast_receipts','=',True)]"/>
+                <separator/>
+                <filter string="Warehouse" name="group_warehouse" context="{'group_by':'warehouse_id'}"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="view_mrp_shortage_line_search" model="ir.ui.view">
+        <field name="name">mrp.shortage.line.search</field>
+        <field name="model">mrp.shortage.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="dashboard_id"/>
+                <filter string="Covered by PO" name="covered" domain="[('covered_by_po','=',True)]"/>
+                <filter string="Product" name="group_product" context="{'group_by':'product_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+</odoo>

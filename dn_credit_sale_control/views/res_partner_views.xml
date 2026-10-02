@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_credit_control" model="ir.ui.view">
+        <field name="name">res.partner.credit.control</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Credit Control" groups="dn_credit_sale_control.group_credit_viewer">
+                    <group>
+                        <field name="credit_check_enabled"/>
+                        <field name="credit_limit_amount" readonly="0"/>
+                        <field name="grace_amount"/>
+                        <field name="max_overdue_days"/>
+                        <field name="credit_exposure"/>
+                        <field name="overdue_amount"/>
+                        <field name="overdue_max_days"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

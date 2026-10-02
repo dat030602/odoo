@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_period_lock_form" model="ir.ui.view">
+        <field name="name">period.lock.form</field>
+        <field name="model">period.lock</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Locks">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="scope"/>
+                                    <field name="lock_date"/>
+                                    <field name="applies_to_admin"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_period_lock" model="ir.actions.act_window">
+        <field name="name">Period Locks</field>
+        <field name="res_model">period.lock</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_period_lock" name="Period Locks" parent="account.menu_finance_configuration" action="action_period_lock" groups="dn_period_closing_control.group_period_lock_manager"/>
+
+    <record id="view_period_lock_search" model="ir.ui.view">
+        <field name="name">period.lock.search</field>
+        <field name="model">period.lock</field>
+        <field name="arch" type="xml">
+            <search string="Search Period Locks">
+                <field name="company_id"/>
+                <filter string="Active" name="active" domain="[('company_id','!=',False)]"/>
+                <separator/>
+                <filter string="Company" name="group_company" context="{'group_by':'company_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+
+    <record id="view_period_lock_line_search" model="ir.ui.view">
+        <field name="name">period.lock.line.search</field>
+        <field name="model">period.lock.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="lock_id"/>
+                <field name="scope"/>
+                <filter string="Scope" name="group_scope" context="{'group_by':'scope'}"/>
+                <filter string="Lock" name="group_lock" context="{'group_by':'lock_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+</odoo>

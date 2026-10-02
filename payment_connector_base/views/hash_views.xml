@@ -39,12 +39,12 @@
             <field name="name">connector.hash.method.tree</field>
             <field name="model">connector.hash.method</field>
             <field name="arch" type="xml">
-                <tree string="Connector Hash Methods">
+                <list string="Connector Hash Methods">
                     <field name="name"/>
                     <field name="code"/>
                     <field name="algorithm"/>
                     <field name="active" widget="toggle"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -53,7 +53,7 @@
             <field name="name">Connector Hash Methods</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">connector.hash.method</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         
         <!-- Hash Menu Item -->

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_sequence_period_unlock_request" model="ir.sequence">
+        <field name="name">Period Unlock Request</field>
+        <field name="code">period.unlock.request</field>
+        <field name="prefix">UR/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="ir_cron_expire_unlock_requests" model="ir.cron">
+        <field name="name">Expire Period Unlock Requests</field>
+        <field name="model_id" ref="model_period_unlock_request"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_expire_requests()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+    </record>
+</odoo>

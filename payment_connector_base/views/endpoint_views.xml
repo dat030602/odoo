@@ -56,14 +56,14 @@
             <field name="name">connector.endpoint.tree</field>
             <field name="model">connector.endpoint</field>
             <field name="arch" type="xml">
-                <tree string="Connector Endpoints">
+                <list string="Connector Endpoints">
                     <field name="sequence" widget="handle"/>
                     <field name="api_id"/>
                     <field name="environment_id"/>
                     <field name="name"/>
                     <field name="method"/>
                     <field name="active" widget="toggle"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -93,7 +93,7 @@
             <field name="name">Connector Endpoints</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">connector.endpoint</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{'default_active': True}</field>
         </record>
         

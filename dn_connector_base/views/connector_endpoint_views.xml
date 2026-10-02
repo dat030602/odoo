@@ -26,13 +26,13 @@
                     <separator string="Custom Request Preparation"/>
                     <group>
                         <field name="use_custom_prepare_request"/>
-                        <field name="code" attrs="{'invisible': [('use_custom_prepare_request', '=', False)]}"/>
+                        <field name="code" invisible="use_custom_prepare_request == False"/>
                     </group>
                     <div class="oe_button_box" name="button_box" string="Actions">
                         <button name="button_sync" type="object" string="Sync Now"
-                            class="oe_highlight" attrs="{'invisible': [('use_custom_prepare_request', '=', True)]}"/>
+                            class="oe_highlight" invisible="use_custom_prepare_request == True"/>
                         <button name="button_execute_from_record" type="object" string="Execute from Record"
-                            class="oe_highlight" attrs="{'invisible': [('use_custom_prepare_request', '=', False)]}"/>
+                            class="oe_highlight" invisible="use_custom_prepare_request == False"/>
                     </div>
                 </sheet>
             </form>

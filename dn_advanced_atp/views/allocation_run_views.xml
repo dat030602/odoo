@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_allocation_run_form" model="ir.ui.view">
+        <field name="name">allocation.run.form</field>
+        <field name="model">allocation.run</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_simulate" string="Simulate" type="object" invisible="state != 'draft'"/>
+                    <button name="action_apply" string="Apply" type="object" invisible="state not in ('draft', 'simulated')"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="rule_id"/>
+                        <field name="product_ids" widget="many2many_tags"/>
+                        <field name="warehouse_id"/>
+                        <field name="mode"/>
+                        <field name="triggered_by" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                            <field name="line_ids" readonly="1">
+                                <list decoration-success="delta_qty &gt; 0" decoration-danger="delta_qty &lt; 0">
+                                    <field name="picking_id"/>
+                                    <field name="sale_order_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="score"/>
+                                    <field name="rank"/>
+                                    <field name="demand_qty"/>
+                                    <field name="reserved_before"/>
+                                    <field name="reserved_after"/>
+                                    <field name="delta_qty"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_allocation_run" model="ir.actions.act_window">
+        <field name="name">Allocation Runs</field>
+        <field name="res_model">allocation.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_allocation_run" name="Allocation Runs" parent="stock.menu_stock_warehouse_mgmt" action="action_allocation_run"/>
+
+    <record id="view_allocation_run_search" model="ir.ui.view">
+        <field name="name">allocation.run.search</field>
+        <field name="model">allocation.run</field>
+        <field name="arch" type="xml">
+            <search string="Search Allocation Runs">
+                <field name="name"/>
+                <field name="rule_id"/>
+                <field name="warehouse_id"/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Applied" name="applied" domain="[('state','=','applied')]"/>
+                <separator/>
+                <filter string="State" name="group_state" context="{'group_by':'state'}"/>
+                <filter string="Rule" name="group_rule" context="{'group_by':'rule_id'}"/>
+                <filter string="Warehouse" name="group_warehouse" context="{'group_by':'warehouse_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+
+    <record id="view_allocation_run_line_search" model="ir.ui.view">
+        <field name="name">allocation.run.line.search</field>
+        <field name="model">allocation.run.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="picking_id"/>
+                <field name="sale_order_id"/>
+                <field name="partner_id"/>
+                <filter string="Picking" name="group_picking" context="{'group_by':'picking_id'}"/>
+                <filter string="Run" name="group_run" context="{'group_by':'run_id'}"/>
+                <filter string="Partner" name="group_partner" context="{'group_by':'partner_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+</odoo>

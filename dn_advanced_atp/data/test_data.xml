@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="tag_vip" model="res.partner.category">
+        <field name="name">VIP</field>
+    </record>
+    <record id="demo_rule_1" model="allocation.rule">
+        <field name="name">Default VIP Rule</field>
+    </record>
+    <record id="demo_rule_line_1" model="allocation.rule.line">
+        <field name="rule_id" ref="demo_rule_1"/>
+        <field name="criterion">partner_tag</field>
+        <field name="weight">100</field>
+        <field name="partner_tag_id" ref="tag_vip"/>
+    </record>
+</odoo>

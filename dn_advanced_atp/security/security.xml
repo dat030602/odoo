@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_allocation_user" model="res.groups">
+        <field name="name">Allocation User</field>
+    </record>
+    <record id="group_allocation_manager" model="res.groups">
+        <field name="name">Allocation Manager</field>
+        <field name="implied_ids" eval="[(4, ref('group_allocation_user'))]"/>
+    </record>
+</odoo>

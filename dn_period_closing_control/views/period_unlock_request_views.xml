@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_period_unlock_request_form" model="ir.ui.view">
+        <field name="name">period.unlock.request.form</field>
+        <field name="model">period.unlock.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="Submit" type="object" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object" invisible="state != 'submitted'" groups="dn_period_closing_control.group_period_lock_manager"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state != 'submitted'" groups="dn_period_closing_control.group_period_lock_manager"/>
+                    <button name="action_revoke" string="Revoke" type="object" invisible="state != 'approved'" groups="dn_period_closing_control.group_period_lock_manager"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="requester_id" readonly="1"/>
+                        <field name="scope"/>
+                        <field name="res_model"/>
+                        <field name="res_id"/>
+                        <field name="reason"/>
+                    </group>
+                    <group invisible="state not in ('approved', 'expired', 'revoked')">
+                        <field name="approver_id" readonly="1"/>
+                        <field name="grant_start" readonly="1"/>
+                        <field name="grant_end" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Logs">
+                            <field name="line_ids" readonly="1">
+                                <list>
+                                    <field name="res_model"/>
+                                    <field name="res_id"/>
+                                    <field name="operation"/>
+                                    <field name="date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_period_unlock_request" model="ir.actions.act_window">
+        <field name="name">Unlock Requests</field>
+        <field name="res_model">period.unlock.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_period_unlock_request" name="Unlock Requests" parent="account.menu_finance_configuration" action="action_period_unlock_request"/>
+
+    <record id="view_period_unlock_request_search" model="ir.ui.view">
+        <field name="name">period.unlock.request.search</field>
+        <field name="model">period.unlock.request</field>
+        <field name="arch" type="xml">
+            <search string="Search Unlock Requests">
+                <field name="requester_id"/>
+                <field name="scope"/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Approved" name="approved" domain="[('state','=','approved')]"/>
+                <separator/>
+                <filter string="Department" name="group_department" context="{'group_by':'scope'}"/>
+                <filter string="State" name="group_state" context="{'group_by':'state'}"/>
+                <filter string="User" name="group_user" context="{'group_by':'requester_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+</odoo>

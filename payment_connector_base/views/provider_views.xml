@@ -40,42 +40,42 @@
                             </page>
                             <page string="Environments">
                                 <field name="environment_ids">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
                                         <field name="code"/>
                                         <field name="active"/>
                                         <field name="priority"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="APIs">
                                 <field name="api_ids">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
                                         <field name="code"/>
                                         <field name="version"/>
                                         <field name="active"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Settings">
                                 <field name="setting_ids">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
                                         <field name="code"/>
                                         <field name="value_type"/>
                                         <field name="encrypt"/>
                                         <field name="active"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Plugins">
                                 <field name="plugin_ids">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
                                         <field name="code"/>
                                         <field name="active"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -89,7 +89,7 @@
             <field name="name">connector.provider.tree</field>
             <field name="model">connector.provider</field>
             <field name="arch" type="xml">
-                <tree string="Connector Providers">
+                <list string="Connector Providers">
                     <field name="sequence" widget="handle"/>
                     <field name="icon" widget="image"/>
                     <field name="name"/>
@@ -97,7 +97,7 @@
                     <field name="version"/>
                     <field name="author"/>
                     <field name="active" widget="toggle"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -127,7 +127,7 @@
             <field name="name">Connector Providers</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">connector.provider</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{'default_active': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

@@ -19,16 +19,16 @@
                     </group>
                     <separator string="Authentication Details"/>
                     <group>
-                        <field name="token" attrs="{'invisible': [('auth_type', 'not in', ['bearer', 'api_key'])]}"/>
-                        <field name="api_key_header" attrs="{'invisible': [('auth_type', '!=', 'api_key')]}"/>
-                        <field name="username" attrs="{'invisible': [('auth_type', '!=', 'basic')]}"/>
-                        <field name="password" attrs="{'invisible': [('auth_type', '!=', 'basic')]}"/>
-                        <field name="oauth_client_id" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
-                        <field name="oauth_client_secret" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
-                        <field name="oauth_token_url" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
-                        <field name="oauth_access_token" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
-                        <field name="oauth_refresh_token" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
-                        <field name="oauth_expires_at" attrs="{'invisible': [('auth_type', '!=', 'oauth2')]}"/>
+                        <field name="token" invisible="auth_type not in ('bearer', 'api_key')"/>
+                        <field name="api_key_header" invisible="auth_type != 'api_key'"/>
+                        <field name="username" invisible="auth_type != 'basic'"/>
+                        <field name="password" invisible="auth_type != 'basic'"/>
+                        <field name="oauth_client_id" invisible="auth_type != 'oauth2'"/>
+                        <field name="oauth_client_secret" invisible="auth_type != 'oauth2'"/>
+                        <field name="oauth_token_url" invisible="auth_type != 'oauth2'"/>
+                        <field name="oauth_access_token" invisible="auth_type != 'oauth2'"/>
+                        <field name="oauth_refresh_token" invisible="auth_type != 'oauth2'"/>
+                        <field name="oauth_expires_at" invisible="auth_type != 'oauth2'"/>
                     </group>
                     <separator string="Endpoints"/>
                     <field name="endpoint_ids" context="{'default_connector_id': active_id}" mode="list"/>

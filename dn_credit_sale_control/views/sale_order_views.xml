@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_credit_control" model="ir.ui.view">
+        <field name="name">sale.order.credit.control</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_approve_credit" string="Approve Credit" type="object" invisible="state != 'credit_hold'" groups="dn_credit_sale_control.group_credit_approver"/>
+                <button name="action_reject_credit" string="Reject Credit" type="object" invisible="state != 'credit_hold'" groups="dn_credit_sale_control.group_credit_approver"/>
+            </header>
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-danger" role="alert" invisible="state != 'credit_hold'">
+                    Credit Blocked: <field name="credit_block_reason" readonly="1"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="credit_exposure_snapshot" invisible="state != 'credit_hold'" readonly="1"/>
+                <field name="credit_approved_by" invisible="not credit_approved_by" readonly="1"/>
+                <field name="credit_approved_date" invisible="not credit_approved_by" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

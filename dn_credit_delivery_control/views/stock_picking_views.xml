@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_credit_control" model="ir.ui.view">
+        <field name="name">stock.picking.credit.control</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_release_delivery" string="Release Delivery" type="object" invisible="not is_credit_blocked" groups="dn_credit_sale_control.group_credit_approver"/>
+            </header>
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-danger" role="alert" invisible="not is_credit_blocked">
+                    Delivery Blocked: <field name="block_reason" readonly="1"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="is_credit_blocked" invisible="1"/>
+                <field name="credit_released_by" invisible="not credit_released_by" readonly="1"/>
+                <field name="credit_released_date" invisible="not credit_released_by" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

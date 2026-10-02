@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_allocation_rule_form" model="ir.ui.view">
+        <field name="name">allocation.rule.form</field>
+        <field name="model">allocation.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                        <field name="company_id"/>
+                        <field name="warehouse_ids" widget="many2many_tags"/>
+                        <field name="product_category_ids" widget="many2many_tags"/>
+                        <field name="tie_breaker"/>
+                        <field name="protect_started_picking"/>
+                    </group>
+                    <notebook>
+                        <page string="Criteria">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="criterion"/>
+                                    <field name="partner_tag_id" invisible="criterion != 'partner_tag'"/>
+                                    <field name="direction"/>
+                                    <field name="weight"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_allocation_rule" model="ir.actions.act_window">
+        <field name="name">Allocation Rules</field>
+        <field name="res_model">allocation.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_allocation_rule" name="Allocation Rules" parent="stock.menu_stock_config_settings" action="action_allocation_rule"/>
+
+    <record id="view_allocation_rule_search" model="ir.ui.view">
+        <field name="name">allocation.rule.search</field>
+        <field name="model">allocation.rule</field>
+        <field name="arch" type="xml">
+            <search string="Search Allocation Rules">
+                <field name="name"/>
+                <field name="tie_breaker"/>
+                <filter string="Active" name="active" domain="[('active','=',True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active','=',False)]"/>
+                <separator/>
+                <filter string="Company" name="group_company" context="{'group_by':'company_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+
+    <record id="view_allocation_rule_line_search" model="ir.ui.view">
+        <field name="name">allocation.rule.line.search</field>
+        <field name="model">allocation.rule.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="rule_id"/>
+                <field name="criterion"/>
+                <filter string="Criterion" name="group_criterion" context="{'group_by':'criterion'}"/>
+                <filter string="Rule" name="group_rule" context="{'group_by':'rule_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+</odoo>

@@ -41,14 +41,14 @@
             <field name="name">connector.compute.function.tree</field>
             <field name="model">connector.compute.function</field>
             <field name="arch" type="xml">
-                <tree string="Connector Compute Functions">
+                <list string="Connector Compute Functions">
                     <field name="category"/>
                     <field name="name"/>
                     <field name="code"/>
                     <field name="type"/>
                     <field name="safe"/>
                     <field name="active" widget="toggle"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -57,7 +57,7 @@
             <field name="name">Connector Compute Functions</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">connector.compute.function</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         
         <!-- Compute Pipeline Form View -->
@@ -95,12 +95,12 @@
             <field name="name">connector.compute.pipeline.tree</field>
             <field name="model">connector.compute.pipeline</field>
             <field name="arch" type="xml">
-                <tree string="Connector Compute Pipelines">
+                <list string="Connector Compute Pipelines">
                     <field name="sequence" widget="handle"/>
                     <field name="mapping_line_id"/>
                     <field name="function_id"/>
                     <field name="stop_if_none"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -109,7 +109,7 @@
             <field name="name">Connector Compute Pipelines</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">connector.compute.pipeline</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         
         <!-- Compute Menu Item -->
