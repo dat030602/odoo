@@ -16,6 +16,7 @@ class MrpProduction(models.Model):
             else:
                 mo.readiness_percentage = 100.0
 
+    @api.depends('move_raw_ids.product_uom_qty', 'move_raw_ids.quantity')
     def _compute_shortage_count(self):
         for mo in self:
             mo.shortage_line_count = len(mo.move_raw_ids.filtered(lambda m: m.quantity < m.product_uom_qty))

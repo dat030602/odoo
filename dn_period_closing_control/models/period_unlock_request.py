@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 class PeriodUnlockRequest(models.Model):
@@ -33,14 +34,21 @@ class PeriodUnlockRequest(models.Model):
 
     def action_submit(self):
         for req in self:
-            req.state = 'submitted'
-            req.activity_schedule(
+            req.sudo().write({'state': 'submitted'})
+            manager_user = self.env.ref('dn_period_closing_control.group_period_lock_manager').user_ids[:1]
+            req.sudo().activity_schedule(
                 'mail.mail_activity_data_todo',
                 note=_("Please review unlock request"),
-                user_id=self.env.ref('dn_period_closing_control.group_period_lock_manager').users[:1].id if self.env.ref('dn_period_closing_control.group_period_lock_manager').users else self.env.user.id
+                user_id=manager_user.id if manager_user else self.env.user.id
             )
+        return True
+
+    def _check_manager_rights(self):
+        if not self.env.user.has_group('dn_period_closing_control.group_period_lock_manager') and not self.env.is_admin():
+            raise UserError(_("Only Period Lock Managers can perform this action."))
 
     def action_approve(self):
+        self._check_manager_rights()
         for req in self:
             req.write({
                 'state': 'approved',
@@ -49,12 +57,17 @@ class PeriodUnlockRequest(models.Model):
                 'grant_start': fields.Datetime.now(),
                 'grant_end': fields.Datetime.now() + timedelta(hours=2)
             })
+        return True
 
     def action_reject(self):
+        self._check_manager_rights()
         self.write({'state': 'rejected'})
+        return True
         
     def action_revoke(self):
+        self._check_manager_rights()
         self.write({'state': 'revoked'})
+        return True
 
     @api.model
     def _cron_expire_requests(self):
@@ -63,6 +76,7 @@ class PeriodUnlockRequest(models.Model):
             ('grant_end', '<=', fields.Datetime.now())
         ])
         requests.write({'state': 'expired'})
+        return True
 
 class PeriodUnlockLog(models.Model):
     _name = 'period.unlock.log'

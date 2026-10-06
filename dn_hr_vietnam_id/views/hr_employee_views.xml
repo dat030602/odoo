@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_form_vietnam_id" model="ir.ui.view">
+            <field name="name">hr.employee.form.vietnam.id</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='personal_information']//group[@name='citizenship']" position="after">
+                    <group name="vietnam_id" string="Vietnam Identification" groups="hr.group_hr_user">
+                        <field name="vn_id_type"/>
+                        <field name="vn_id_number"/>
+                        <field name="vn_id_issue_date"/>
+                        <field name="vn_id_expiry_date"/>
+                        <field name="vn_id_issue_place" placeholder="e.g. Police Department of Administrative Management of Social Order"/>
+                    </group>
+                    <group name="vietnam_id_images" string="ID Card Images" groups="hr.group_hr_user">
+                        <field name="vn_id_image_front" widget="image" options="{'size': [240, 150]}"/>
+                        <field name="vn_id_image_back" widget="image" options="{'size': [240, 150]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_employee_filter_vietnam_id" model="ir.ui.view">
+            <field name="name">hr.employee.search.vietnam.id</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="vn_id_number" string="ID Card Number" filter_domain="[('vn_id_number', 'ilike', self)]" groups="hr.group_hr_user"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

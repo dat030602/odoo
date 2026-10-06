@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 from collections import defaultdict
 
 class MrpShortageDashboard(models.TransientModel):
@@ -50,8 +51,7 @@ class MrpShortageDashboard(models.TransientModel):
                     pol = self.env['purchase.order.line'].search([
                         ('product_id', '=', product.id),
                         ('state', 'in', ('purchase', 'done')),
-                        ('qty_received', '<', fields.F('product_qty'))
-                    ], order='date_planned asc')
+                    ], order='date_planned asc').filtered(lambda l: l.qty_received < l.product_qty)
                     
                     for line in pol:
                         incoming_qty += (line.product_qty - line.qty_received)
@@ -60,7 +60,8 @@ class MrpShortageDashboard(models.TransientModel):
                             covered_by_po = True
                             break
                             
-                earliest_mo_date = min(data['mos'].mapped('date_start'))
+                mo_dates = [d for d in data['mos'].mapped('date_start') if d]
+                earliest_mo_date = min(mo_dates) if mo_dates else False
                 
                 lines.append((0, 0, {
                     'product_id': product.id,

@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 class CreditReleaseWizard(models.TransientModel):
     _name = 'credit.release.wizard'
@@ -9,12 +10,14 @@ class CreditReleaseWizard(models.TransientModel):
 
     def action_confirm(self):
         self.ensure_one()
+        if not self.env.user.has_group('dn_credit_sale_control.group_credit_approver') and not self.env.is_admin():
+            raise UserError(_("Only Credit Approvers can release delivery."))
         self.picking_id.write({
             'is_credit_blocked': False,
             'credit_released_by': self.env.user.id,
             'credit_released_date': fields.Datetime.now()
         })
-        self.env['credit.release.log'].create({
+        self.env['credit.release.log'].sudo().create({
             'partner_id': self.picking_id.partner_id.commercial_partner_id.id,
             'picking_id': self.picking_id.id,
             'release_type': 'delivery',
