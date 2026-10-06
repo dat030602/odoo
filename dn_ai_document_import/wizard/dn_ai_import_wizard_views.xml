@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dn_ai_import_wizard_form" model="ir.ui.view">
+        <field name="name">dn.ai.import.wizard.form</field>
+        <field name="model">dn.ai.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="AI Document Import &amp; Digitization">
+                <field name="state" invisible="1"/>
+                <field name="template_id" invisible="1"/>
+                <field name="res_model" invisible="1"/>
+                <field name="res_id" invisible="1"/>
+
+                <!-- STEP 1: UPLOAD -->
+                <div invisible="state != 'upload'">
+                    <div class="alert alert-info" role="alert">
+                        <strong>Upload Documents:</strong> Select PDF files or images (JPEG, PNG, TIFF) to extract and digitize automatically using AI.
+                    </div>
+                    <group>
+                        <field name="attachment_ids" widget="many2many_binary" string="Select Files"/>
+                    </group>
+                </div>
+
+                <!-- STEP 2: PREVIEW -->
+                <div invisible="state != 'preview'">
+                    <div class="alert alert-success" role="alert">
+                        <strong>Review Extracted Data:</strong> Please verify the values extracted by the AI below. You may adjust any text or match status before creating the record.
+                    </div>
+                    <notebook>
+                        <page string="Extracted Fields &amp; Match Results" name="values">
+                            <field name="value_ids">
+                                <list editable="bottom" decoration-warning="status == 'not_found'" decoration-muted="status == 'skipped'">
+                                    <field name="scope" readonly="1"/>
+                                    <field name="line_index" readonly="1" invisible="scope == 'header'"/>
+                                    <field name="field_name" readonly="1"/>
+                                    <field name="raw_value"/>
+                                    <field name="matched_res_id" string="Matched Record ID" invisible="not relation"/>
+                                    <field name="matched_record_display" readonly="1" invisible="not relation"/>
+                                    <field name="relation" column_invisible="True"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Raw AI JSON" name="raw_json">
+                            <field name="raw_json" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                    </notebook>
+                </div>
+
+                <footer>
+                    <button name="action_extract" string="Digitize &amp; Preview" type="object" class="btn-primary" invisible="state != 'upload'"/>
+                    <button name="action_confirm" string="Create / Update Record" type="object" class="btn-primary" invisible="state != 'preview'"/>
+                    <button name="action_back" string="Back to Upload" type="object" class="btn-secondary" invisible="state != 'preview'"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

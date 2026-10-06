@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="dn_ai_import_template_sale_order" model="dn.ai.import.template">
+        <field name="name">Sale Order (AI Digitization)</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="llm_model">gemini-2.5-flash</field>
+        <field name="line_field_id" search="[('model_id', '=', ref('sale.model_sale_order')), ('name', '=', 'order_line')]"/>
+        <field name="replace_lines">False</field>
+        <field name="attach_document">True</field>
+        <field name="prompt">You are an expert OCR &amp; Document Digitization AI.
+Extract the customer order details and all item lines accurately from the provided document:
+- Customer / Partner info (Customer name, VAT number)
+- Customer order reference (client_order_ref)
+- Date of the order (date_order)
+- Order validity expiration date (validity_date)
+- Notes or terms
+- For each item in lines:
+  - Product name or code
+  - Description
+  - Quantity
+  - Unit price
+  - Discount percentage
+Format all numbers as standard floats/integers without currency symbols.
+        </field>
+    </record>
+
+    <!-- Header Mappings -->
+    <record id="mapping_so_partner" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">10</field>
+        <field name="scope">header</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order')), ('name', '=', 'partner_id')]"/>
+        <field name="key">partner</field>
+        <field name="description">Customer name or company name</field>
+        <field name="match_mode">fuzzy</field>
+        <field name="fuzzy_threshold">80</field>
+        <field name="create_if_missing">False</field>
+    </record>
+
+    <record id="mapping_so_ref" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">20</field>
+        <field name="scope">header</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order')), ('name', '=', 'client_order_ref')]"/>
+        <field name="key">client_order_ref</field>
+        <field name="description">Customer PO number or reference</field>
+    </record>
+
+    <record id="mapping_so_date" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">30</field>
+        <field name="scope">header</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order')), ('name', '=', 'date_order')]"/>
+        <field name="key">date_order</field>
+        <field name="description">Quotation or order date (YYYY-MM-DD)</field>
+    </record>
+
+    <record id="mapping_so_validity" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">40</field>
+        <field name="scope">header</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order')), ('name', '=', 'validity_date')]"/>
+        <field name="key">validity_date</field>
+        <field name="description">Expiration date (YYYY-MM-DD)</field>
+    </record>
+
+    <!-- Line Item Mappings -->
+    <record id="mapping_sol_product" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">10</field>
+        <field name="scope">line</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order_line')), ('name', '=', 'product_id')]"/>
+        <field name="key">product</field>
+        <field name="description">Product name, reference or code</field>
+        <field name="match_mode">fuzzy</field>
+        <field name="fuzzy_threshold">85</field>
+        <field name="create_if_missing">False</field>
+    </record>
+
+    <record id="mapping_sol_desc" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">20</field>
+        <field name="scope">line</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order_line')), ('name', '=', 'name')]"/>
+        <field name="key">description</field>
+        <field name="description">Item description or name</field>
+    </record>
+
+    <record id="mapping_sol_qty" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">30</field>
+        <field name="scope">line</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order_line')), ('name', '=', 'product_uom_qty')]"/>
+        <field name="key">quantity</field>
+        <field name="description">Ordered quantity</field>
+    </record>
+
+    <record id="mapping_sol_price" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">40</field>
+        <field name="scope">line</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order_line')), ('name', '=', 'price_unit')]"/>
+        <field name="key">price_unit</field>
+        <field name="description">Unit price</field>
+    </record>
+
+    <record id="mapping_sol_discount" model="dn.ai.import.mapping">
+        <field name="template_id" ref="dn_ai_import_template_sale_order"/>
+        <field name="sequence">50</field>
+        <field name="scope">line</field>
+        <field name="field_id" search="[('model_id', '=', ref('sale.model_sale_order_line')), ('name', '=', 'discount')]"/>
+        <field name="key">discount</field>
+        <field name="description">Discount percentage (0-100)</field>
+    </record>
+</odoo>

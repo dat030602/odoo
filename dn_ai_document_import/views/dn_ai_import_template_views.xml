@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template Tree View -->
+    <record id="view_dn_ai_import_template_tree" model="ir.ui.view">
+        <field name="name">dn.ai.import.template.tree</field>
+        <field name="model">dn.ai.import.template</field>
+        <field name="arch" type="xml">
+            <list string="AI Document Import Templates">
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="llm_model"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Template Form View -->
+    <record id="view_dn_ai_import_template_form" model="ir.ui.view">
+        <field name="name">dn.ai.import.template.form</field>
+        <field name="model">dn.ai.import.template</field>
+        <field name="arch" type="xml">
+            <form string="AI Document Import Template">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Template Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Sale Order Digitization"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Configuration">
+                            <field name="model_id" options="{'no_create': True}"/>
+                            <field name="model_name" invisible="1"/>
+                            <field name="line_field_id" options="{'no_create': True}"/>
+                            <field name="line_model_id" invisible="1"/>
+                            <field name="llm_model"/>
+                        </group>
+                        <group string="Import Settings">
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="replace_lines" invisible="not line_field_id"/>
+                            <field name="attach_document"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="group_ids" widget="many2many_tags"/>
+                            <field name="action_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Header Mappings" name="header_mappings">
+                            <field name="mapping_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="scope" column_invisible="True"/>
+                                    <field name="target_model_id" column_invisible="True"/>
+                                    <field name="field_id" options="{'no_create': True}"/>
+                                    <field name="key"/>
+                                    <field name="field_type"/>
+                                    <field name="description"/>
+                                    <field name="is_required"/>
+                                    <field name="match_mode" invisible="field_type not in ('many2one', 'many2many')"/>
+                                    <field name="fuzzy_threshold" invisible="match_mode != 'fuzzy'"/>
+                                    <field name="create_if_missing" invisible="field_type not in ('many2one', 'many2many')"/>
+                                    <field name="extra_domain" invisible="field_type not in ('many2one', 'many2many')"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Line Mappings" name="line_mappings" invisible="not line_field_id">
+                            <field name="line_mapping_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="scope" column_invisible="True"/>
+                                    <field name="target_model_id" column_invisible="True"/>
+                                    <field name="field_id" options="{'no_create': True}"/>
+                                    <field name="key"/>
+                                    <field name="field_type"/>
+                                    <field name="description"/>
+                                    <field name="is_required"/>
+                                    <field name="match_mode" invisible="field_type not in ('many2one', 'many2many')"/>
+                                    <field name="fuzzy_threshold" invisible="match_mode != 'fuzzy'"/>
+                                    <field name="create_if_missing" invisible="field_type not in ('many2one', 'many2many')"/>
+                                    <field name="extra_domain" invisible="field_type not in ('many2one', 'many2many')"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Extraction Prompt" name="prompt">
+                            <field name="prompt" placeholder="Provide clear natural language instructions to guide the AI extraction..."/>
+                        </page>
+                        <page string="Generated JSON Schema" name="schema">
+                            <field name="json_schema" widget="ace" options="{'mode': 'json'}" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Template Action -->
+    <record id="action_dn_ai_import_template" model="ir.actions.act_window">
+        <field name="name">Document Import Templates</field>
+        <field name="res_model">dn.ai.import.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new AI Document Import Template!
+            </p>
+            <p>
+                Configure custom prompts, target models, and matching criteria to digitize physical and digital documents using LLMs.
+            </p>
+        </field>
+    </record>
+</odoo>

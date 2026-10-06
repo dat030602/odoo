@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu under Sales -> Configuration -->
+    <menuitem id="menu_dn_ai_import_template_sale"
+              name="AI Document Import Templates"
+              parent="sale.menu_sales_config"
+              action="action_dn_ai_import_template"
+              sequence="85"/>
+
+    <!-- Menu under Settings -> Technical -> Automation / AI -->
+    <menuitem id="menu_dn_ai_import_template_tech"
+              name="AI Document Import Templates"
+              parent="base.menu_custom"
+              action="action_dn_ai_import_template"
+              sequence="65"
+              groups="base.group_system"/>
+</odoo>

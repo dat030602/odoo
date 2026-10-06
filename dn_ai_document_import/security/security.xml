@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Record Rule for Multi-company -->
+    <record id="dn_ai_import_template_comp_rule" model="ir.rule">
+        <field name="name">AI Document Import Template Multi-Company</field>
+        <field name="model_id" ref="model_dn_ai_import_template"/>
+        <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+    </record>
+</odoo>
