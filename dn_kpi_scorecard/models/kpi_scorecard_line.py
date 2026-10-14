@@ -27,6 +27,7 @@ class kpi_scorecard_line(models.Model):
             if line.computation_error:
                 line.formatted_actual_value = _("N/A")
                 line.result = "error"
+                line.progress_rate = 0.0
                 line.formatted_target_value = kpi_id and kpi_id._return_formated_appearance(
                     line.target_value, novalue_change=True, currency=company_currency,
                 )
@@ -39,12 +40,22 @@ class kpi_scorecard_line(models.Model):
                     line.target_value, novalue_change=True, currency=company_currency,
                 )
                 result_type = kpi_id.result_type
-                actual_value = line.kpi_id.result_appearance == "percentage" and (actual_value * 100) or actual_value
-                bigger_result = actual_value >= line.target_value
+                actual_eval = line.kpi_id.result_appearance == "percentage" and (actual_value * 100) or actual_value
+                bigger_result = actual_eval >= line.target_value
                 if result_type == "more":
                     line.result = bigger_result and "success" or "failure"
+                    if line.target_value:
+                        line.progress_rate = round(max(0.0, (actual_eval / line.target_value) * 100.0), 1)
+                    else:
+                        line.progress_rate = 100.0 if actual_eval > 0 else 0.0
                 elif result_type == "less":
                     line.result = bigger_result and "failure" or "success"
+                    if actual_eval <= 0:
+                        line.progress_rate = 100.0 if line.target_value >= 0 else 0.0
+                    elif line.target_value:
+                        line.progress_rate = round(max(0.0, (line.target_value / actual_eval) * 100.0), 1)
+                    else:
+                        line.progress_rate = 0.0
 
     @api.depends("period_id", "period_id.line_ids", "period_id.line_ids.kpi_id", "period_id.line_ids.kpi_id.sequence",
                  "period_id.line_ids.kpi_id.all_parent_ids")
@@ -118,6 +129,12 @@ class kpi_scorecard_line(models.Model):
             ("failure", "Failure"),
             ("error", "Error"),
         ],
+        compute=_compute_formatted_actual_value,
+        compute_sudo=True,
+        store=True,
+    )
+    progress_rate = fields.Float(
+        string="Progress",
         compute=_compute_formatted_actual_value,
         compute_sudo=True,
         store=True,
@@ -237,6 +254,22 @@ class kpi_scorecard_line(models.Model):
             "all_similar_targets": all_similar_targets,
             "similar_targets": similar_targets,
             "kpi_name": self.kpi_id.name,
+        }
+
+    def action_show_history(self):
+        """
+        Open a list view of history for this KPI across all periods.
+        """
+        self.ensure_one()
+        return {
+            "name": _("History: %s", self.kpi_id.name),
+            "type": "ir.actions.act_window",
+            "res_model": "kpi.scorecard.line",
+            "view_mode": "list,form",
+            "views": [(False, "list"), (False, "form")],
+            "domain": [("kpi_id", "=", self.kpi_id.id), ("company_id", "=", self.company_id.id)],
+            "target": "current",
+            "context": {"default_kpi_id": self.kpi_id.id},
         }
 
     def _get_levels_recursively(self, parent_kpi, all_kpis, kpi_lines_dict, parent_line=False, ):

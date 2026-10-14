@@ -25,7 +25,8 @@
         <field name="model">kpi.item</field>
         <field name="arch" type="xml">
             <form>
-                <div class="oe_title">
+                <sheet>
+                    <div class="oe_title">
                     <h1>
                         <field name="name" placeholder="KPI" class="oe_inline"/>
                     </h1>
@@ -35,10 +36,9 @@
                 >
                     <field name="formula_warning"/>
                 </h2>
-                <group>
-                    <field name="formula"/>
-                </group>
-                <!-- <field name="formula" nolabel="1" colspan="2" widget="kpiFormulaWidget"/> -->
+                <div class="mb-3">
+                    <field name="formula" widget="kpiFormulaWidget" nolabel="1"/>
+                </div>
 
                 <notebook>
                     <page string="Settings">
@@ -128,6 +128,7 @@
                         <field name="help_notes"/>
                     </page>
                 </notebook>
+                </sheet>
             </form>
         </field>
     </record>

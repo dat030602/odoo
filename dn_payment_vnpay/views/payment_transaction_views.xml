@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_transaction_form_vnpay" model="ir.ui.view">
+        <field name="name">payment.transaction.form.vnpay</field>
+        <field name="model">payment.transaction</field>
+        <field name="inherit_id" ref="payment.payment_transaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook groups="base.group_no_one">
+                    <page string="Connector Logs" invisible="not connector_response_log_id">
+                        <group>
+                            <field name="connector_response_log_id" groups="dn_payment_connector_base.group_connector_user" invisible="1"/>
+                            <field name="connector_response_log_body" nolabel="1" readonly="1"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

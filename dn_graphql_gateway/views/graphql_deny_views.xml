@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dn_graphql_deny_list" model="ir.ui.view">
+        <field name="name">dn.graphql.deny.list</field>
+        <field name="model">dn.graphql.deny</field>
+        <field name="arch" type="xml">
+            <list string="GraphQL Blocklist Rules">
+                <field name="name"/>
+                <field name="key_rec_id"/>
+                <field name="is_global" widget="boolean_toggle"/>
+                <field name="model_name"/>
+                <field name="field_name"/>
+                <field name="operation"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="reason"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dn_graphql_deny_form" model="ir.ui.view">
+        <field name="name">dn.graphql.deny.form</field>
+        <field name="model">dn.graphql.deny</field>
+        <field name="arch" type="xml">
+            <form string="GraphQL Security Deny Rule">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Rule Scope">
+                            <field name="key_rec_id" placeholder="Leave blank for Global enforcement across all clients"/>
+                            <field name="is_global" readonly="1"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Restriction Target">
+                            <field name="model_id"/>
+                            <field name="model_name" readonly="1"/>
+                            <field name="field_id" placeholder="Leave blank to deny entire model"/>
+                            <field name="field_name" readonly="1"/>
+                            <field name="operation"/>
+                        </group>
+                    </group>
+                    <group string="Security Justification">
+                        <field name="reason" placeholder="Explain why this model or field is restricted..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dn_graphql_deny_search" model="ir.ui.view">
+        <field name="name">dn.graphql.deny.search</field>
+        <field name="model">dn.graphql.deny</field>
+        <field name="arch" type="xml">
+            <search string="Search Deny Rules">
+                <field name="name"/>
+                <field name="model_name"/>
+                <field name="field_name"/>
+                <field name="key_rec_id"/>
+                <filter string="Global Policies" name="global" domain="[('key_rec_id', '=', False), ('api_key_id', '=', False)]"/>
+                <filter string="API Key Specific" name="key_specific" domain="['|', ('key_rec_id', '!=', False), ('api_key_id', '!=', False)]"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Model" name="grp_model" context="{'group_by': 'model_name'}"/>
+                    <filter string="Operation" name="grp_op" context="{'group_by': 'operation'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dn_graphql_deny" model="ir.actions.act_window">
+        <field name="name">Blocklist &amp; Deny Policies</field>
+        <field name="res_model">dn.graphql.deny</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dn_graphql_deny_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define security blocklist rules to forbid specific models or sensitive fields!
+            </p>
+        </field>
+    </record>
+</odoo>

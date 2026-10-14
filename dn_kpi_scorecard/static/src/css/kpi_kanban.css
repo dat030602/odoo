@@ -86,41 +86,93 @@ div.kpi-kanban-navigation-panel > .jstree-default .jstree-clicked {
     flex: 1 1;
 }
 
-/* KPI tables*/
+/* KPI Scorecard Line Kanban Styling (Fixed Width) */
+.kpi-kanban-view .o_kanban_renderer.o_kanban_ungrouped {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    padding: 12px !important;
+}
+
+.kpi-kanban-view .o_kanban_record {
+    width: 380px !important;
+    min-width: 340px !important;
+    max-width: 380px !important;
+    flex: 0 0 380px !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 420px) {
+    .kpi-kanban-view .o_kanban_record {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+}
+
 .kpi-kanban-record-card {
     width: 100% !important;
-    box-shadow: none !important;
+    box-sizing: border-box !important;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #dee2e6 !important;
+    border-left-width: 5px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
     margin: 0 !important;
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-bottom: 1px solid #ced4da !important;    
     display: flex !important;
+    align-items: center;
+    transition: all 0.15s ease-in-out;
 }
+
 .kpi-kanban-record-card:hover {
-    background-color: #f2f6fc;
+    background-color: #f8fafd;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08) !important;
+    border-color: #c9d6df !important;
 }
-.kpi-kanban-info {
-    flex: 0 0 55%;
-    padding: 0 5px;
+
+.kpi-kanban-record-card.border-start-success {
+    border-left-color: #198754 !important;
 }
-.kpi-kanban-figures {
-    flex: 0 0 15%;
-    padding: 0 5px;
-    font-size: 120%;
+
+.kpi-kanban-record-card.border-start-danger {
+    border-left-color: #dc3545 !important;
 }
-.kpi-kanban-figures-target {
-    flex: 0 0 15%;
-    padding: 0 5px;
-    font-size: 120%;
+
+.kpi-kanban-record-card.border-start-muted {
+    border-left-color: #adb5bd !important;
 }
+
+/* Left Progress Section */
+.kpi-kanban-progress {
+    min-width: 58px;
+    flex-shrink: 0;
+}
+
+.kpi-progress-bar-wrap {
+    overflow: hidden;
+}
+
+/* Middle / Main Section */
+.kpi-kanban-main {
+    min-width: 0;
+}
+
+/* Right Action Buttons */
 .kpi-kanban-buttons {
-    flex: 0 0 15%;
-    padding: 0 5px !important;
+    flex-shrink: 0;
 }
+
 .kpi-kanban-row-btn {
-    padding: 0 3px !important;
-}
-.kpi-kanban-show-figures {
-    padding: 5px;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
 }

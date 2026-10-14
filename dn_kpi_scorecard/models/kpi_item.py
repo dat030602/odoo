@@ -326,7 +326,6 @@ class kpi_item(models.Model):
         Extra info:
          * Expected singleton
         """
-        self.ensure_one()
         measure_ids = self.env["kpi.measure.item"].search([('existing_kpi', '!=', False)]).mapped(lambda mes: {
             "id": mes.id,
             "name": mes.name,
@@ -337,7 +336,8 @@ class kpi_item(models.Model):
             "name": const.name,
             "description": const.description or const.name,
         })
-        kpi_ids = self.env["kpi.item"].search([("id", "!=", self.id)]).mapped(lambda kpi: {
+        kpi_domain = [("id", "!=", self.id)] if self else []
+        kpi_ids = self.env["kpi.item"].search(kpi_domain).mapped(lambda kpi: {
             "id": kpi.id,
             "name": kpi.name,
             "description": kpi.description or kpi.name,
@@ -601,12 +601,8 @@ class kpi_item(models.Model):
         self.ensure_one()
         formatted_value = self._return_rounded_value(value, novalue_change)
         if isinstance(formatted_value, (int, float)):
-            if abs(formatted_value) > 100000:
-                # Format theo currency của công ty nếu có
-                currency_obj = self.env.company.currency_id
-                formatted_value = currency_obj and currency_obj.format(formatted_value) or "{:,.3f}".format(formatted_value)
-            else:
-                formatted_value = "{:,.3f}".format(formatted_value)
+            rounding = int(self.result_rounding or 2)
+            formatted_value = f"{formatted_value:,.{rounding}f}"
         currency = self.currency_id or currency
         if self.result_appearance in ["monetory"] and currency:
             currency_symbol = currency.symbol

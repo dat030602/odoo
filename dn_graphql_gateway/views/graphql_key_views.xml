@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List / Tree View -->
+    <record id="view_dn_graphql_key_tree" model="ir.ui.view">
+        <field name="name">dn.graphql.key.list</field>
+        <field name="model">dn.graphql.key</field>
+        <field name="arch" type="xml">
+            <list string="GraphQL API Keys" decoration-success="state == 'active'" decoration-muted="state == 'draft'" decoration-danger="state == 'revoked'">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="key_index"/>
+                <field name="expiration_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-info="state == 'draft'" decoration-danger="state == 'revoked'"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_dn_graphql_key_form" model="ir.ui.view">
+        <field name="name">dn.graphql.key.form</field>
+        <field name="model">dn.graphql.key</field>
+        <field name="arch" type="xml">
+            <form string="GraphQL API Key">
+                <header>
+                    <button name="action_generate_key"
+                            string="Generate API Key"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_regenerate_key"
+                            string="Regenerate Key"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state != 'active'"
+                            confirm="Are you sure you want to regenerate this API key? The existing key will be permanently revoked."/>
+                    <button name="action_revoke_key"
+                            string="Revoke Key"
+                            type="object"
+                            class="btn-danger"
+                            invisible="state != 'active'"
+                            confirm="Are you sure you want to revoke this API key? All applications using it will be blocked immediately."/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,revoked"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not raw_key">
+                        <div class="fw-bold fs-6 mb-1">🔑 Secret API Key Token (Displaying Once)</div>
+                        <p class="mb-2">Please copy and securely store this API key now. For security purposes, it cannot be recovered after this session:</p>
+                        <field name="raw_key" readonly="1" widget="CopyClipboardChar" class="fw-bold font-monospace fs-5 text-dark"/>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name" string="Key Description / Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Warehouse Mobile Scanner Integration"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Identity &amp; Ownership">
+                            <field name="user_id" placeholder="Select Service User..."/>
+                            <field name="company_id"/>
+                            <field name="expiration_date" placeholder="Leave blank for non-expiring key"/>
+                        </group>
+                        <group string="Technical Metadata">
+                            <field name="key_index" readonly="1"/>
+                            <field name="key_id" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="User Permissions &amp; Access Groups" name="permissions">
+                            <p class="text-muted mb-2">
+                                Manage the assigned user's security groups directly below. The GraphQL API strictly enforces these groups, ACLs, and Record Rules for every request made with this key.
+                            </p>
+                            <field name="user_group_ids">
+                                <list string="Assigned Security Groups">
+                                    <field name="full_name" string="Role / Access Group"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Custom Key Blocklist Rules" name="deny_rules">
+                            <p class="text-muted mb-2">
+                                Security deny rules specifically targeting this API key. Deny rules take precedence over native Odoo user rights.
+                            </p>
+                            <field name="deny_rule_ids" readonly="1">
+                                <list string="Deny Rules">
+                                    <field name="model_name"/>
+                                    <field name="field_name"/>
+                                    <field name="operation"/>
+                                    <field name="reason"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Request Logs" name="logs">
+                            <field name="log_ids" readonly="1">
+                                <list string="Audit Logs" decoration-danger="status_code &gt;= 400" decoration-success="status_code == 200">
+                                    <field name="create_date" string="Timestamp"/>
+                                    <field name="request_id"/>
+                                    <field name="operation_name"/>
+                                    <field name="status_code"/>
+                                    <field name="duration_ms"/>
+                                    <field name="node_count"/>
+                                    <field name="rolled_back" widget="boolean_toggle"/>
+                                    <field name="error_code"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_dn_graphql_key_search" model="ir.ui.view">
+        <field name="name">dn.graphql.key.search</field>
+        <field name="model">dn.graphql.key</field>
+        <field name="arch" type="xml">
+            <search string="Search API Keys">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="key_index"/>
+                <filter string="Active Keys" name="filter_active" domain="[('state', '=', 'active')]"/>
+                <filter string="Draft Keys" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Revoked Keys" name="filter_revoked" domain="[('state', '=', 'revoked')]"/>
+                <group>
+                    <filter string="User" name="group_by_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_dn_graphql_key" model="ir.actions.act_window">
+        <field name="name">API Keys</field>
+        <field name="res_model">dn.graphql.key</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first GraphQL API Key!
+            </p>
+            <p>
+                Assign a dedicated service user, configure access permissions directly, and generate a secure Bearer token.
+            </p>
+        </field>
+    </record>
+</odoo>

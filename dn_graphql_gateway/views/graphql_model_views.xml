@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dn_graphql_model_list" model="ir.ui.view">
+        <field name="name">dn.graphql.model.list</field>
+        <field name="model">dn.graphql.model</field>
+        <field name="arch" type="xml">
+            <list string="GraphQL Exposed Models">
+                <field name="model_id"/>
+                <field name="model_name"/>
+                <field name="allow_read"/>
+                <field name="allow_create"/>
+                <field name="allow_write"/>
+                <field name="allow_unlink"/>
+                <field name="default_limit"/>
+                <field name="max_limit"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dn_graphql_model_form" model="ir.ui.view">
+        <field name="name">dn.graphql.model.form</field>
+        <field name="model">dn.graphql.model</field>
+        <field name="arch" type="xml">
+            <form string="GraphQL Model Whitelist">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="model_id" placeholder="Select Odoo Model..."/>
+                        </h1>
+                        <h3>
+                            <field name="model_name" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Schema Activation">
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="default_limit"/>
+                            <field name="max_limit"/>
+                        </group>
+                        <group string="Permitted Operations">
+                            <field name="allow_read"/>
+                            <field name="allow_create"/>
+                            <field name="allow_write"/>
+                            <field name="allow_unlink"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Exposed Fields Whitelist" name="fields">
+                            <p class="text-muted">
+                                If no fields are explicitly selected, all standard scalar fields (except binary files) will be exposed automatically.
+                            </p>
+                            <field name="field_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="field_description"/>
+                                    <field name="ttype"/>
+                                    <field name="required"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dn_graphql_model_search" model="ir.ui.view">
+        <field name="name">dn.graphql.model.search</field>
+        <field name="model">dn.graphql.model</field>
+        <field name="arch" type="xml">
+            <search string="Search GraphQL Models">
+                <field name="model_id"/>
+                <field name="model_name"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dn_graphql_model" model="ir.actions.act_window">
+        <field name="name">Exposed Models</field>
+        <field name="res_model">dn.graphql.model</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dn_graphql_model_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register an Odoo model to expose it via GraphQL!
+            </p>
+        </field>
+    </record>
+</odoo>

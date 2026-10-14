@@ -46,6 +46,29 @@
             </form>
         </field>
     </record>
+    <record id="kpi_scorecard_line_view_tree" model="ir.ui.view">
+        <field name="name">kpi.scorecard.line.tree</field>
+        <field name="model">kpi.scorecard.line</field>
+        <field name="arch" type="xml">
+            <list decoration-success="result == 'success'"
+                  decoration-danger="result == 'failure'"
+                  decoration-muted="result == 'error'"
+            >
+                <field name="period_id"/>
+                <field name="kpi_id"/>
+                <field name="employee_id"/>
+                <field name="formatted_target_value" string="Target"/>
+                <field name="formatted_actual_value" string="Actual"/>
+                <field name="progress_rate" widget="progressbar" string="Progress"/>
+                <field name="result" widget="badge"
+                       decoration-success="result == 'success'"
+                       decoration-danger="result == 'failure'"
+                       decoration-muted="result == 'error'"
+                />
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
     <record id="kpi_scorecard_line_view_kanban" model="ir.ui.view">
         <field name="name">kpi.scorecard.line.kanban</field>
         <field name="model">kpi.scorecard.line</field>
@@ -61,8 +84,11 @@
             >
                 <field name="id"/>
                 <field name="kpi_id"/>
+                <field name="category_id"/>
+                <field name="employee_id"/>
                 <field name="formatted_target_value"/>
                 <field name="formatted_actual_value"/>
+                <field name="progress_rate"/>
                 <field name="computation_error"/>
                 <field name="result"/>
                 <field name="all_parents"/>
@@ -71,66 +97,81 @@
                 <field name="edit_rights"/>
                 <templates>
                     <t t-name="card">
-                        <div t-attf-class="kpi-kanban-record-card"
+                        <div t-attf-class="kpi-kanban-record-card py-2 px-3 d-flex align-items-center #{record.result.raw_value == 'success' ? 'border-start-success' : (record.result.raw_value == 'failure' ? 'border-start-danger' : 'border-start-muted')}"
                              t-att-id="id"
                         >
-                            <div t-attf-class="kpi-kanban-info text-#{record.result.raw_value == 'error' and 'muted' or ''}"                                 
-                                 t-attf-data-parent="#{record.all_parents.raw_value}"
-                                 t-attf-data-id="#{record.id.raw_value}"
-                                 t-attf-title="#{record.description.raw_value and record.description.raw_value or ''}"
-                            >
-                                <field name="kpi_id"/>
-                                <i t-if="record.computation_error.raw_value"
-                                   class="fa fa-warning text-danger" 
-                                   t-attf-title="#{record.computation_error.raw_value}"  
-                                > </i>
+                            <!-- 1. Progress Bar on the LEFT -->
+                            <div class="kpi-kanban-progress me-3 text-center d-flex flex-column align-items-center justify-content-center">
+                                <div t-attf-class="fw-bold fs-6 #{record.result.raw_value == 'success' ? 'text-success' : (record.result.raw_value == 'failure' ? 'text-danger' : 'text-muted')}">
+                                    <field name="progress_rate"/>%
+                                </div>
+                                <div class="progress mt-1" style="width: 56px; height: 6px; background-color: #e9ecef; border-radius: 3px;">
+                                    <div t-attf-class="progress-bar #{record.result.raw_value == 'success' ? 'bg-success' : (record.result.raw_value == 'failure' ? 'bg-danger' : 'bg-secondary')}"
+                                         t-attf-style="width: #{Math.min(Math.max(record.progress_rate.raw_value or 0, 0), 100)}%; border-radius: 3px;"/>
+                                </div>
                             </div>
-                            <div t-attf-class="kpi-kanban-figures text-center text-#{record.result.raw_value == 'success' and 'success' or record.result.raw_value == 'failure' and 'danger' or 'muted'}"
-                                 title="Actual Value"
-                            >
-                                <span class="kpi-kanban-show-figures">
-                                    <field name="formatted_actual_value"/>
-                                </span>
+
+                            <!-- 2. Middle: Name and figures UNDER the name -->
+                            <div class="kpi-kanban-main flex-grow-1 overflow-hidden">
+                                <!-- Line 1: KPI Name & Tags -->
+                                <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+                                    <span class="fw-bold text-dark fs-6 text-truncate" t-att-title="record.description.raw_value or ''">
+                                        <field name="kpi_id"/>
+                                    </span>
+                                    <t t-if="record.category_id.raw_value">
+                                        <span class="badge bg-light text-secondary border">
+                                            <field name="category_id"/>
+                                        </span>
+                                    </t>
+                                    <t t-if="record.employee_id.raw_value">
+                                        <span class="badge rounded-pill bg-light text-secondary border">
+                                            <i class="fa fa-user me-1"/><field name="employee_id"/>
+                                        </span>
+                                    </t>
+                                    <i t-if="record.computation_error.raw_value"
+                                       class="fa fa-warning text-danger" 
+                                       t-att-title="record.computation_error.raw_value"/>
+                                </div>
+
+                                <!-- Line 2: Figures UNDER name -->
+                                <div class="d-flex align-items-center flex-wrap gap-3 text-muted small">
+                                    <span>
+                                        Target: <strong class="text-dark"><field name="formatted_target_value"/></strong>
+                                    </span>
+                                    <span>
+                                        Actual: 
+                                        <strong t-attf-class="#{record.result.raw_value == 'success' ? 'text-success' : (record.result.raw_value == 'failure' ? 'text-danger' : 'text-muted')}">
+                                            <field name="formatted_actual_value"/>
+                                        </strong>
+                                    </span>
+                                    <span t-attf-class="badge #{record.result.raw_value == 'success' ? 'bg-success' : (record.result.raw_value == 'failure' ? 'bg-danger' : 'bg-secondary')}">
+                                        <t t-if="record.result.raw_value == 'success'">Achieved</t>
+                                        <t t-elif="record.result.raw_value == 'failure'">Failed</t>
+                                        <t t-else="">Error</t>
+                                    </span>
+                                </div>
                             </div>
-                            <div t-attf-class="kpi-kanban-figures-target text-center"
-                                 title="Target Value"   
-                            >
-                                <span class="kpi-kanban-show-figures">
-                                    <field name="formatted_target_value"/>
-                                </span>
-                            </div>
-                            <div class="kpi-kanban-buttons">
-                                <div class="pull-right">
-                                    <button type="button" 
-                                            class="btn btn-primary kpi-edit-target kpi-kanban-row-btn kpi-kanban-button kpi-kanban-conditional"
-                                            kpi-required="period,open"
-                                            t-attf-data-id="#{record.id.raw_value}"
-                                            title="Change Target"
-                                            t-if="record.edit_rights.raw_value"
-                                            name="kpi-edit-target"
-                                    >
-                                        <i class="fa fa-edit"></i>
-                                    </button>    
-                                    <button type="button" 
-                                            class="btn btn-primary kpi-show-history kpi-kanban-row-btn kpi-kanban-button kpi-kanban-conditional"
-                                            kpi-required="period"
-                                            t-attf-data-id="#{record.id.raw_value}"
-                                            title="History"
-                                            name="kpi-show-history"
-                                    >
-                                        <i class="fa fa-signal"></i>
-                                    </button> 
-                                    <button type="button" 
-                                            class="btn btn-primary kpi-remove-target kpi-kanban-row-btn kpi-kanban-button kpi-kanban-conditional"
-                                            kpi-required="period,open"
-                                            t-attf-data-id="#{record.id.raw_value}"
-                                            title="Delete Target"
-                                            t-if="record.edit_rights.raw_value"
-                                            name="kpi-remove-target"
-                                    >
-                                        <i class="fa fa-remove"></i>
-                                    </button> 
-                                </div>                            
+
+                            <!-- 3. Action Buttons on the RIGHT -->
+                            <div class="kpi-kanban-buttons ms-auto ps-2 d-flex gap-1 align-items-center flex-shrink-0">
+                                <button type="open" 
+                                        class="btn btn-sm btn-outline-primary kpi-kanban-row-btn"
+                                        title="Change Target"
+                                        t-if="record.edit_rights.raw_value">
+                                    <i class="fa fa-edit"/>
+                                </button>    
+                                <button type="object" 
+                                        name="action_show_history"
+                                        class="btn btn-sm btn-outline-secondary kpi-kanban-row-btn"
+                                        title="History">
+                                    <i class="fa fa-signal"/>
+                                </button> 
+                                <button type="delete" 
+                                        class="btn btn-sm btn-outline-danger kpi-kanban-row-btn"
+                                        title="Delete Target"
+                                        t-if="record.edit_rights.raw_value">
+                                    <i class="fa fa-trash"/>
+                                </button> 
                             </div>
                         </div>
                     </t>
@@ -141,7 +182,7 @@
     <record id="kpi_scorecard_line_action" model="ir.actions.act_window">
         <field name="name">KPI Scorecard</field>
         <field name="res_model">kpi.scorecard.line</field>
-        <field name="view_mode">kanban</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="target">main</field> 
         <field name="search_view_id" ref="kpi_scorecard_line_view_search"/>
     </record>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="packing_list_line_search_view" model="ir.ui.view">
+        <field name="name">packing.list.line.search.view</field>
+        <field name="model">packing.list.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <separator />
+                <filter string="Archived" name="archived_packing_list" domain="[('active', '=', False)]" />
+                <separator />
+                <!--                <filter name="stage_id" string="Stage" context="{'group_by': 'stage_id'}" domain="[]"/>-->
+            </search>
+        </field>
+    </record>
+
+    <record id="packing_list_line_form_view" model="ir.ui.view">
+        <field name="name">packing.list.line.form.view</field>
+        <field name="model">packing.list.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    </div>
+                    <group>
+                    <group> 
+                        <field name="code"/>
+                        <field name="barcode"/>
+                        <field name="order_ref"/>
+                        <field name="carton_start"/>
+                        <field name="order_id"/>
+                        <field name="partner_id"/>
+                        <field name="product_tmpl_id"/>
+                        <field name="parent_line_id"/>
+                        <field name="distance_uom_id"/>
+                        <field name="weight_uom_id"/>
+                        <field name="order_qty"/>
+                        <field name="qty_per_carton"/>
+                        <field name="shipped_quantity"/>
+                        <field name="target_ctn_cbm"/>
+                        <field name="target_carton_weight"/>
+                        <field name="target_gross_weight"/>
+                        <field name="target_net_weight"/>
+                        <field name="target_product_net_weight"/>
+                        <field name="target_total_cbm"/>
+                        <field name="target_total_gross_weight"/>
+                        <field name="target_total_net_weight"/>
+                        <field name="target_width"/>
+                        <field name="target_height"/>
+                        <field name="target_length"/>
+                    </group>
+                    <group> 
+                        <field name="all_shipped"/>
+                        <field name="description"/>
+                        <field name="size"/>
+                        <field name="carton_end"/>
+                        <field name="order_line_id"/>
+                        <field name="product_id"/>
+                        <field name="packing_list_id"/>
+                        <field name="ctn_type_id"/>
+                        <field name="target_distance_uom_id"/>
+                        <field name="target_weight_uom_id"/>
+                        <field name="order_delivered_qty"/>
+                        <field name="quantity"/>
+                        <field name="ctn_cbm"/>
+                        <field name="ctn_weight"/>
+                        <field name="gross_weight"/>
+                        <field name="net_weight"/>
+                        <field name="product_net_weight"/>
+                        <field name="total_cbm"/>
+                        <field name="total_gross_weight"/>
+                        <field name="total_net_weight"/>
+                        <field name="width"/>
+                        <field name="height"/>
+                        <field name="length"/>
+                        <field name="delivery_slip"/>
+                        <field name="invoice_number"/>
+                        <field name="tradelink"/>
+                    </group>
+                    </group>
+                    <notebook>
+                    <page string="Notes">
+                        <group>
+                        </group>
+                        <field name="notes"/>
+                    </page>
+                    <page string="Shipping Marks">
+                        <group>
+                        </group>
+                        <field name="shipping_marks"/>
+                    </page>
+                    <page string="Description">
+                        <group>
+                        </group>
+                        <field name="description"/>
+                    </page>
+                    <page string="Others">
+                        <group>
+                        <group> 
+                            <field name="active"/>
+                            <field name="create_uid"/>
+                            <field name="write_uid"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="create_date"/>
+                            <field name="write_date"/>
+                        </group>
+                        </group>
+                    </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="packing_list_line_list_view" model="ir.ui.view">
+        <field name="name">packing.list.line.list.view</field>
+        <field name="model">packing.list.line</field>
+        <field name="arch" type="xml">
+            <list string="Packing List Line" create="0" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="vendor_pl" string="Vendor PL" optional="hide"/>
+                <field name="vendor_po_no" optional="hide"/>
+                <field name="inventory_site" optional="hide"/>
+                
+                <field name="partner_id" optional="hide"/>
+                <field name="order_id" readonly="1" optional="hide"/>
+                <field name="order_ref"/>
+                <field name="selectable_order_line_ids" column_invisible="True"/>
+                <field name="order_line_id" options="{&quot;no_create&quot;:true}" domain="[('id', 'in', selectable_order_line_ids)]" required="1"/>
+                
+                <field name="product_id" readonly="1" string="P/N" />
+                <field name="product_tmpl_id" optional="hide" readonly="1"/>
+                <field name="customer_number"  optional="hide" />
+                <field name="description_text" optional="hide"/>
+                
+                <field name="name" column_invisible="True"/>
+                <field name="create_date" column_invisible="True"/>
+                <field name="code" column_invisible="True"/>
+                <field name="all_shipped" column_invisible="True"/>
+                <field name="barcode" column_invisible="True"/>
+                <field name="id" column_invisible="True"/>
+                
+                
+                <field name="quantity" optional="show" string="TOTAL QTY (PCS)" sum="Sum of TOTAL QTY (PCS)"/>
+                <field name="shipped_quantity" column_invisible="True" sum="Sum of Shipped Quantity"/>
+                <field name="order_qty" optional="hide" sum="Sum of Order Qty"/>
+                <field name="order_delivered_qty" optional="hide" sum="Sum of Order Delivered Qty"/>
+                
+                <field name="size" column_invisible="True"/>
+                <field name="ctn_type_id" string="Type CTN" />
+                
+                <field name="qty_per_carton" string="Qty/CTN" optional="show"  />
+                <field name="carton_quantity" string="Total CTN(s)" optional="show" sum="Sum of Total CTN(s)"/>
+                <field name="inner_ctn_qty" string="Total Inner CTN(s)" optional="hide" sum="Total inners"/>
+                    
+                <field name="carton_start" string="Start CTN"  />
+                <field name="carton_end" string="End CTN"  />
+                
+                <field name="product_net_weight" string="Product NW" optional="hide"  />
+                <field name="ctn_weight" string="Weight CTN" optional="hide"  />
+                <field name="gross_weight" optional="hide" string="G.W./CTN (KGS)" />
+                <field name="total_gross_weight" optional="hide" string="TOTAL G.W.(KG)" sum="Sum of TOTAL G.W.(KG)"/>
+                <field name="net_weight" optional="hide"  />
+                <field name="total_net_weight" optional="hide" sum="Sum of Total Net Weight"/>
+                
+                <field name="length" string="LENGTH (cm)" optional="hide" />
+                <field name="width" string="WIDTH (cm)" optional="hide" />
+                <field name="height" string="HEIGHT (cm)" optional="hide" />
+                <field name="ctn_cbm" string="CBM CTN" optional="hide" />
+                <field name="total_cbm" optional="hide" sum="Sum of Total Cbm"/>
+                
+                <field name="pallet_qty" string="Pallet Qty" optional="hide" sum="Sum of Pallet Qty"/>
+                <field name="pallet_gross_weight" string="Pallet G.W." optional="hide" />
+                <field name="pallet_description" string="Pallet Description" optional="hide" />
+                
+                <field name="delivery_slip"  optional="hide" />
+                <field name="unit_price" optional="hide" string="U/P (USD)"/>
+                <field name="total_amount" optional="hide" string="Total (USD)" sum="Sum of Total (USD)"/>
+                <field name="hs_code"  optional="hide" />
+                <field name="freight_prepaid"  optional="hide" />
+                <field name="estimated_freight_cost"  optional="hide" />
+                <field name="actual_freight_cost"  optional="hide" />
+                <field name="freight_invoiced_customer"  optional="hide" />
+                <field name="ship_status"  optional="hide" />
+                <field name="tracking"  optional="hide" />
+                
+                <field name="active" column_invisible="True"/>
+                <field name="packing_list_id" column_invisible="True"/>
+                <field name="parent_line_id" column_invisible="True"/>
+                <field name="distance_uom_id" column_invisible="True"/>
+                <field name="weight_uom_id" column_invisible="True" />
+                <field name="write_uid" optional="hide"/>
+                <field name="write_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="packing_list_line_action" model="ir.actions.act_window">
+        <field name="name">Packing List Line</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">packing.list.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Packing List Line.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="packing_list_line_menu" parent="packing_list_submenu" name="Packing List Line" action="packing_list_line_action" sequence="20" />
+
+</odoo>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="packing_list_stage_list_view" model="ir.ui.view">
+        <field name="name">packing.list.stage.form.view</field>
+        <field name="model">packing.list.stage</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="sequence" widget="handle"/>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="is_loading" optional="hide"/>
+                <field name="is_delivery" optional="hide"/>
+                <field name="is_invoice" optional="hide"/>
+                <field name="is_closed" optional="hide"/>
+                <field name="is_new" optional="hide"/>
+                <field name="is_packing" optional="hide"/>
+                <field name="is_review" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="packing_list_stage_form_view" model="ir.ui.view">
+        <field name="name">packing.list.stage.form.view</field>
+        <field name="model">packing.list.stage</field>
+        <field name="arch" type="xml">
+            <form>
+                <header/>
+                <sheet string="Packing List Stages">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" required="1" placeholder="Name..."/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="packing_list_stage_search_view" model="ir.ui.view">
+        <field name="name">packing.list.stage.search.view</field>
+        <field name="model">packing.list.stage</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="packing_list_stage_action" model="ir.actions.act_window">
+        <field name="name">Packing List Stage</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">packing.list.stage</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Packing List Stage
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="packing_list_submenu" parent="sale.menu_sale_config" name="Packing List" sequence="70" >
+        <menuitem id="packing_list_stage_menu" name="Packing List Stage" action="packing_list_stage_action" sequence="30"/>
+    </menuitem>
+
+</odoo>

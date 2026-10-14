@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherited_view_order_form" model="ir.ui.view">
+            <field name="name">inherited.view_order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button
+                        name="add_to_pl" 
+                        type="object"
+                        string="Packing List" 
+                        class="btn-primary"
+                        invisible="state in ['draft','sent','cancel']"
+                    />
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice']" position="after">
+                    <button type="object" name="sale_order__packing_list" class="oe_stat_button" invisible="so__y_count == 0" icon="fa-truck">
+                        <field name="so__y_count" widget="statinfo" string="Packing List" modifiers="{&quot;readonly&quot;: true}"/>
+                    </button>
+                    <!-- <button type="object" name="sale_order__packing_list" class="oe_stat_button" icon="fa-truck" string="Packing List"/> -->
+                </xpath>
+                <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
+                    <field name="returned_packable_qty" optional="hide" readonly="1"/>
+                    <field name="packable_remaining_qty" optional="show" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

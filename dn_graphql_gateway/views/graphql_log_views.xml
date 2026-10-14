@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dn_graphql_log_list" model="ir.ui.view">
+        <field name="name">dn.graphql.log.list</field>
+        <field name="model">dn.graphql.log</field>
+        <field name="arch" type="xml">
+            <list string="GraphQL Audit Logs" create="false" edit="false">
+                <field name="create_date" string="Timestamp"/>
+                <field name="request_id"/>
+                <field name="key_rec_id"/>
+                <field name="api_key_name"/>
+                <field name="user_id"/>
+                <field name="ip_address"/>
+                <field name="operation_name"/>
+                <field name="status_code"/>
+                <field name="duration_ms"/>
+                <field name="node_count"/>
+                <field name="rolled_back" widget="boolean_toggle"/>
+                <field name="error_code"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dn_graphql_log_form" model="ir.ui.view">
+        <field name="name">dn.graphql.log.form</field>
+        <field name="model">dn.graphql.log</field>
+        <field name="arch" type="xml">
+            <form string="GraphQL Audit Log Entry" create="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="request_id" readonly="1"/>
+                        </h1>
+                        <h3>
+                            <field name="create_date" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Client Identity">
+                            <field name="key_rec_id" readonly="1"/>
+                            <field name="api_key_name" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="ip_address" readonly="1"/>
+                        </group>
+                        <group string="Execution Metrics">
+                            <field name="status_code" readonly="1"/>
+                            <field name="duration_ms" readonly="1"/>
+                            <field name="node_count" readonly="1"/>
+                            <field name="rolled_back" readonly="1"/>
+                            <field name="error_code" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Error Details" invisible="not error_message">
+                        <field name="error_message" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Request Body" name="req_body">
+                            <field name="request_body" readonly="1" widget="code" options="{'mode': 'javascript'}"/>
+                        </page>
+                        <page string="Response Body" name="resp_body">
+                            <field name="response_body" readonly="1" widget="code" options="{'mode': 'javascript'}"/>
+                        </page>
+                        <page string="Masked Query" name="query">
+                            <field name="query_text" readonly="1" widget="code" options="{'mode': 'javascript'}"/>
+                        </page>
+                        <page string="Masked Variables" name="variables">
+                            <field name="variables_text" readonly="1" widget="code" options="{'mode': 'javascript'}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dn_graphql_log_search" model="ir.ui.view">
+        <field name="name">dn.graphql.log.search</field>
+        <field name="model">dn.graphql.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Audit Logs">
+                <field name="request_id"/>
+                <field name="api_key_name"/>
+                <field name="user_id"/>
+                <field name="operation_name"/>
+                <field name="status_code"/>
+                <filter string="Errors (Non-200)" name="errors" domain="[('status_code', '!=', 200)]"/>
+                <filter string="Rollback Executed" name="rollbacks" domain="[('rolled_back', '=', True)]"/>
+                <separator/>
+                <group>
+                    <filter string="User" name="grp_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Status Code" name="grp_status" context="{'group_by': 'status_code'}"/>
+                    <filter string="Error Code" name="grp_err" context="{'group_by': 'error_code'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dn_graphql_log" model="ir.actions.act_window">
+        <field name="name">Audit Logs</field>
+        <field name="res_model">dn.graphql.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_dn_graphql_log_search"/>
+    </record>
+</odoo>

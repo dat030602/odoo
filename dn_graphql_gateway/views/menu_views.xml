@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-level Menu -->
+    <menuitem id="menu_dn_graphql_root"
+              name="GraphQL Gateway"
+              web_icon="base,static/description/icon.png"
+              sequence="85"/>
+
+    <!-- Management Menus -->
+    <menuitem id="menu_dn_graphql_models"
+              name="Exposed Models"
+              parent="menu_dn_graphql_root"
+              action="action_dn_graphql_model"
+              sequence="10"/>
+
+    <menuitem id="menu_dn_graphql_keys"
+              name="API Keys"
+              parent="menu_dn_graphql_root"
+              action="action_dn_graphql_key"
+              sequence="15"/>
+
+    <menuitem id="menu_dn_graphql_deny"
+              name="Blocklist Policies"
+              parent="menu_dn_graphql_root"
+              action="action_dn_graphql_deny"
+              sequence="20"/>
+
+    <menuitem id="menu_dn_graphql_logs"
+              name="Audit Logs"
+              parent="menu_dn_graphql_root"
+              action="action_dn_graphql_log"
+              sequence="30"/>
+
+    <menuitem id="menu_dn_graphql_config"
+              name="Configuration"
+              parent="menu_dn_graphql_root"
+              sequence="90"/>
+
+    <menuitem id="menu_dn_graphql_settings"
+              name="Settings"
+              parent="menu_dn_graphql_config"
+              action="action_dn_graphql_config_settings"
+              sequence="10"/>
+</odoo>

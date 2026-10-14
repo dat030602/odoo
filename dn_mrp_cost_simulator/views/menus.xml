@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top-level Costing & Simulation Menu in Manufacturing -->
+    <menuitem id="menu_mrp_costing_root"
+              name="Costing &amp; Valuation"
+              parent="mrp.menu_mrp_root"
+              sequence="25"/>
+
+    <!-- Cost Simulations -->
+    <menuitem id="menu_mrp_bom_simulation"
+              name="Cost Simulations"
+              parent="menu_mrp_costing_root"
+              action="action_mrp_bom_simulation"
+              sequence="10"/>
+
+    <!-- Pre-Costing Validation Menu -->
+    <menuitem id="menu_mrp_pre_costing_root"
+              name="Pre-Costing Validation"
+              parent="menu_mrp_costing_root"
+              sequence="20"/>
+
+    <menuitem id="menu_mrp_cost_bom_exception"
+              name="BOM Cost Exceptions"
+              parent="menu_mrp_pre_costing_root"
+              action="action_mrp_cost_bom_exception"
+              sequence="10"/>
+
+    <menuitem id="menu_mrp_cost_consumption_variance"
+              name="Material Consumption Variance"
+              parent="menu_mrp_pre_costing_root"
+              action="action_mrp_cost_consumption_variance"
+              sequence="20"/>
+
+    <menuitem id="menu_mrp_cost_wip_snapshot"
+              name="WIP Valuation Snapshot"
+              parent="menu_mrp_pre_costing_root"
+              action="action_mrp_cost_wip_snapshot"
+              sequence="30"/>
+
+    <menuitem id="menu_mrp_cost_workcenter_audit"
+              name="Labor &amp; Machine Audit"
+              parent="menu_mrp_pre_costing_root"
+              action="action_mrp_cost_workcenter_audit"
+              sequence="40"/>
+
+    <!-- Post-Costing Reporting & Analytics Menu -->
+    <menuitem id="menu_mrp_post_costing_root"
+              name="Post-Costing Analysis"
+              parent="menu_mrp_costing_root"
+              sequence="30"/>
+
+    <menuitem id="menu_mrp_cost_variance_matrix"
+              name="Cost Variance Matrix (Planned vs Actual)"
+              parent="menu_mrp_post_costing_root"
+              action="action_mrp_cost_variance_matrix"
+              sequence="10"/>
+
+    <menuitem id="menu_mrp_cost_gross_margin"
+              name="Gross Margin by MO"
+              parent="menu_mrp_post_costing_root"
+              action="action_mrp_cost_gross_margin"
+              sequence="20"/>
+
+</odoo>

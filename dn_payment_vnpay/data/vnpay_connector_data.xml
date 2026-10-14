@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- === connector.provider === -->
+        <record id="connector_provider_vnpay" model="connector.provider">
+            <field name="name">VNPay</field>
+            <field name="code">vnpay</field>
+            <field name="module_name">dn_payment_vnpay</field>
+            <field name="version">2.1.0</field>
+        </record>
+
+        <!-- === connector.environment === -->
+        <record id="env_vnpay_sandbox" model="connector.environment">
+            <field name="name">VNPay Sandbox</field>
+            <field name="code">sandbox</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+            <field name="base_url">https://sandbox.vnpayment.vn</field>
+        </record>
+
+        <record id="env_vnpay_production" model="connector.environment">
+            <field name="name">VNPay Production</field>
+            <field name="code">production</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+            <field name="base_url">https://pay.vnpay.vn</field>
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+
+    <data noupdate="1">
+        <!-- === connector.setting === -->
+        <record id="setting_vnpay_tmn_code" model="connector.setting">
+            <field name="name">TMN Code</field>
+            <field name="code">tmn_code</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+            <field name="value_type">string</field>
+            <field name="value">2QXUI4B4</field>
+            <field name="required" eval="True"/>
+        </record>
+
+        <record id="setting_vnpay_hash_secret" model="connector.setting">
+            <field name="name">Hash Secret</field>
+            <field name="code">hash_secret</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+            <field name="value_type">password</field>
+            <field name="value">RAOCTPUA20CVR0EN4555MPHAZDYGDTWD</field>
+            <field name="encrypt" eval="False"/>
+            <field name="required" eval="True"/>
+        </record>
+
+        <record id="setting_vnpay_version" model="connector.setting">
+            <field name="name">API Version</field>
+            <field name="code">api_version</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+            <field name="value_type">string</field>
+            <field name="value">2.1.0</field>
+        </record>
+    </data>
+
+    <data noupdate="0">
+
+        <!-- === connector.hash.method === -->
+        <record id="hash_vnpay_sorted_query" model="connector.hash.method">
+            <field name="name">VNPay Payment Hash (Sorted Query)</field>
+            <field name="code">vnpay_pay_hash</field>
+            <field name="algorithm">hmac_sha512</field>
+            <field name="hash_style">sorted_query</field>
+            <field name="exclude_keys">vnp_SecureHash
+vnp_SecureHashType</field>
+        </record>
+
+        <record id="hash_vnpay_pipe" model="connector.hash.method">
+            <field name="name">VNPay QueryDR/Refund Hash (Pipe)</field>
+            <field name="code">vnpay_pipe_hash</field>
+            <field name="algorithm">hmac_sha512</field>
+            <field name="hash_style">pipe_separated</field>
+            <field name="pipe_fields">vnp_RequestId
+vnp_Version
+vnp_Command
+vnp_TmnCode
+vnp_TxnRef
+vnp_TransactionDate
+vnp_CreateDate
+vnp_IpAddr
+vnp_OrderInfo</field>
+        </record>
+
+        <!-- === connector.api === -->
+        <record id="api_vnpay_pay" model="connector.api">
+            <field name="name">VNPay Payment</field>
+            <field name="code">vnpay_pay</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+            <field name="version">2.1.0</field>
+        </record>
+
+        <record id="api_vnpay_querydr" model="connector.api">
+            <field name="name">VNPay Query Transaction</field>
+            <field name="code">vnpay_querydr</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+        </record>
+
+        <record id="api_vnpay_refund" model="connector.api">
+            <field name="name">VNPay Refund</field>
+            <field name="code">vnpay_refund</field>
+            <field name="provider_id" ref="connector_provider_vnpay"/>
+        </record>
+
+        <!-- === connector.endpoint === -->
+        <record id="endpoint_vnpay_pay_sandbox" model="connector.endpoint">
+            <field name="name">Payment Sandbox</field>
+            <field name="api_id" ref="api_vnpay_pay"/>
+            <field name="environment_id" ref="env_vnpay_sandbox"/>
+            <field name="method">GET</field>
+            <field name="url">paymentv2/vpcpay.html</field>
+            <field name="body_type">NONE</field>
+            <field name="execution_type">redirect</field>
+            <field name="hash_method_id" ref="hash_vnpay_sorted_query"/>
+            <field name="hash_param_name">vnp_SecureHash</field>
+            <field name="secret_setting_code">hash_secret</field>
+        </record>
+
+        <record id="endpoint_vnpay_querydr_sandbox" model="connector.endpoint">
+            <field name="name">QueryDR Sandbox</field>
+            <field name="api_id" ref="api_vnpay_querydr"/>
+            <field name="environment_id" ref="env_vnpay_sandbox"/>
+            <field name="method">POST</field>
+            <field name="url">merchant_webapi/api/transaction</field>
+            <field name="body_type">JSON</field>
+            <field name="parser">JSON</field>
+            <field name="execution_type">api_call</field>
+            <field name="hash_method_id" ref="hash_vnpay_pipe"/>
+            <field name="hash_param_name">vnp_SecureHash</field>
+            <field name="secret_setting_code">hash_secret</field>
+        </record>
+
+        <record id="endpoint_vnpay_refund_sandbox" model="connector.endpoint">
+            <field name="name">Refund Sandbox</field>
+            <field name="api_id" ref="api_vnpay_refund"/>
+            <field name="environment_id" ref="env_vnpay_sandbox"/>
+            <field name="method">POST</field>
+            <field name="url">merchant_webapi/api/transaction</field>
+            <field name="body_type">JSON</field>
+            <field name="parser">JSON</field>
+            <field name="execution_type">api_call</field>
+            <field name="hash_method_id" ref="hash_vnpay_pipe"/>
+            <field name="hash_param_name">vnp_SecureHash</field>
+            <field name="secret_setting_code">hash_secret</field>
+        </record>
+
+        <!-- === connector.mapping: Payment Query Mapping === -->
+        <record id="mapping_vnpay_pay_query" model="connector.mapping">
+            <field name="name">VNPay Payment Query Mapping</field>
+            <field name="code">vnpay_pay_query</field>
+            <field name="api_id" ref="api_vnpay_pay"/>
+            <field name="type">QUERY</field>
+        </record>
+
+        <!-- Mapping Lines for VNPay URL parameters -->
+        <record id="mline_vnpay_version" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_Version</field>
+            <field name="source_type">FIXED</field>
+            <field name="fixed_value">2.1.0</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="mline_vnpay_command" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_Command</field>
+            <field name="source_type">FIXED</field>
+            <field name="fixed_value">pay</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="mline_vnpay_tmn_code" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_TmnCode</field>
+            <field name="source_type">SETTING</field>
+            <field name="source_path">tmn_code</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="mline_vnpay_amount" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_Amount</field>
+            <field name="source_type">VARIABLE</field>
+            <field name="source_path">vnp_Amount</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <record id="mline_vnpay_currcode" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_CurrCode</field>
+            <field name="source_type">FIXED</field>
+            <field name="fixed_value">VND</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <record id="mline_vnpay_txnref" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_TxnRef</field>
+            <field name="source_type">FIELD</field>
+            <field name="source_path">reference</field>
+            <field name="sequence">60</field>
+        </record>
+
+        <record id="mline_vnpay_orderinfo" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_OrderInfo</field>
+            <field name="source_type">VARIABLE</field>
+            <field name="source_path">vnp_OrderInfo</field>
+            <field name="sequence">70</field>
+        </record>
+
+        <record id="mline_vnpay_ordertype" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_OrderType</field>
+            <field name="source_type">FIXED</field>
+            <field name="fixed_value">other</field>
+            <field name="sequence">80</field>
+        </record>
+
+        <record id="mline_vnpay_locale" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_Locale</field>
+            <field name="source_type">FIXED</field>
+            <field name="fixed_value">vn</field>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="mline_vnpay_returnurl" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_ReturnUrl</field>
+            <field name="source_type">VARIABLE</field>
+            <field name="source_path">vnp_ReturnUrl</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="mline_vnpay_ipaddr" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_IpAddr</field>
+            <field name="source_type">VARIABLE</field>
+            <field name="source_path">vnp_IpAddr</field>
+            <field name="sequence">110</field>
+        </record>
+
+        <record id="mline_vnpay_createdate" model="connector.mapping.line">
+            <field name="mapping_id" ref="mapping_vnpay_pay_query"/>
+            <field name="key">vnp_CreateDate</field>
+            <field name="source_type">VARIABLE</field>
+            <field name="source_path">vnp_CreateDate</field>
+            <field name="sequence">120</field>
+        </record>
+    </data>
+</odoo>

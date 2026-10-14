@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="dn_kpi_scorecard.KpiFormulaWidget" owl="1">
+        <div class="o_kpi_formula_builder">
+            <!-- Canvas Header & Toolbar -->
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fw-bold text-dark fs-6">
+                        <i class="fa fa-calculator text-primary me-1"/> Formula Expression
+                    </span>
+                    <t t-if="props.readonly">
+                        <span class="badge bg-secondary">Readonly</span>
+                    </t>
+                    <t t-else="">
+                        <small class="text-muted fst-italic ms-1 d-none d-md-inline">
+                            (Drag and drop pills to swap positions)
+                        </small>
+                    </t>
+                </div>
+                <t t-if="!props.readonly">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary" t-on-click="backspace" title="Delete Last Element">
+                            <i class="fa fa-arrow-left me-1"/> Undo
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" t-on-click="clearFormula" title="Clear Formula">
+                            <i class="fa fa-trash me-1"/> Clear
+                        </button>
+                        <button type="button" t-attf-class="btn btn-outline-primary {{ state.isRawMode ? 'active' : '' }}" t-on-click="toggleRawMode" title="Toggle Raw Formula Code">
+                            <i class="fa fa-code me-1"/> Code
+                        </button>
+                    </div>
+                </t>
+            </div>
+
+            <!-- Formula Visual Canvas with Drag and Drop Support -->
+            <div t-attf-class="kpi-formula-canvas {{ props.readonly ? 'readonly' : '' }} {{ state.isCanvasDragOver ? 'kpi-canvas-drag-over' : '' }}"
+                 t-on-dragover.prevent="onCanvasDragOver"
+                 t-on-dragleave="onCanvasDragLeave"
+                 t-on-drop="onCanvasDrop">
+                <t t-if="state.formulaParts.length === 0">
+                    <span class="text-muted fst-italic">
+                        <t t-if="!props.readonly">Click or drag variables/operators below to build the formula...</t>
+                        <t t-else="">No formula defined.</t>
+                    </span>
+                </t>
+                <t t-foreach="state.formulaParts" t-as="part" t-key="part_index">
+                    <span t-attf-class="kpi-pill {{ getPillClass(part) }} {{ state.draggedIndex === part_index ? 'kpi-pill-dragging' : '' }} {{ state.dragOverIndex === part_index ? 'kpi-pill-drop-target' : '' }}"
+                          t-att-title="props.readonly ? part.id : 'Drag to swap position with another element, or click × to remove'"
+                          t-att-draggable="!props.readonly ? 'true' : 'false'"
+                          t-on-dragstart="(ev) => this.onPillDragStart(ev, part_index)"
+                          t-on-dragover.prevent.stop="(ev) => this.onPillDragOver(ev, part_index)"
+                          t-on-dragleave="(ev) => this.onPillDragLeave(ev, part_index)"
+                          t-on-drop.prevent.stop="(ev) => this.onPillDrop(ev, part_index)"
+                          t-on-dragend="onPillDragEnd">
+                        <t t-if="!props.readonly and state.dragOverIndex === part_index and state.draggedIndex !== part_index">
+                            <i class="fa fa-exchange me-1 text-warning"/>
+                        </t>
+                        <t t-esc="part.name"/>
+                        <t t-if="!props.readonly">
+                            <i class="fa fa-times kpi-pill-remove" t-on-click.stop="() => this.removePart(part_index)" title="Remove"/>
+                        </t>
+                    </span>
+                </t>
+            </div>
+
+            <!-- Raw Formula Input Mode (Editable / Visible when toggled) -->
+            <t t-if="!props.readonly and state.isRawMode">
+                <div class="mt-2">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light text-muted font-monospace">Raw Formula</span>
+                        <input type="text" class="form-control font-monospace" t-att-value="state.formula" t-on-change="onRawFormulaChange" placeholder="e.g. MEASURE(1);/;MEASURE(2)"/>
+                    </div>
+                </div>
+            </t>
+
+            <!-- Visual Variable & Operator Selection Toolbox (Only in Edit Mode) -->
+            <t t-if="!props.readonly">
+                <div class="kpi-toolbox">
+                    <!-- Operators and Number Input Bar -->
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-3 pb-2 border-bottom">
+                        <span class="small fw-bold text-muted me-1">Operators:</span>
+                        <t t-foreach="state.operands" t-as="op" t-key="op">
+                            <button type="button" class="btn btn-sm btn-outline-danger kpi-op-btn" t-on-click="() => this.addOperator(op)" t-att-title="'Add operator ' + op">
+                                <t t-esc="op"/>
+                            </button>
+                        </t>
+
+                        <div class="vr mx-2"/>
+
+                        <!-- Direct Number Input (replaces separate Constants model) -->
+                        <span class="small fw-bold text-muted me-1">Number:</span>
+                        <div class="input-group input-group-sm" style="max-width: 180px;">
+                            <span class="input-group-text bg-light text-muted">#</span>
+                            <input type="number" step="any" class="form-control" placeholder="Value..." t-model="state.customNumber" t-on-keydown="onNumberKeydown"/>
+                            <button class="btn btn-primary" type="button" t-on-click="addNumber" title="Add number to formula">
+                                <i class="fa fa-plus"/>
+                            </button>
+                        </div>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-outline-secondary" t-on-click="() => this.addDirectNumber('100')" title="Add 100 (commonly used for percentage)">100</button>
+                            <button type="button" class="btn btn-outline-secondary" t-on-click="() => this.addDirectNumber('1')" title="Add 1">1</button>
+                            <button type="button" class="btn btn-outline-secondary" t-on-click="() => this.addDirectNumber('0')" title="Add 0">0</button>
+                            <button type="button" class="btn btn-outline-secondary" t-on-click="() => this.addDirectNumber('0.01')" title="Add 0.01">0.01</button>
+                        </div>
+                    </div>
+
+                    <!-- Category Tabs (Constants tab removed per user requirement) -->
+                    <ul class="nav nav-tabs nav-fill mb-2" role="tablist">
+                        <li class="nav-item">
+                            <button type="button" t-attf-class="nav-link py-2 {{ state.activeTab === 'measures' ? 'active fw-bold' : '' }}" t-on-click="() => this.setActiveTab('measures')">
+                                <i class="fa fa-tachometer text-success me-1"/> Measurements
+                                <span class="badge bg-success ms-1"><t t-esc="state.measures.length"/></span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" t-attf-class="nav-link py-2 {{ state.activeTab === 'kpis' ? 'active fw-bold' : '' }}" t-on-click="() => this.setActiveTab('kpis')">
+                                <i class="fa fa-line-chart text-primary me-1"/> Other KPIs
+                                <span class="badge bg-primary ms-1"><t t-esc="state.kpis.length"/></span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" t-attf-class="nav-link py-2 {{ state.activeTab === 'period' ? 'active fw-bold' : '' }}" t-on-click="() => this.setActiveTab('period')">
+                                <i class="fa fa-calendar text-purple me-1"/> Period Variables
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Contents with increased height and smooth scrolling -->
+                    <!-- 1. Measurements -->
+                    <t t-if="state.activeTab === 'measures'">
+                        <div class="mb-2">
+                            <input type="text" class="form-control form-control-sm" placeholder="Search measurements..." t-model="state.searchMeasure"/>
+                        </div>
+                        <div class="kpi-item-list">
+                            <t t-set="filteredMeasures" t-value="filterList(state.measures, state.searchMeasure)"/>
+                            <t t-if="filteredMeasures.length === 0">
+                                <div class="text-muted small fst-italic p-2">No measurements found.</div>
+                            </t>
+                            <t t-foreach="filteredMeasures" t-as="m" t-key="m.id">
+                                <button type="button" class="kpi-choice-btn text-success"
+                                        t-att-title="m.description || m.name"
+                                        draggable="true"
+                                        t-on-dragstart="(ev) => this.onToolboxDragStart(ev, 'MEASURE(' + m.id + ')', m.name, 'MEASURE')"
+                                        t-on-click="() => this.addPart('MEASURE(' + m.id + ')', m.name, 'MEASURE')">
+                                    <i class="fa fa-plus-circle me-1"/> <t t-esc="m.name"/>
+                                </button>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- 2. Other KPIs (Increased Height & Scrollable) -->
+                    <t t-if="state.activeTab === 'kpis'">
+                        <div class="mb-2">
+                            <input type="text" class="form-control form-control-sm" placeholder="Search other KPIs..." t-model="state.searchKpi"/>
+                        </div>
+                        <div class="kpi-item-list">
+                            <t t-set="filteredKpis" t-value="filterList(state.kpis, state.searchKpi)"/>
+                            <t t-if="filteredKpis.length === 0">
+                                <div class="text-muted small fst-italic p-2">No other KPIs found.</div>
+                            </t>
+                            <t t-foreach="filteredKpis" t-as="k" t-key="k.id">
+                                <button type="button" class="kpi-choice-btn text-primary"
+                                        t-att-title="k.description || k.name"
+                                        draggable="true"
+                                        t-on-dragstart="(ev) => this.onToolboxDragStart(ev, 'KPI(' + k.id + ')', k.name, 'KPI')"
+                                        t-on-click="() => this.addPart('KPI(' + k.id + ')', k.name, 'KPI')">
+                                    <i class="fa fa-plus-circle me-1"/> <t t-esc="k.name"/>
+                                </button>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- 3. Period Variables -->
+                    <t t-if="state.activeTab === 'period'">
+                        <div class="d-flex flex-column gap-2 p-1">
+                            <button type="button" class="kpi-choice-btn text-purple"
+                                    title="Total number of days in the period"
+                                    draggable="true"
+                                    t-on-dragstart="(ev) => this.onToolboxDragStart(ev, 'PERIOD_len', 'Period Days', 'PERIOD')"
+                                    t-on-click="() => this.addPart('PERIOD_len', 'Period Days', 'PERIOD')">
+                                <i class="fa fa-calendar-check-o me-1"/> <strong>Period Days</strong> (Total length of period in days)
+                            </button>
+                            <button type="button" class="kpi-choice-btn text-purple"
+                                    title="Days elapsed since period start up to today"
+                                    draggable="true"
+                                    t-on-dragstart="(ev) => this.onToolboxDragStart(ev, 'PERIOD_passed', 'Days Passed', 'PERIOD')"
+                                    t-on-click="() => this.addPart('PERIOD_passed', 'Days Passed', 'PERIOD')">
+                                <i class="fa fa-hourglass-half me-1"/> <strong>Days Passed</strong> (Days elapsed in period)
+                            </button>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

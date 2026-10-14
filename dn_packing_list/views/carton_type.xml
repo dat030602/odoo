@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="carton_type_search_view" model="ir.ui.view">
+        <field name="name">carton.type.search.view</field>
+        <field name="model">carton.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <separator />
+                    <filter string="Archived" name="archived_x_packing_list" domain="[['active', '=', False]]" />
+                <separator />
+            </search>
+        </field>
+    </record>
+
+    <record id="carton_type_form_view" model="ir.ui.view">
+        <field name="name">carton.type.form.view</field>
+        <field name="model">carton.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    </div>
+                    <group>
+                    <group> 
+                        <field name="code"/>
+                    </group>
+                    <group> 
+                    </group>
+                    </group>
+                    <notebook>
+                    <page string="Notes">
+                        <group>
+                        </group>
+                        <field name="notes"/>
+                    </page>
+                    <page string="Others">
+                        <group>
+                        <group> 
+                            <field name="active"/>
+                            <field name="create_uid"/>
+                            <field name="write_uid"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="create_date"/>
+                            <field name="write_date"/>
+                        </group>
+                        </group>
+                    </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="inherited_carton_type_form" model="ir.ui.view">
+        <field name="name">inherited.carton_type.form</field>
+        <field name="model">carton.type</field>
+        <field name="inherit_id" ref="carton_type_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="product_id" options="{&quot;no_create&quot;:true}"/>
+                <field name="type" widget="selection"/>
+                <field name="cbm" invisible="type == 'pallet'"/>
+                <field name="partner_id" options="{&quot;no_create&quot;:true}"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/group[1]/group[2]" position="inside">
+                <field name="weight"/>
+                <field name="width"/>
+                <field name="height"/>
+                <field name="length"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="carton_type_list_view" model="ir.ui.view">
+        <field name="name">carton.type.list.view</field>
+        <field name="model">carton.type</field>
+        <field name="arch" type="xml">
+            <list string="Packing List Ctn Type">
+                <field name="sequence"/>
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="code"/>
+                <field name="active" optional="hide"/>
+                <field name="id" optional="hide"/>
+                <field name="write_uid" optional="hide"/>
+                <field name="write_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="inherited_carton_type_list" model="ir.ui.view">
+        <field name="name">inherited.carton_type.list</field>
+        <field name="model">carton.type</field>
+        <field name="inherit_id" ref="carton_type_list_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="type"/>
+                <field name="cbm"/>
+                <field name="width"/>
+                <field name="length"/>
+                <field name="height"/>
+                <field name="partner_id" optional="show"/>
+                <field name="product_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="carton_type_action" model="ir.actions.act_window">
+        <field name="name">Carton Type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">carton.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Carton Type.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="carton_type_menu" parent="packing_list_submenu" name="Carton Type" action="carton_type_action" sequence="10" />
+
+</odoo>

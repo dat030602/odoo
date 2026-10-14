@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="payment_provider_vnpay" model="payment.provider">
+        <field name="name">VNPay</field>
+        <field name="code">vnpay</field>
+        <field name="state">test</field>
+        <field name="is_published">True</field>
+        <field name="vnpay_tmn_code">2QXUI4B4</field>
+        <field name="vnpay_hash_secret">RAOCTPUA20CVR0EN4555MPHAZDYGDTWD</field>
+        <field name="redirect_form_view_id" ref="dn_payment_vnpay.redirect_form"/>
+        <field name="payment_method_ids" eval="[Command.set([ref('payment.payment_method_unknown')])]"/>
+    </record>
+</odoo>

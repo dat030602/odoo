@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="kpi_generate_target_view_form" model="ir.ui.view">
+        <field name="name">kpi.generate.target.form</field>
+        <field name="model">kpi.generate.target</field>
+        <field name="arch" type="xml">
+            <form string="Generate KPI Targets">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        Quickly generate KPI targets for multiple employees in one click. Target values will be automatically populated from each KPI's default target.
+                    </div>
+                    <group>
+                        <group string="Employee Selection">
+                            <field name="period_id" invisible="1"/>
+                            <field name="employee_selection" widget="radio"/>
+                            <field name="department_ids"
+                                   widget="many2many_tags"
+                                   invisible="employee_selection != 'department'"
+                                   required="employee_selection == 'department'"
+                            />
+                            <field name="employee_ids"
+                                   widget="many2many_tags"
+                                   invisible="employee_selection != 'specific'"
+                                   required="employee_selection == 'specific'"
+                            />
+                        </group>
+                        <group string="KPI Selection">
+                            <field name="kpi_selection" widget="radio"/>
+                            <field name="category_ids"
+                                   widget="many2many_tags"
+                                   invisible="kpi_selection != 'category'"
+                                   required="kpi_selection == 'category'"
+                            />
+                            <field name="kpi_ids"
+                                   widget="many2many_tags"
+                                   invisible="kpi_selection != 'specific'"
+                                   required="kpi_selection == 'specific'"
+                            />
+                        </group>
+                    </group>
+                    <group string="Options">
+                        <field name="use_default_targets"/>
+                        <field name="overwrite_existing"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate"
+                            string="Generate Targets"
+                            type="object"
+                            class="btn-primary"
+                    />
+                    <button string="Cancel"
+                            class="btn-secondary"
+                            special="cancel"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="kpi_generate_target_action" model="ir.actions.act_window">
+        <field name="name">Generate Targets</field>
+        <field name="res_model">kpi.generate.target</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

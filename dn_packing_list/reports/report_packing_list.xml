@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="report_packing_list" model="ir.ui.view">
+        <field name="name">report_packing_list</field>
+        <field name="type">qweb</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <t t-name="dn_packing_list.report_packing_list">
+                <t t-call="web.html_container">
+                    <t t-foreach="docs" t-as="o">
+                        <t t-call="dn_packing_list.report_packing_list_document" t-lang="o.customer.lang"/>
+                    </t>
+                </t>
+            </t>
+        </field>
+    </record>
+    <record id="report_packing_list_document" model="ir.ui.view">
+        <field name="name">report_packing_list_document</field>
+        <field name="type">qweb</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <t t-name="dn_packing_list.report_packing_list_document">
+                <t t-call="web.external_layout">
+                    <t t-set="doc" t-value="o"/>
+                        <div>
+                            <div class="h1">
+                                <span>Packing List: #</span>
+                                <span t-field="doc.code"/>
+                            </div>
+                            <table class="table" style="border-collapse: collapse;">
+                                <tr style="border: 1px solid white;">
+                                    <td style="border: 1px solid white;">
+                                        <strong style="text-transform: uppercase;">Customer</strong>
+                                        <div t-field="doc.customer" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                    </td>
+                                    <td style="border: 1px solid white;">
+                                        <strong style="text-transform: uppercase;">Shipping Address:</strong>
+                                        <div t-field="doc.delivery_address" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                    </td>
+                                    <td style="border: 1px solid white;">
+                                        <strong style="text-transform: uppercase;">Other Information:</strong>
+                                        <div>CI: 
+                                            <span/>
+                                        </div>
+                                        <div>PL Date: 
+                                            <span t-field="doc.create_date"/>
+                                        </div>
+                                        <div>Payment Term: 
+                                            <span t-field="doc.payment_terms_id"/>
+                                        </div>
+                                        <div>ETD: 
+                                            <span/>
+                                        </div>
+                                        <div>INCOTERM: 
+                                            <span t-field="doc.incoterm"/>
+                                        </div>
+                                        <div>POL: 
+                                            <span/>
+                                        </div>
+                                        <div>POD: 
+                                            <span/>
+                                        </div>
+                                        <div>Sales Person: 
+                                            <t t-foreach="doc.orders.mapped('user_id')" t-as="salesperson">
+                                                <span t-field="salesperson.name"/>
+                                                <t t-if="salesperson != doc.orders.mapped('user_id')[-1]">, </t>
+                                            </t>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-sm o_main_table mt-4">
+                                <thead style="display: table-row-group;display: table-header-group;">
+                                    <tr >
+                                        <th style="vertical-align: middle;" rowspan="2" width="8%">
+                                            <span>ITEM-NO</span>
+                                        </th>
+                                        <th style="vertical-align: middle;" rowspan="2" width="19%">
+                                            <span>Description</span>
+                                        </th>
+                                        <td >
+                                            <span>QTY</span>
+                                        </td>
+                                        <td >
+                                            <span>QTY/CRT</span>
+                                        </td>
+                                        <td >
+                                            <span>L</span>
+                                        </td>
+                                        <td >
+                                            <span>W</span>
+                                        </td>
+                                        <td >
+                                            <span>H</span>
+                                        </td>
+                                        <td >
+                                            <span>CBM/CTN</span>
+                                        </td>
+                                        <td >
+                                            <span>N.W/CTN</span>
+                                        </td>
+                                        <td >
+                                            <span>G.W/CTN</span>
+                                        </td>
+                                        <td rowspan="2" style="vertical-align: middle;">
+                                            <span>CTNS</span>
+                                        </td>
+                                        <td >
+                                            <span>TOTAL N.W</span>
+                                        </td>
+                                        <td >
+                                            <span>TOTAL G.W</span>
+                                        </td>
+                                        <td >
+                                            <span>TOTAL VOL</span>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td >
+                                            <span>PCS</span>
+                                        </td>
+                                        <td >
+                                            <span>PCS</span>
+                                        </td>
+                                        <td >
+                                            <span>cm</span>
+                                        </td>
+                                        <td >
+                                            <span>cm</span>
+                                        </td>
+                                        <td >
+                                            <span>cm</span>
+                                        </td>
+                                        <td >
+                                            <span>CBM</span>
+                                        </td>
+                                        <td >
+                                            <span>KG</span>
+                                        </td>
+                                        <td >
+                                            <span>KG</span>
+                                        </td>
+                                        <td >
+                                            <span>KG</span>
+                                        </td>
+                                        <td >
+                                            <span>KG</span>
+                                        </td>
+                                        <td >
+                                            <span>CBM</span>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="sum_quantity" t-value="0"/>
+                                    <t t-set="sum_ctn_cbm" t-value="0"/>
+                                    <t t-set="sum_net_weight" t-value="0"/>
+                                    <t t-set="sum_gross_weight" t-value="0"/>
+                                    <t t-set="sum_carton_quantity" t-value="0"/>
+                                    <t t-set="sum_total_net_weight" t-value="0"/>
+                                    <t t-set="sum_total_gross_weight" t-value="0"/>
+                                    <t t-set="sum_total_cbm" t-value="0"/>
+                                    <t t-set="counter" t-value="0"/>
+                                    <tr t-foreach="doc.line_ids" t-as="table_line">
+                                        <td>
+                                            <t t-set="counter" t-value="counter + 1"/>
+                                            <span t-out="counter"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.product_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.quantity"/>
+                                            <t t-set="sum_quantity" t-value="sum_quantity + table_line.quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.qty_per_carton"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.length"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.width"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.height"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.ctn_cbm"/>
+                                            <t t-set="sum_ctn_cbm" t-value="sum_ctn_cbm + table_line.ctn_cbm"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.net_weight"/>
+                                            <t t-set="sum_net_weight" t-value="sum_net_weight + table_line.net_weight"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.gross_weight"/>
+                                            <t t-set="sum_gross_weight" t-value="sum_gross_weight + table_line.gross_weight"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.carton_quantity"/>
+                                            <t t-set="sum_carton_quantity" t-value="sum_carton_quantity + table_line.carton_quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.total_net_weight"/>
+                                            <t t-set="sum_total_net_weight" t-value="sum_total_net_weight + table_line.total_net_weight"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.total_gross_weight"/>
+                                            <t t-set="sum_total_gross_weight" t-value="sum_total_gross_weight + table_line.total_gross_weight"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="table_line.total_cbm"/>
+                                            <t t-set="sum_total_cbm" t-value="sum_total_cbm + table_line.total_cbm"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid white;">
+                                            <span t-out="counter"/>
+                                        </td>
+                                        <td style="border-left: 1px solid white;border-bottom: 1px solid white;">
+                                            <span/>
+                                        </td>
+                                        <td style="border: 1px #CCCCCC">
+                                            <span t-out="sum_quantity"/>
+                                        </td>
+                                        <td style="border-right: 1px solid white;border-bottom: 1px solid white;">
+                                            <span/>
+                                        </td>
+                                        <td style="border: 1px solid white;">
+                                            <span/>
+                                        </td>
+                                        <td style="border: 1px solid white;">
+                                            <span/>
+                                        </td>
+                                        <td style="border-left: 1px solid white;border-bottom: 1px solid white;">
+                                            <span/>
+                                        </td>
+                                        <td >
+                                            <span t-out="sum_ctn_cbm"/>
+                                        </td>
+                                        <td >
+                                            <span t-out="sum_net_weight"/>
+                                        </td>
+                                        <td >
+                                            <span t-out="sum_gross_weight"/>
+                                        </td>
+                                        <td >
+                                            <span t-out="sum_carton_quantity"/>
+                                        </td>
+                                        <td >
+                                            <span t-out="sum_total_net_weight"/>
+                                        </td>
+                                        <td >
+                                            <span t-out="sum_total_gross_weight"/>
+                                        </td>
+                                        <td >
+                                            <span t-out="sum_total_cbm"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table" style="border-collapse: collapse;width: 50%;height: 100px;">
+                                <tr>
+                                    <td class="center-text" style="border: 1px solid #CCCCCC;">
+                                        <div class="middle-content">
+                                            <strong>#Comment</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+            </t>
+        </field>
+    </record>
+</odoo>

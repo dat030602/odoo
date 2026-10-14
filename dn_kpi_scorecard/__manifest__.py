@@ -25,6 +25,7 @@
         "views/kpi_period.xml",
         "views/kpi_category.xml",
         "views/kpi_scorecard_line.xml",
+        "views/res_config_settings.xml",
         "views/menu.xml",
         "data/crm_measures.xml",
         "data/sale_measures.xml",
@@ -33,10 +34,10 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "dn_kpi_scorecard/static/src/css/*.css"
+            "dn_kpi_scorecard/static/src/css/*.css",
+            "dn_kpi_scorecard/static/src/xml/formula.xml",
+            "dn_kpi_scorecard/static/src/js/formula.js",
         ],
-        # "web.assets_qweb": [
-        # ]
     },
     "demo": [
 

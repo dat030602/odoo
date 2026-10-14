@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- 1. BOM Cost Exception Audit Views                            -->
+    <!-- ============================================================ -->
+    <record id="view_mrp_cost_bom_exception_list" model="ir.ui.view">
+        <field name="name">mrp.cost.bom.exception.list</field>
+        <field name="model">mrp.cost.bom.exception</field>
+        <field name="arch" type="xml">
+            <list string="BOM Cost Exceptions" decoration-danger="severity == 'critical'" decoration-warning="severity == 'warning'">
+                <header>
+                    <button name="action_run_audit" string="Run Pre-Costing Audit" type="object" class="btn-primary"/>
+                </header>
+                <field name="severity" widget="badge" decoration-danger="severity == 'critical'" decoration-warning="severity == 'warning'"/>
+                <field name="exception_type"/>
+                <field name="bom_id"/>
+                <field name="product_tmpl_id"/>
+                <field name="product_id"/>
+                <field name="workcenter_id"/>
+                <field name="name"/>
+                <field name="suggested_action"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mrp_cost_bom_exception_form" model="ir.ui.view">
+        <field name="name">mrp.cost.bom.exception.form</field>
+        <field name="model">mrp.cost.bom.exception</field>
+        <field name="arch" type="xml">
+            <form string="BOM Cost Exception Detail">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="severity" widget="badge" decoration-danger="severity == 'critical'" decoration-warning="severity == 'warning'"/>
+                            <field name="exception_type"/>
+                            <field name="bom_id"/>
+                            <field name="product_tmpl_id"/>
+                        </group>
+                        <group>
+                            <field name="product_id" invisible="not product_id"/>
+                            <field name="workcenter_id" invisible="not workcenter_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Issue &amp; Remediation">
+                        <field name="name"/>
+                        <field name="suggested_action"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_cost_bom_exception" model="ir.actions.act_window">
+        <field name="name">BOM Cost Exceptions</field>
+        <field name="res_model">mrp.cost.bom.exception</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No BOM costing exceptions found!
+            </p>
+            <p>
+                Click "Run Pre-Costing Audit" to scan active Bill of Materials for missing component costs,
+                zero work center rates, or by-product allocation irregularities.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- 2. Material Consumption Variance Views                       -->
+    <!-- ============================================================ -->
+    <record id="view_mrp_cost_consumption_variance_list" model="ir.ui.view">
+        <field name="name">mrp.cost.consumption.variance.list</field>
+        <field name="model">mrp.cost.consumption.variance</field>
+        <field name="arch" type="xml">
+            <list string="Material Consumption Variance" decoration-danger="variance_qty &gt; 0" decoration-success="variance_qty &lt; 0">
+                <field name="production_id"/>
+                <field name="product_id"/>
+                <field name="component_id"/>
+                <field name="planned_qty"/>
+                <field name="consumed_qty"/>
+                <field name="variance_qty" decoration-danger="variance_qty &gt; 0"/>
+                <field name="variance_pct" widget="percentage" decoration-danger="variance_pct &gt; 0"/>
+                <field name="unit_cost"/>
+                <field name="variance_value" sum="Total Variance Value" decoration-danger="variance_value &gt; 0"/>
+                <field name="date_done"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mrp_cost_consumption_variance_pivot" model="ir.ui.view">
+        <field name="name">mrp.cost.consumption.variance.pivot</field>
+        <field name="model">mrp.cost.consumption.variance</field>
+        <field name="arch" type="xml">
+            <pivot string="Consumption Variance Pivot">
+                <field name="product_id" type="row"/>
+                <field name="component_id" type="row"/>
+                <field name="planned_qty" type="measure"/>
+                <field name="consumed_qty" type="measure"/>
+                <field name="variance_qty" type="measure"/>
+                <field name="variance_value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_mrp_cost_consumption_variance" model="ir.actions.act_window">
+        <field name="name">Material Consumption Variance</field>
+        <field name="res_model">mrp.cost.consumption.variance</field>
+        <field name="view_mode">list,pivot</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- 3. Work-in-Progress (WIP) Snapshot Views                     -->
+    <!-- ============================================================ -->
+    <record id="view_mrp_cost_wip_snapshot_list" model="ir.ui.view">
+        <field name="name">mrp.cost.wip.snapshot.list</field>
+        <field name="model">mrp.cost.wip.snapshot</field>
+        <field name="arch" type="xml">
+            <list string="WIP Valuation Snapshot">
+                <field name="production_id"/>
+                <field name="product_id"/>
+                <field name="product_qty"/>
+                <field name="qty_produced"/>
+                <field name="state" widget="badge"/>
+                <field name="date_start"/>
+                <field name="issued_material_cost" sum="Total Material Issued"/>
+                <field name="received_finished_cost" sum="Total Goods Received"/>
+                <field name="net_wip_value" sum="Net WIP Balance" class="fw-bold text-primary"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mrp_cost_wip_snapshot_pivot" model="ir.ui.view">
+        <field name="name">mrp.cost.wip.snapshot.pivot</field>
+        <field name="model">mrp.cost.wip.snapshot</field>
+        <field name="arch" type="xml">
+            <pivot string="WIP Valuation Pivot">
+                <field name="product_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="issued_material_cost" type="measure"/>
+                <field name="received_finished_cost" type="measure"/>
+                <field name="net_wip_value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_mrp_cost_wip_snapshot" model="ir.actions.act_window">
+        <field name="name">WIP Valuation Snapshot</field>
+        <field name="res_model">mrp.cost.wip.snapshot</field>
+        <field name="view_mode">list,pivot</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- 4. Work Order Timesheet & Productivity Audit Views           -->
+    <!-- ============================================================ -->
+    <record id="view_mrp_cost_workcenter_audit_list" model="ir.ui.view">
+        <field name="name">mrp.cost.workcenter.audit.list</field>
+        <field name="model">mrp.cost.workcenter.audit</field>
+        <field name="arch" type="xml">
+            <list string="Work Order Productivity Audit" decoration-danger="issue_flag in ('zero_duration', 'both')" decoration-warning="issue_flag == 'zero_cost_hour'">
+                <field name="production_id"/>
+                <field name="workorder_id"/>
+                <field name="name"/>
+                <field name="workcenter_id"/>
+                <field name="issue_flag" widget="badge" decoration-danger="issue_flag in ('zero_duration', 'both')" decoration-warning="issue_flag == 'zero_cost_hour'"/>
+                <field name="duration_expected"/>
+                <field name="duration"/>
+                <field name="costs_hour"/>
+                <field name="actual_labor_cost" sum="Total Labor Cost Recorded"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_mrp_cost_workcenter_audit" model="ir.actions.act_window">
+        <field name="name">Labor &amp; Machine Audit</field>
+        <field name="res_model">mrp.cost.workcenter.audit</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

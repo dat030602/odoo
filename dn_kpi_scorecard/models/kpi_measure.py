@@ -171,22 +171,24 @@ class kpi_measure(models.Model):
         """
         Search method for existing_kpi
         """
-        if hasattr(value, '__iter__') and not isinstance(value, str):
-            value = list(value)[0] if len(list(value)) > 0 else False
-        all_measures = self.search([])
+        val = value
+        if hasattr(val, '__iter__') and not isinstance(val, str):
+            val = list(val)[0] if len(list(val)) > 0 else False
+        all_measures = self.sudo().search([])
         measure_ids = []
         for measure in all_measures:
             res = False
             if measure.measure_type in ["sum", "average", "count"] and measure.model_name and not measure.model_id:
                 res = EXISTING_INSTALLED.format(measure.model_name)
-            if value == False:
-                if operator == "!=" and not res:
+            if val == False or val is None:
+                if operator in ["!=", "not in"] and not res:
                     measure_ids.append(measure.id)
-                elif operator == "=" and res:
+                elif operator in ["=", "in"] and res:
                     measure_ids.append(measure.id)
-            elif res and res.find(value) != -1:
+            elif res and str(val) in res:
                 measure_ids.append(measure.id)
         return [('id', 'in', measure_ids)]
+
 
     name = fields.Char(
         string="Name",

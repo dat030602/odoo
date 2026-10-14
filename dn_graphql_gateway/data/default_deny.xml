@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Global Blocklist: Protect System Infrastructure & Authentication Tables -->
+        <record id="graphql_deny_ir_model" model="dn.graphql.deny">
+            <field name="model_id" ref="base.model_ir_model"/>
+            <field name="operation">all</field>
+            <field name="active">True</field>
+            <field name="reason">Direct access to ir.model meta-registry is blocked for security.</field>
+        </record>
+
+        <record id="graphql_deny_ir_config_parameter" model="dn.graphql.deny">
+            <field name="model_id" ref="base.model_ir_config_parameter"/>
+            <field name="operation">all</field>
+            <field name="active">True</field>
+            <field name="reason">Access to system configuration parameters is prohibited.</field>
+        </record>
+
+        <record id="graphql_deny_res_users_apikeys" model="dn.graphql.deny">
+            <field name="model_id" ref="base.model_res_users_apikeys"/>
+            <field name="operation">all</field>
+            <field name="active">True</field>
+            <field name="reason">Direct API key table reading and tampering is blocked.</field>
+        </record>
+
+        <record id="graphql_deny_res_users_password" model="dn.graphql.deny">
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="field_id" ref="base.field_res_users__password"/>
+            <field name="operation">all</field>
+            <field name="active">True</field>
+            <field name="reason">User password hash field is strictly forbidden from API access.</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Search View -->
+    <record id="view_mrp_bom_simulation_search" model="ir.ui.view">
+        <field name="name">mrp.bom.simulation.search</field>
+        <field name="model">mrp.bom.simulation</field>
+        <field name="arch" type="xml">
+            <search string="Search Simulations">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="bom_id"/>
+                <field name="product_id"/>
+                <field name="product_tmpl_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Calculated" name="filter_calculated" domain="[('state', '=', 'calculated')]"/>
+                <filter string="Approved" name="filter_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Applied" name="filter_applied" domain="[('state', '=', 'applied')]"/>
+                <separator/>
+                <group>
+                    <filter string="BOM" name="group_bom" context="{'group_by': 'bom_id'}"/>
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_tmpl_id'}"/>
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date_simulation:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_mrp_bom_simulation_list" model="ir.ui.view">
+        <field name="name">mrp.bom.simulation.list</field>
+        <field name="model">mrp.bom.simulation</field>
+        <field name="arch" type="xml">
+            <list string="Cost Simulations" decoration-info="state == 'calculated'" decoration-success="state == 'applied'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="version" widget="badge"/>
+                <field name="description"/>
+                <field name="bom_id"/>
+                <field name="product_id"/>
+                <field name="product_qty"/>
+                <field name="product_uom_id"/>
+                <field name="costing_basis"/>
+                <field name="unit_cost_current" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="unit_cost_simulated" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="cost_variance" widget="monetary" options="{'currency_field': 'currency_id'}" decoration-danger="cost_variance &gt; 0" decoration-success="cost_variance &lt; 0"/>
+                <field name="cost_variance_pct" widget="percentage" decoration-danger="cost_variance_pct &gt; 0" decoration-success="cost_variance_pct &lt; 0"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="state" widget="badge" decoration-warning="state == 'draft'" decoration-info="state == 'calculated'" decoration-primary="state == 'approved'" decoration-success="state == 'applied'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_mrp_bom_simulation_form" model="ir.ui.view">
+        <field name="name">mrp.bom.simulation.form</field>
+        <field name="model">mrp.bom.simulation</field>
+        <field name="arch" type="xml">
+            <form string="Manufacturing Cost Simulation">
+                <header>
+                    <button name="action_load_from_bom" string="Load from BOM" type="object" class="btn-primary" invisible="state in ('applied', 'cancelled')"/>
+                    <button name="action_recalculate" string="Recalculate Costs" type="object" class="btn-secondary" invisible="state not in ('calculated', 'draft')"/>
+                    <button name="action_approve" string="Approve Scenario" type="object" class="btn-success" invisible="state != 'calculated'"/>
+                    <button name="action_apply_simulation" string="Apply to Production" type="object" class="btn-primary" invisible="state != 'approved'" confirm="This will update standard cost on the product record. Are you sure you want to proceed?"/>
+                    <button name="action_create_version" string="New Version Snapshot" type="object" class="btn-info" invisible="state == 'draft'"/>
+                    <button name="action_set_draft" string="Reset to Draft" type="object" invisible="state not in ('cancelled', 'calculated')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('applied', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,calculated,approved,applied"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Simulation Reference"/>
+                        <h1>
+                            <field name="name"/>
+                            <span class="text-muted ms-2">(v<field name="version" readonly="1" class="oe_inline"/>)</span>
+                        </h1>
+                        <label for="description" string="Scenario Title"/>
+                        <h2>
+                            <field name="description" placeholder="e.g. Q4 2026 Material Price Increase (+8%)" readonly="state in ('applied', 'cancelled')"/>
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group name="bom_info" string="Target BOM &amp; Specification">
+                            <field name="bom_id" readonly="state in ('applied', 'cancelled')"/>
+                            <field name="product_tmpl_id"/>
+                            <field name="product_id"/>
+                            <label for="product_qty"/>
+                            <div class="o_row">
+                                <field name="product_qty" readonly="state in ('applied', 'cancelled')"/>
+                                <field name="product_uom_id"/>
+                            </div>
+                            <field name="costing_basis" readonly="state in ('applied', 'cancelled')"/>
+                            <field name="explode_subassemblies" readonly="state in ('applied', 'cancelled')"/>
+                        </group>
+                        <group name="financial_params" string="Valuation &amp; Currency Rules">
+                            <field name="date_simulation" readonly="state in ('applied', 'cancelled')"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="target_currency_id" readonly="state in ('applied', 'cancelled')"/>
+                            <field name="exchange_rate" readonly="state in ('applied', 'cancelled')"/>
+                            <field name="warehouse_id" readonly="state in ('applied', 'cancelled')"/>
+                            <field name="parent_simulation_id" invisible="not parent_simulation_id" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <!-- Summary KPI Cards -->
+                    <div class="row mt-3 mb-3 p-3 bg-light rounded border">
+                        <div class="col-md-2 text-center border-end">
+                            <span class="text-muted d-block small">Direct Materials</span>
+                            <span class="fs-5 fw-bold text-primary">
+                                <field name="total_material_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                        </div>
+                        <div class="col-md-2 text-center border-end">
+                            <span class="text-muted d-block small">Direct Labor &amp; Routing</span>
+                            <span class="fs-5 fw-bold text-info">
+                                <field name="total_labor_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                        </div>
+                        <div class="col-md-2 text-center border-end">
+                            <span class="text-muted d-block small">Overhead Cost</span>
+                            <span class="fs-5 fw-bold text-secondary">
+                                <field name="total_overhead_cost" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="state in ('applied', 'cancelled')"/>
+                            </span>
+                        </div>
+                        <div class="col-md-2 text-center border-end">
+                            <span class="text-muted d-block small">Byproduct Deduction</span>
+                            <span class="fs-5 fw-bold text-muted">
+                                <field name="total_byproduct_deduction" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                        </div>
+                        <div class="col-md-2 text-center border-end">
+                            <span class="text-muted d-block small">Simulated Unit Cost</span>
+                            <span class="fs-5 fw-bold text-dark">
+                                <field name="unit_cost_simulated" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <div class="small text-muted" invisible="target_currency_id == currency_id">
+                                <field name="unit_cost_target_currency" widget="monetary" options="{'currency_field': 'target_currency_id'}"/>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <span class="text-muted d-block small">Cost Delta vs Current</span>
+                            <span class="fs-5 fw-bold" decoration-danger="cost_variance &gt; 0" decoration-success="cost_variance &lt; 0">
+                                <field name="cost_variance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <div>
+                                <field name="cost_variance_pct" widget="percentage" decoration-danger="cost_variance_pct &gt; 0" decoration-success="cost_variance_pct &lt; 0"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <notebook>
+                        <page string="Direct Materials Breakdown" name="components">
+                            <field name="line_ids" readonly="state in ('applied', 'cancelled')">
+                                <list editable="bottom" decoration-info="is_subassembly" decoration-muted="is_phantom">
+                                    <field name="level" widget="badge"/>
+                                    <field name="product_id"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id"/>
+                                    <field name="scrap_rate"/>
+                                    <field name="qty_with_scrap"/>
+                                    <field name="original_cost"/>
+                                    <field name="simulated_cost" class="fw-bold text-primary"/>
+                                    <field name="price_variance_pct" widget="percentage" decoration-danger="price_variance_pct &gt; 0" decoration-success="price_variance_pct &lt; 0"/>
+                                    <field name="subtotal_cost" sum="Total Material Cost"/>
+                                    <field name="is_subassembly" widget="boolean_toggle"/>
+                                    <field name="is_phantom" widget="boolean_toggle"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Direct Labor &amp; Routings" name="operations">
+                            <field name="operation_ids" readonly="state in ('applied', 'cancelled')">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="workcenter_id"/>
+                                    <field name="time_cycle_manual"/>
+                                    <field name="simulated_duration" class="fw-bold"/>
+                                    <field name="original_costs_hour"/>
+                                    <field name="simulated_costs_hour" class="fw-bold text-info"/>
+                                    <field name="subtotal_cost" sum="Total Labor Cost"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="By-Products &amp; Yields" name="byproducts">
+                            <field name="byproduct_ids" readonly="state in ('applied', 'cancelled')">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id"/>
+                                    <field name="cost_share" widget="percentage" sum="Total Cost Share"/>
+                                    <field name="allocated_cost" sum="Total Byproduct Allocation"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Derived Versions &amp; Revisions" name="revisions" invisible="not revision_ids">
+                            <field name="revision_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="version"/>
+                                    <field name="description"/>
+                                    <field name="date_simulation"/>
+                                    <field name="unit_cost_simulated"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Notes &amp; Assumptions" name="notes">
+                            <field name="notes" placeholder="Specify key cost hypotheses, supplier quotes, energy price indexes, or plant assumptions..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mrp_bom_simulation" model="ir.actions.act_window">
+        <field name="name">Cost Simulations</field>
+        <field name="res_model">mrp.bom.simulation</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_mrp_bom_simulation_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Manufacturing Cost Simulation!
+            </p>
+            <p>
+                Deconstruct multi-level BOMs into a sandbox environment, inject hypothetical
+                component prices and work center rates, and assess unit cost variances without
+                affecting live production or accounting records.
+            </p>
+        </field>
+    </record>
+
+</odoo>

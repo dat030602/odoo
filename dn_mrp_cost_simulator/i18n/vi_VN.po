@@ -1,0 +1,194 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dn_mrp_cost_simulator
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 13:20:00+0000\n"
+"PO-Revision-Date: 2026-10-09 13:20:00+0000\n"
+"Last-Translator: Antigravity AI\n"
+"Language-Team: Vietnamese <vi_VN@li.org>\n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_cost_simulator_root
+msgid "Costing Simulator"
+msgstr "Mô Phỏng Giá Thành"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_bom_simulation
+#: model:ir.actions.act_window,name:dn_mrp_cost_simulator.action_mrp_bom_simulation
+msgid "Cost Simulations"
+msgstr "Mô Phỏng Giá Thành BOM"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_cost_bom_exception
+#: model:ir.actions.act_window,name:dn_mrp_cost_simulator.action_mrp_cost_bom_exception
+msgid "BOM Cost Exceptions"
+msgstr "Kiểm Toán Lỗi Cấu Hình BOM"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_cost_consumption_variance
+#: model:ir.actions.act_window,name:dn_mrp_cost_simulator.action_mrp_cost_consumption_variance
+msgid "Consumption Variance"
+msgstr "Chênh Lệch Tiêu Hao Vật Tư"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_cost_wip_snapshot
+#: model:ir.actions.act_window,name:dn_mrp_cost_simulator.action_mrp_cost_wip_snapshot
+msgid "WIP Valuation Snapshot"
+msgstr "Báo Cáo Dở Dang (WIP) Thực Tế"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_cost_workcenter_audit
+#: model:ir.actions.act_window,name:dn_mrp_cost_simulator.action_mrp_cost_workcenter_audit
+msgid "Work Center Productivity Audit"
+msgstr "Kiểm Toán Năng Suất Trạm Làm Việc"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_cost_variance_matrix
+#: model:ir.actions.act_window,name:dn_mrp_cost_simulator.action_mrp_cost_variance_matrix
+msgid "Cost Variance Matrix"
+msgstr "Ma Trận Chênh Lệch Giá Thành Kế Hoạch vs Thực Tế"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.ui.menu,name:dn_mrp_cost_simulator.menu_mrp_cost_gross_margin
+#: model:ir.actions.act_window,name:dn_mrp_cost_simulator.action_mrp_cost_gross_margin
+msgid "MO Gross Margin"
+msgstr "Báo Cáo Biên Lợi Nhuận Gộp Lệnh Sản Xuất"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model,name:dn_mrp_cost_simulator.model_mrp_bom_simulation
+msgid "MRP Bill of Materials Cost Simulation"
+msgstr "Mô Phỏng Giá Thành Định Mức Sản Xuất (BOM)"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model,name:dn_mrp_cost_simulator.model_mrp_bom_simulation_line
+msgid "MRP BOM Simulation Component Line"
+msgstr "Chi Tiết Nguyên Liệu Mô Phỏng BOM"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model,name:dn_mrp_cost_simulator.model_mrp_bom_simulation_operation
+msgid "MRP BOM Simulation Work Center Operation"
+msgstr "Chi Tiết Công Đoạn / Trạm Làm Việc Mô Phỏng"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model,name:dn_mrp_cost_simulator.model_mrp_bom_simulation_byproduct
+msgid "MRP BOM Simulation By-product Allocation"
+msgstr "Phân Bổ Sản Phẩm Phụ & Phế Liệu Mô Phỏng"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__name
+msgid "Simulation Reference"
+msgstr "Mã Mô Phỏng"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__description
+msgid "Scenario Description"
+msgstr "Mô Tả Kịch Bản"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__state
+msgid "Status"
+msgstr "Trạng Thái"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__costing_basis
+msgid "Baseline Cost Source"
+msgstr "Nguồn Giá Cơ Sở"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__explode_subassemblies
+msgid "Explode Multi-level BOMs"
+msgstr "Rã Đệ Quy BOM Đa Tầng"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__total_material_cost
+msgid "Total Direct Materials"
+msgstr "Tổng Chi Phí Nguyên Vật Liệu Trực Tiếp"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__total_labor_cost
+msgid "Total Direct Labor & Routing"
+msgstr "Tổng Chi Phí Nhân Công & Máy Móc"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__total_overhead_cost
+msgid "Overhead Cost"
+msgstr "Chi Phí Sản Xuất Chung (Overhead)"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__total_byproduct_deduction
+msgid "By-product Deductions"
+msgstr "Khấu Giảm Giá Trị Sản Phẩm Phụ"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__total_cost
+msgid "Net Total Manufacturing Cost"
+msgstr "Tổng Giá Thành Sản Xuất Ròng"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__unit_cost_simulated
+msgid "Simulated Unit Cost"
+msgstr "Giá Thành Đơn Vị Mô Phỏng"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__unit_cost_current
+msgid "Current Catalog Cost"
+msgstr "Giá Vốn Hiện Tại Trên Danh Mục"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__variance_amount
+msgid "Cost Variance Amount"
+msgstr "Giá Trị Chênh Lệch Giá Thành"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_bom_simulation__variance_percent
+msgid "Variance %"
+msgstr "Tỷ Lệ Chênh Lệch %"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_variance_matrix__planned_material_cost
+msgid "Planned Material Cost"
+msgstr "Chi Phí Vật Tư Định Mức"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_variance_matrix__actual_material_cost
+msgid "Actual Material Cost"
+msgstr "Chi Phí Vật Tư Thực Tế"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_variance_matrix__planned_labor_cost
+msgid "Planned Labor Cost"
+msgstr "Chi Phí Nhân Công Định Mức"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_variance_matrix__actual_labor_cost
+msgid "Actual Labor Cost"
+msgstr "Chi Phí Nhân Công Thực Tế"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_gross_margin__sale_revenue
+msgid "Sale Revenue"
+msgstr "Doanh Thu Bán Hàng"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_gross_margin__actual_mfg_cost
+msgid "Actual Manufacturing Cost"
+msgstr "Giá Vốn Sản Xuất Thực Tế"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_gross_margin__gross_profit
+msgid "Gross Profit"
+msgstr "Lợi Nhuận Gộp"
+
+#. module: dn_mrp_cost_simulator
+#: model:ir.model.fields,field_description:dn_mrp_cost_simulator.field_mrp_cost_gross_margin__gross_margin_pct
+msgid "Gross Margin %"
+msgstr "Tỷ Suất Lợi Nhuận Gộp %"

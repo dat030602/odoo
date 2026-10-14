@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="rule_mrp_bom_simulation_multi_company" model="ir.rule">
+            <field name="name">MRP BOM Simulation Multi-Company</field>
+            <field name="model_id" ref="model_mrp_bom_simulation"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

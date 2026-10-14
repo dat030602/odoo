@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- 1. Cost Variance Matrix (Planned vs Actual)                  -->
+    <!-- ============================================================ -->
+    <record id="view_mrp_cost_variance_matrix_search" model="ir.ui.view">
+        <field name="name">mrp.cost.variance.matrix.search</field>
+        <field name="model">mrp.cost.variance.matrix</field>
+        <field name="arch" type="xml">
+            <search string="Search Cost Variance">
+                <field name="production_id"/>
+                <field name="product_id"/>
+                <field name="product_tmpl_id"/>
+                <field name="categ_id"/>
+                <field name="bom_id"/>
+                <filter string="Cost Overrun (Variance &gt; 0)" name="filter_overrun" domain="[('total_variance', '&gt;', 0)]"/>
+                <filter string="Cost Savings (Variance &lt; 0)" name="filter_savings" domain="[('total_variance', '&lt;', 0)]"/>
+                <group>
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Product Category" name="group_categ" context="{'group_by': 'categ_id'}"/>
+                    <filter string="MO State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Completion Date" name="group_date" context="{'group_by': 'date_done:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_mrp_cost_variance_matrix_list" model="ir.ui.view">
+        <field name="name">mrp.cost.variance.matrix.list</field>
+        <field name="model">mrp.cost.variance.matrix</field>
+        <field name="arch" type="xml">
+            <list string="Cost Variance Matrix" decoration-danger="total_variance &gt; 0" decoration-success="total_variance &lt; 0">
+                <field name="production_id"/>
+                <field name="product_id"/>
+                <field name="product_qty"/>
+                <field name="qty_produced"/>
+                <field name="planned_material_cost" sum="Total Planned Material"/>
+                <field name="actual_material_cost" sum="Total Actual Material"/>
+                <field name="material_variance" sum="Total Material Variance" decoration-danger="material_variance &gt; 0"/>
+                <field name="planned_labor_cost" sum="Total Planned Labor"/>
+                <field name="actual_labor_cost" sum="Total Actual Labor"/>
+                <field name="labor_variance" sum="Total Labor Variance" decoration-danger="labor_variance &gt; 0"/>
+                <field name="total_planned_cost" sum="Total Planned Cost"/>
+                <field name="total_actual_cost" sum="Total Actual Cost"/>
+                <field name="total_variance" sum="Total Variance" decoration-danger="total_variance &gt; 0" decoration-success="total_variance &lt; 0"/>
+                <field name="variance_pct" widget="percentage" decoration-danger="variance_pct &gt; 0" decoration-success="variance_pct &lt; 0"/>
+                <field name="planned_unit_cost"/>
+                <field name="actual_unit_cost"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mrp_cost_variance_matrix_pivot" model="ir.ui.view">
+        <field name="name">mrp.cost.variance.matrix.pivot</field>
+        <field name="model">mrp.cost.variance.matrix</field>
+        <field name="arch" type="xml">
+            <pivot string="Cost Variance Pivot">
+                <field name="categ_id" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="planned_material_cost" type="measure"/>
+                <field name="actual_material_cost" type="measure"/>
+                <field name="material_variance" type="measure"/>
+                <field name="planned_labor_cost" type="measure"/>
+                <field name="actual_labor_cost" type="measure"/>
+                <field name="labor_variance" type="measure"/>
+                <field name="total_planned_cost" type="measure"/>
+                <field name="total_actual_cost" type="measure"/>
+                <field name="total_variance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_mrp_cost_variance_matrix" model="ir.actions.act_window">
+        <field name="name">Cost Variance Matrix</field>
+        <field name="res_model">mrp.cost.variance.matrix</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="search_view_id" ref="view_mrp_cost_variance_matrix_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No manufacturing variance records found.
+            </p>
+            <p>
+                Analyze real-time gaps between Planned BOM Costs and Actual Manufacturing Order costs
+                decomposed into Material, Labor, and Routing variances.
+            </p>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- 2. Gross Margin by Manufacturing Order                       -->
+    <!-- ============================================================ -->
+    <record id="view_mrp_cost_gross_margin_list" model="ir.ui.view">
+        <field name="name">mrp.cost.gross.margin.list</field>
+        <field name="model">mrp.cost.gross.margin</field>
+        <field name="arch" type="xml">
+            <list string="MO Gross Margin Analysis" decoration-danger="gross_margin_pct &lt; 0" decoration-warning="gross_margin_pct &lt; 15">
+                <field name="sale_order_id"/>
+                <field name="partner_id"/>
+                <field name="production_id"/>
+                <field name="product_id"/>
+                <field name="qty_produced"/>
+                <field name="sale_revenue" sum="Total Sale Revenue"/>
+                <field name="actual_mfg_cost" sum="Total Manufacturing Cost"/>
+                <field name="gross_profit" sum="Total Gross Profit" decoration-danger="gross_profit &lt; 0"/>
+                <field name="gross_margin_pct" widget="percentage" decoration-danger="gross_margin_pct &lt; 0" decoration-warning="gross_margin_pct &lt; 15" decoration-success="gross_margin_pct &gt;= 25"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="date_done"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mrp_cost_gross_margin_pivot" model="ir.ui.view">
+        <field name="name">mrp.cost.gross.margin.pivot</field>
+        <field name="model">mrp.cost.gross.margin</field>
+        <field name="arch" type="xml">
+            <pivot string="Gross Margin Pivot">
+                <field name="partner_id" type="row"/>
+                <field name="product_id" type="row"/>
+                <field name="sale_revenue" type="measure"/>
+                <field name="actual_mfg_cost" type="measure"/>
+                <field name="gross_profit" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_mrp_cost_gross_margin" model="ir.actions.act_window">
+        <field name="name">Gross Margin by MO</field>
+        <field name="res_model">mrp.cost.gross.margin</field>
+        <field name="view_mode">list,pivot</field>
+    </record>
+
+</odoo>
