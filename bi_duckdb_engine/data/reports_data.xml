@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ========================================== -->
+        <!-- 1. SALES ANALYTICS (SALES OLAP)            -->
+        <!-- ========================================== -->
+        <record id="report_sales_bi" model="bi.duckdb.report">
+            <field name="name">Sales Analytics (OLAP)</field>
+            <field name="code">sales_bi_olap</field>
+            <field name="cache_ttl">300</field>
+            <field name="pg_extract_sql"><![CDATA[SELECT
+    so.id AS order_id,
+    so.name AS order_ref,
+    so.date_order::date AS order_date,
+    so.state AS order_state,
+    rp.name AS customer_name,
+    COALESCE(pt.name->>'en_US', pt.name->>'default', 'Product') AS product_name,
+    sol.product_uom_qty AS qty_ordered,
+    sol.qty_delivered AS qty_delivered,
+    sol.price_unit AS price_unit,
+    sol.discount AS discount_pct,
+    sol.price_subtotal AS subtotal,
+    sol.company_id AS company_id
+FROM sale_order so
+JOIN sale_order_line sol ON sol.order_id = so.id
+JOIN res_partner rp ON rp.id = so.partner_id
+JOIN product_product pp ON pp.id = sol.product_id
+JOIN product_template pt ON pt.id = pp.product_tmpl_id
+WHERE so.company_id IN :company_ids
+  AND so.date_order >= :date_from
+ORDER BY so.date_order DESC, so.id DESC]]></field>
+        </record>
+
+        <!-- Views for Sales Report -->
+        <record id="view_sales_by_customer" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_sales_bi"/>
+            <field name="sequence">10</field>
+            <field name="name">Revenue by Customer</field>
+            <field name="duckdb_sql"><![CDATA[SELECT customer_name,
+       COUNT(DISTINCT order_id) AS total_orders,
+       ROUND(SUM(TRY_CAST(qty_ordered AS DOUBLE)), 2) AS total_qty,
+       ROUND(SUM(TRY_CAST(subtotal AS DOUBLE)), 2) AS total_revenue,
+       ROUND(AVG(TRY_CAST(subtotal AS DOUBLE)), 2) AS avg_line_val
+FROM raw_dataset
+GROUP BY customer_name
+ORDER BY total_revenue DESC]]></field>
+        </record>
+
+        <record id="view_sales_by_product" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_sales_bi"/>
+            <field name="sequence">20</field>
+            <field name="name">Top Selling Products</field>
+            <field name="duckdb_sql"><![CDATA[SELECT product_name,
+       ROUND(SUM(TRY_CAST(qty_ordered AS DOUBLE)), 2) AS total_qty_sold,
+       ROUND(SUM(TRY_CAST(subtotal AS DOUBLE)), 2) AS total_revenue,
+       ROUND(AVG(TRY_CAST(price_unit AS DOUBLE)), 2) AS avg_price
+FROM raw_dataset
+GROUP BY product_name
+ORDER BY total_revenue DESC
+LIMIT 15]]></field>
+        </record>
+
+        <record id="view_sales_fulfillment" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_sales_bi"/>
+            <field name="sequence">30</field>
+            <field name="name">Fulfillment by State</field>
+            <field name="duckdb_sql"><![CDATA[SELECT order_state,
+       COUNT(DISTINCT order_id) AS orders_count,
+       ROUND(SUM(TRY_CAST(qty_ordered AS DOUBLE)), 2) AS ordered_qty,
+       ROUND(SUM(TRY_CAST(qty_delivered AS DOUBLE)), 2) AS delivered_qty,
+       ROUND(SUM(TRY_CAST(qty_delivered AS DOUBLE)) * 100.0 / NULLIF(SUM(TRY_CAST(qty_ordered AS DOUBLE)), 0), 1) AS delivery_rate_pct,
+       ROUND(SUM(TRY_CAST(subtotal AS DOUBLE)), 2) AS total_amount
+FROM raw_dataset
+GROUP BY order_state
+ORDER BY total_amount DESC]]></field>
+        </record>
+
+        <record id="view_sales_daily_trend" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_sales_bi"/>
+            <field name="sequence">40</field>
+            <field name="name">Daily Sales Trend</field>
+            <field name="duckdb_sql"><![CDATA[SELECT strftime(CAST(order_date AS TIMESTAMP), '%Y-%m-%d') AS sale_day,
+       COUNT(DISTINCT order_id) AS orders_count,
+       ROUND(SUM(TRY_CAST(subtotal AS DOUBLE)), 2) AS daily_revenue
+FROM raw_dataset
+GROUP BY sale_day
+ORDER BY sale_day ASC]]></field>
+        </record>
+
+        <!-- =============================================== -->
+        <!-- 2. INVENTORY & STOCK ANALYTICS (STOCK OLAP)     -->
+        <!-- =============================================== -->
+        <record id="report_stock_bi" model="bi.duckdb.report">
+            <field name="name">Inventory &amp; Stock Analytics (OLAP)</field>
+            <field name="code">stock_bi_olap</field>
+            <field name="cache_ttl">300</field>
+            <field name="pg_extract_sql"><![CDATA[SELECT
+    sm.id AS move_id,
+    sm.date::date AS move_date,
+    sm.state AS move_state,
+    COALESCE(pt.name->>'en_US', pt.name->>'default', 'Product') AS product_name,
+    COALESCE(pp.default_code, '') AS product_sku,
+    src_loc.complete_name AS source_location,
+    src_loc.usage AS src_usage,
+    dest_loc.complete_name AS dest_location,
+    dest_loc.usage AS dest_usage,
+    sm.product_uom_qty AS qty_demanded,
+    sm.quantity AS qty_done,
+    sm.company_id AS company_id
+FROM stock_move sm
+JOIN product_product pp ON pp.id = sm.product_id
+JOIN product_template pt ON pt.id = pp.product_tmpl_id
+JOIN stock_location src_loc ON src_loc.id = sm.location_id
+JOIN stock_location dest_loc ON dest_loc.id = sm.location_dest_id
+WHERE sm.company_id IN :company_ids
+  AND sm.date >= :date_from
+ORDER BY sm.date DESC, sm.id DESC]]></field>
+        </record>
+
+        <!-- Views for Stock Report -->
+        <record id="view_stock_net_movement" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_stock_bi"/>
+            <field name="sequence">10</field>
+            <field name="name">Net Stock Movement by Product</field>
+            <field name="duckdb_sql"><![CDATA[SELECT product_name,
+       product_sku,
+       ROUND(SUM(CASE WHEN dest_usage = 'internal' AND src_usage != 'internal' THEN TRY_CAST(qty_done AS DOUBLE) ELSE 0 END), 2) AS total_imported,
+       ROUND(SUM(CASE WHEN src_usage = 'internal' AND dest_usage != 'internal' THEN TRY_CAST(qty_done AS DOUBLE) ELSE 0 END), 2) AS total_exported,
+       ROUND(SUM(CASE WHEN dest_usage = 'internal' AND src_usage != 'internal' THEN TRY_CAST(qty_done AS DOUBLE)
+                      WHEN src_usage = 'internal' AND dest_usage != 'internal' THEN -TRY_CAST(qty_done AS DOUBLE)
+                      ELSE 0 END), 2) AS net_change
+FROM raw_dataset
+GROUP BY product_name, product_sku
+ORDER BY net_change DESC]]></field>
+        </record>
+
+        <record id="view_stock_by_status" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_stock_bi"/>
+            <field name="sequence">20</field>
+            <field name="name">Move Status Distribution</field>
+            <field name="duckdb_sql"><![CDATA[SELECT move_state,
+       COUNT(move_id) AS total_moves,
+       ROUND(SUM(TRY_CAST(qty_demanded AS DOUBLE)), 2) AS total_qty_demanded,
+       ROUND(SUM(TRY_CAST(qty_done AS DOUBLE)), 2) AS total_qty_done
+FROM raw_dataset
+GROUP BY move_state
+ORDER BY total_moves DESC]]></field>
+        </record>
+
+        <record id="view_stock_location_flow" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_stock_bi"/>
+            <field name="sequence">30</field>
+            <field name="name">Location Transfer Flow</field>
+            <field name="duckdb_sql"><![CDATA[SELECT source_location,
+       dest_location,
+       COUNT(move_id) AS move_count,
+       ROUND(SUM(TRY_CAST(qty_done AS DOUBLE)), 2) AS total_qty_moved
+FROM raw_dataset
+GROUP BY source_location, dest_location
+ORDER BY total_qty_moved DESC
+LIMIT 20]]></field>
+        </record>
+
+        <record id="view_stock_daily_trend" model="bi.duckdb.report.view">
+            <field name="report_id" ref="report_stock_bi"/>
+            <field name="sequence">40</field>
+            <field name="name">Daily Warehouse Activity</field>
+            <field name="duckdb_sql"><![CDATA[SELECT strftime(CAST(move_date AS TIMESTAMP), '%Y-%m-%d') AS move_day,
+       COUNT(move_id) AS moves_count,
+       ROUND(SUM(TRY_CAST(qty_done AS DOUBLE)), 2) AS total_qty_transferred
+FROM raw_dataset
+GROUP BY move_day
+ORDER BY move_day ASC]]></field>
+        </record>
+    </data>
+</odoo>

@@ -10,11 +10,11 @@ class DnGraphqlStockReport(models.AbstractModel):
     @api.model
     def action_bao_cao_xuat_nhap_ton(self, product_id, location_id, date_from=None, date_to=None, states=None):
         """
-        Báo cáo Xuất - Nhập - Tồn (Thẻ kho chi tiết) cho 1 sản phẩm tại 1 địa điểm kho.
-        Tính toán:
-        1. Số dư đầu kỳ (Opening Balance)
-        2. Các phát sinh trong kỳ (Movements) kèm Tồn lũy kế (Running Balance)
-        3. Tồn cuối kỳ (Closing Balance)
+        Stock In-Out-Balance (Detailed Bin Card) report for a product at a specific warehouse location.
+        Calculations:
+        1. Opening Balance
+        2. Movements within the period with Running Balance
+        3. Closing Balance
         """
         product = self.env['product.product'].browse(int(product_id))
         if not product.exists():
@@ -30,7 +30,7 @@ class DnGraphqlStockReport(models.AbstractModel):
 
         cr = self.env.cr
 
-        # 1. Tính Số dư đầu kỳ (Opening Balance)
+        # 1. Compute Opening Balance
         query_opening = """
             SELECT
                 COALESCE(SUM(CASE WHEN location_dest_id = %s THEN quantity ELSE 0 END), 0) -
@@ -44,7 +44,7 @@ class DnGraphqlStockReport(models.AbstractModel):
         cr.execute(query_opening, (location.id, location.id, product.id, states, d_from, location.id, location.id))
         opening_qty = float(cr.fetchone()[0] or 0.0)
 
-        # 2. Phát sinh trong kỳ
+        # 2. Movements in period
         query_moves = """
             SELECT
                 sm.id AS move_id,

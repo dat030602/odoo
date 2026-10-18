@@ -438,7 +438,7 @@ class GraphQLController(http.Controller):
     }
   }'</code></pre>
 
-        <h3>4. Inventory In-Out-Balance Report (Báo cáo Xuất Nhập Tồn)</h3>
+        <h3>4. Inventory In-Out-Balance Report (Stock Card)</h3>
         <span class="tag-curl">cURL</span>
         <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>curl -X POST http://localhost:8019/graphql \\
   -H "Content-Type: application/json" \\

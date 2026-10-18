@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bi_duckdb_engine.DuckDBReportAction">
+        <div class="o_action d-flex flex-column h-100 bg-view p-3 overflow-auto">
+            <!-- Header Bar -->
+            <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2 flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <h3 class="mb-0 fw-bold text-primary" t-esc="state.reportName || 'DuckDB BI Report'"/>
+                    <select class="form-select form-select-sm w-auto fw-bold"
+                            t-if="state.reports.length > 1"
+                            t-att-value="state.selectedReportId"
+                            t-on-change="onReportChange">
+                        <option t-foreach="state.reports" t-as="r" t-key="r.id" t-att-value="r.id" t-esc="r.name"/>
+                    </select>
+                    <small class="text-muted ms-2" t-if="state.statusText" t-esc="state.statusText"/>
+                </div>
+                <div class="d-flex gap-2 align-items-end flex-wrap">
+                    <t t-foreach="state.paramNames" t-as="p" t-key="p">
+                        <div>
+                            <label class="form-label small mb-0 fw-bold" t-esc="p"/>
+                            <input t-att-type="p.includes('date') ? 'date' : 'text'"
+                                   class="form-control form-control-sm"
+                                   t-model="state.paramValues[p]"/>
+                        </div>
+                    </t>
+                    <button class="btn btn-sm btn-primary" t-on-click="loadServerDataset" t-att-disabled="state.loading">
+                        <i class="fa fa-refresh me-1" t-if="!state.loading"/>
+                        <i class="fa fa-spin fa-spinner me-1" t-if="state.loading"/>
+                        Load Dataset (Server -> WASM)
+                    </button>
+                </div>
+            </div>
+
+            <!-- View Tabs -->
+            <ul class="nav nav-tabs mb-2" t-if="state.views.length">
+                <li class="nav-item" t-foreach="state.views" t-as="v" t-key="v.id">
+                    <a href="#" t-attf-class="nav-link {{ state.activeViewId === v.id ? 'active fw-bold' : '' }}"
+                       t-on-click.prevent="() => this.selectTab(v)">
+                        <t t-esc="v.name"/>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Query & Action Toolbar -->
+            <div class="mb-2 d-flex gap-2 align-items-start">
+                <textarea class="form-control font-monospace small" rows="2"
+                          t-model="state.activeSql"
+                          placeholder="SELECT category, SUM(amount) FROM raw_dataset GROUP BY 1"/>
+                <select class="form-select w-auto" t-model="state.chartType" t-on-change="renderChart">
+                    <option value="none">Table Only</option>
+                    <option value="bar">Bar Chart</option>
+                    <option value="line">Line Chart</option>
+                    <option value="doughnut">Doughnut Chart</option>
+                </select>
+                <button class="btn btn-outline-secondary text-nowrap" t-on-click="runClientQuery" t-att-disabled="!state.datasetLoaded">
+                    Run SQL (WASM)
+                </button>
+                <button class="btn btn-outline-success text-nowrap" t-on-click="() => this.exportClientFile('csv')" t-att-disabled="!state.datasetLoaded">
+                    Export CSV
+                </button>
+                <button class="btn btn-outline-dark text-nowrap" t-on-click="() => this.exportClientFile('parquet')" t-att-disabled="!state.datasetLoaded">
+                    Export Parquet
+                </button>
+            </div>
+
+            <!-- Error Banner -->
+            <div class="alert alert-danger py-2" t-if="state.error" t-esc="state.error"/>
+
+            <!-- Chart Canvas -->
+            <div t-attf-class="mb-3 border rounded bg-white p-2 {{ state.chartType === 'none' ? 'd-none' : '' }}" style="height: 300px;">
+                <canvas t-ref="chartCanvas"/>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-responsive flex-grow-1 border rounded bg-white">
+                <table class="table table-sm table-hover table-striped mb-0">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th t-foreach="state.columns" t-as="col" t-key="col" t-esc="col"/>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="state.rows" t-as="row" t-key="row_index">
+                            <td t-foreach="row" t-as="cell" t-key="cell_index" t-esc="cell"/>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>
