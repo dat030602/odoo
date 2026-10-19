@@ -25,7 +25,7 @@ description: "End-to-end UI and OWL 2 verification playbook for Odoo 19 using sy
 ## 2. 5-Step Execution Workflow
 
 ### Step 1: Authentication & Session Initialization (`playwright` / Browser Subagent)
-1. Navigate to `http://localhost:8019/web/login?db=odoo19`.
+1. Navigate to `$ODOO_URL/web/login?db=$ODOO_DB` (dynamically loaded from `.agents/.env`).
 2. Get field elements:
    - Type Email/Username (`input[name="login"]`) and Password (`input[name="password"]`).
    - Click `"Log in"` (`button[type="submit"]`).
@@ -36,7 +36,7 @@ description: "End-to-end UI and OWL 2 verification playbook for Odoo 19 using sy
 *Tip for Odoo 19:* Avoid navigating through nested menus unless menu routing itself is under test.
 1. (Optional) Query `ir.actions.act_window` via `search_read` to retrieve the `id` or `path` for the action.
 2. Navigate directly:
-   - Via clean Odoo 19 URL: `http://localhost:8019/odoo/action-<action_id>/new` (opens new record Form directly) or click `"New"` (`.o_list_button_add`) from List View.
+   - Via clean Odoo 19 URL: `$ODOO_URL/odoo/action-<action_id>/new` (opens new record Form directly) or click `"New"` (`.o_list_button_add`) from List View.
    - Invoke `browser_snapshot` to capture all fields and controls on `.o_form_view`.
 
 ### Step 3: Interacting with Odoo 19 Form View Widgets (`playwright`)

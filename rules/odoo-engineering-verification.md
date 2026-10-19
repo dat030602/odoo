@@ -5,12 +5,14 @@ description: "Strict Odoo 17-19 engineering standards, modern ORM/XML syntax rul
 
 # ODOO 17-19 STRICT ENGINEERING & VERIFICATION RULES
 
-## 0. ENVIRONMENT CONFIGURATION (PROJECT SPECIFIC)
+## 0. ENVIRONMENT CONFIGURATION (CENTRALIZED VIA `.agents/.env`)
+All environment parameters are dynamically loaded from `/opt/odoo19/.agents/.env`:
+- **Config File:** `/opt/odoo19/.agents/.env`
 - **Target Odoo Version:** 19.0 (Strict adherence to Odoo 17/18/19+ modern standards)
-- **Odoo CLI Command:** `/opt/venv312/bin/python3.12 odoo-bin -c /opt/odoo19.conf` (Fallback: `python3 odoo-bin -c debian/odoo.conf`)
-- **Database Name:** `odoo19`
-- **Web Server URL:** `http://localhost:8019`
-- **Test Credentials:** `admin` / `admin`
+- **Odoo CLI Command:** `$ODOO_PYTHON $ODOO_BIN -c $ODOO_CONF` (Read from `.agents/.env`)
+- **Database Name:** `$ODOO_DB` (Configured in `.agents/.env`)
+- **Web Server URL:** `$ODOO_URL` (Configured in `.agents/.env`)
+- **Test Credentials:** `$ODOO_ADMIN_USER` / `$ODOO_ADMIN_PASSWORD` (Configured in `.agents/.env`)
 
 ---
 
@@ -63,9 +65,10 @@ Adhere 100% to modern Odoo standards. Legacy Odoo 14/15/16 syntax is strictly pr
 **CRITICAL RULE:** Generating code is only 50% of the task. You are **FORBIDDEN** from marking a task as completed until you have executed the verification loop below.
 
 ### Step 1: Terminal Init & Test Check (Mandatory after ANY Python/XML change)
-Immediately after writing or editing module files, use the Terminal tool to run:
+Immediately after writing or editing module files, use the Terminal tool to run (variables loaded from `/opt/odoo19/.agents/.env`):
 ```bash
-/opt/venv312/bin/python3.12 /opt/odoo19/odoo-bin -c /opt/odoo19.conf -d odoo19 -u <module_name> --stop-after-init --log-level=warn
+set -a && source /opt/odoo19/.agents/.env && set +a
+$ODOO_PYTHON $ODOO_BIN -c $ODOO_CONF -d $ODOO_DB -u <module_name> --stop-after-init --log-level=warn
 ```
 
 *(If unit tests exist or were requested, append `--test-enable`)*
@@ -77,7 +80,7 @@ Immediately after writing or editing module files, use the Terminal tool to run:
 ### Step 2: Browser UI & OWL Inspection (Mandatory for ANY View/JS/UI task)
 Once Step 1 passes cleanly:
 1. Ensure the Odoo server is running in the background (or start it if stopped).
-2. Activate the **Browser Agent** (Antigravity Browser Subagent or Playwright) and navigate to `http://localhost:8019/web?db=odoo19`.
+2. Activate the **Browser Agent** (Antigravity Browser Subagent or Playwright) and navigate to `$ODOO_URL/web?db=$ODOO_DB` (values from `.agents/.env`).
 3. Log in (if prompted) using the Test Credentials above.
 4. Navigate to the newly created/modified Menu, List View, and Form View.
 5. **Visual & Console Check:**

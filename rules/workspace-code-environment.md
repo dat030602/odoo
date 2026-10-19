@@ -36,10 +36,29 @@ description: "Mandates direct workspace code modification, forbids fabricated or
 ---
 
 ## 4. STRICT ODOO CONFIGURATION FILE
-- **Mandatory Configuration Flag:** ALWAYS provide the explicit configuration file `/opt/odoo19.conf` in all Odoo CLI executions:
+- **Mandatory Configuration Flag:** ALWAYS provide the explicit configuration file (configured as `ODOO_CONF` in `.agents/.env`, default `/opt/odoo19.conf`) in all Odoo CLI executions:
   ```bash
-  /opt/venv312/bin/python3.12 /opt/odoo19/odoo-bin -c /opt/odoo19.conf -d odoo19 ...
+  $ODOO_PYTHON $ODOO_BIN -c $ODOO_CONF -d $ODOO_DB ...
   ```
 - **Forbidden Actions:**
-  - NEVER run `odoo-bin` without `-c /opt/odoo19.conf`.
+  - NEVER run `odoo-bin` without `-c $ODOO_CONF`.
   - NEVER invent or assume non-existent config files (e.g., `odoo.conf`, `debian/odoo.conf`).
+
+---
+
+## 5. CENTRALIZED CONFIGURATION VIA `.agents/.env` (ZERO HARDCODING)
+- **Single Source of Truth:** All environment parameters (Database name, HTTP port, Python binary path, Odoo config file, test credentials, and workspace path) are defined in and managed through:
+  ```bash
+  /opt/odoo19/.agents/.env
+  ```
+- **Core Variables in `.agents/.env`:**
+  - `ODOO_DB`: Database name for testing and execution (e.g. `odoo19`).
+  - `ODOO_PORT`: Odoo web service port (e.g. `8019`).
+  - `ODOO_URL`: Full base URL (e.g. `http://localhost:8019`).
+  - `ODOO_PYTHON`: Path to Python executable (e.g. `/opt/venv312/bin/python3.12`).
+  - `ODOO_CONF`: Path to Odoo config file (e.g. `/opt/odoo19.conf`).
+  - `ODOO_BIN`: Path to `odoo-bin` executable.
+  - `ODOO_WORKSPACE`: Workspace root directory (`/opt/odoo19`).
+- **Forbidden Actions:**
+  - NEVER hardcode database names, port numbers, or file paths across scripts, test cases, or code.
+  - All test scripts and tools must read environment variables dynamically with fallback to `.agents/.env`.

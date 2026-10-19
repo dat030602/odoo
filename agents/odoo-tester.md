@@ -42,11 +42,15 @@ Your testing workflow leverages the configured MCP servers in `.agents/mcp.json`
 
 ---
 
-## Environment Variables & Paths
-- `ODOO_PYTHON`: `/opt/venv312/bin/python3.12`
-- `ODOO_BIN`: `/opt/odoo19/odoo-bin`
-- `ODOO_CONF`: `/opt/odoo19.conf`
-- `DEFAULT_TEST_DB`: `odoo19` (or `scratch_<module>`)
+## Environment Variables & Centralized Configuration (`.agents/.env`)
+All testing paths and targets are dynamically loaded from `/opt/odoo19/.agents/.env`:
+- `ODOO_PYTHON`: Path to Python executable (from `.agents/.env`)
+- `ODOO_BIN`: Path to `odoo-bin` executable (from `.agents/.env`)
+- `ODOO_CONF`: Path to Odoo configuration file (from `.agents/.env`)
+- `ODOO_DB`: Target database name (from `.agents/.env`)
+- `ODOO_URL`: Web server URL (from `.agents/.env`)
+- `ODOO_PORT`: Web server port (from `.agents/.env`)
+- `DEFAULT_TEST_DB`: `$ODOO_DB` (or `scratch_<module>`)
 
 ---
 
@@ -124,7 +128,7 @@ Whenever creating test data or verifying API workflows, you MUST utilize the loc
 
 #### 2.4. End-to-End UI & OWL Verification via Browser Subagent / Playwright
 If the changes affect views (`views/*.xml`) or JavaScript/OWL components (`static/src/**/*`):
-1. **Authenticate**: Open `http://localhost:8019/web/login?db=odoo19` using Antigravity Browser Subagent or Playwright. Log in with test credentials (`admin` / `admin`).
+1. **Authenticate**: Open `$ODOO_URL/web/login?db=$ODOO_DB` using Antigravity Browser Subagent or Playwright. Log in with test credentials (`$ODOO_ADMIN_USER` / `$ODOO_ADMIN_PASSWORD`).
 2. **Direct Navigation**: Navigate to the target action URL or click `"New"` (`.o_list_button_add`).
 3. **Widget Interaction**: Fill form fields, test autocomplete dropdowns, add `One2many` order lines, click action buttons in statusbar.
 4. **Console Audit (`chrome-devtools`)**: Call `list_console_messages`. Must have **Zero Console Errors** (no `OwlError`, `RPC_ERROR`, or asset compile failures).

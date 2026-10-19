@@ -7,14 +7,14 @@ description: "Odoo 19 UI Testing Workflow with Playwright and Chrome DevTools, p
 # ODOO 19 UI TESTING PLAYBOOK & CSS SELECTORS
 
 ## 1. Browser Automation Architecture (Antigravity Browser Subagent & Playwright/CDP)
-When testing XML views, OWL components, or web assets, orchestrate UI verification via:
-- **Antigravity Browser Subagent**: Driven via Chrome to authenticate (`http://localhost:8019/web?db=odoo19`), execute DOM interactions, audit console errors, and capture screenshots automatically during UI verification tasks.
-- **Playwright MCP (`@playwright/mcp`) & Chrome DevTools MCP (`chrome-devtools-mcp`)**: Alternately connects via CDP port (`9222`) to execute DOM actions (`browser_snapshot`) and verify RPC network calls / console logs.
+When testing XML views, OWL components, or web assets, orchestrate UI verification using parameters loaded from `.agents/.env` (`ODOO_URL`, `ODOO_DB`):
+- **Antigravity Browser Subagent**: Driven via Chrome to authenticate (`$ODOO_URL/web/login?db=$ODOO_DB`), execute DOM interactions, audit console errors, and capture screenshots automatically during UI verification tasks.
+- **Playwright MCP (`@playwright/mcp`) & Chrome DevTools MCP (`chrome-devtools-mcp`)**: Alternately connects via CDP port (`$CHROME_CDP_PORT`, default `9222`) to execute DOM actions (`browser_snapshot`) and verify RPC network calls / console logs.
 
 ---
 
 ## 2. 5-Step UI Verification Procedure
-1. **Step 1: Login & Session Initialization:** Navigate to `/web/login?db=odoo19`, snapshot inputs, submit credentials, wait for `.o_navbar`, and audit console messages via `list_console_messages`.
+1. **Step 1: Login & Session Initialization:** Navigate to `$ODOO_URL/web/login?db=$ODOO_DB`, snapshot inputs, submit credentials, wait for `.o_navbar`, and audit console messages via `list_console_messages`.
 2. **Step 2: Direct Navigation:** Navigate directly to the action view URL (e.g., `/odoo/action-<id>/new`) or click `"New"` (`.o_list_button_add`), followed by `browser_snapshot`.
 3. **Step 3: Widget Interactions:**
    - Standard inputs (`Char`, `Integer`): Type and send `Tab` key to trigger `@api.onchange`.

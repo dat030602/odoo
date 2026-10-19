@@ -14,6 +14,9 @@ Before routing to ANY subagent or writing a single line of code/prose, the Agent
    - **Architecture, Planning, Complex ORM/OWL & Final Verification (Phases 1, 2, 4):** Prioritize deep reasoning & strict tool-calling discipline.
    - **Boilerplate Expansion, Source Scanning & Documentation (Phases 3, 5):** Follow the locked specification in `docs/analysis/<feature>.md` with 0% deviation.
 
+### 0.2. The Centralized Configuration Law (`.agents/.env`)
+All runtime parameters (`ODOO_DB`, `ODOO_PORT`, `ODOO_URL`, `ODOO_PYTHON`, `ODOO_CONF`, `ODOO_BIN`) MUST be read from `/opt/odoo19/.agents/.env`. Hardcoding database names, port numbers, or paths in test cases, scripts, view templates, or CLI calls is **STRICTLY PROHIBITED**.
+
 ---
 
 ## 1. Intent-Based Routing Gate & Autonomous Execution
@@ -39,7 +42,7 @@ Analyze the user's prompt intent first and route autonomously:
   2. **Select Specialized Subagent:** Invoke `business-analyst`, `architect-reviewer`, or `postgres-pro` (from the 167 community subagents) with relevant skills (`odoo-19`, `architecture-review`).
   3. **Structured Explanation Output:** Present the answer using a rigorous structure:
      - **Standard Odoo 19 Behavior:** How core Odoo handles this out-of-the-box (citing exact models/methods/views).
-     - **Live Environment State:** What is currently configured in `odoo19` (via MCP evidence).
+     - **Live Environment State:** What is currently configured in `$ODOO_DB` (defined in `.agents/.env`, via MCP evidence).
      - **Fit/Gap & Recommendation:** Configuration vs. Customization trade-offs.
 
 - **ROUTE C — DevOps, Database Optimization, Security Audit & General Engineering:**
@@ -114,7 +117,7 @@ When verifying user interfaces (XML views, OWL 2 components, JS/SCSS), `qa-exper
 3. **Phase 3 — TDD Green Phase (`backend-developer` / `python-pro` / `frontend-developer`):**
    - Read `docs/analysis/<feature>.md` and the test suite under `<module>/tests/`.
    - Implement the feature using skill `odoo-19` with MCPs `odoo-core-source` and `context7`.
-   - **Immediate Terminal Upgrade Gate:** After writing/editing module files, run the Odoo CLI upgrade check (`-d odoo19 -u <module> --stop-after-init`) to immediately catch and self-correct any XML `ParseError`, missing imports, or registry crashes before handing off to QA.
+   - **Immediate Terminal Upgrade Gate:** After writing/editing module files, run the Odoo CLI upgrade check (`$ODOO_PYTHON $ODOO_BIN -c $ODOO_CONF -d $ODOO_DB -u <module> --stop-after-init`) to immediately catch and self-correct any XML `ParseError`, missing imports, or registry crashes before handing off to QA.
    - **STRICT PROHIBITION:** Never modify or delete existing test assertions in `<module>/tests/` simply to force a passing build.
    - **Exit Gate:** Module installs/upgrades cleanly with exit code `0` and is submitted for parallel verification.
 
@@ -123,7 +126,7 @@ When verifying user interfaces (XML views, OWL 2 components, JS/SCSS), `qa-exper
      - Run module tests and dependent test suites (`--test-enable`), ensuring logic test coverage **greater than 80%**.
      - Seed real test data and execute API scenario testing using the local GraphQL gateway module (`/opt/odoo19/dev/dn_graphql_gateway`): execute mutations and queries, asserting `0` `result.errors` and `0` `userErrors`. Verification is strictly considered **PASS/OK** only when GraphQL execution completes with **ZERO ERRORS**.
      - Verify database state via `odoo-rpc` / `odoo-postgres` or `scripts/run_test.py`.
-     - **Mandatory UI Gate (Browser Subagent / Playwright):** For ANY change affecting `views/*.xml` or `static/src/**/*`, authenticate at `http://localhost:8019/web?db=odoo19`, perform end-to-end interactions, verify **Zero Console Errors**, and record screenshots to `docs/review/screenshots/`.
+     - **Mandatory UI Gate (Browser Subagent / Playwright):** For ANY change affecting `views/*.xml` or `static/src/**/*`, authenticate at `$ODOO_URL/web?db=$ODOO_DB`, perform end-to-end interactions, verify **Zero Console Errors**, and record screenshots to `docs/review/screenshots/`.
    - **Code Review (`code-reviewer` / `odoo-code-review`):**
      - Operates in **Read-Only** mode.
      - Inspect method overrides, security ACLs, and query efficiency against Odoo Core using `odoo-core-source` and `odoo-postgres`.
