@@ -178,8 +178,10 @@ class BiDuckdbController(http.Controller):
             try:
                 registry = request.env.registry
             except Exception:
+                import os
                 import odoo
-                registry = odoo.registry(odoo.tools.config['db_name'] or 'odoo19')
+                target_db = odoo.tools.config['db_name'] or os.environ.get('ODOO_DB', 'odoo19')
+                registry = odoo.registry(target_db)
 
         with registry.cursor() as ro_cr:
             ro_cr.execute("SET LOCAL TRANSACTION READ ONLY;")
