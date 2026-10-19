@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaModelCreate">
+    <div class="o_mm_widget o_mm_model_create">
+      <Banner t-if="isError" level="'danger'" text="c.message"/>
+
+      <!-- Model info card -->
+      <section class="o_mm_card">
+        <header class="o_mm_card_head">
+          <h3 class="o_mm_card_title">Model info</h3>
+          <span class="o_mm_badge o_mm_badge--create">New model</span>
+          <span t-if="renamedFrom" class="o_mm_chip">renamed from <t t-esc="renamedFrom"/></span>
+        </header>
+        <dl class="o_mm_kv">
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">Model</dt>
+            <dd class="o_mm_value is-mono fw-bold" t-esc="modelObj.model || c.targetRef"/>
+          </div>
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">Description</dt>
+            <dd class="o_mm_value" t-esc="modelObj.name || '—'"/>
+          </div>
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">State</dt>
+            <dd class="o_mm_value">
+              <span class="o_mm_badge" t-esc="modelObj.state || 'manual'"/>
+            </dd>
+          </div>
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">Transient</dt>
+            <dd class="o_mm_value">
+              <BoolPill value="modelObj.transient"/>
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- Fields Table -->
+      <section class="o_mm_tblwrap">
+        <div class="o_mm_toolbar">
+          <strong>Fields (<t t-esc="rows.length"/>)</strong>
+          <input class="o_mm_input" type="search" placeholder="Search fields" t-model="state.q"/>
+          <t t-foreach="typeChips" t-as="tc" t-key="tc">
+            <button type="button" t-attf-class="o_mm_btn {{state.types[tc] ? 'is-on' : ''}}"
+                    t-on-click="() => this.toggleType(tc)" t-esc="tc"/>
+          </t>
+          <button type="button" t-attf-class="o_mm_btn {{state.onlyErrors ? 'is-on' : ''}}"
+                  t-on-click="toggleErrors">Only errors</button>
+          <span class="o_mm_toolbar_spacer"/>
+          <details class="o_mm_picker">
+            <summary class="o_mm_btn">Columns</summary>
+            <div class="o_mm_picker_menu">
+              <label t-foreach="allColumns" t-as="col" t-key="col.key">
+                <input type="checkbox" t-att-checked="col.visible" t-on-change="() => this.toggleCol(col.key)"/>
+                <t t-esc="col.label"/>
+              </label>
+            </div>
+          </details>
+          <button type="button" class="o_mm_btn" t-on-click="expandAll">Expand all</button>
+        </div>
+
+        <div class="o_mm_tblscroll">
+          <table class="o_mm_tbl">
+            <thead>
+              <tr>
+                <th t-foreach="columns" t-as="col" t-key="col.key"
+                    t-attf-class="{{col.sticky ? 'is-sticky' : ''}}" t-esc="col.label"/>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-foreach="visibleRows" t-as="r" t-key="r.id">
+                <tr t-attf-class="o_mm_row {{r.error ? 'is-error' : ''}} {{state.open[r.id] ? 'is-open' : ''}}"
+                    tabindex="0"
+                    t-on-click="() => this.toggleRow(r.id)"
+                    t-on-keydown="(ev) => this.onRowKey(ev, r.id)">
+                  <t t-foreach="columns" t-as="col" t-key="col.key">
+                    <td t-attf-class="o_mm_cell o_mm_cell--{{col.kind}} {{col.sticky ? 'is-sticky' : ''}}">
+                      <t t-if="col.kind === 'bool'">
+                        <BoolPill value="r[col.key]"/>
+                      </t>
+                      <t t-elif="col.kind === 'type'">
+                        <TypeBadge ttype="r.ttype"/>
+                      </t>
+                      <t t-elif="col.kind === 'model'">
+                        <span t-if="r.relation" class="o_mm_mono" t-esc="r.relation"/>
+                        <span t-else="" class="text-muted">—</span>
+                      </t>
+                      <t t-elif="col.kind === 'code'">
+                        <span t-if="r.compute" class="o_mm_mono text-truncate d-inline-block" style="max-width: 20rem;" t-esc="r.compute"/>
+                        <span t-else="" class="text-muted">—</span>
+                      </t>
+                      <t t-elif="col.kind === 'chips'">
+                        <t t-foreach="r[col.key]" t-as="item" t-key="item_index">
+                          <span class="o_mm_chip me-1" t-esc="item"/>
+                        </t>
+                        <span t-if="!r[col.key] or !r[col.key].length" class="text-muted">—</span>
+                      </t>
+                      <t t-else="">
+                        <span t-esc="r[col.key] || '—'"/>
+                      </t>
+                    </td>
+                  </t>
+                </tr>
+
+                <!-- Expanded Row Detail Panel -->
+                <tr t-if="state.open[r.id]" class="o_mm_row_detail">
+                  <td t-att-colspan="columns.length">
+                    <div class="o_mm_detail">
+                      <div t-if="r.error and r.message" class="w-100 mb-2">
+                        <Banner level="'danger'" title="'Field Error'" text="r.message"/>
+                      </div>
+                      <div t-if="r.help" class="o_mm_detail_item">
+                        <dt class="o_mm_label">Help</dt>
+                        <dd class="o_mm_value" t-esc="r.help"/>
+                      </div>
+                      <div t-if="r.domain" class="o_mm_detail_item">
+                        <dt class="o_mm_label">Domain</dt>
+                        <dd class="o_mm_value">
+                          <CodeBlock text="r.domain" language="'python'"/>
+                        </dd>
+                      </div>
+                      <div t-if="r.compute" class="o_mm_detail_item">
+                        <dt class="o_mm_label">Compute Logic</dt>
+                        <dd class="o_mm_value">
+                          <CodeBlock text="r.vals.compute" language="'python'"/>
+                        </dd>
+                      </div>
+                      <div t-if="r.selection" class="o_mm_detail_item">
+                        <dt class="o_mm_label">Selection Options</dt>
+                        <dd class="o_mm_value">
+                          <table class="o_mm_sel">
+                            <thead><tr><th>Key</th><th>Label</th></tr></thead>
+                            <tbody>
+                              <tr t-foreach="r.selection" t-as="opt" t-key="opt.key">
+                                <td t-esc="opt.key"/>
+                                <td t-esc="opt.label"/>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </dd>
+                      </div>
+                      <div t-elif="r.rawSelection" class="o_mm_detail_item">
+                        <dt class="o_mm_label">Selection Raw</dt>
+                        <dd class="o_mm_value">
+                          <CodeBlock text="r.rawSelection" language="'python'"/>
+                        </dd>
+                      </div>
+                      <div t-if="r.depends and r.depends.length" class="o_mm_detail_item">
+                        <dt class="o_mm_label">Depends</dt>
+                        <dd class="o_mm_value">
+                          <span t-foreach="r.depends" t-as="dep" t-key="dep" class="o_mm_chip me-1" t-esc="dep"/>
+                        </dd>
+                      </div>
+                      <div t-if="r.related" class="o_mm_detail_item">
+                        <dt class="o_mm_label">Related</dt>
+                        <dd class="o_mm_value is-mono" t-esc="r.related"/>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </t>
+            </tbody>
+          </table>
+        </div>
+
+        <footer class="o_mm_foot" role="status">
+          <span><t t-esc="rows.length"/> fields</span>
+          <span><t t-esc="errCount"/> errors</span>
+          <span><t t-esc="reqCount"/> required</span>
+          <button t-if="hasMore" type="button" class="o_mm_btn" t-on-click="showMore">Show 100 more</button>
+        </footer>
+      </section>
+    </div>
+  </t>
+
+</templates>

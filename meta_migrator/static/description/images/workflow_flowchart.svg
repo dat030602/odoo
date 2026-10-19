@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 240" width="100%" height="auto" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#94a3b8" />
+    </marker>
+    <filter id="subtle-shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.05"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1000" height="240" fill="#f8fafc" rx="4" ry="4" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Step 1: Connections -->
+  <g transform="translate(30, 30)" filter="url(#subtle-shadow)">
+    <rect width="160" height="180" rx="4" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+    <rect width="160" height="28" rx="4" ry="4" fill="#f1f5f9"/>
+    <text x="80" y="19" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">STEP 1: CONNECT</text>
+    <circle cx="80" cy="65" r="20" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="80" y="70" font-size="16" fill="#2563eb" text-anchor="middle">🔌</text>
+    <text x="80" y="105" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">Connections</text>
+    <text x="80" y="125" font-size="11" fill="#64748b" text-anchor="middle">Configure Source &amp;</text>
+    <text x="80" y="140" font-size="11" fill="#64748b" text-anchor="middle">Target instances</text>
+    <rect x="25" y="156" width="110" height="20" rx="2" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1"/>
+    <text x="80" y="170" font-size="10" font-weight="600" fill="#059669" text-anchor="middle">Test Connection ✓</text>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <line x1="195" y1="120" x2="225" y2="120" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Job & Steps -->
+  <g transform="translate(230, 30)" filter="url(#subtle-shadow)">
+    <rect width="160" height="180" rx="4" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+    <rect width="160" height="28" rx="4" ry="4" fill="#f1f5f9"/>
+    <text x="80" y="19" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">STEP 2: DEFINE</text>
+    <circle cx="80" cy="65" r="20" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="80" y="70" font-size="16" fill="#2563eb" text-anchor="middle">📋</text>
+    <text x="80" y="105" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">Job &amp; Steps</text>
+    <text x="80" y="125" font-size="11" fill="#64748b" text-anchor="middle">Add model / fields /</text>
+    <text x="80" y="140" font-size="11" fill="#64748b" text-anchor="middle">views in sequence</text>
+    <rect x="20" y="156" width="120" height="20" rx="2" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <text x="80" y="170" font-size="10" font-weight="600" fill="#2563eb" text-anchor="middle">Field Wizard Helper</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <line x1="395" y1="120" x2="425" y2="120" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: Dry-Run Test -->
+  <g transform="translate(430, 30)" filter="url(#subtle-shadow)">
+    <rect width="160" height="180" rx="4" ry="4" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+    <rect width="160" height="28" rx="4" ry="4" fill="#eff6ff"/>
+    <text x="80" y="19" font-size="11" font-weight="700" fill="#2563eb" text-anchor="middle">STEP 3: TEST (DRY-RUN)</text>
+    <circle cx="80" cy="65" r="20" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="80" y="70" font-size="16" fill="#2563eb" text-anchor="middle">🔍</text>
+    <text x="80" y="105" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">action_test()</text>
+    <text x="80" y="125" font-size="11" fill="#64748b" text-anchor="middle">100% Read-only</text>
+    <text x="80" y="140" font-size="11" fill="#64748b" text-anchor="middle">Zero Target Writes</text>
+    <rect x="25" y="156" width="110" height="20" rx="2" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="80" y="170" font-size="10" font-weight="600" fill="#334155" text-anchor="middle">Virtual State Cache</text>
+  </g>
+
+  <!-- Arrow 3 -> 4 -->
+  <line x1="595" y1="120" x2="625" y2="120" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 4: Diff & Widgets -->
+  <g transform="translate(630, 30)" filter="url(#subtle-shadow)">
+    <rect width="160" height="180" rx="4" ry="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+    <rect width="160" height="28" rx="4" ry="4" fill="#f1f5f9"/>
+    <text x="80" y="19" font-size="11" font-weight="700" fill="#475569" text-anchor="middle">STEP 4: INSPECT</text>
+    <circle cx="80" cy="65" r="20" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="80" y="70" font-size="16" fill="#2563eb" text-anchor="middle">⚖️</text>
+    <text x="80" y="105" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">Diff &amp; Widgets</text>
+    <text x="80" y="125" font-size="11" fill="#64748b" text-anchor="middle">Git-Style Diff +</text>
+    <text x="80" y="140" font-size="11" fill="#64748b" text-anchor="middle">8 Typed OWL Widgets</text>
+    <rect x="25" y="156" width="110" height="20" rx="2" fill="#fef2f2" stroke="#fecdd3" stroke-width="1"/>
+    <text x="80" y="170" font-size="10" font-weight="600" fill="#e11d48" text-anchor="middle">Catch Conflicts</text>
+  </g>
+
+  <!-- Arrow 4 -> 5 -->
+  <line x1="795" y1="120" x2="825" y2="120" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 5: Execute & Sync -->
+  <g transform="translate(830, 30)" filter="url(#subtle-shadow)">
+    <rect width="140" height="180" rx="4" ry="4" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+    <rect width="140" height="28" rx="4" ry="4" fill="#ecfdf5"/>
+    <text x="70" y="19" font-size="11" font-weight="700" fill="#059669" text-anchor="middle">STEP 5: RUN &amp; SYNC</text>
+    <circle cx="70" cy="65" r="20" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+    <text x="70" y="70" font-size="16" fill="#059669" text-anchor="middle">🚀</text>
+    <text x="70" y="105" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">action_run()</text>
+    <text x="70" y="125" font-size="11" fill="#64748b" text-anchor="middle">Remote Apply</text>
+    <text x="70" y="140" font-size="11" fill="#64748b" text-anchor="middle">Cron Background</text>
+    <rect x="20" y="156" width="100" height="20" rx="2" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1"/>
+    <text x="70" y="170" font-size="10" font-weight="600" fill="#059669" text-anchor="middle">is_in_sync: True</text>
+  </g>
+</svg>

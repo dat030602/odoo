@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaGenericRecord">
+    <div class="o_mm_widget o_mm_generic">
+      <Banner t-if="banner" level="banner.level" title="banner.title" text="banner.text"/>
+
+      <!-- Header Identification -->
+      <div class="o_mm_ident">
+        <span class="o_mm_badge" t-esc="kindLabel"/>
+        <span class="o_mm_ident_name" t-esc="title"/>
+        <span class="o_mm_chip" t-esc="c.targetRef"/>
+      </div>
+
+      <!-- Create Mode -->
+      <t t-if="isCreate">
+        <!-- Access Right 4 Permission Pills -->
+        <div t-if="kind === 'access_right'" class="o_mm_perms">
+          <div t-foreach="perms" t-as="p" t-key="p.key"
+               t-attf-class="o_mm_perm {{p.on ? 'is-on' : 'is-off'}}">
+            <span t-esc="p.label"/>
+            <span class="o_mm_bool" t-esc="p.on ? '✓' : '–'"/>
+          </div>
+        </div>
+
+        <!-- KV Card for Generic Attributes -->
+        <section class="o_mm_card">
+          <header class="o_mm_card_head">
+            <h3 class="o_mm_card_title">Record Attributes</h3>
+          </header>
+          <dl class="o_mm_kv">
+            <div t-foreach="kvItems" t-as="it" t-key="it.key" class="o_mm_kv_item">
+              <dt class="o_mm_label" t-esc="it.label"/>
+              <dd class="o_mm_value">
+                <t t-if="it.isBool">
+                  <BoolPill value="it.value"/>
+                </t>
+                <t t-elif="it.isCode">
+                  <CodeBlock text="it.value" language="'json'"/>
+                </t>
+                <t t-else="">
+                  <span class="font-monospace" t-esc="it.value || '—'"/>
+                </t>
+              </dd>
+            </div>
+          </dl>
+        </section>
+      </t>
+
+      <!-- Update Mode: AttrTable -->
+      <t t-else="">
+        <div class="d-flex justify-content-end mb-2">
+          <button type="button" t-attf-class="o_mm_btn {{state.showUnchanged ? 'is-on' : ''}}"
+                  t-on-click="() => this.state.showUnchanged = !this.state.showUnchanged">
+            Show unchanged attributes
+          </button>
+        </div>
+        <AttrTable rows="rows" groups="groups" showUnchanged="state.showUnchanged"/>
+      </t>
+    </div>
+  </t>
+
+</templates>

@@ -1,0 +1,120 @@
+<odoo>
+
+    <record id="view_meta_migration_run_form" model="ir.ui.view">
+        <field name="name">meta.migration.run.form</field>
+        <field name="model">meta.migration.run</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            class="btn-secondary" invisible="state not in ('queued', 'running')"/>
+                    <button name="action_resume" type="object" string="Resume"
+                            class="btn-primary" invisible="state not in ('failed', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="queued,running,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Run Details">
+                            <field name="job_id" readonly="1"/>
+                            <field name="mode" widget="badge"/>
+                            <field name="source_connection_id"/>
+                            <field name="target_connection_id"/>
+                        </group>
+                        <group string="Status &amp; Diagnostics">
+                            <field name="progress"/>
+                            <field name="summary_text"/>
+                            <field name="is_in_sync" widget="boolean_toggle" invisible="mode != 'test'"/>
+                            <field name="started_at"/>
+                            <field name="finished_at"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Changes">
+                            <field name="change_ids" readonly="1">
+                                <list create="0" edit="0" delete="0" default_group_by="step_label"
+                                      decoration-success="change_type == 'create'"
+                                      decoration-warning="change_type == 'update'"
+                                      decoration-muted="change_type in ('unchanged', 'exists')"
+                                      decoration-danger="change_type == 'error' or status == 'failed'">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="object_type"/>
+                                    <field name="name"/>
+                                    <field name="target_ref"/>
+                                    <field name="change_type" widget="badge"/>
+                                    <field name="lines_added"/>
+                                    <field name="lines_removed"/>
+                                    <field name="status" widget="badge"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Log">
+                            <field name="log_text" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_meta_migration_run_list" model="ir.ui.view">
+        <field name="name">meta.migration.run.list</field>
+        <field name="model">meta.migration.run</field>
+        <field name="arch" type="xml">
+            <list default_order="id desc"
+                  decoration-success="state == 'done'"
+                  decoration-danger="state == 'failed'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-info="state in ('queued', 'running')">
+                <field name="name"/>
+                <field name="job_id"/>
+                <field name="mode" widget="badge"/>
+                <field name="target_connection_id"/>
+                <field name="state" widget="badge"/>
+                <field name="progress"/>
+                <field name="summary_text"/>
+                <field name="is_in_sync" widget="boolean_toggle"/>
+                <field name="started_at"/>
+                <field name="finished_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_meta_migration_run_search" model="ir.ui.view">
+        <field name="name">meta.migration.run.search</field>
+        <field name="model">meta.migration.run</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="job_id"/>
+                <field name="target_connection_id"/>
+                <filter name="mode_test" string="Test (Dry-Run)" domain="[('mode', '=', 'test')]"/>
+                <filter name="mode_run" string="Run" domain="[('mode', '=', 'run')]"/>
+                <separator/>
+                <filter name="state_running" string="Running / Queued" domain="[('state', 'in', ['queued', 'running'])]"/>
+                <filter name="state_done" string="Done" domain="[('state', '=', 'done')]"/>
+                <filter name="state_failed" string="Failed" domain="[('state', '=', 'failed')]"/>
+                <group name="group_by">
+                    <filter name="group_job" string="Job" context="{'group_by': 'job_id'}"/>
+                    <filter name="group_target" string="Target Link" context="{'group_by': 'target_connection_id'}"/>
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                    <filter name="group_mode" string="Mode" context="{'group_by': 'mode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_meta_migration_run" model="ir.actions.act_window">
+        <field name="name">Runs</field>
+        <field name="res_model">meta.migration.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_meta_migration_run_search"/>
+    </record>
+
+</odoo>

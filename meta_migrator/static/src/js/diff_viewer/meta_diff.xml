@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="meta_migrator.MetaDiffField">
+    <div class="o_meta_diff">
+      <div class="o_meta_diff_head d-flex align-items-center p-2 border-bottom bg-light">
+        <span class="text-success fw-bold me-2">+<t t-esc="stats.added"/></span>
+        <span class="text-danger fw-bold me-3">−<t t-esc="stats.removed"/></span>
+        <button type="button" class="btn btn-link btn-sm p-0 ms-auto text-decoration-none" t-on-click="copyRaw">
+          <i class="fa fa-copy me-1"/>Copy New Raw
+        </button>
+      </div>
+      <div class="o_meta_diff_body">
+        <t t-foreach="rows" t-as="row" t-key="row_index">
+          <div t-if="row.t === 'fold'" class="o_meta_diff_fold" t-on-click="() => this.expand(row.id)">
+            … <t t-esc="row.count"/> lines unchanged (click to show)
+          </div>
+          <div t-else="" t-attf-class="o_meta_diff_line o_meta_diff_{{row.t}}">
+            <span class="o_meta_diff_num"><t t-esc="row.a || ''"/></span>
+            <span class="o_meta_diff_num"><t t-esc="row.b || ''"/></span>
+            <span class="o_meta_diff_sign"><t t-esc="row.t === 'add' ? '+' : row.t === 'del' ? '-' : ' '"/></span>
+            <span class="o_meta_diff_text"><t t-esc="row.text"/></span>
+          </div>
+        </t>
+      </div>
+    </div>
+  </t>
+</templates>

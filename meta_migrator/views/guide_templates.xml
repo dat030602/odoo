@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="user_guide_page" name="Meta Migrator User Guide">
+        &lt;!DOCTYPE html&gt;
+        <html lang="en">
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <title>Meta Migrator – Complete User Guide &amp; Workflow Manual</title>
+                <style>
+                    :root {
+                        --mm-bg: #f8fafc;
+                        --mm-card-bg: #ffffff;
+                        --mm-border: #e2e8f0;
+                        --mm-border-dark: #cbd5e1;
+                        --mm-text-main: #0f172a;
+                        --mm-text-body: #334155;
+                        --mm-text-muted: #64748b;
+                        --mm-primary: #2563eb;
+                        --mm-primary-hover: #1d4ed8;
+                        --mm-primary-light: #eff6ff;
+                        --mm-success: #059669;
+                        --mm-success-bg: #ecfdf5;
+                        --mm-success-border: #a7f3d0;
+                        --mm-warning: #d97706;
+                        --mm-warning-bg: #fffbeb;
+                        --mm-warning-border: #fde68a;
+                        --mm-danger: #dc2626;
+                        --mm-danger-bg: #fef2f2;
+                        --mm-radius: 4px;
+                        --mm-radius-sm: 2px;
+                    }
+
+                    * {
+                        box-sizing: border-box;
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                        background-color: var(--mm-bg);
+                        color: var(--mm-text-body);
+                        line-height: 1.6;
+                        font-size: 15px;
+                        -webkit-font-smoothing: antialiased;
+                    }
+
+                    /* Top Navigation Bar */
+                    .mm-navbar {
+                        position: sticky;
+                        top: 0;
+                        z-index: 100;
+                        background: #ffffff;
+                        border-bottom: 1px solid var(--mm-border);
+                        padding: 12px 24px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+
+                    .mm-navbar-brand {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        font-weight: 700;
+                        font-size: 18px;
+                        color: var(--mm-text-main);
+                        text-decoration: none;
+                    }
+
+                    .mm-badge-version {
+                        background: var(--mm-primary-light);
+                        color: var(--mm-primary);
+                        border: 1px solid #bfdbfe;
+                        border-radius: var(--mm-radius-sm);
+                        font-size: 11px;
+                        font-weight: 600;
+                        padding: 2px 6px;
+                    }
+
+                    .mm-nav-links {
+                        display: flex;
+                        gap: 18px;
+                        list-style: none;
+                    }
+
+                    .mm-nav-links a {
+                        color: var(--mm-text-muted);
+                        text-decoration: none;
+                        font-size: 13px;
+                        font-weight: 500;
+                        transition: color 0.15s ease;
+                    }
+
+                    .mm-nav-links a:hover {
+                        color: var(--mm-primary);
+                    }
+
+                    /* Layout Container */
+                    .mm-container {
+                        max-width: 1180px;
+                        margin: 0 auto;
+                        padding: 32px 20px 80px;
+                    }
+
+                    /* Hero Section */
+                    .mm-hero {
+                        background: #ffffff;
+                        border: 1px solid var(--mm-border);
+                        border-radius: var(--mm-radius);
+                        padding: 36px 32px;
+                        margin-bottom: 32px;
+                        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+                    }
+
+                    .mm-hero-eyebrow {
+                        font-size: 12px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        color: var(--mm-primary);
+                        margin-bottom: 8px;
+                    }
+
+                    .mm-hero h1 {
+                        font-size: 28px;
+                        font-weight: 800;
+                        color: var(--mm-text-main);
+                        margin-bottom: 12px;
+                        letter-spacing: -0.02em;
+                    }
+
+                    .mm-hero p {
+                        font-size: 16px;
+                        color: var(--mm-text-body);
+                        max-width: 840px;
+                        margin-bottom: 24px;
+                    }
+
+                    .mm-hero-tags {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                    }
+
+                    .mm-tag {
+                        background: #f1f5f9;
+                        border: 1px solid var(--mm-border);
+                        border-radius: var(--mm-radius-sm);
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: var(--mm-text-body);
+                        padding: 4px 10px;
+                    }
+
+                    /* Section Card */
+                    .mm-section {
+                        background: #ffffff;
+                        border: 1px solid var(--mm-border);
+                        border-radius: var(--mm-radius);
+                        padding: 32px;
+                        margin-bottom: 32px;
+                        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+                    }
+
+                    .mm-section-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        margin-bottom: 20px;
+                        padding-bottom: 14px;
+                        border-bottom: 1px solid var(--mm-border);
+                    }
+
+                    .mm-step-num {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 28px;
+                        height: 28px;
+                        background: var(--mm-primary);
+                        color: #ffffff;
+                        border-radius: var(--mm-radius-sm);
+                        font-weight: 700;
+                        font-size: 13px;
+                    }
+
+                    .mm-section h2 {
+                        font-size: 20px;
+                        font-weight: 700;
+                        color: var(--mm-text-main);
+                    }
+
+                    .mm-section h3 {
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: var(--mm-text-main);
+                        margin: 20px 0 10px;
+                    }
+
+                    .mm-section p {
+                        margin-bottom: 16px;
+                        color: var(--mm-text-body);
+                    }
+
+                    /* Callouts */
+                    .mm-alert {
+                        border-radius: var(--mm-radius);
+                        padding: 14px 16px;
+                        margin: 16px 0 20px;
+                        font-size: 14px;
+                        border-left: 4px solid;
+                    }
+
+                    .mm-alert-info {
+                        background: var(--mm-primary-light);
+                        border-left-color: var(--mm-primary);
+                        color: #1e40af;
+                    }
+
+                    .mm-alert-success {
+                        background: var(--mm-success-bg);
+                        border-left-color: var(--mm-success);
+                        color: #065f46;
+                    }
+
+                    .mm-alert-warning {
+                        background: var(--mm-warning-bg);
+                        border-left-color: var(--mm-warning);
+                        color: #92400e;
+                    }
+
+                    /* Tables */
+                    .mm-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 16px 0 24px;
+                        font-size: 13px;
+                    }
+
+                    .mm-table th {
+                        background: #f1f5f9;
+                        color: var(--mm-text-main);
+                        font-weight: 600;
+                        text-align: left;
+                        padding: 10px 14px;
+                        border: 1px solid var(--mm-border);
+                    }
+
+                    .mm-table td {
+                        padding: 10px 14px;
+                        border: 1px solid var(--mm-border);
+                        vertical-align: top;
+                    }
+
+                    .mm-table tr:nth-child(even) td {
+                        background: #f8fafc;
+                    }
+
+                    /* Code and Keys */
+                    code, pre {
+                        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                        font-size: 12px;
+                    }
+
+                    code {
+                        background: #f1f5f9;
+                        border: 1px solid var(--mm-border);
+                        border-radius: var(--mm-radius-sm);
+                        padding: 2px 5px;
+                        color: #0f172a;
+                    }
+
+                    .mm-codeblock {
+                        background: #0f172a;
+                        color: #f8fafc;
+                        border-radius: var(--mm-radius);
+                        padding: 14px 18px;
+                        margin: 14px 0 20px;
+                        overflow-x: auto;
+                        line-height: 1.5;
+                    }
+
+                    /* Image Container */
+                    .mm-figure {
+                        margin: 20px 0 24px;
+                        border: 1px solid var(--mm-border);
+                        border-radius: var(--mm-radius);
+                        background: #f8fafc;
+                        overflow: hidden;
+                    }
+
+                    .mm-figure img {
+                        display: block;
+                        width: 100%;
+                        height: auto;
+                    }
+
+                    .mm-figure-caption {
+                        padding: 10px 16px;
+                        background: #ffffff;
+                        border-top: 1px solid var(--mm-border);
+                        font-size: 12px;
+                        color: var(--mm-text-muted);
+                        font-weight: 500;
+                    }
+
+                    /* Button Badge Helpers */
+                    .mm-btn-badge {
+                        display: inline-block;
+                        padding: 3px 8px;
+                        border-radius: var(--mm-radius-sm);
+                        font-size: 12px;
+                        font-weight: 600;
+                        margin: 0 2px;
+                    }
+
+                    .mm-btn-primary {
+                        background: var(--mm-primary);
+                        color: #ffffff;
+                    }
+
+                    .mm-btn-secondary {
+                        background: #ffffff;
+                        border: 1px solid var(--mm-border-dark);
+                        color: var(--mm-text-main);
+                    }
+
+                    .mm-btn-success {
+                        background: var(--mm-success);
+                        color: #ffffff;
+                    }
+
+                    /* Footer */
+                    .mm-footer {
+                        text-align: center;
+                        font-size: 13px;
+                        color: var(--mm-text-muted);
+                        margin-top: 40px;
+                        padding-top: 24px;
+                        border-top: 1px solid var(--mm-border);
+                    }
+                </style>
+            </head>
+            <body>
+
+                <!-- Top Sticky Navigation -->
+                <header class="mm-navbar">
+                    <a href="#" class="mm-navbar-brand">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 16v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            <path d="M12 12h9"/>
+                            <path d="m18 9 3 3-3 3"/>
+                        </svg>
+                        Meta Migrator
+                        <span class="mm-badge-version">v19.0.2</span>
+                    </a>
+                    <ul class="mm-nav-links">
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#flowchart">Workflow</a></li>
+                        <li><a href="#step1-connections">1. Connections</a></li>
+                        <li><a href="#step2-jobs">2. Job &amp; Steps</a></li>
+                        <li><a href="#step3-wizard">3. Wizard</a></li>
+                        <li><a href="#step4-diff">4. Test &amp; Diff</a></li>
+                        <li><a href="#step5-run">5. Run &amp; Sync</a></li>
+                    </ul>
+                </header>
+
+                <main class="mm-container">
+
+                    <!-- Hero Section -->
+                    <section class="mm-hero" id="overview">
+                        <div class="mm-hero-eyebrow">Technical Reference &amp; Operator Manual</div>
+                        <h1>Meta Migrator – Safe Odoo 19 Batch Migration</h1>
+                        <p>
+                            Meta Migrator automates the migration of custom models, fields, views, menus, security rules, and server actions
+                            across separate Odoo instances via remote XML-RPC. With explicit top-down step sequencing, zero-write dry-run testing,
+                            and specialized OWL 2 diff widgets, you can verify changes with complete confidence before applying them to target servers.
+                        </p>
+                        <div class="mm-hero-tags">
+                            <span class="mm-tag">✓ Odoo 19.0+ Enterprise &amp; Community</span>
+                            <span class="mm-tag">✓ Dry-Run Test with Zero Target Writes</span>
+                            <span class="mm-tag">✓ 8 Specialized Object Diff Widgets</span>
+                            <span class="mm-tag">✓ Multi-Pass Relational Dependency Solver</span>
+                            <span class="mm-tag">✓ Non-Destructive XML View Merging</span>
+                            <span class="mm-tag">✓ Cron Background Queue Execution</span>
+                        </div>
+                    </section>
+
+                    <!-- Workflow Flowchart Section -->
+                    <section class="mm-section" id="flowchart">
+                        <div class="mm-section-header">
+                            <span class="mm-step-num">0</span>
+                            <h2>End-to-End Operational Workflow</h2>
+                        </div>
+                        <p>
+                            The diagram below outlines the five operational milestones of a migration job. Follow this sequence to achieve safe,
+                            repeatable migrations without circular dependency errors or schema corruption.
+                        </p>
+                        <div class="mm-figure">
+                            <img src="/meta_migrator/static/description/images/workflow_flowchart.svg" alt="Meta Migrator Operational Flowchart"/>
+                            <div class="mm-figure-caption">Figure 0.1: Five-Stage Migration Life Cycle – From Remote Endpoint Configuration to Verified Synchronization.</div>
+                        </div>
+                    </section>
+
+                    <!-- Step 1: Connections -->
+                    <section class="mm-section" id="step1-connections">
+                        <div class="mm-section-header">
+                            <span class="mm-step-num">1</span>
+                            <h2>Configuring Remote Endpoints (Connections)</h2>
+                        </div>
+                        <p>
+                            Before building a migration job, declare the source and target Odoo environments under
+                            <strong>Meta Migrator &gt; Connections</strong>.
+                        </p>
+
+                        <h3>Input Fields Specification</h3>
+                        <table class="mm-table">
+                            <thead>
+                                <tr>
+                                    <th>Field Name</th>
+                                    <th>Technical Name</th>
+                                    <th>Example / Value</th>
+                                    <th>Usage Guidance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Connection Name</strong></td>
+                                    <td><code>name</code></td>
+                                    <td><code>Staging Instance (AWS)</code></td>
+                                    <td>Human-readable label identifying the target instance environment.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Server URL</strong></td>
+                                    <td><code>url</code></td>
+                                    <td><code>https://staging.mycompany.com</code></td>
+                                    <td>Base HTTP/HTTPS address of the Odoo instance (without trailing slash).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Database Name</strong></td>
+                                    <td><code>db</code></td>
+                                    <td><code>odoo19_staging</code></td>
+                                    <td>Name of the target PostgreSQL database registered on the remote server.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Login Username</strong></td>
+                                    <td><code>username</code></td>
+                                    <td><code>migration_admin</code></td>
+                                    <td>Odoo user account with administrative permissions (Settings / System Admin).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>API Key / Password</strong></td>
+                                    <td><code>password</code></td>
+                                    <td><code>••••••••••••••••••••</code></td>
+                                    <td>We strongly recommend generating an <strong>Odoo API Key</strong> under User Preferences &gt; Account Security.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Timeout</strong></td>
+                                    <td><code>timeout</code></td>
+                                    <td><code>60</code> (seconds)</td>
+                                    <td>Socket timeout for remote XML-RPC calls. Use 120s if transferring large views.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Verifying Connectivity</h3>
+                        <p>
+                            Always click the <span class="mm-btn-badge mm-btn-primary">Test Connection</span> button in the header. Meta Migrator connects
+                            to <code>/xmlrpc/2/common</code> to authenticate and queries <code>ir.model</code> to confirm administrative access. A green notification
+                            banner will confirm successful authentication with user ID and accessible model counts.
+                        </p>
+
+                        <div class="mm-figure">
+                            <img src="/meta_migrator/static/description/images/step1_connection.png" alt="Odoo 19 Connection Setup Form"/>
+                            <div class="mm-figure-caption">Figure 1.1: Connection Form – Verified remote authentication on target staging instance.</div>
+                        </div>
+                    </section>
+
+                    <!-- Step 2: Migration Job & Steps -->
+                    <section class="mm-section" id="step2-jobs">
+                        <div class="mm-section-header">
+                            <span class="mm-step-num">2</span>
+                            <h2>Defining Migration Jobs &amp; Step Sequences</h2>
+                        </div>
+                        <p>
+                            Navigate to <strong>Meta Migrator &gt; Jobs</strong> and click <strong>New</strong>. A job represents a reusable migration plan
+                            consisting of discrete, re-orderable steps executed from top to bottom.
+                        </p>
+
+                        <h3>Execution Options</h3>
+                        <table class="mm-table">
+                            <thead>
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Technical Key</th>
+                                    <th>Allowed Values</th>
+                                    <th>Recommended Setting</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>On Conflict</strong></td>
+                                    <td><code>on_conflict</code></td>
+                                    <td><code>overwrite</code> (Update if exists) | <code>skip</code> (Keep target as-is)</td>
+                                    <td>Use <strong>Overwrite</strong> when deploying customizations from dev to staging/prod.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stop On Error</strong></td>
+                                    <td><code>stop_on_error</code></td>
+                                    <td><code>True</code> / <code>False</code></td>
+                                    <td><strong>True</strong> (recommended). Halts execution immediately if a step fails, avoiding cascading schema inconsistencies.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Run In Background</strong></td>
+                                    <td><code>run_in_background</code></td>
+                                    <td><code>True</code> / <code>False</code></td>
+                                    <td>Set to <strong>True</strong> for jobs with &gt;50 fields or views. The task executes via an asynchronous cron job.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>Supported Step Object Types</h3>
+                        <table class="mm-table">
+                            <thead>
+                                <tr>
+                                    <th>Object Type</th>
+                                    <th>Permitted Actions</th>
+                                    <th>Required Parameters</th>
+                                    <th>Behavior Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>model</code></td>
+                                    <td><code>create</code></td>
+                                    <td><code>model_name</code>, optional <code>target_model_name</code></td>
+                                    <td>Creates new model on target. If model already exists, Test marks it as unchanged without errors.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>field</code></td>
+                                    <td><code>create</code></td>
+                                    <td><code>model_name</code>, optional <code>field_name</code></td>
+                                    <td>Creates field with full attributes (relations, selections, compute, depends). If left blank, all manual fields are imported.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>view</code></td>
+                                    <td><code>create</code></td>
+                                    <td><code>model_name</code>, <code>view_type</code> (list/form/search)</td>
+                                    <td>Creates primary view on target matching source active view with lowest priority.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>view</code></td>
+                                    <td><code>update</code></td>
+                                    <td><code>xml_id</code> (e.g. <code>sale.view_order_form</code>)</td>
+                                    <td>Non-destructively appends new child elements/xpaths into target view's <code>&lt;data&gt;</code> tag. Target customizations are preserved.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>server_action</code></td>
+                                    <td><code>create</code> / <code>update</code></td>
+                                    <td><code>xml_id</code></td>
+                                    <td>Pushes Python server actions, model bindings, and security action states.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>menu</code></td>
+                                    <td><code>create</code></td>
+                                    <td><code>model_name</code></td>
+                                    <td>Synchronizes window actions, menus, and menu hierarchies for the model.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>access_right</code></td>
+                                    <td><code>create</code></td>
+                                    <td><code>model_name</code></td>
+                                    <td>Copies <code>ir.model.access</code> CRUD permissions, mapping security groups automatically.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>record_rule</code></td>
+                                    <td><code>create</code></td>
+                                    <td><code>model_name</code></td>
+                                    <td>Transfers domain force record rules and evaluation contexts.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="mm-figure">
+                            <img src="/meta_migrator/static/description/images/step2_job_form.png" alt="Odoo 19 Migration Job Form"/>
+                            <div class="mm-figure-caption">Figure 2.1: Migration Job Form – Ordered steps list, execution options, and action buttons.</div>
+                        </div>
+                    </section>
+
+                    <!-- Step 3: Wizard -->
+                    <section class="mm-section" id="step3-wizard">
+                        <div class="mm-section-header">
+                            <span class="mm-step-num">3</span>
+                            <h2>Accelerating Authoring with Field Generation Wizard</h2>
+                        </div>
+                        <p>
+                            Instead of adding dozens of field steps manually one by one, use the automated field discovery assistant:
+                        </p>
+                        <ol style="margin-left: 24px; margin-bottom: 16px;">
+                            <li style="margin-bottom: 8px;">Click the <span class="mm-btn-badge mm-btn-secondary">Generate field steps</span> button in the job form header.</li>
+                            <li style="margin-bottom: 8px;">Select the desired model from the dropdown (e.g., <code>res.partner</code> or your custom model).</li>
+                            <li style="margin-bottom: 8px;">The wizard queries the source system for all manual fields (<code>state='manual'</code>) and renders an interactive checklist.</li>
+                            <li style="margin-bottom: 8px;">Select all desired fields and click <span class="mm-btn-badge mm-btn-primary">Add Steps</span>. Steps are appended to the job with auto-incremented sequence numbers.</li>
+                            <li>Click <span class="mm-btn-badge mm-btn-secondary">Sort by dependency</span> to ensure prerequisite models and reverse relations precede dependent computes.</li>
+                        </ol>
+
+                        <div class="mm-figure">
+                            <img src="/meta_migrator/static/description/images/step3_wizard.png" alt="Generate Field Steps Wizard Modal"/>
+                            <div class="mm-figure-caption">Figure 3.1: Generate Field Steps Wizard – One-click batch extraction of custom fields.</div>
+                        </div>
+                    </section>
+
+                    <!-- Step 4: Test & Diff Inspection -->
+                    <section class="mm-section" id="step4-diff">
+                        <div class="mm-section-header">
+                            <span class="mm-step-num">4</span>
+                            <h2>Dry-Run Testing &amp; Specialized Diff Inspection</h2>
+                        </div>
+                        <p>
+                            <strong>Never migrate blind.</strong> Before making any modification to your target instance, click the
+                            <span class="mm-btn-badge mm-btn-secondary">Test</span> button in the header.
+                        </p>
+
+                        <div class="mm-alert mm-alert-success">
+                            <strong>Zero-Write Guarantee:</strong> The <code>action_test()</code> process connects in strict read-only mode.
+                            It constructs an in-memory virtual registry (<code>planned_models</code> and <code>planned_fields</code>) to validate downstream
+                            dependencies, calculating exact planned changes without modifying a single row in the target database.
+                        </div>
+
+                        <h3>Exploring the 8 Specialized Change Widgets</h3>
+                        <p>
+                            After clicking Test, a new record is created under the <strong>Runs</strong> notebook tab. Open the run to view individual
+                            granular change records. Each change record is rendered by an OWL 2 field widget optimized for its data type:
+                        </p>
+                        <table class="mm-table">
+                            <thead>
+                                <tr>
+                                    <th>Widget Key</th>
+                                    <th>Target Object</th>
+                                    <th>Key Visual Capabilities</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>meta_model_create</code></td>
+                                    <td>New Model</td>
+                                    <td>Displays model identity card and interactive table of child fields with live text search, type filtering, error toggle, and column visibility picker.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>meta_model_update</code></td>
+                                    <td>Existing Model</td>
+                                    <td>3-column comparison grid (<code>Target Current</code> | <code>→</code> | <code>Source Incoming</code>) highlighting state, name, and transient flag changes.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>meta_field_create</code></td>
+                                    <td>New Field</td>
+                                    <td>Categorized property cards (Basic, Constraints, Relational parameters, Selection keys, Logic computes, Other) with colored pill badges.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>meta_field_update</code></td>
+                                    <td>Existing Field</td>
+                                    <td>Summary chips for changed keys, 2-column <code>AttrTable</code> with word diffs, and amber warning alerts for high-risk modifications (type alterations, required flags).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>meta_view_create</code></td>
+                                    <td>New View</td>
+                                    <td>View metadata header, interactive <code>CodeBlock</code> highlighting newly added tags, and a live XML element outline sidebar.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>meta_view_update</code></td>
+                                    <td>Existing View</td>
+                                    <td>Multi-tab inspection (<code>Changes</code>, <code>Unified Diff</code>, <code>Target Arch</code>, <code>Result Arch</code>) with card-by-card breakdown of appended elements.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>meta_server_action</code></td>
+                                    <td>Server Action</td>
+                                    <td>Action binding cards and Python code diff viewer with syntax tokenization.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>meta_generic_record</code></td>
+                                    <td>Menu &amp; Security</td>
+                                    <td>Breadcrumbs for menus, CRUD permission badges for access rights, and domain force formula cards for record rules.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="mm-figure">
+                            <img src="/meta_migrator/static/description/images/step4_diff_widgets.png" alt="Odoo 19 Specialized Field Update Widget"/>
+                            <div class="mm-figure-caption">Figure 4.1: Specialized Field Update Widget – Granular attribute differences with risk warning banners.</div>
+                        </div>
+                    </section>
+
+                    <!-- Step 5: Live Execution & Sync -->
+                    <section class="mm-section" id="step5-run">
+                        <div class="mm-section-header">
+                            <span class="mm-step-num">5</span>
+                            <h2>Executing Live Migration &amp; Sync Verification</h2>
+                        </div>
+                        <p>
+                            Once you have audited the dry-run diffs and confirmed that no unwanted modifications will occur:
+                        </p>
+                        <ol style="margin-left: 24px; margin-bottom: 16px;">
+                            <li style="margin-bottom: 8px;">Click the <span class="mm-btn-badge mm-btn-primary">Run</span> button in the job header.</li>
+                            <li style="margin-bottom: 8px;">A native confirmation dialog prompts you to confirm. Click <strong>OK</strong>.</li>
+                            <li style="margin-bottom: 8px;">
+                                If <code>run_in_background</code> is enabled, the run enters state <code>queued</code> and processes asynchronously.
+                                Otherwise, it executes immediately, updating progress in real time.
+                            </li>
+                            <li style="margin-bottom: 8px;">
+                                Upon completion, the run marks state as <code>done</code> with status <code>applied</code> across all applied change records.
+                            </li>
+                        </ol>
+
+                        <h3>Post-Run Sync Verification</h3>
+                        <p>
+                            To prove beyond doubt that target and source are in identical states:
+                        </p>
+                        <div class="mm-alert mm-alert-info">
+                            Click <span class="mm-btn-badge mm-btn-secondary">Test</span> once more after a completed run. Meta Migrator performs a fresh
+                            diff against the updated target instance. If all elements match, the new test run evaluates <code>is_in_sync</code> to <strong>True</strong>
+                            and marks all changes as <code>unchanged</code> with <code>+0 / -0</code> diff delta!
+                        </div>
+
+                        <div class="mm-figure">
+                            <img src="/meta_migrator/static/description/images/step5_sync_verified.png" alt="Odoo 19 Synchronized State View"/>
+                            <div class="mm-figure-caption">Figure 5.1: Synchronized Run State – 100% In-Sync confirmation with zero line diffs.</div>
+                        </div>
+                    </section>
+
+                    <!-- Best Practices -->
+                    <section class="mm-section">
+                        <div class="mm-section-header">
+                            <span class="mm-step-num">💡</span>
+                            <h2>Operator Best Practices &amp; Safety Checklist</h2>
+                        </div>
+                        <ul style="margin-left: 24px; line-height: 1.8;">
+                            <li><strong>Always Test Staging First:</strong> Never push directly to production without testing the exact same job against a staging replica. Because target connections are selected per run, you can run the exact same job against staging, verify it, and then switch the target connection to production.</li>
+                            <li><strong>Group Contiguous Field Steps:</strong> When migrating models with cross-referencing fields (e.g. Model A points to Model B, which points back to Model A), keep all field steps in contiguous sequence. Meta Migrator automatically groups them into an atomic multi-pass field block.</li>
+                            <li><strong>View Update vs View Create:</strong> Use <code>create</code> for standalone views you authored from scratch; use <code>update</code> with standard Odoo XML IDs (like <code>sale.view_order_form</code>) when adding fields or tabs into existing views.</li>
+                            <li><strong>Preserve Workspace Cleanliness:</strong> Change records are immutable snapshots. If you revise your source definitions, simply trigger a new Test run to generate fresh diff records.</li>
+                        </ul>
+                    </section>
+
+                    <footer class="mm-footer">
+                        Meta Migrator for Odoo 19 · Technical Tooling Suite · Built with OWL 2 &amp; Modern Odoo ORM Standards.
+                    </footer>
+
+                </main>
+
+            </body>
+        </html>
+    </template>
+
+</odoo>

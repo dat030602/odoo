@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.Banner">
+    <div t-attf-class="o_mm_banner o_mm_banner--{{level}}" role="status">
+      <span class="o_mm_banner_icon" aria-hidden="true" t-esc="icon"/>
+      <div class="o_mm_banner_body">
+        <strong t-if="props.title" class="o_mm_banner_title" t-esc="props.title"/>
+        <div t-if="props.text" class="o_mm_banner_text" t-esc="props.text"/>
+      </div>
+    </div>
+  </t>
+
+</templates>

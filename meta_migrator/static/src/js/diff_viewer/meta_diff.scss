@@ -1,0 +1,77 @@
+.o_meta_diff {
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 4px;
+    font-family: var(--font-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+    font-size: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: var(--o-view-background-color, #ffffff);
+}
+
+.o_meta_diff_head {
+    font-size: 13px;
+    background-color: rgba(128, 128, 128, 0.08);
+}
+
+.o_meta_diff_body {
+    overflow-x: auto;
+    max-height: 500px;
+}
+
+.o_meta_diff_line {
+    display: flex;
+    white-space: pre;
+    line-height: 1.5;
+}
+
+.o_meta_diff_add {
+    background-color: rgba(46, 160, 67, 0.18);
+}
+
+.o_meta_diff_del {
+    background-color: rgba(248, 81, 73, 0.18);
+}
+
+.o_meta_diff_num {
+    flex: 0 0 3.5em;
+    text-align: right;
+    padding-right: 0.5em;
+    opacity: 0.55;
+    user-select: none;
+    border-right: 1px solid rgba(128, 128, 128, 0.15);
+}
+
+.o_meta_diff_sign {
+    flex: 0 0 1.5em;
+    text-align: center;
+    user-select: none;
+    font-weight: bold;
+}
+
+.o_meta_diff_add .o_meta_diff_sign {
+    color: #2ea043;
+}
+
+.o_meta_diff_del .o_meta_diff_sign {
+    color: #cf222e;
+}
+
+.o_meta_diff_text {
+    flex: 1 1 auto;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+.o_meta_diff_fold {
+    cursor: pointer;
+    padding: 3px 12px;
+    opacity: 0.75;
+    background-color: rgba(128, 128, 128, 0.12);
+    font-style: italic;
+    border-top: 1px dashed rgba(128, 128, 128, 0.2);
+    border-bottom: 1px dashed rgba(128, 128, 128, 0.2);
+}
+
+.o_meta_diff_fold:hover {
+    background-color: rgba(128, 128, 128, 0.22);
+}

@@ -1,0 +1,145 @@
+<odoo>
+
+    <record id="view_meta_migration_change_form" model="ir.ui.view">
+        <field name="name">meta.migration.change.form</field>
+        <field name="model">meta.migration.change</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0">
+                <sheet>
+                    <!-- Invisible fields required for widgets to read via record.data -->
+                    <field name="widget_key" invisible="1"/>
+                    <field name="object_type" invisible="1"/>
+                    <field name="change_type" invisible="1"/>
+                    <field name="old_raw" invisible="1"/>
+                    <field name="extra_raw" invisible="1"/>
+                    <field name="children_json" invisible="1"/>
+                    <field name="message" invisible="1"/>
+                    <field name="target_ref" invisible="1"/>
+
+                    <div class="oe_title">
+                        <h2>
+                            <field name="name" readonly="1"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group string="Classification">
+                            <field name="object_type"/>
+                            <field name="change_type" widget="badge"
+                                   decoration-success="change_type == 'create'"
+                                   decoration-warning="change_type == 'update'"
+                                   decoration-muted="change_type in ('unchanged', 'exists')"
+                                   decoration-danger="change_type == 'error'"/>
+                            <field name="status" widget="badge"/>
+                        </group>
+                        <group string="Context &amp; Reference">
+                            <field name="run_id"/>
+                            <field name="step_label"/>
+                            <field name="target_ref"/>
+                            <field name="message"/>
+                        </group>
+                    </group>
+
+                    <!-- Type-specific widget bodies -->
+                    <field name="new_raw" widget="meta_model_create"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'model_create'" nolabel="1"/>
+                    <field name="new_raw" widget="meta_model_update"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'model_update'" nolabel="1"/>
+                    <field name="new_raw" widget="meta_field_create"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'field_create'" nolabel="1"/>
+                    <field name="new_raw" widget="meta_field_update"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'field_update'" nolabel="1"/>
+                    <field name="new_raw" widget="meta_view_create"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'view_create'" nolabel="1"/>
+                    <field name="new_raw" widget="meta_view_update"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'view_update'" nolabel="1"/>
+                    <field name="new_raw" widget="meta_server_action"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'server_action'" nolabel="1"/>
+                    <field name="new_raw" widget="meta_generic_record"
+                           class="w-100 d-block"
+                           invisible="widget_key != 'generic'" nolabel="1"/>
+
+                    <notebook>
+                        <page string="Raw Target (Old)">
+                            <field name="old_raw" readonly="1" widget="text"/>
+                        </page>
+                        <page string="Raw Source (New)">
+                            <field name="new_raw" readonly="1" widget="text"/>
+                        </page>
+                        <page string="Extra Raw" invisible="not extra_raw">
+                            <field name="extra_raw" readonly="1" widget="text"/>
+                        </page>
+                        <page string="Diff (Unified Fallback)">
+                            <field name="new_raw" widget="meta_diff" options="{'old_field': 'old_raw'}" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_meta_migration_change_list" model="ir.ui.view">
+        <field name="name">meta.migration.change.list</field>
+        <field name="model">meta.migration.change</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0" default_order="run_id desc, step_index, sequence"
+                  decoration-success="change_type == 'create'"
+                  decoration-warning="change_type == 'update'"
+                  decoration-muted="change_type in ('unchanged', 'exists')"
+                  decoration-danger="change_type == 'error' or status == 'failed'">
+                <field name="run_id"/>
+                <field name="step_label"/>
+                <field name="object_type"/>
+                <field name="name"/>
+                <field name="target_ref"/>
+                <field name="change_type" widget="badge"/>
+                <field name="lines_added"/>
+                <field name="lines_removed"/>
+                <field name="status" widget="badge"/>
+                <field name="message"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_meta_migration_change_search" model="ir.ui.view">
+        <field name="name">meta.migration.change.search</field>
+        <field name="model">meta.migration.change</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="target_ref"/>
+                <field name="run_id"/>
+                <field name="step_label"/>
+                <filter name="type_create" string="Create" domain="[('change_type', '=', 'create')]"/>
+                <filter name="type_update" string="Update" domain="[('change_type', '=', 'update')]"/>
+                <filter name="type_unchanged" string="Unchanged" domain="[('change_type', '=', 'unchanged')]"/>
+                <filter name="type_exists" string="Exists (Skipped)" domain="[('change_type', '=', 'exists')]"/>
+                <filter name="type_error" string="Error" domain="[('change_type', '=', 'error')]"/>
+                <separator/>
+                <filter name="status_failed" string="Failed" domain="[('status', '=', 'failed')]"/>
+                <filter name="status_applied" string="Applied" domain="[('status', '=', 'applied')]"/>
+                <group name="group_by">
+                    <filter name="group_run" string="Run" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_step" string="Step Label" context="{'group_by': 'step_label'}"/>
+                    <filter name="group_object" string="Object Type" context="{'group_by': 'object_type'}"/>
+                    <filter name="group_type" string="Change Type" context="{'group_by': 'change_type'}"/>
+                    <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_meta_migration_change" model="ir.actions.act_window">
+        <field name="name">Changes</field>
+        <field name="res_model">meta.migration.change</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_meta_migration_change_search"/>
+    </record>
+
+</odoo>

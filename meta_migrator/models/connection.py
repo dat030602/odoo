@@ -14,16 +14,24 @@ class MetaMigrationConnection(models.Model):
     db = fields.Char(string='Database', required=True)
     username = fields.Char(string='Username', required=True)
     password = fields.Char(string='Password', required=True)
+    timeout = fields.Integer(string='Timeout (seconds)', default=60)
     active = fields.Boolean(default=True)
     note = fields.Char(string='Note')
 
-    def _get_rpc(self):
+    def _get_rpc(self, read_only=False):
         self.ensure_one()
-        return OdooRPC(self.url, self.db, self.username, self.password)
+        return OdooRPC(
+            self.url,
+            self.db,
+            self.username,
+            self.password,
+            timeout=self.timeout or 60,
+            read_only=read_only,
+        )
 
     def action_test_connection(self):
         self.ensure_one()
-        rpc = self._get_rpc()
+        rpc = self._get_rpc(read_only=True)
         try:
             uid = rpc.authenticate()
         except OdooRPCError as e:

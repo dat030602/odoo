@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaServerAction">
+    <div class="o_mm_widget o_mm_server_action">
+      <Banner t-if="banner" level="banner.level" title="banner.title" text="banner.text"/>
+
+      <!-- Configuration Card -->
+      <section class="o_mm_card">
+        <header class="o_mm_card_head">
+          <h3 class="o_mm_card_title">Configuration</h3>
+          <span t-if="isCreate" class="o_mm_badge o_mm_badge--create">New action</span>
+          <span t-else="" t-attf-class="o_mm_badge o_mm_badge--{{c.changeType}}" t-esc="c.changeType"/>
+        </header>
+
+        <dl class="o_mm_cfg">
+          <div t-foreach="cfg" t-as="r" t-key="r.key"
+               t-attf-class="o_mm_cfg_item {{r.changed ? 'is-changed' : ''}}">
+            <dt class="o_mm_label" t-esc="r.label"/>
+            <dd class="o_mm_value is-mono">
+              <t t-if="r.changed">
+                <span class="o_mm_old" t-esc="r.old || '—'"/>
+                <span class="o_mm_cfg_arrow mx-1" aria-hidden="true">→</span>
+                <span class="o_mm_new" t-esc="r.new || '—'"/>
+              </t>
+              <t t-else="">
+                <span t-esc="r.new || '—'"/>
+              </t>
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- Python Code Section -->
+      <div t-if="noCode" class="o_mm_emptystate">
+        <p class="mb-0">This action type has no Python code</p>
+      </div>
+      <t t-else="">
+        <CodeBlock t-if="isCreate" text="newParsed.code" language="'python'" mark="'add'"/>
+        <CodeDiff t-elif="hasCodeDiff" old="oldParsed.code" new="newParsed.code" language="'python'" mode="'unified'"/>
+        <CodeBlock t-else="" text="newParsed.code" language="'python'" title="'In sync'"/>
+      </t>
+    </div>
+  </t>
+
+</templates>

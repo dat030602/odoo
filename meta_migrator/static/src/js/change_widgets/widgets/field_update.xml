@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaFieldUpdate">
+    <div class="o_mm_widget o_mm_field_update">
+      <!-- Identification Header -->
+      <div class="o_mm_ident">
+        <span class="o_mm_chip o_mm_chip--model" t-esc="model"/>
+        <span class="o_mm_ident_name" t-esc="fname"/>
+        <TypeBadge ttype="c.newObj.ttype || c.oldObj.ttype"/>
+        <ChangeBadge type="c.changeType"/>
+      </div>
+
+      <!-- Banner -->
+      <Banner level="banner.level" title="banner.title" text="banner.text"/>
+
+      <!-- Summary Chips & Unchanged Toggle -->
+      <div class="o_mm_summary">
+        <div class="d-flex align-items-center flex-wrap gap-1">
+          <t t-if="changedKeys.length">
+            <span class="text-muted small me-1">Changed:</span>
+            <button t-foreach="changedKeys" t-as="k" t-key="k" type="button"
+                    class="o_mm_chip o_mm_chip--changed"
+                    t-on-click="() => this.scrollTo(k)" t-esc="k"/>
+          </t>
+          <span t-else="" class="badge bg-light text-dark border">
+            <i class="fa fa-check text-success me-1"/>All attributes in sync
+          </span>
+        </div>
+        <button t-if="unchangedCount" type="button"
+                t-attf-class="o_mm_btn ms-auto {{state.showUnchanged ? 'is-on' : ''}}"
+                t-on-click="toggleUnchanged">
+          <t t-esc="state.showUnchanged ? 'Hide unchanged' : 'Show unchanged'"/> (<t t-esc="unchangedCount"/>)
+        </button>
+      </div>
+
+      <!-- AttrTable -->
+      <AttrTable rows="allRows" groups="groups" showUnchanged="state.showUnchanged"/>
+
+      <!-- Breaking Change Notes -->
+      <div t-if="notes.length" class="mt-3">
+        <Banner t-foreach="notes" t-as="n" t-key="n_index" level="n.level" text="n.text"/>
+      </div>
+    </div>
+  </t>
+
+</templates>

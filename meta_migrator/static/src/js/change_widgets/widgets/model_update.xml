@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaModelUpdate">
+    <div class="o_mm_widget o_mm_model_update">
+      <Banner level="banner.level" title="banner.title" text="banner.text"/>
+
+      <div t-attf-class="o_mm_cmp {{c.changeType === 'exists' ? 'is-skipped' : ''}}">
+        <div class="o_mm_cmp_head">Target (current)</div>
+        <div class="o_mm_cmp_head text-center">→</div>
+        <div class="o_mm_cmp_head">Source (incoming)</div>
+
+        <t t-foreach="rows" t-as="r" t-key="r.key">
+          <t t-if="r.changed or !state.onlyChanged">
+            <div t-attf-class="o_mm_cmp_cell {{r.changed ? 'is-changed' : 'is-muted'}}">
+              <span class="o_mm_label" t-esc="r.label"/>
+              <span class="o_mm_value is-mono" t-esc="r.old"/>
+            </div>
+            <div class="o_mm_cmp_arrow" aria-hidden="true" t-esc="r.changed ? '→' : ''"/>
+            <div t-attf-class="o_mm_cmp_cell {{r.changed ? 'is-changed' : 'is-muted'}}">
+              <span class="o_mm_label" t-esc="r.label"/>
+              <span class="o_mm_value is-mono" t-esc="r.new"/>
+            </div>
+          </t>
+        </t>
+      </div>
+
+      <footer class="o_mm_foot" role="status">
+        <span><t t-esc="diffCount"/> of <t t-esc="rows.length"/> attributes differ</span>
+        <button type="button" t-attf-class="o_mm_btn {{state.onlyChanged ? 'is-on' : ''}}"
+                t-on-click="toggleOnly">Show only changed</button>
+      </footer>
+    </div>
+  </t>
+
+</templates>

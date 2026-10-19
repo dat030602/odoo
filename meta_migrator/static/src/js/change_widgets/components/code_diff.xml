@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.CodeDiff">
+    <div t-attf-class="o_mm_code {{state.full ? 'is-full' : ''}} {{state.wrap ? 'is-wrap' : ''}}">
+      <!-- Toolbar -->
+      <div class="o_mm_toolbar o_mm_code_bar">
+        <span class="o_mm_stat is-add me-1" t-esc="'+' + stats.added"/>
+        <span class="o_mm_stat is-del me-2" t-esc="'−' + stats.removed"/>
+
+        <div class="btn-group btn-group-sm me-2" role="group">
+          <button type="button" t-attf-class="o_mm_btn {{state.mode === 'unified' ? 'is-on' : ''}}"
+                  t-on-click="() => this.setMode('unified')">Unified</button>
+          <button type="button" t-attf-class="o_mm_btn {{state.mode === 'split' ? 'is-on' : ''}}"
+                  t-on-click="() => this.setMode('split')">Split</button>
+        </div>
+
+        <button t-if="state.mode === 'unified'" type="button" class="o_mm_btn me-2"
+                t-on-click="toggleWrap" t-esc="state.wrap ? 'No wrap' : 'Wrap lines'"/>
+
+        <input class="o_mm_input me-2" type="search" placeholder="Search diff" t-model="state.q"/>
+
+        <div class="btn-group btn-group-sm me-2" role="group" aria-label="Change navigation">
+          <button type="button" class="o_mm_btn" title="Previous change" t-on-click="prevChange">↑</button>
+          <span class="px-2 py-1 bg-light border text-muted small" role="status" t-esc="currentBlockText"/>
+          <button type="button" class="o_mm_btn" title="Next change" t-on-click="nextChange">↓</button>
+        </div>
+
+        <span class="o_mm_toolbar_spacer"/>
+        <button type="button" class="o_mm_btn me-1" t-on-click="expandAll">Expand all</button>
+        <button type="button" class="o_mm_btn me-1" t-on-click="copyNew">Copy new</button>
+        <button type="button" class="o_mm_btn" t-on-click="toggleFull" t-esc="state.full ? 'Collapse height' : 'Expand to full height'"/>
+      </div>
+
+      <!-- Unified Diff Mode -->
+      <div t-if="state.mode === 'unified'" class="o_mm_diff o_mm_diff--unified" t-ref="body">
+        <div class="o_mm_code_body">
+          <t t-foreach="visibleUnifiedRows" t-as="r" t-key="r_index">
+            <button t-if="r.t === 'fold'" type="button" class="o_mm_fold" t-on-click="() => this.expand(r.id)">
+              … <t t-esc="r.count"/> unchanged lines (click to expand)
+            </button>
+            <div t-else="" t-attf-class="o_mm_dl o_mm_dl--{{r.t}} {{r.hit ? 'is-hit' : ''}}">
+              <span class="o_mm_ln_num" t-esc="r.a || ''"/>
+              <span class="o_mm_ln_num" t-esc="r.b || ''"/>
+              <span class="o_mm_ln_sign" t-esc="r.t === 'add' ? '+' : r.t === 'del' ? '-' : ''"/>
+              <span class="o_mm_ln_text">
+                <t t-foreach="r.tokens" t-as="tk" t-key="tk_index">
+                  <span t-att-class="tk.c ? 'o_mm_tk_' + tk.c : ''" t-esc="tk.t"/>
+                </t>
+              </span>
+            </div>
+          </t>
+          <div t-if="hasMore" class="p-2 text-center border-top">
+            <button type="button" class="o_mm_btn" t-on-click="showMore">Show 500 more</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Diff Mode -->
+      <div t-else="" class="o_mm_diff o_mm_diff--split" t-ref="body">
+        <div class="o_mm_split_head">
+          <span>Current (target)</span>
+          <span>Incoming (source)</span>
+        </div>
+        <div class="o_mm_code_body">
+          <t t-foreach="visibleSplitPairs" t-as="p" t-key="p_index">
+            <div class="o_mm_srow">
+              <!-- Left Half -->
+              <div t-attf-class="o_mm_half {{p.left ? 'is-' + p.left.t : 'is-empty'}} {{p.left and p.left.hit ? 'is-hit' : ''}}">
+                <span class="o_mm_ln_num" t-esc="p.left ? p.left.n : ''"/>
+                <span class="o_mm_ln_sign" t-esc="p.left and p.left.t === 'del' ? '-' : ''"/>
+                <span class="o_mm_ln_text">
+                  <t t-if="p.left">
+                    <t t-foreach="p.left.tokens" t-as="tk" t-key="tk_index">
+                      <span t-att-class="tk.w ? 'o_mm_w_del' : (tk.c ? 'o_mm_tk_' + tk.c : '')" t-esc="tk.t"/>
+                    </t>
+                  </t>
+                </span>
+              </div>
+              <!-- Right Half -->
+              <div t-attf-class="o_mm_half {{p.right ? 'is-' + p.right.t : 'is-empty'}} {{p.right and p.right.hit ? 'is-hit' : ''}}">
+                <span class="o_mm_ln_num" t-esc="p.right ? p.right.n : ''"/>
+                <span class="o_mm_ln_sign" t-esc="p.right and p.right.t === 'add' ? '+' : ''"/>
+                <span class="o_mm_ln_text">
+                  <t t-if="p.right">
+                    <t t-foreach="p.right.tokens" t-as="tk" t-key="tk_index">
+                      <span t-att-class="tk.w ? 'o_mm_w_add' : (tk.c ? 'o_mm_tk_' + tk.c : '')" t-esc="tk.t"/>
+                    </t>
+                  </t>
+                </span>
+              </div>
+            </div>
+          </t>
+          <div t-if="hasMore" class="p-2 text-center border-top">
+            <button type="button" class="o_mm_btn" t-on-click="showMore">Show 500 more</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </t>
+
+</templates>

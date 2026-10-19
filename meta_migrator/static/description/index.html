@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Meta Migrator for Odoo 19 – Technical Batch Migration Suite</title>
+    <style>
+        :root {
+            --mm-bg: #f8fafc;
+            --mm-card-bg: #ffffff;
+            --mm-border: #e2e8f0;
+            --mm-border-dark: #cbd5e1;
+            --mm-text-main: #0f172a;
+            --mm-text-body: #334155;
+            --mm-text-muted: #64748b;
+            --mm-primary: #2563eb;
+            --mm-primary-hover: #1d4ed8;
+            --mm-primary-light: #eff6ff;
+            --mm-success: #059669;
+            --mm-success-bg: #ecfdf5;
+            --mm-success-border: #a7f3d0;
+            --mm-warning: #d97706;
+            --mm-warning-bg: #fffbeb;
+            --mm-radius: 4px;
+            --mm-radius-sm: 2px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--mm-bg);
+            color: var(--mm-text-body);
+            line-height: 1.6;
+            font-size: 15px;
+            padding: 24px 12px;
+        }
+
+        .mm-wrapper {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        /* Banner Card */
+        .mm-card {
+            background: #ffffff;
+            border: 1px solid var(--mm-border);
+            border-radius: var(--mm-radius);
+            padding: 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+        }
+
+        .mm-hero-eyebrow {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--mm-primary);
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--mm-text-main);
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--mm-text-main);
+            margin-bottom: 14px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--mm-text-main);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--mm-text-body);
+        }
+
+        .mm-badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .mm-pill {
+            background: #f1f5f9;
+            border: 1px solid var(--mm-border);
+            border-radius: var(--mm-radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--mm-text-body);
+            padding: 4px 10px;
+        }
+
+        .mm-pill-accent {
+            background: var(--mm-primary-light);
+            border-color: #bfdbfe;
+            color: var(--mm-primary);
+        }
+
+        .mm-pill-success {
+            background: var(--mm-success-bg);
+            border-color: var(--mm-success-border);
+            color: var(--mm-success);
+        }
+
+        /* Step Card */
+        .mm-step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--mm-border);
+        }
+
+        .mm-step-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            background: var(--mm-primary);
+            color: #ffffff;
+            border-radius: var(--mm-radius-sm);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* Table */
+        .mm-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 20px;
+            font-size: 13px;
+        }
+
+        .mm-table th {
+            background: #f1f5f9;
+            color: var(--mm-text-main);
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 14px;
+            border: 1px solid var(--mm-border);
+        }
+
+        .mm-table td {
+            padding: 10px 14px;
+            border: 1px solid var(--mm-border);
+            vertical-align: top;
+        }
+
+        .mm-table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        /* Code */
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 12px;
+            background: #f1f5f9;
+            border: 1px solid var(--mm-border);
+            border-radius: var(--mm-radius-sm);
+            padding: 2px 5px;
+            color: #0f172a;
+        }
+
+        /* Images */
+        .mm-img-box {
+            border: 1px solid var(--mm-border);
+            border-radius: var(--mm-radius);
+            overflow: hidden;
+            background: #f8fafc;
+            margin: 18px 0 24px;
+        }
+
+        .mm-img-box img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .mm-img-caption {
+            padding: 9px 14px;
+            background: #ffffff;
+            border-top: 1px solid var(--mm-border);
+            font-size: 12px;
+            color: var(--mm-text-muted);
+            font-weight: 500;
+        }
+
+        /* Alert Callouts */
+        .mm-callout {
+            border-radius: var(--mm-radius);
+            padding: 14px 16px;
+            margin: 16px 0 20px;
+            font-size: 14px;
+            border-left: 4px solid;
+        }
+
+        .mm-callout-info {
+            background: var(--mm-primary-light);
+            border-left-color: var(--mm-primary);
+            color: #1e40af;
+        }
+
+        .mm-callout-success {
+            background: var(--mm-success-bg);
+            border-left-color: var(--mm-success);
+            color: #065f46;
+        }
+
+        .mm-callout-warning {
+            background: var(--mm-warning-bg);
+            border-left-color: var(--mm-warning);
+            color: #92400e;
+        }
+
+        /* Feature Grid */
+        .mm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .mm-grid-card {
+            background: #f8fafc;
+            border: 1px solid var(--mm-border);
+            border-radius: var(--mm-radius);
+            padding: 18px;
+        }
+
+        .mm-grid-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--mm-text-main);
+            margin-bottom: 6px;
+        }
+
+        .mm-grid-card p {
+            font-size: 13px;
+            color: var(--mm-text-body);
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mm-wrapper">
+
+    <!-- Hero Card -->
+    <section class="mm-card">
+        <div class="mm-hero-eyebrow">Enterprise &amp; Community Architecture Tooling</div>
+        <h1>Meta Migrator for Odoo 19</h1>
+        <p>
+            Step-by-step batch migration engine for models, fields, views, menus, security rules, and server actions
+            across separate Odoo instances via remote XML-RPC. Built with top-down sequential execution, zero-write dry-run testing,
+            and specialized OWL 2 diff widgets.
+        </p>
+        <div class="mm-badge-list">
+            <span class="mm-pill mm-pill-accent">Version 19.0.2.0.0</span>
+            <span class="mm-pill mm-pill-success">Odoo 19 Certified</span>
+            <span class="mm-pill">Zero Target Writes Dry-Run</span>
+            <span class="mm-pill">8 Specialized OWL Diff Widgets</span>
+            <span class="mm-pill">Top-Down Sequential Ordering</span>
+            <span class="mm-pill">Non-Destructive XML Merging</span>
+            <span class="mm-pill">Asynchronous Cron Background Queue</span>
+        </div>
+    </section>
+
+    <!-- Operational Flowchart -->
+    <section class="mm-card">
+        <div class="mm-step-header">
+            <span class="mm-step-badge">0</span>
+            <h2>Operational Flowchart</h2>
+        </div>
+        <p>
+            The lifecycle of a migration job flows through five discrete phases, from endpoint authentication to verified synchronization:
+        </p>
+        <div class="mm-img-box">
+            <img src="images/workflow_flowchart.svg" alt="Meta Migrator Five-Stage Architecture Flowchart"/>
+            <div class="mm-img-caption">Figure 0.1: Five-Stage Migration Lifecycle – Connection, Step Definition, Dry-Run Test, Diff Review, and Remote Execution.</div>
+        </div>
+    </section>
+
+    <!-- Core Highlights Grid -->
+    <section class="mm-card">
+        <h2>Key Architectural Highlights</h2>
+        <div class="mm-grid">
+            <div class="mm-grid-card">
+                <h4>Top-Down Step Execution</h4>
+                <p>Migrate in explicit sequential steps controlled by drag-and-drop handles. No rigid hard-coded order; customize step dependencies as needed.</p>
+            </div>
+            <div class="mm-grid-card">
+                <h4>Dry-Run Safety Gate</h4>
+                <p>The <code>Test</code> button runs a read-only comparison across instances using a virtual registry. Target databases remain 100% untouched.</p>
+            </div>
+            <div class="mm-grid-card">
+                <h4>8 Specialized Diff Widgets</h4>
+                <p>Tailored OWL 2 viewers for models, fields, views, actions, and security records. Features inline word diffs, XML outlines, and risk banners.</p>
+            </div>
+            <div class="mm-grid-card">
+                <h4>Multi-Pass Relational Blocks</h4>
+                <p>Contiguous field steps are collapsed into an atomic block executing across 3 passes, eliminating circular M2O, O2M, and compute dependency deadlocks.</p>
+            </div>
+            <div class="mm-grid-card">
+                <h4>Non-Destructive View Merging</h4>
+                <p>When updating existing views, elements are appended into <code>&lt;data&gt;</code> without wiping target customizations.</p>
+            </div>
+            <div class="mm-grid-card">
+                <h4>Synchronized Verification</h4>
+                <p>Clicking <code>Test</code> after a migration automatically computes <code>is_in_sync</code>, confirming complete parity with zero line deltas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 1: Connections -->
+    <section class="mm-card">
+        <div class="mm-step-header">
+            <span class="mm-step-badge">1</span>
+            <h2>Step 1: Setting Up Remote Endpoints (Connections)</h2>
+        </div>
+        <p>
+            Declare the source and target Odoo instances under <strong>Meta Migrator &gt; Connections</strong>:
+        </p>
+        <table class="mm-table">
+            <thead>
+                <tr>
+                    <th>Field Label</th>
+                    <th>Technical Key</th>
+                    <th>Description &amp; Best Practices</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Server URL</strong></td>
+                    <td><code>url</code></td>
+                    <td>Base HTTP/HTTPS URL of the remote instance (e.g. <code>https://staging.internal:8069</code>).</td>
+                </tr>
+                <tr>
+                    <td><strong>Database Name</strong></td>
+                    <td><code>db</code></td>
+                    <td>PostgreSQL database name of the target Odoo environment.</td>
+                </tr>
+                <tr>
+                    <td><strong>Login Username</strong></td>
+                    <td><code>username</code></td>
+                    <td>Administrative Odoo user login with system management privileges.</td>
+                </tr>
+                <tr>
+                    <td><strong>API Key / Password</strong></td>
+                    <td><code>password</code></td>
+                    <td>Remote password or Odoo User API Key (strongly recommended for security).</td>
+                </tr>
+                <tr>
+                    <td><strong>Timeout</strong></td>
+                    <td><code>timeout</code></td>
+                    <td>RPC socket timeout in seconds (default: 60s).</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>
+            Click <strong>Test Connection</strong> to verify credentials. A green alert box will confirm successful authentication with user ID and accessible model counts.
+        </p>
+        <div class="mm-img-box">
+            <img src="images/step1_connection.png" alt="Odoo 19 Connection Setup Form"/>
+            <div class="mm-img-caption">Figure 1.1: Connection Form – Verified remote authentication on target staging instance.</div>
+        </div>
+    </section>
+
+    <!-- Step 2: Jobs & Steps -->
+    <section class="mm-card">
+        <div class="mm-step-header">
+            <span class="mm-step-badge">2</span>
+            <h2>Step 2: Defining Migration Jobs &amp; Step Sequences</h2>
+        </div>
+        <p>
+            Under <strong>Meta Migrator &gt; Jobs</strong>, create a new job to establish a reusable migration blueprint.
+        </p>
+        <h3>Job Configuration Options</h3>
+        <ul style="margin-left: 20px; margin-bottom: 16px;">
+            <li style="margin-bottom: 6px;"><strong>On Conflict:</strong> <code>overwrite</code> (Update if target entity exists) or <code>skip</code> (Preserve target entity as-is).</li>
+            <li style="margin-bottom: 6px;"><strong>Stop On Error:</strong> Halts execution immediately if any step fails, preventing corrupted schema states.</li>
+            <li style="margin-bottom: 6px;"><strong>Run In Background:</strong> Dispatches the job to an asynchronous <code>ir.cron</code> queue for large transfers.</li>
+        </ul>
+        <h3>Step Object Types</h3>
+        <table class="mm-table">
+            <thead>
+                <tr>
+                    <th>Object Type</th>
+                    <th>Action</th>
+                    <th>Inputs</th>
+                    <th>Execution Logic</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>model</code></td>
+                    <td><code>create</code></td>
+                    <td><code>model_name</code>, <code>target_model_name</code></td>
+                    <td>Creates custom model. If it already exists, marked as unchanged.</td>
+                </tr>
+                <tr>
+                    <td><code>field</code></td>
+                    <td><code>create</code></td>
+                    <td><code>model_name</code>, <code>field_name</code></td>
+                    <td>Transfers fields with full attributes (relations, selections, compute logic).</td>
+                </tr>
+                <tr>
+                    <td><code>view</code></td>
+                    <td><code>create</code></td>
+                    <td><code>model_name</code>, <code>view_type</code></td>
+                    <td>Creates primary view matching source active view of lowest priority.</td>
+                </tr>
+                <tr>
+                    <td><code>view</code></td>
+                    <td><code>update</code></td>
+                    <td><code>xml_id</code></td>
+                    <td>Appends new XML nodes into existing target view <code>&lt;data&gt;</code> without overwriting customizations.</td>
+                </tr>
+                <tr>
+                    <td><code>server_action</code></td>
+                    <td><code>create</code> / <code>update</code></td>
+                    <td><code>xml_id</code></td>
+                    <td>Synchronizes Python code, model bindings, and security action states.</td>
+                </tr>
+                <tr>
+                    <td><code>menu</code></td>
+                    <td><code>create</code></td>
+                    <td><code>model_name</code></td>
+                    <td>Transfers window actions, root menus, and sub-menu hierarchies.</td>
+                </tr>
+                <tr>
+                    <td><code>access_right</code></td>
+                    <td><code>create</code></td>
+                    <td><code>model_name</code></td>
+                    <td>Replicates <code>ir.model.access</code> CRUD permissions, auto-mapping security groups.</td>
+                </tr>
+                <tr>
+                    <td><code>record_rule</code></td>
+                    <td><code>create</code></td>
+                    <td><code>model_name</code></td>
+                    <td>Transfers domain force record rules and evaluation contexts.</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mm-img-box">
+            <img src="images/step2_job_form.png" alt="Odoo 19 Migration Job Form"/>
+            <div class="mm-img-caption">Figure 2.1: Migration Job Form – Ordered steps list, execution options, and action buttons.</div>
+        </div>
+    </section>
+
+    <!-- Step 3: Wizard -->
+    <section class="mm-card">
+        <div class="mm-step-header">
+            <span class="mm-step-badge">3</span>
+            <h2>Step 3: Accelerating Setup with Field Generation Wizard</h2>
+        </div>
+        <p>
+            Click <strong>Generate field steps</strong> in the job header. Pick any model from the source instance:
+            the wizard automatically discovers all manual custom fields and presents an interactive checklist. Select the desired
+            fields and click <strong>Add Steps</strong> to append them to the job in 1 click!
+        </p>
+        <p>
+            Click <strong>Sort by dependency</strong> to automatically arrange models before fields and parents before children.
+        </p>
+        <div class="mm-img-box">
+            <img src="images/step3_wizard.png" alt="Generate Field Steps Wizard Modal"/>
+            <div class="mm-img-caption">Figure 3.1: Generate Field Steps Wizard – Batch extraction of custom model fields.</div>
+        </div>
+    </section>
+
+    <!-- Step 4: Test & Diff Inspection -->
+    <section class="mm-card">
+        <div class="mm-step-header">
+            <span class="mm-step-badge">4</span>
+            <h2>Step 4: Dry-Run Testing &amp; Specialized Diff Inspection</h2>
+        </div>
+        <p>
+            Click the <strong>Test</strong> button to perform an automated dry-run. Meta Migrator evaluates differences against the target
+            server in pure read-only mode, generating granular change records viewable in the <strong>Runs</strong> tab.
+        </p>
+        <div class="mm-callout mm-callout-info">
+            <strong>8 Specialized OWL 2 Diff Widgets:</strong> Instead of raw JSON dumps, Meta Migrator renders dedicated interactive viewers:
+            <code>meta_model_create</code> (child fields table with search/filters), <code>meta_field_update</code> (property diff table with risk warnings),
+            <code>meta_view_update</code> (element card additions), <code>meta_server_action</code> (code comparison), and more.
+        </div>
+        <div class="mm-img-box">
+            <img src="images/step4_diff_widgets.png" alt="Specialized Field Update Widget"/>
+            <div class="mm-img-caption">Figure 4.1: Specialized Field Update Widget – Property comparison with high-risk warning alerts.</div>
+        </div>
+    </section>
+
+    <!-- Step 5: Live Execution & Sync -->
+    <section class="mm-card">
+        <div class="mm-step-header">
+            <span class="mm-step-badge">5</span>
+            <h2>Step 5: Executing Live Migration &amp; Sync Verification</h2>
+        </div>
+        <p>
+            Once diffs are audited, click <strong>Run</strong> in the job header. Confirm the safety dialog to execute the sequence
+            against the target instance via XML-RPC.
+        </p>
+        <div class="mm-callout mm-callout-success">
+            <strong>100% In-Sync Verification:</strong> Click <strong>Test</strong> again after a completed run. Meta Migrator queries
+            the target instance fresh: if all objects match, the run reports <code>is_in_sync: True</code> with <code>+0 / -0</code> diff delta!
+        </div>
+        <div class="mm-img-box">
+            <img src="images/step5_sync_verified.png" alt="Odoo 19 Synchronized State View"/>
+            <div class="mm-img-caption">Figure 5.1: Synchronized Run State – 100% In-Sync confirmation with zero line diffs.</div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>

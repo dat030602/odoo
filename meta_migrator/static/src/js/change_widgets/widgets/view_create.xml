@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaViewCreate">
+    <div class="o_mm_widget o_mm_view_create">
+      <Banner t-if="isError" level="'danger'" text="c.message"/>
+      <Banner t-if="!validation.valid" level="'warning'" title="'Arch is not well-formed'" text="validation.error"/>
+
+      <!-- View Info Card -->
+      <section class="o_mm_card">
+        <header class="o_mm_card_head">
+          <h3 class="o_mm_card_title">View info</h3>
+          <span class="o_mm_badge o_mm_badge--create">New view</span>
+          <span t-if="extra.inherit_name" class="o_mm_chip">inherits <t t-esc="extra.inherit_name"/></span>
+          <span t-else="" class="o_mm_chip">Primary view</span>
+        </header>
+        <dl class="o_mm_kv">
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">View Name</dt>
+            <dd class="o_mm_value" t-esc="extra.name || '—'"/>
+          </div>
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">Model</dt>
+            <dd class="o_mm_value is-mono fw-bold" t-esc="extra.model || c.targetRef"/>
+          </div>
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">Type</dt>
+            <dd class="o_mm_value">
+              <TypeBadge ttype="extra.type"/>
+            </dd>
+          </div>
+          <div class="o_mm_kv_item">
+            <dt class="o_mm_label">Priority</dt>
+            <dd class="o_mm_value is-mono" t-esc="extra.priority || 16"/>
+          </div>
+        </dl>
+      </section>
+
+      <!-- Code & Outline Layout -->
+      <div class="o_mm_vc_layout">
+        <CodeBlock t-ref="codeBlock" text="c.newRaw" language="'xml'" mark="'add'" foldNodes="true"/>
+
+        <!-- Outline Aside -->
+        <aside class="o_mm_outline" t-if="outline.length and state.showOutline">
+          <header class="o_mm_card_head">
+            <h3 class="o_mm_card_title">Outline</h3>
+            <button type="button" class="o_mm_btn o_mm_btn--link ms-auto" t-on-click="toggleOutline">Hide</button>
+          </header>
+          <ul class="o_mm_outline_list">
+            <li t-foreach="outline" t-as="n" t-key="n_index"
+                class="o_mm_outline_item" t-attf-style="--mm-depth: {{n.depth}}">
+              <button type="button" class="o_mm_outline_btn" t-on-click="() => this.goto(n.line)">
+                <span class="o_mm_tk_tag" t-esc="'&lt;' + n.tag + '&gt;'"/>
+                <span class="o_mm_outline_label ms-1" t-esc="n.label"/>
+              </button>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </t>
+
+</templates>

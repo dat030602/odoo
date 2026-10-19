@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.CodeBlock">
+    <div t-attf-class="o_mm_code {{state.full ? 'is-full' : ''}} {{state.wrap ? 'is-wrap' : ''}}">
+      <div class="o_mm_toolbar o_mm_code_bar">
+        <span t-if="props.mark === 'add'" class="o_mm_stat is-add" t-esc="'+' + visibleLines.length"/>
+        <span t-if="props.title" class="fw-bold me-2" t-esc="props.title"/>
+        <input class="o_mm_input" type="search" placeholder="Search code" t-model="state.q"/>
+        <span class="o_mm_toolbar_spacer"/>
+        <button type="button" class="o_mm_btn" t-on-click="toggleWrap" t-esc="state.wrap ? 'No wrap' : 'Wrap lines'"/>
+        <button type="button" class="o_mm_btn" t-on-click="copy">Copy</button>
+        <button type="button" class="o_mm_btn" t-on-click="toggleFull" t-esc="state.full ? 'Collapse height' : 'Expand to full height'"/>
+      </div>
+      <div class="o_mm_code_body" t-ref="body">
+        <t t-foreach="visibleLines" t-as="ln" t-key="ln.n">
+          <div t-attf-class="o_mm_ln {{ln.mark ? 'is-' + ln.mark : ''}} {{ln.hit ? 'is-hit' : ''}}">
+            <span class="o_mm_ln_gutter">
+              <button t-if="ln.foldable" type="button" class="o_mm_caret"
+                      t-att-aria-expanded="!ln.collapsed"
+                      t-on-click="() => this.toggleNode(ln.n)">
+                <t t-esc="ln.collapsed ? '▸' : '▾'"/>
+              </button>
+            </span>
+            <span class="o_mm_ln_num" t-esc="ln.n"/>
+            <span class="o_mm_ln_sign" t-esc="ln.mark === 'add' ? '+' : ln.mark === 'del' ? '-' : ''"/>
+            <span class="o_mm_ln_text">
+              <t t-if="ln.collapsed">
+                <span class="text-muted">…</span>
+              </t>
+              <t t-else="">
+                <t t-foreach="ln.tokens" t-as="tk" t-key="tk_index">
+                  <span t-att-class="tk.c ? 'o_mm_tk_' + tk.c : ''" t-esc="tk.t"/>
+                </t>
+              </t>
+            </span>
+          </div>
+        </t>
+      </div>
+    </div>
+  </t>
+
+</templates>

@@ -1,0 +1,22 @@
+<odoo>
+
+    <record id="view_meta_migration_field_wizard_form" model="ir.ui.view">
+        <field name="name">meta.migration.field.wizard.form</field>
+        <field name="model">meta.migration.field.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Field Steps">
+                <group>
+                    <field name="job_id" invisible="1"/>
+                    <field name="include_related"/>
+                    <field name="create_models"/>
+                    <field name="model_names" placeholder="sale.order&#10;x_custom_model&#10;res.partner"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate Steps" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

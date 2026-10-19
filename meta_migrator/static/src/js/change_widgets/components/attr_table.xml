@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.AttrTable">
+    <table class="o_mm_attrs">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Current (target)</th>
+          <th>Incoming (source)</th>
+        </tr>
+      </thead>
+      <t t-foreach="tableGroups" t-as="g" t-key="g.id">
+        <tbody class="o_mm_attrs_group">
+          <tr class="o_mm_attrs_head">
+            <th colspan="3">
+              <button type="button" class="o_mm_btn o_mm_btn--link fw-bold" t-on-click="() => this.toggleGroup(g.id)">
+                <t t-esc="state.closed[g.id] ? '▸ ' : '▾ '"/>
+                <t t-esc="g.label"/> (<t t-esc="g.rows.length"/>)
+              </button>
+            </th>
+          </tr>
+          <t t-if="!state.closed[g.id]">
+            <t t-foreach="g.rows" t-as="r" t-key="r.key">
+              <tr t-if="isRowVisible(r, g.id)"
+                  t-attf-class="o_mm_attrs_row {{r.changed ? 'is-changed' : 'is-muted'}}"
+                  t-att-id="'attr_row_' + r.key">
+                <th class="o_mm_attrs_key" scope="row" t-esc="r.label"/>
+
+                <!-- Old Value Column -->
+                <td class="o_mm_attrs_old">
+                  <t t-if="isBool(r.old)">
+                    <BoolPill value="r.old"/>
+                  </t>
+                  <t t-elif="isLongText(r.old)">
+                    <div class="small font-monospace text-truncate" style="max-width: 25rem;" t-esc="r.old"/>
+                    <button t-if="r.changed" type="button" class="o_mm_btn o_mm_btn--link mt-1" t-on-click="() => this.toggleDiff(r.key)">
+                      <t t-esc="state.diffOpen[r.key] ? 'Hide diff' : 'Show diff'"/>
+                    </button>
+                  </t>
+                  <t t-elif="r.old === null or r.old === undefined or r.old === ''">
+                    <span class="fst-italic text-muted">(empty)</span>
+                  </t>
+                  <t t-else="">
+                    <span class="o_mm_value font-monospace" t-esc="formatVal(r.old)"/>
+                  </t>
+                </td>
+
+                <!-- New Value Column -->
+                <td class="o_mm_attrs_new">
+                  <t t-if="isBool(r.new)">
+                    <BoolPill value="r.new"/>
+                  </t>
+                  <t t-elif="isLongText(r.new)">
+                    <div class="small font-monospace text-truncate" style="max-width: 25rem;" t-esc="r.new"/>
+                    <button t-if="r.changed and !isLongText(r.old)" type="button" class="o_mm_btn o_mm_btn--link mt-1" t-on-click="() => this.toggleDiff(r.key)">
+                      <t t-esc="state.diffOpen[r.key] ? 'Hide diff' : 'Show diff'"/>
+                    </button>
+                  </t>
+                  <t t-elif="r.new === null or r.new === undefined or r.new === ''">
+                    <span class="fst-italic text-muted">(empty)</span>
+                  </t>
+                  <t t-else="">
+                    <span class="o_mm_value font-monospace" t-esc="formatVal(r.new)"/>
+                  </t>
+                </td>
+              </tr>
+
+              <!-- Inline Diff if toggled -->
+              <tr t-if="state.diffOpen[r.key]" class="o_mm_attrs_diff">
+                <td colspan="3">
+                  <CodeDiff old="r.old || ''" new="r.new || ''" language="'python'"/>
+                </td>
+              </tr>
+            </t>
+          </t>
+        </tbody>
+      </t>
+    </table>
+  </t>
+
+</templates>

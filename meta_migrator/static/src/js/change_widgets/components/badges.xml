@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.BoolPill">
+    <span t-attf-class="o_mm_bool {{props.value ? 'is-on' : 'is-off'}}"
+          role="img"
+          t-att-aria-label="props.value ? 'Yes' : 'No'"
+          t-esc="props.value ? '✓' : '–'"/>
+  </t>
+
+  <t t-name="meta_migrator.TypeBadge">
+    <span t-attf-class="o_mm_type o_mm_type--{{group}}" t-esc="props.ttype || '—'"/>
+  </t>
+
+  <t t-name="meta_migrator.ChangeBadge">
+    <span t-attf-class="o_mm_badge o_mm_badge--{{props.type}}" t-esc="label"/>
+  </t>
+
+  <t t-name="meta_migrator.Chip">
+    <span t-attf-class="o_mm_chip {{props.cls || ''}}" t-esc="props.text"/>
+  </t>
+
+</templates>

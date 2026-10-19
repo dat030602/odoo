@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaViewUpdate">
+    <div class="o_mm_widget o_mm_view_update">
+      <!-- Identification Header -->
+      <div class="o_mm_ident">
+        <span class="o_mm_ident_name" t-esc="c.targetRef"/>
+        <span t-attf-class="o_mm_badge o_mm_badge--{{c.changeType}}" t-esc="c.changeType"/>
+        <span class="o_mm_fg_muted ms-2" t-esc="subtitle"/>
+      </div>
+
+      <Banner t-if="banner" level="banner.level" title="banner.title" text="banner.text"/>
+
+      <!-- Tabs Navigation -->
+      <div class="o_mm_tabs" role="tablist">
+        <button t-foreach="tabs" t-as="t" t-key="t.id" type="button" role="tab"
+                t-attf-class="o_mm_tab {{state.tab === t.id ? 'is-open' : ''}}"
+                t-att-aria-selected="state.tab === t.id"
+                t-on-click="() => this.setTab(t.id)">
+          <span t-esc="t.label"/>
+          <span t-if="t.badge !== undefined" class="o_mm_tab_badge" t-esc="t.badge"/>
+        </button>
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="o_mm_tabpanel" role="tabpanel">
+        <!-- Tab: Change Elements -->
+        <t t-if="state.tab === 'change'">
+          <div class="o_mm_elems">
+            <article t-foreach="added" t-as="el" t-key="el_index" class="o_mm_elem">
+              <header class="o_mm_elem_head">
+                <code class="o_mm_elem_title" t-esc="el.title"/>
+                <span class="o_mm_stat is-add" t-esc="'+' + el.lines"/>
+                <button type="button" class="o_mm_btn ms-auto" t-on-click="() => this.copy(el.xml)">Copy</button>
+              </header>
+              <CodeBlock text="el.xml" language="'xml'" mark="'add'"/>
+            </article>
+          </div>
+
+          <details t-if="present.length" class="o_mm_present mt-3">
+            <summary class="fw-bold">Already present (<t t-esc="present.length"/>)</summary>
+            <div class="mt-2">
+              <CodeBlock t-foreach="present" t-as="el" t-key="el_index" text="el" language="'xml'"/>
+            </div>
+          </details>
+        </t>
+
+        <!-- Tab: Diff -->
+        <CodeDiff t-if="state.tab === 'diff'" old="c.oldRaw" new="c.newRaw" language="'xml'" mode="'split'"/>
+
+        <!-- Tab: Current (target) -->
+        <CodeBlock t-if="state.tab === 'current'" text="c.oldRaw" language="'xml'"/>
+
+        <!-- Tab: Result -->
+        <CodeBlock t-if="state.tab === 'result'" text="c.newRaw" language="'xml'" markedLines="addedLines"/>
+      </div>
+    </div>
+  </t>
+
+</templates>

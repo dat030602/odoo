@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="meta_migrator.MetaFieldCreate">
+    <div class="o_mm_widget o_mm_field_create">
+      <Banner t-if="isError" level="'danger'" text="c.message"/>
+
+      <!-- Identification Header -->
+      <div class="o_mm_ident">
+        <span class="o_mm_chip o_mm_chip--model" t-esc="model"/>
+        <span class="o_mm_ident_name" t-esc="fname"/>
+        <TypeBadge ttype="vals.ttype"/>
+        <span class="o_mm_badge o_mm_badge--create">New field</span>
+      </div>
+
+      <!-- Groups Grid -->
+      <div class="o_mm_groups">
+        <section t-foreach="groups" t-as="g" t-key="g.id"
+                 t-attf-class="o_mm_card o_mm_group {{g.wide ? 'o_mm_group--wide' : ''}}">
+          <header class="o_mm_card_head">
+            <h3 class="o_mm_card_title" t-esc="g.label"/>
+          </header>
+
+          <!-- Key-Value Items (Basic / Other / Relation) -->
+          <dl t-if="g.items" class="o_mm_kv">
+            <div t-foreach="g.items" t-as="it" t-key="it.key" class="o_mm_kv_item">
+              <dt class="o_mm_label" t-esc="it.label"/>
+              <dd class="o_mm_value font-monospace" t-esc="it.value"/>
+            </div>
+          </dl>
+
+          <!-- Help text with clamp toggle -->
+          <div t-if="g.help" class="mt-2 pt-2 border-top">
+            <dt class="o_mm_label">Help Text</dt>
+            <p t-attf-class="o_mm_help {{state.helpClamped ? 'is-clamped' : ''}}" t-esc="g.help"/>
+            <button t-if="g.help.length > 200" type="button" class="o_mm_btn o_mm_btn--link mt-1"
+                    t-on-click="toggleHelp" t-esc="state.helpClamped ? 'Show more' : 'Show less'"/>
+          </div>
+
+          <!-- Constraints Flags -->
+          <div t-if="g.flags" class="o_mm_flags">
+            <span t-foreach="g.flags" t-as="fl" t-key="fl.key"
+                  t-attf-class="o_mm_flag {{fl.value ? 'is-on' : 'is-off'}}">
+              <BoolPill value="fl.value"/>
+              <span class="text-capitalize" t-esc="fl.label"/>
+            </span>
+          </div>
+
+          <!-- Domain in Relation Group -->
+          <div t-if="g.domain" class="mt-2">
+            <dt class="o_mm_label">Domain</dt>
+            <CodeBlock text="g.domain" language="'python'"/>
+          </div>
+
+          <!-- Selection Table / Raw -->
+          <t t-if="g.selection">
+            <table class="o_mm_sel w-100">
+              <thead><tr><th>Key</th><th>Label</th></tr></thead>
+              <tbody>
+                <tr t-foreach="g.selection" t-as="opt" t-key="opt.key">
+                  <td class="fw-bold" t-esc="opt.key"/>
+                  <td t-esc="opt.label"/>
+                </tr>
+              </tbody>
+            </table>
+          </t>
+          <div t-elif="g.rawSelection" class="mt-1">
+            <CodeBlock text="g.rawSelection" language="'python'"/>
+          </div>
+
+          <!-- Logic: Compute & Depends & Related -->
+          <t t-if="g.id === 'logic'">
+            <div t-if="g.compute" class="mb-2">
+              <dt class="o_mm_label">Compute Code</dt>
+              <CodeBlock text="g.compute" language="'python'"/>
+            </div>
+            <div t-if="g.depends and g.depends.length" class="mb-2">
+              <dt class="o_mm_label">Depends</dt>
+              <div>
+                <span t-foreach="g.depends" t-as="dep" t-key="dep" class="o_mm_chip me-1" t-esc="dep"/>
+              </div>
+            </div>
+            <div t-if="g.related">
+              <dt class="o_mm_label">Related</dt>
+              <span class="font-monospace fw-bold" t-esc="g.related"/>
+            </div>
+          </t>
+        </section>
+      </div>
+    </div>
+  </t>
+
+</templates>
