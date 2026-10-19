@@ -1,0 +1,63 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browserUrl=http://127.0.0.1:9222",
+        "--headless"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--cdp-endpoint=http://127.0.0.1:9222"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    },
+    "fetch-docs": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ]
+    },
+    "odoo-postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://odoo:odoo@localhost:5432/odoo19"
+      ]
+    },
+    "odoo-rpc": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-odoo"
+      ],
+      "env": {
+        "ODOO_URL": "http://localhost:8019",
+        "ODOO_DB": "odoo19",
+        "ODOO_USERNAME": "admin",
+        "ODOO_PASSWORD": "admin"
+      }
+    },
+    "odoo-core-source": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/opt/odoo19/addons",
+        "/opt/odoo19/odoo"
+      ]
+    }
+  }
+}
