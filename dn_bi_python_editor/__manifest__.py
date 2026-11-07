@@ -31,7 +31,6 @@ Workflow:
 
     # Author information
     'author': 'Dat Nguyen',
-    'website': 'https://www.datnguyen.dev',
 
     # Module category
     'category': 'Tools',

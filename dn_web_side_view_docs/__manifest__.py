@@ -9,7 +9,6 @@
     """,
     'version': '19.0.1.0.1',
     'author': 'Dat Nguyen',
-    'website': 'https://www.datnguyen.dev',
     'category': 'Hidden',
     'license': 'OPL-1',
     'depends': ['dn_web_side_view', 'documents'],

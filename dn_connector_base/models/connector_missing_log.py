@@ -20,7 +20,7 @@ class ConnectorMissingLog(models.Model):
     _order = "create_date desc"
 
     endpoint_id = fields.Many2one(
-        "connector.endpoint",
+        "connector.outbound.endpoint",
         string="Endpoint",
         required=True,
         ondelete="cascade",

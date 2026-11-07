@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <record id="endpoint_vn_address_v2" model="connector.inbound.endpoint">
+        <field name="name">Open API v2 NQ60 Address Ingestion</field>
+        <field name="framework_id" ref="preset_framework_vn_address_v2"/>
+        <field name="token">vn-address-v2-inbound-token</field>
+        <field name="handler_type">python</field>
+        <field name="execution_mode">immediate</field>
+        <field name="code"><![CDATA[
+vn = env.ref('base.vn', raise_if_not_found=False) or env['res.country'].search([('code', '=', 'VN')], limit=1)
+
+provinces = payload.get('provinces') or (payload if isinstance(payload, list) and payload and 'codename' in payload[0] and 'province_code' not in payload[0] else [])
+wards = payload.get('wards') or (payload if isinstance(payload, list) and payload and 'province_code' in payload[0] else [])
+
+State = env['res.country.state']
+Ward = env['res.country.ward'].with_context(active_test=False)
+
+# Batch pre-lookup dictionaries to prevent N+1 queries
+state_map = {}
+for s in State.search([('country_id', '=', vn.id)]):
+    if s.vn_code:
+        state_map[s.vn_code] = s.id
+    if s.code:
+        state_map[str(s.code)] = s.id
+
+ward_by_code = {}
+for w in Ward.search([]):
+    ward_by_code[str(w.code)] = w
+
+if provinces:
+    for p in provinces:
+        p_code = p.get('code')
+        p_name = p.get('name')
+        p_codename = p.get('codename') or ''
+        st_id = state_map.get(p_code) or state_map.get(str(p_code))
+        state = State.browse(st_id) if st_id else State.search([('country_id', '=', vn.id), '|', ('vn_code', '=', p_code), ('code', '=', str(p_code))], limit=1)
+        if state:
+            state.write({'name': p_name, 'vn_code': p_code, 'name_extension': p_codename, 'active': True})
+        else:
+            state = State.create({'name': p_name, 'code': str(p_code), 'vn_code': p_code, 'name_extension': p_codename, 'country_id': vn.id, 'active': True})
+        state_map[p_code] = state.id
+        state_map[str(p_code)] = state.id
+
+if wards:
+    for w in wards:
+        w_code = str(w.get('code'))
+        w_name = w.get('name')
+        p_code = w.get('province_code')
+        w_codename = w.get('codename') or ''
+        legacy_codes = [str(c) for c in w.get('legacy_codes', [])]
+
+        st_id = state_map.get(p_code) or state_map.get(str(p_code))
+        if not st_id:
+            st = State.search([('country_id', '=', vn.id), '|', ('vn_code', '=', p_code), ('code', '=', str(p_code))], limit=1)
+            st_id = st.id if st else False
+            if st_id:
+                state_map[p_code] = st_id
+                state_map[str(p_code)] = st_id
+
+        if st_id:
+            ward = ward_by_code.get(w_code)
+            if not ward:
+                ward = Ward.search([('code', '=', w_code)], limit=1)
+            if ward:
+                ward.write({'name': w_name, 'state_id': st_id, 'is_new': True, 'name_extension': w_codename, 'active': True})
+            else:
+                ward = Ward.create({'name': w_name, 'code': w_code, 'state_id': st_id, 'is_new': True, 'name_extension': w_codename, 'active': True})
+            ward_by_code[w_code] = ward
+
+            if legacy_codes:
+                leg_ids = [ward_by_code[c].id for c in legacy_codes if c in ward_by_code and ward_by_code[c].id != ward.id]
+                missing_codes = [c for c in legacy_codes if c not in ward_by_code]
+                if missing_codes:
+                    for leg in Ward.search([('code', 'in', missing_codes), ('id', '!=', ward.id)]):
+                        leg_ids.append(leg.id)
+                        ward_by_code[str(leg.code)] = leg
+                if leg_ids:
+                    ward.write({'map_with_ward_ids': [(4, lid) for lid in leg_ids]})
+
+result = {'status': 'success'}
+]]></field>
+    </record>
+</odoo>

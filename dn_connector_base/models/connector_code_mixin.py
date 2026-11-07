@@ -5,51 +5,145 @@ Abstract mixin providing safe Python code execution for connector signatures
 and request preparation. Uses odoo.tools.safe_eval for sandboxed execution.
 """
 
-import logging
-import datetime
-import dateutil
-import json
 import ast
 import base64
-import requests
-import random
-import urllib
+import datetime
+import dateutil
 import hashlib
 import hmac
-import re
-import io
-import xmlrpc.client
 import http.client
-import socket
+import io
+import json
+import logging
+import math
+import random
+import re
 import sys
-import datetime
-
-from odoo import _, api, fields, models
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools.safe_eval import safe_eval
+import types
+import urllib
+import xmlrpc.client
 
 from odoo import models, fields, _
-from odoo.exceptions import ValidationError
-from odoo.tools.safe_eval import safe_eval
+from odoo.exceptions import UserError, ValidationError, AccessError
+from odoo.tools.safe_eval import safe_eval, wrap_module
 
 _logger = logging.getLogger(__name__)
+
+DISALLOWED_MODULES = frozenset({
+    "os", "subprocess", "sys", "shutil", "builtins", "__builtin__",
+    "importlib", "socket", "pty", "posix", "ctypes", "pickle", "multiprocessing",
+})
+
+
+class _AssertTransformer(ast.NodeTransformer):
+    """Rewrite AST Assert nodes into if-not-raise statements
+    to support assert in Python 3.12 without requiring LOAD_ASSERTION_ERROR in _SAFE_OPCODES.
+    """
+
+    def visit_Assert(self, node):
+        msg = [node.msg] if node.msg else []
+        new_node = ast.If(
+            test=ast.UnaryOp(op=ast.Not(), operand=node.test),
+            body=[
+                ast.Raise(
+                    exc=ast.Call(
+                        func=ast.Name(id="AssertionError", ctx=ast.Load()),
+                        args=msg,
+                        keywords=[],
+                    ),
+                    cause=None,
+                )
+            ],
+            orelse=[],
+        )
+        return ast.copy_location(new_node, node)
+
+
+def _sanitize_code(code_str):
+    """Transforms code string so statements like assert work with Odoo safe_eval."""
+    if not code_str or not isinstance(code_str, str):
+        return code_str or ""
+    try:
+        tree = ast.parse(code_str)
+        tree = _AssertTransformer().visit(tree)
+        ast.fix_missing_locations(tree)
+        return ast.unparse(tree)
+    except Exception:
+        return code_str
+
+
+def _dynamic_import(mod):
+    """Dynamic module importer for safe_eval environments with security sandbox enforcement."""
+    if not mod or not isinstance(mod, str):
+        raise AccessError(_("Invalid module name."))
+    root_pkg = mod.split(".")[0].strip()
+    if root_pkg in DISALLOWED_MODULES:
+        if mod == "sys":
+            # Restricted read-only sys attributes (e.g. version_info) for compatibility
+            # while strictly preventing sys.modules sandbox breakout
+            return wrap_module(sys, ["version_info", "version", "hexversion", "byteorder"])
+        raise AccessError(_("Importing '%s' is prohibited.", mod))
+
+    if mod in sys.modules:
+        target = sys.modules[mod]
+    else:
+        __import__(mod)
+        target = sys.modules[mod]
+
+    attrs = [
+        a for a in dir(target)
+        if not a.startswith("_") and not isinstance(getattr(target, a, None), types.ModuleType)
+    ]
+    return wrap_module(target, attrs)
+
+
+def _prepare_safe_eval_context(ctx):
+    """Sanitizes context dict by wrapping any raw types.ModuleType with safe_eval.wrap_module."""
+    res = {}
+    for k, v in (ctx or {}).items():
+        if isinstance(v, types.ModuleType):
+            attrs = [
+                a for a in dir(v)
+                if not a.startswith("_") and not isinstance(getattr(v, a, None), types.ModuleType)
+            ]
+            res[k] = wrap_module(v, attrs)
+        else:
+            res[k] = v
+
+    defaults = {
+        "callable": callable,
+        "RuntimeError": RuntimeError,
+        "ValueError": ValueError,
+        "TypeError": TypeError,
+        "KeyError": KeyError,
+        "IndexError": IndexError,
+        "AttributeError": AttributeError,
+        "ZeroDivisionError": ZeroDivisionError,
+        "AssertionError": AssertionError,
+        "_import": _dynamic_import,
+        "_dynamic_import": _dynamic_import,
+    }
+    for k, v in defaults.items():
+        if k not in res:
+            res[k] = v
+    return res
+
+
+def _execute_safe_eval(code, eval_context, mode="exec"):
+    """Safely executes code within sanitized context."""
+    clean_code = _sanitize_code(code)
+    clean_ctx = _prepare_safe_eval_context(eval_context)
+    safe_eval(clean_code, clean_ctx, mode=mode)
+    eval_context.update(clean_ctx)
+    return eval_context.get("result")
 
 
 class ConnectorCodeMixin(models.AbstractModel):
     """Mixin that provides safe Python code execution capabilities.
 
     This mixin is used by connector.model.signature (for custom discovery logic)
-    and connector.endpoint (for custom request preparation). It allows developers
+    and connector.outbound.endpoint (for custom request preparation). It allows developers
     to write Python code that runs in a sandboxed environment using safe_eval.
-
-    Available variables in the eval context:
-        - env: The Odoo environment
-        - record: The active record (from context)
-        - records: The active records (from context)
-        - context: The current context dict
-        - log: A logging function
-        - datetime, dateutil, json: Standard library modules
-        - result: Must be assigned by the code (required output variable)
     """
 
     _name = "connector.code.mixin"
@@ -57,14 +151,12 @@ class ConnectorCodeMixin(models.AbstractModel):
 
     code = fields.Text(
         string="Python Code",
-        groups="connector_base.group_connector_developer",
+        groups="dn_connector_base.group_connector_developer",
         help=(
             "Python code to execute. Available variables: env, record, records, "
-            "context, log(msg), datetime, dateutil, json.\n"
+            "context, log(msg), datetime, dateutil, json, re, math, _import, _dynamic_import.\n"
             "Code MUST assign the variable `result` at the end."
         ),
-        default="""
-""",
     )
 
     def _get_eval_context(self, extra_context=None):
@@ -73,47 +165,46 @@ class ConnectorCodeMixin(models.AbstractModel):
         :param extra_context: Additional variables to include in the context.
         :return: A dictionary containing all available variables for code execution.
         """
-        self.ensure_one()
-
-        def _dynamic_import(mod):
-            modules_list = sys.modules
-            if mod in modules_list:
-                return sys.modules[mod]
-            __import__(mod)
-            return sys.modules[mod]
         ctx = {
             "env": self.env,
-            "record": self.env.context.get("active_record"),
-            "records": self.env.context.get("active_records"),
+            "record": self.env.context.get("active_record", False),
+            "records": self.env.context.get("active_records", False),
             "context": dict(self.env.context),
             "log": lambda msg: _logger.info(
-                "[connector.code][%s#%s] %s", self._name, self.id, msg
+                "[connector.code][%s] %s",
+                getattr(self, "_name", "connector.code.mixin"),
+                msg,
             ),
             "result": None,
-            '_import': _dynamic_import,
-            're': re,
-            'datetime': datetime,
-            'json': json,
-            'random': random,
-            'io': io,
-            'hashlib': hashlib,
-            'hmac': hmac,
-            'urllib': urllib,
-            'ast': ast,
-            'requests': requests,
-            'base64': base64,
-            'xmlrpc.client': xmlrpc.client,
-            'http.client': http.client,
-            'socket': socket,
-            'env': self.env,
-            'user': self.env.user,
+            "_import": _dynamic_import,
+            "_dynamic_import": _dynamic_import,
+            "callable": callable,
+            "RuntimeError": RuntimeError,
+            "ValueError": ValueError,
+            "TypeError": TypeError,
+            "ZeroDivisionError": ZeroDivisionError,
+            "AssertionError": AssertionError,
+            "re": re,
+            "datetime": datetime,
+            "dateutil": dateutil,
+            "json": json,
+            "math": math,
+            "random": random,
+            "io": io,
+            "hashlib": hashlib,
+            "hmac": hmac,
+            "urllib": urllib,
+            "ast": ast,
+            "base64": base64,
+            "xmlrpc": xmlrpc,
+            "http": http.client,
+            "user": self.env.user,
             "UserError": UserError,
             "ValidationError": ValidationError,
         }
-        ctx.update(self._get_python_eval_context())
         if extra_context:
             ctx.update(extra_context)
-        return ctx
+        return _prepare_safe_eval_context(ctx)
 
     def execute_code(self, extra_context=None, raise_on_error=True):
         """Execute the Python code stored in the `code` field using safe_eval.
@@ -138,7 +229,7 @@ class ConnectorCodeMixin(models.AbstractModel):
             "user_id": self.env.uid,
         }
         try:
-            safe_eval(self.code, eval_context, mode="exec", nocopy=True)
+            _execute_safe_eval(self.code, eval_context, mode="exec")
             result = eval_context.get("result")
             log_vals.update({
                 "state": "success",
@@ -159,4 +250,4 @@ class ConnectorCodeMixin(models.AbstractModel):
                 ) from e
             return None
         finally:
-            self.env["connector.code.execution.log"].sudo().create(log_vals)
+            self.env["connector.code.execution.log"].sudo().create(log_vals)  # sudo: audit logging of code execution

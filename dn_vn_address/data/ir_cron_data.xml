@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ir_cron_sync_addresses_v1" model="ir.cron">
+        <field name="name">Vietnam Address: Sync Administrative Units (v1)</field>
+        <field name="model_id" ref="base.model_res_country_state"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sync_addresses_v1()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

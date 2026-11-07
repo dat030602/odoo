@@ -12,15 +12,15 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class ConnectorEndpoint(models.Model):
-    """Represents a single REST API endpoint within a connector configuration.
+class ConnectorOutboundEndpoint(models.Model):
+    """Represents a single REST API outbound endpoint within a connector configuration.
 
     Each endpoint defines the HTTP method, path, target JSON path for data
     extraction, pagination strategy, and optionally a custom code snippet
     for building request payloads from Odoo records.
     """
 
-    _name = "connector.endpoint"
+    _name = "connector.outbound.endpoint"
     _description = "A specific REST API endpoint configuration"
     _inherit = ["connector.code.mixin"]
 
@@ -176,7 +176,7 @@ class ConnectorEndpoint(models.Model):
         """
         endpoints = self.search([("connector_id.active", "=", True)])
         for endpoint in endpoints:
-            sync_log = self.env["connector.sync.log"].sudo().create({
+            sync_log = self.env["connector.sync.log"].sudo().create({  # sudo: cron job sync execution logging
                 "endpoint_id": endpoint.id,
                 "state": "running",
                 "start_time": fields.Datetime.now(),

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_vn_address_nq60_connector_sync_trigger" model="ir.actions.server">
+        <field name="name">Trigger Open API v2 NQ60 Pull</field>
+        <field name="model_id" ref="model_vn_address_nq60_connector_sync"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_pull_and_enqueue_nq60_v2()</field>
+    </record>
+
+    <menuitem id="menu_vn_address_nq60_connector_sync"
+              name="Sync Address (Open API v2 NQ60)"
+              parent="dn_connector_base.menu_connector_configuration"
+              action="action_vn_address_nq60_connector_sync_trigger"
+              sequence="26"/>
+</odoo>

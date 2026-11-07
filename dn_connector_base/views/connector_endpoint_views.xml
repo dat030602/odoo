@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Connector Endpoint Views -->
-    <record id="view_connector_endpoint_form" model="ir.ui.view">
-        <field name="name">connector.endpoint.form</field>
-        <field name="model">connector.endpoint</field>
+    <!-- Connector Outbound Endpoint Views -->
+    <record id="view_connector_outbound_endpoint_form" model="ir.ui.view">
+        <field name="name">connector.outbound.endpoint.form</field>
+        <field name="model">connector.outbound.endpoint</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="button_sync" type="object" string="Sync Now"
+                            class="oe_highlight" invisible="use_custom_prepare_request == True"/>
+                        <button name="button_execute_from_record" type="object" string="Execute from Record"
+                            class="oe_highlight" invisible="use_custom_prepare_request == False"/>
+                    </div>
                     <group>
                         <field name="connector_id"/>
                         <field name="name"/>
@@ -28,20 +34,14 @@
                         <field name="use_custom_prepare_request"/>
                         <field name="code" invisible="use_custom_prepare_request == False"/>
                     </group>
-                    <div class="oe_button_box" name="button_box" string="Actions">
-                        <button name="button_sync" type="object" string="Sync Now"
-                            class="oe_highlight" invisible="use_custom_prepare_request == True"/>
-                        <button name="button_execute_from_record" type="object" string="Execute from Record"
-                            class="oe_highlight" invisible="use_custom_prepare_request == False"/>
-                    </div>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="view_connector_endpoint_list" model="ir.ui.view">
-        <field name="name">connector.endpoint.list</field>
-        <field name="model">connector.endpoint</field>
+    <record id="view_connector_outbound_endpoint_list" model="ir.ui.view">
+        <field name="name">connector.outbound.endpoint.list</field>
+        <field name="model">connector.outbound.endpoint</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
@@ -53,9 +53,9 @@
         </field>
     </record>
 
-    <record id="view_connector_endpoint_search" model="ir.ui.view">
-        <field name="name">connector.endpoint.search</field>
-        <field name="model">connector.endpoint</field>
+    <record id="view_connector_outbound_endpoint_search" model="ir.ui.view">
+        <field name="name">connector.outbound.endpoint.search</field>
+        <field name="model">connector.outbound.endpoint</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -65,8 +65,10 @@
         </field>
     </record>
 
-    <act_window id="action_connector_endpoint"
-        name="Connector Endpoints"
-        res_model="connector.endpoint"
-        view_mode="list,form"
-        domain="[('connector_id.active', '=', True)]"/>
+    <record id="action_connector_outbound_endpoint" model="ir.actions.act_window">
+        <field name="name">Connector Outbound Endpoints</field>
+        <field name="res_model">connector.outbound.endpoint</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('connector_id.active', '=', True)]</field>
+    </record>
+</odoo>

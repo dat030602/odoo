@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 340" width="100%" height="100%" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <linearGradient id="step1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+    <linearGradient id="step2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="step3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="step4Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <marker id="roadArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Title Banner -->
+  <rect x="25" y="15" width="1030" height="45" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="45" y="42" fill="#0f172a" font-size="16" font-weight="700">Inbound Gateway Implementation Roadmap</text>
+  <text x="440" y="42" fill="#64748b" font-size="13">4 Structured Steps from Framework Selection to Verified Real-Time Ingestion</text>
+
+  <!-- Step Connecting Road Line -->
+  <line x1="150" y1="95" x2="930" y2="95" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="6,6"/>
+
+  <!-- STEP 1 CARD -->
+  <g transform="translate(25, 75)">
+    <!-- Circle Badge -->
+    <circle cx="120" cy="20" r="18" fill="url(#step1Grad)"/>
+    <text x="114" y="25" fill="#ffffff" font-size="14" font-weight="700">1</text>
+    
+    <rect x="0" y="45" width="240" height="200" rx="10" fill="#ffffff" stroke="#0d9488" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="0" y="45" width="240" height="32" rx="10" fill="url(#step1Grad)"/>
+    <text x="15" y="66" fill="#ffffff" font-size="13" font-weight="700">STEP 1: Framework Presets</text>
+    
+    <text x="15" y="98" fill="#0f172a" font-size="11" font-weight="700">UI Breadcrumb:</text>
+    <text x="15" y="114" fill="#0d9488" font-size="10" font-weight="600">Connector → Config → Presets</text>
+    
+    <line x1="15" y1="124" x2="225" y2="124" stroke="#e2e8f0" stroke-width="1"/>
+    
+    <text x="15" y="142" fill="#334155" font-size="11">• Select Shopify, GitHub, Stripe</text>
+    <text x="15" y="160" fill="#334155" font-size="11">• Or create custom preset</text>
+    <text x="15" y="178" fill="#334155" font-size="11">• Define HMAC SHA256/1/512</text>
+    <text x="15" y="196" fill="#334155" font-size="11">• Configure Auth &amp; Idempotency</text>
+    <text x="15" y="214" fill="#334155" font-size="11">• Set default execution mode</text>
+    
+    <rect x="15" y="222" width="210" height="16" rx="4" fill="#ccfbf1"/>
+    <text x="25" y="234" fill="#0f766e" font-size="9" font-weight="700">RESULT: Cryptographic Template</text>
+  </g>
+
+  <!-- STEP 2 CARD -->
+  <g transform="translate(285, 75)">
+    <!-- Circle Badge -->
+    <circle cx="120" cy="20" r="18" fill="url(#step2Grad)"/>
+    <text x="114" y="25" fill="#ffffff" font-size="14" font-weight="700">2</text>
+    
+    <rect x="0" y="45" width="240" height="200" rx="10" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="0" y="45" width="240" height="32" rx="10" fill="url(#step2Grad)"/>
+    <text x="15" y="66" fill="#ffffff" font-size="13" font-weight="700">STEP 2: Inbound Endpoint</text>
+    
+    <text x="15" y="98" fill="#0f172a" font-size="11" font-weight="700">UI Breadcrumb:</text>
+    <text x="15" y="114" fill="#0369a1" font-size="10" font-weight="600">Connector → Gateway → Endpoints</text>
+    
+    <line x1="15" y1="124" x2="225" y2="124" stroke="#e2e8f0" stroke-width="1"/>
+    
+    <text x="15" y="142" fill="#334155" font-size="11">• Generate UUIDv4 secret token</text>
+    <text x="15" y="160" fill="#334155" font-size="11">• Copy computed Webhook URL</text>
+    <text x="15" y="178" fill="#334155" font-size="11">• IP allowlist (IPv4/v6, CIDR)</text>
+    <text x="15" y="196" fill="#334155" font-size="11">• Set max_backlog circuit breaker</text>
+    <text x="15" y="214" fill="#334155" font-size="11">• Choose Handler &amp; Ordering Key</text>
+    
+    <rect x="15" y="222" width="210" height="16" rx="4" fill="#e0f2fe"/>
+    <text x="25" y="234" fill="#0369a1" font-size="9" font-weight="700">RESULT: Active Listener URL</text>
+  </g>
+
+  <!-- STEP 3 CARD -->
+  <g transform="translate(545, 75)">
+    <!-- Circle Badge -->
+    <circle cx="120" cy="20" r="18" fill="url(#step3Grad)"/>
+    <text x="114" y="25" fill="#ffffff" font-size="14" font-weight="700">3</text>
+    
+    <rect x="0" y="45" width="240" height="200" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="0" y="45" width="240" height="32" rx="10" fill="url(#step3Grad)"/>
+    <text x="15" y="66" fill="#ffffff" font-size="13" font-weight="700">STEP 3: External Setup</text>
+    
+    <text x="15" y="98" fill="#0f172a" font-size="11" font-weight="700">External Platform:</text>
+    <text x="15" y="114" fill="#6d28d9" font-size="10" font-weight="600">Shopify / GitHub / Stripe / API</text>
+    
+    <line x1="15" y1="124" x2="225" y2="124" stroke="#e2e8f0" stroke-width="1"/>
+    
+    <text x="15" y="142" fill="#334155" font-size="11">• Paste /connector/in/&lt;token&gt;</text>
+    <text x="15" y="160" fill="#334155" font-size="11">• Set Payload format to JSON</text>
+    <text x="15" y="178" fill="#334155" font-size="11">• Select desired event topics</text>
+    <text x="15" y="196" fill="#334155" font-size="11">• Copy platform Signing Secret</text>
+    <text x="15" y="214" fill="#334155" font-size="11">• Paste Secret into Odoo Endpoint</text>
+    
+    <rect x="15" y="222" width="210" height="16" rx="4" fill="#f3e8ff"/>
+    <text x="25" y="234" fill="#6d28d9" font-size="9" font-weight="700">RESULT: End-to-End Pipe Bound</text>
+  </g>
+
+  <!-- STEP 4 CARD -->
+  <g transform="translate(805, 75)">
+    <!-- Circle Badge -->
+    <circle cx="120" cy="20" r="18" fill="url(#step4Grad)"/>
+    <text x="114" y="25" fill="#ffffff" font-size="14" font-weight="700">4</text>
+    
+    <rect x="0" y="45" width="250" height="200" rx="10" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" filter="url(#cardShadow)"/>
+    <rect x="0" y="45" width="250" height="32" rx="10" fill="url(#step4Grad)"/>
+    <text x="15" y="66" fill="#ffffff" font-size="13" font-weight="700">STEP 4: Live Verification</text>
+    
+    <text x="15" y="98" fill="#0f172a" font-size="11" font-weight="700">UI Breadcrumb:</text>
+    <text x="15" y="114" fill="#15803d" font-size="10" font-weight="600">Connector → Gateway → Inbox</text>
+    
+    <line x1="15" y1="124" x2="235" y2="124" stroke="#e2e8f0" stroke-width="1"/>
+    
+    <text x="15" y="142" fill="#334155" font-size="11">• Send test ping from platform</text>
+    <text x="15" y="160" fill="#334155" font-size="11">• Verify HTTP 200/202 status</text>
+    <text x="15" y="178" fill="#334155" font-size="11">• Check signature_ok = True</text>
+    <text x="15" y="196" fill="#334155" font-size="11">• Watch queued → done transition</text>
+    <text x="15" y="214" fill="#334155" font-size="11">• Confirm zero data loss in audit</text>
+    
+    <rect x="15" y="222" width="220" height="16" rx="4" fill="#dcfce7"/>
+    <text x="25" y="234" fill="#15803d" font-size="9" font-weight="700">RESULT: Production Active</text>
+  </g>
+</svg>

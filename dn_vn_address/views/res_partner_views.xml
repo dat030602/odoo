@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Partner Form View -->
+    <record id="view_partner_form_inherit_dn_vn" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.dn.vn</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='state_id']" position="after">
+                <field name="district_id" placeholder="District..." class="o_address_state"
+                       domain="[('state_id', '=?', state_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+                <field name="ward_id" placeholder="Ward..." class="o_address_state"
+                       domain="[('district_id', '=?', district_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form//div[hasclass('o_address_format')]/field[@name='state_id']" position="after">
+                <field name="district_id" placeholder="District..." class="o_address_state"
+                       domain="[('state_id', '=?', state_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+                <field name="ward_id" placeholder="Ward..." class="o_address_state"
+                       domain="[('district_id', '=?', district_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Partner Address (Modal Quick) Form View -->
+    <record id="view_partner_address_form_inherit_dn_vn" model="ir.ui.view">
+        <field name="name">res.partner.address.form.inherit.dn.vn</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_address_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='state_id']" position="after">
+                <field name="district_id" placeholder="District..." class="o_address_state"
+                       domain="[('state_id', '=?', state_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+                <field name="ward_id" placeholder="Ward..." class="o_address_state"
+                       domain="[('district_id', '=?', district_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Partner List View -->
+    <record id="view_partner_tree_inherit_dn_vn" model="ir.ui.view">
+        <field name="name">res.partner.list.inherit.dn.vn</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="full_address_vi" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Partner Search View -->
+    <record id="view_res_partner_filter_inherit_dn_vn" model="ir.ui.view">
+        <field name="name">res.partner.select.inherit.dn.vn</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="district_id"/>
+                <field name="ward_id"/>
+            </xpath>
+            <xpath expr="//filter[@name='group_country']" position="after">
+                <filter string="District" name="group_district" context="{'group_by': 'district_id'}"/>
+                <filter string="Ward" name="group_ward" context="{'group_by': 'ward_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

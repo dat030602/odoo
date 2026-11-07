@@ -36,10 +36,7 @@ class ConnectorModelMapping(models.Model):
         help="The generated Odoo model name for this child.",
     )
 
-    _sql_constraints = [
-        (
-            "parent_json_path_unique",
-            "unique(parent_signature_id, json_path_key)",
-            "Each JSON path key must be unique per parent signature.",
-        ),
-    ]
+    _parent_json_path_unique = models.Constraint(
+        "unique(parent_signature_id, json_path_key)",
+        "Each JSON path key must be unique per parent signature.",
+    )

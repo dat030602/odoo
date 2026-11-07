@@ -22,7 +22,6 @@ Features:
 
     # Author and website (required by App Store)
     'author': 'Dat Nguyen',
-    'website': 'https://www.datnguyen.dev',
 
     # Module category on Odoo Store
     'category': 'Tools',

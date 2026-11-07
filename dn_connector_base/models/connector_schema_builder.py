@@ -30,15 +30,24 @@ class ConnectorSchemaBuilder(models.AbstractModel):
         :param discovered: A dict with 'models', 'fields', and 'relations' lists.
         """
         model_cache = {}
-        for m in discovered["models"]:
+        for m in discovered.get("models", []):
             model_cache[m["name"]] = self._get_or_create_model(m["name"])
 
-        for f in discovered["fields"]:
-            self._get_or_create_field(model_cache[f["model"]], f["name"], f["type"])
+        for f in discovered.get("fields", []):
+            m_name = f["model"]
+            if m_name not in model_cache:
+                model_cache[m_name] = self._get_or_create_model(m_name)
+            self._get_or_create_field(model_cache[m_name], f["name"], f["type"])
 
-        for r in discovered["relations"]:
+        for r in discovered.get("relations", []):
+            parent_name = r["parent"]
+            child_name = r["child"]
+            if parent_name not in model_cache:
+                model_cache[parent_name] = self._get_or_create_model(parent_name)
+            if child_name not in model_cache:
+                model_cache[child_name] = self._get_or_create_model(child_name)
             self._get_or_create_relation(
-                model_cache[r["parent"]], model_cache[r["child"]], r["type"]
+                model_cache[parent_name], model_cache[child_name], r["type"]
             )
 
         self._generate_views(model_cache)
@@ -53,7 +62,7 @@ class ConnectorSchemaBuilder(models.AbstractModel):
         :param name: The model name (e.g., 'x_shopify_order').
         :return: The ir.model record for the created or existing model.
         """
-        IrModel = self.env["ir.model"].sudo()
+        IrModel = self.env["ir.model"].sudo()  # sudo: dynamic model creation
         existing = IrModel.search([("model", "=", name)], limit=1)
         if existing:
             return existing
@@ -62,7 +71,7 @@ class ConnectorSchemaBuilder(models.AbstractModel):
             "model": name,
             "state": "manual",
         })
-        self.env["ir.model.fields"].sudo().create([
+        self.env["ir.model.fields"].sudo().create([  # sudo: dynamic field creation
             {
                 "model_id": model.id,
                 "name": "x_payload",
@@ -86,12 +95,14 @@ class ConnectorSchemaBuilder(models.AbstractModel):
 
         :param model: The ir.model record to create access rights for.
         """
-        self.env["ir.model.access"].sudo().create({
+        group_dev = self.env.ref("dn_connector_base.group_connector_developer", raise_if_not_found=False)
+        if not group_dev:
+            group_dev = self.env.ref("base.group_system")
+
+        self.env["ir.model.access"].sudo().create({  # sudo: dynamic ACL grant for generated model
             "name": f"access_{model.model}_connector",
             "model_id": model.id,
-            "group_id": self.env.ref(
-                "connector_base.group_connector_developer"
-            ).id,
+            "group_id": group_dev.id,
             "perm_read": 1,
             "perm_write": 1,
             "perm_create": 1,
@@ -109,7 +120,7 @@ class ConnectorSchemaBuilder(models.AbstractModel):
         :param ttype: The field type (always 'text' in this framework).
         :return: The ir.model.fields record.
         """
-        IrField = self.env["ir.model.fields"].sudo()
+        IrField = self.env["ir.model.fields"].sudo()  # sudo: dynamic field creation and query
         existing = IrField.search([
             ("model_id", "=", model.id),
             ("name", "=", name),
@@ -133,7 +144,7 @@ class ConnectorSchemaBuilder(models.AbstractModel):
         :param child_model: The ir.model record for the child model.
         :param rel_type: The relation type (currently only 'one2many' supported).
         """
-        IrField = self.env["ir.model.fields"].sudo()
+        IrField = self.env["ir.model.fields"].sudo()  # sudo: dynamic relational field creation
         m2o_name = f"x_{parent_model.model}_id"
         if not IrField.search([
             ("model_id", "=", child_model.id),
@@ -178,7 +189,7 @@ class ConnectorSchemaBuilder(models.AbstractModel):
 
         :param model: The ir.model record to generate a list view for.
         """
-        fields_ = self.env["ir.model.fields"].sudo().search([
+        fields_ = self.env["ir.model.fields"].sudo().search([  # sudo: inspect model fields for view generation
             ("model_id", "=", model.id),
             ("ttype", "!=", "one2many"),
         ])
@@ -199,11 +210,11 @@ class ConnectorSchemaBuilder(models.AbstractModel):
 
         :param model: The ir.model record to generate a form view for.
         """
-        own_fields = self.env["ir.model.fields"].sudo().search([
+        own_fields = self.env["ir.model.fields"].sudo().search([  # sudo: inspect non-relational fields for view generation
             ("model_id", "=", model.id),
             ("ttype", "not in", ["one2many"]),
         ])
-        child_o2m = self.env["ir.model.fields"].sudo().search([
+        child_o2m = self.env["ir.model.fields"].sudo().search([  # sudo: inspect one2many fields for notebook pages
             ("model_id", "=", model.id),
             ("ttype", "=", "one2many"),
         ])
@@ -230,7 +241,7 @@ class ConnectorSchemaBuilder(models.AbstractModel):
         :param view_type: The view type ('list' or 'form').
         :param arch: The view architecture XML string.
         """
-        IrUiView = self.env["ir.ui.view"].sudo()
+        IrUiView = self.env["ir.ui.view"].sudo()  # sudo: dynamic view creation and update
         existing = IrUiView.search([
             ("model", "=", model.model),
             ("type", "=", view_type),

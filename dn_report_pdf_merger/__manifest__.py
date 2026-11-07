@@ -17,7 +17,6 @@ Features:
 - Clean separation of concerns with a dedicated line model
 """,
     'author': 'DN Solutions',
-    'website': 'https://www.dnsolutions.com',
     'license': 'LGPL-3',
     'depends': ['base', 'web'],
     'data': [

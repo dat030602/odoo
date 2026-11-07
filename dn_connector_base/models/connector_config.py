@@ -111,7 +111,7 @@ class ConnectorConfig(models.Model):
         help="JSON dict of default headers, e.g. {\"Content-Type\": \"application/json\"}.",
     )
     endpoint_ids = fields.One2many(
-        "connector.endpoint",
+        "connector.outbound.endpoint",
         "connector_id",
         string="Endpoints",
         help="List of endpoints associated with this connector.",
@@ -175,7 +175,7 @@ class ConnectorConfig(models.Model):
         )
         resp.raise_for_status()
         data = resp.json()
-        self.sudo().write({
+        self.sudo().write({  # sudo: update OAuth tokens without requiring admin write permissions
             "oauth_access_token": data["access_token"],
             "oauth_refresh_token": data.get(
                 "refresh_token", self.oauth_refresh_token

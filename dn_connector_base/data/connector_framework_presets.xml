@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="preset_framework_shopify" model="connector.framework">
+        <field name="name">Shopify</field>
+        <field name="code">shopify</field>
+        <field name="auth_type">hmac</field>
+        <field name="hmac_algo">sha256</field>
+        <field name="hmac_encoding">base64</field>
+        <field name="auth_header">X-Shopify-Hmac-Sha256</field>
+        <field name="event_type_header">X-Shopify-Topic</field>
+        <field name="idempotency_header">X-Shopify-Webhook-Id</field>
+        <field name="default_execution_mode">deferred</field>
+        <field name="description">Pre-configured preset for Shopify webhook events using HMAC-SHA256 Base64 signatures.</field>
+    </record>
+
+    <record id="preset_framework_github" model="connector.framework">
+        <field name="name">GitHub</field>
+        <field name="code">github</field>
+        <field name="auth_type">hmac</field>
+        <field name="hmac_algo">sha256</field>
+        <field name="hmac_encoding">hex</field>
+        <field name="hmac_prefix">sha256=</field>
+        <field name="auth_header">X-Hub-Signature-256</field>
+        <field name="event_type_header">X-GitHub-Event</field>
+        <field name="idempotency_header">X-GitHub-Delivery</field>
+        <field name="default_execution_mode">deferred</field>
+        <field name="description">Pre-configured preset for GitHub webhook notifications with sha256= prefix.</field>
+    </record>
+
+    <record id="preset_framework_stripe" model="connector.framework">
+        <field name="name">Stripe</field>
+        <field name="code">stripe</field>
+        <field name="auth_type">hmac</field>
+        <field name="hmac_algo">sha256</field>
+        <field name="hmac_encoding">hex</field>
+        <field name="signature_template">t={timestamp},v1={signature}</field>
+        <field name="auth_header">Stripe-Signature</field>
+        <field name="event_type_json_path">type</field>
+        <field name="idempotency_json_path">id</field>
+        <field name="default_execution_mode">deferred</field>
+        <field name="description">Pre-configured preset for Stripe webhooks with timestamped HMAC verification.</field>
+    </record>
+
+    <record id="preset_framework_generic" model="connector.framework">
+        <field name="name">Generic Webhook / REST</field>
+        <field name="code">generic</field>
+        <field name="auth_type">none</field>
+        <field name="default_execution_mode">deferred</field>
+        <field name="description">General-purpose REST webhook endpoint with asynchronous inbox queue.</field>
+    </record>
+</odoo>

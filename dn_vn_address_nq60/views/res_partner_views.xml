@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Partner Form View Extension for NQ60 -->
+    <record id="view_partner_form_inherit_nq60" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.nq60</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="dn_vn_address.view_partner_form_inherit_dn_vn"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='district_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form//div[hasclass('o_address_format')]/field[@name='district_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Partner Address (Modal Quick) Form View Extension for NQ60 -->
+    <record id="view_partner_address_form_inherit_nq60" model="ir.ui.view">
+        <field name="name">res.partner.address.form.inherit.nq60</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="dn_vn_address.view_partner_address_form_inherit_dn_vn"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='district_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

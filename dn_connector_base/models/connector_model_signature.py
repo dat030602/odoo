@@ -24,7 +24,7 @@ class ConnectorModelSignature(models.Model):
     _inherit = ["connector.code.mixin"]
 
     endpoint_id = fields.Many2one(
-        "connector.endpoint",
+        "connector.outbound.endpoint",
         string="Endpoint",
         ondelete="cascade",
         help="The endpoint this signature belongs to.",
@@ -99,7 +99,7 @@ class ConnectorModelSignature(models.Model):
         :param raw_json: The raw JSON response (as a dict).
         :return: A dict with 'models', 'fields', and 'relations' lists.
         """
-        discovered = {"models": [], "fields": [], "relations": []}
+        discovered = {"models": [{"name": self.target_model_name}], "fields": [], "relations": []}
         self._walk_json(raw_json, self.target_model_name, discovered)
         return discovered
 

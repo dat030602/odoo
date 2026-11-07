@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <!-- Real NQ60 Consolidated Wards -->
+    <record id="ward_real_nq60_ba_dinh" model="res.country.ward">
+        <field name="name">Phường Ba Đình</field>
+        <field name="code">4</field>
+        <field name="state_id" ref="base.state_vn_VN-HN"/>
+        <field name="is_new" eval="True"/>
+        <field name="name_extension">phuong_ba_dinh</field>
+        <field name="map_with_ward_ids" eval="[(4, ref('dn_vn_address_connector.ward_real_phuc_xa'))]"/>
+    </record>
+
+    <record id="ward_real_nq60_hai_chau" model="res.country.ward">
+        <field name="name">Phường Hải Châu</field>
+        <field name="code">20227</field>
+        <field name="state_id" ref="base.state_vn_VN-DN"/>
+        <field name="is_new" eval="True"/>
+        <field name="name_extension">phuong_hai_chau</field>
+    </record>
+
+    <record id="ward_real_nq60_ben_nghe" model="res.country.ward">
+        <field name="name">Phường Bến Nghé</field>
+        <field name="code">26734</field>
+        <field name="state_id" ref="base.state_vn_VN-SG"/>
+        <field name="is_new" eval="True"/>
+        <field name="name_extension">phuong_ben_nghe</field>
+    </record>
+
+    <!-- Real Seed Connector Message for NQ60 -->
+    <record id="msg_seed_v2" model="connector.inbound.message">
+        <field name="endpoint_id" ref="endpoint_vn_address_v2"/>
+        <field name="event_type">seed_real_address_nq60_v2</field>
+        <field name="state">done</field>
+        <field name="body_raw">{"seeded": true, "provinces": 34, "wards": 3321, "nq60": true}</field>
+    </record>
+</odoo>

@@ -34,7 +34,6 @@ This feature helps prevent forgotten attachments and improves communication effi
 through a flexible, configurable system.
     """,
     'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
     'license': 'LGPL-3',
     'depends': ['mail'],
     'data': [

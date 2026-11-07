@@ -20,7 +20,6 @@ Features:
     """,
     # Author and website (required by App Store)
     'author': 'Dat Nguyen',
-    'website': 'https://www.datnguyen.dev',
     # Module category on Odoo Store (Tools / Miscellaneous recommended for utility modules)
     'category': 'Tools',
     # Version format: [Odoo version].[module version] (19.0 -> Odoo 19)

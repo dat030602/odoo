@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_connector_framework_form" model="ir.ui.view">
+        <field name="name">connector.framework.form</field>
+        <field name="model">connector.framework</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_endpoints"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-plug">
+                            <field name="endpoint_count" widget="statinfo" string="Endpoints"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="default_execution_mode"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Authentication" name="auth_config">
+                            <group>
+                                <field name="auth_type"/>
+                                <field name="auth_header" invisible="auth_type == 'none'"/>
+                            </group>
+                            <group string="HMAC Configuration" invisible="auth_type != 'hmac'">
+                                <field name="hmac_algo"/>
+                                <field name="hmac_encoding"/>
+                                <field name="hmac_prefix"/>
+                                <field name="signature_template"/>
+                            </group>
+                        </page>
+                        <page string="Event Routing" name="event_routing">
+                            <group>
+                                <group string="Event Type">
+                                    <field name="event_type_header"/>
+                                    <field name="event_type_json_path"/>
+                                </group>
+                                <group string="Idempotency">
+                                    <field name="idempotency_header"/>
+                                    <field name="idempotency_json_path"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Technical documentation and webhook setup guide..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_connector_framework_list" model="ir.ui.view">
+        <field name="name">connector.framework.list</field>
+        <field name="model">connector.framework</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="auth_type"/>
+                <field name="default_execution_mode"/>
+                <field name="endpoint_count"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_connector_framework_search" model="ir.ui.view">
+        <field name="name">connector.framework.search</field>
+        <field name="model">connector.framework</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="auth_type"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_connector_framework" model="ir.actions.act_window">
+        <field name="name">Framework Presets</field>
+        <field name="res_model">connector.framework</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

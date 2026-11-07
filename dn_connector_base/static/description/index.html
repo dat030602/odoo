@@ -1,110 +1,722 @@
-<section class="oe_container">
-    <div class="row align-items-center" style="background-color:#017E84; border:1px solid #dfe8f3; border-radius:18px; padding:32px 28px; box-sizing:border-box;">
-        <div class="col-12 col-lg-7" style="padding-right:18px;">
-            <p style="margin:0 0 10px; font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:#ffffff;">Hidden &gt; Universal REST Connector Base</p>
-            <h1 style="color:#ffffff; font-size:30px; font-weight:800; line-height:1.2; margin:0 0 12px;">Universal REST Connector Base</h1>
-            <p style="color:#e8f0f2; font-size:15px; line-height:1.7; margin:0 0 18px;">
-                Universal REST Connector Framework for Odoo - Raw Data First, Business Later
+<!-- ==============================================================================
+     Odoo 19 Universal REST Connector Base - App Store Showcase
+     Module: dn_connector_base
+     Author: MJB Solutions & Tech Team
+     Compliance: 100% Odoo 19 Community & Enterprise, Python 3.12
+============================================================================== -->
+
+<style>
+    .dn-connector-showcase {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #1e293b !important;
+        background-color: #f8fafc !important;
+        line-height: 1.6 !important;
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        clear: both !important;
+        padding: 12px !important;
+    }
+    .dn-connector-showcase * {
+        box-sizing: border-box !important;
+    }
+    .dn-connector-showcase .hero-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #017e84 100%) !important;
+        color: #ffffff !important;
+        border-radius: 20px !important;
+        padding: 44px 32px !important;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2) !important;
+        position: relative !important;
+        overflow: hidden !important;
+        clear: both !important;
+        margin-bottom: 24px !important;
+    }
+    .dn-connector-showcase .hero-banner h1,
+    .dn-connector-showcase .hero-banner h2,
+    .dn-connector-showcase .hero-banner h3,
+    .dn-connector-showcase .hero-banner h4,
+    .dn-connector-showcase .hero-banner p,
+    .dn-connector-showcase .hero-banner span,
+    .dn-connector-showcase .hero-banner strong {
+        color: #ffffff !important;
+    }
+    .dn-connector-showcase .hero-banner p.hero-subtitle {
+        color: #cbd5e1 !important;
+        font-size: 15px !important;
+        line-height: 1.7 !important;
+        margin-bottom: 24px !important;
+        max-width: 700px !important;
+    }
+    .dn-connector-showcase .badge-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+        padding: 6px 14px !important;
+        border-radius: 9999px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        margin: 4px !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+    .dn-connector-showcase .badge-pill i {
+        margin-right: 6px !important;
+        color: #5eead4 !important;
+    }
+    .dn-connector-showcase .metric-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        padding: 20px 16px !important;
+        text-align: center !important;
+        height: 100% !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04) !important;
+    }
+    .dn-connector-showcase .showcase-card {
+        clear: both !important;
+        display: block !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        padding: 24px !important;
+        margin-bottom: 28px !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04) !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    .dn-connector-showcase .showcase-header {
+        border-bottom: 1px solid #f1f5f9 !important;
+        padding-bottom: 14px !important;
+        margin-bottom: 20px !important;
+        clear: both !important;
+    }
+    .dn-connector-showcase .showcase-body {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 24px !important;
+        align-items: flex-start !important;
+        box-sizing: border-box !important;
+        clear: both !important;
+    }
+    .dn-connector-showcase .showcase-content {
+        flex: 1 1 340px !important;
+        min-width: 280px !important;
+        box-sizing: border-box !important;
+    }
+    .dn-connector-showcase .showcase-visual {
+        flex: 1 1 480px !important;
+        min-width: 300px !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .dn-connector-showcase .screenshot-container {
+        overflow: hidden !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        background: #ffffff !important;
+        padding: 10px !important;
+        border-radius: 12px !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06) !important;
+        margin: 0 !important;
+    }
+    .dn-connector-showcase .screenshot-img {
+        max-width: 100% !important;
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        box-sizing: border-box !important;
+        border-radius: 8px !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+    .dn-connector-showcase .screenshot-caption {
+        font-size: 12px !important;
+        color: #64748b !important;
+        text-align: center !important;
+        margin-top: 8px !important;
+        line-height: 1.4 !important;
+    }
+    .dn-connector-showcase .code-block {
+        background: #0f172a !important;
+        color: #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 16px !important;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+        overflow-x: auto !important;
+        box-sizing: border-box !important;
+    }
+    .dn-connector-showcase .code-keyword { color: #f43f5e !important; font-weight: bold !important; }
+    .dn-connector-showcase .code-func { color: #38bdf8 !important; }
+    .dn-connector-showcase .code-string { color: #4ade80 !important; }
+    .dn-connector-showcase .code-comment { color: #64748b !important; font-style: italic !important; }
+    .dn-connector-showcase .icon-box {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 20px !important;
+        margin-bottom: 12px !important;
+    }
+    .dn-connector-showcase .icon-teal { background: #ccfbf1 !important; color: #0f766e !important; }
+    .dn-connector-showcase .icon-purple { background: #ede9fe !important; color: #6d28d9 !important; }
+    .dn-connector-showcase .icon-blue { background: #dbeafe !important; color: #1d4ed8 !important; }
+    .dn-connector-showcase .icon-amber { background: #fef3c7 !important; color: #b45309 !important; }
+    .dn-connector-showcase .icon-rose { background: #ffe4e6 !important; color: #be123c !important; }
+    .dn-connector-showcase .table-custom {
+        width: 100% !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        border: 1px solid #e2e8f0 !important;
+        margin: 0 !important;
+    }
+    .dn-connector-showcase .table-custom th {
+        background: #f1f5f9 !important;
+        color: #334155 !important;
+        font-weight: 700 !important;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+    .dn-connector-showcase .table-custom td {
+        background: #ffffff !important;
+        padding: 10px 14px !important;
+        border-top: 1px solid #e2e8f0 !important;
+        font-size: 13px !important;
+        color: #475569 !important;
+    }
+</style>
+
+<div class="dn-connector-showcase p-2" style="background-color: #ffffff;">
+    <!-- ================= 1. HERO BANNER ================= -->
+    <section class="hero-banner">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-8">
+                <div class="mb-3">
+                    <span class="badge-pill"><i class="fa fa-bolt"></i> Odoo 19 Ready</span>
+                    <span class="badge-pill"><i class="fa fa-shield"></i> Enterprise Grade Security</span>
+                    <span class="badge-pill"><i class="fa fa-database"></i> Zero Registry Freeze</span>
+                    <span class="badge-pill"><i class="fa fa-clock-o"></i> Sub-50ms Fast Ack</span>
+                </div>
+                <h1 style="font-size: 32px; font-weight: 800; line-height: 1.25; margin-bottom: 14px;color: #0f766e !important;">
+                    Universal REST Connector Base &amp; High-Throughput Inbound Gateway
+                </h1>
+                <p class="hero-subtitle">
+                    The ultimate integration foundation for Odoo 19. Architectural philosophy: 
+                    <strong style="color: #5eead4 !important;">"Raw Data First, Business Later"</strong>. 
+                    Decouple high-velocity webhooks, cryptographic HMAC validation, transactional inbox queues, and outbound REST polling from business models.
+                </p>
+                <div>
+                    <a href="#dual-engine" class="btn btn-primary" style="background-color: #0f766e !important; border-color: #0f766e !important; border-radius: 10px; font-weight: 700; padding: 10px 22px; margin-right: 10px; color: #ffffff !important;">
+                        <i class="fa fa-sitemap"></i> Explore Dual Engine
+                    </a>
+                    <a href="#showcase-tour" class="btn btn-outline-light" style="border-radius: 10px; font-weight: 600; padding: 10px 22px; color: #ffffff !important; border-color: #ffffff !important;">
+                        <i class="fa fa-desktop"></i> View UI Showcase
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4 text-center mt-4 mt-lg-0">
+                <img src="logo.svg" alt="Connector Base Logo" style="max-width: 200px !important; width: 100% !important; height: auto !important; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3)); display: inline-block;"/>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 2. KEY METRICS ================= -->
+    <section class="mb-4" style="clear: both;">
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <div style="font-size: 26px; font-weight: 800; color: #0f766e;">&lt; 50 ms</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">Instant Ack Latency</div>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0;">Zero webhook caller timeouts</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <div style="font-size: 26px; font-weight: 800; color: #714b67;">100%</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">Zero Data Loss</div>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0;">Transactional Inbox persistence</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <div style="font-size: 26px; font-weight: 800; color: #2563eb;">Multi-Worker</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">Concurrency Safe</div>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0;">SKIP LOCKED queue processor</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <div style="font-size: 26px; font-weight: 800; color: #e11d48;">Python 3.12</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">AST Safe Eval</div>
+                    <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0;">Dynamic import sandbox</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 3. DUAL-ENGINE ARCHITECTURE ================= -->
+    <section class="mb-5" id="dual-engine" style="clear: both;">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 26px; font-weight: 800; color: #0f172a;">Dual-Engine Integration Framework</h2>
+            <p style="font-size: 14px; color: #64748b; max-width: 650px; margin: 0 auto;">
+                Unifies high-frequency incoming webhooks and scheduled outbound REST polling into a single, cohesive Odoo architectural layer.
             </p>
-            <div style="margin:0 0 18px;">
-                <span style="display:inline-block; border:1px solid #d7e1ec; background:#ffffff; color:#fff; padding:5px 12px; border-radius:999px; font-size:11px; font-weight:600; margin:3px 4px 3px 0;">Enhances Odoo functionality</span>
-                <span style="display:inline-block; border:1px solid #d7e1ec; background:#ffffff; color:#fff; padding:5px 12px; border-radius:999px; font-size:11px; font-weight:600; margin:3px 4px 3px 0;">Easy to configure and</span>
-                <span style="display:inline-block; border:1px solid #d7e1ec; background:#ffffff; color:#fff; padding:5px 12px; border-radius:999px; font-size:11px; font-weight:600; margin:3px 4px 3px 0;">Seamless integration</span>
-
+        </div>
+        <div class="row g-4">
+            <!-- Left Engine: Inbound -->
+            <div class="col-12 col-md-6">
+                <div class="showcase-card" style="border-top: 4px solid #0f766e !important; height: 100%;">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-box icon-teal me-3"><i class="fa fa-cloud-download"></i></div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: #0f172a;">Engine 1: Inbound API Gateway</h3>
+                            <span style="font-size: 12px; color: #0f766e; font-weight: 600;">High-Speed Asynchronous Webhooks</span>
+                        </div>
+                    </div>
+                    <ul style="padding-left: 20px; font-size: 13px; color: #475569; margin-bottom: 16px;">
+                        <li class="mb-2"><strong>Fast HTTP Ingest:</strong> Dedicated <code>/connector/in/&lt;token&gt;</code> route returning 202 Ack in under 50ms.</li>
+                        <li class="mb-2"><strong>Cryptographic Security:</strong> HMAC-SHA256, HMAC-SHA1, HMAC-SHA512 (Hex &amp; Base64), Static Bearer &amp; Basic Auth.</li>
+                        <li class="mb-2"><strong>Transactional Inbox:</strong> Prevents data loss; persists raw JSON payload &amp; headers prior to execution.</li>
+                        <li class="mb-2"><strong>Idempotent Deduplication:</strong> Unique database constraint on <code>(endpoint_id, idempotency_key)</code> prevents duplicate records.</li>
+                        <li class="mb-2"><strong>Circuit Breaker:</strong> Rejects excess backlog with HTTP 429 and <code>Retry-After: 30</code> header under burst loads.</li>
+                    </ul>
+                    <div style="background: #f0fdfa; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #0f766e;">
+                        <i class="fa fa-check-circle"></i> Ideal for Shopify, GitHub, Stripe, TikTok Shop, WooCommerce webhooks.
+                    </div>
+                </div>
             </div>
-            <p style="font-size:12px; color:#e8f0f2; margin:0;">
-                Compatible with Odoo 19 Community & Enterprise.
+
+            <!-- Right Engine: Outbound -->
+            <div class="col-12 col-md-6">
+                <div class="showcase-card" style="border-top: 4px solid #714b67 !important; height: 100%;">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="icon-box icon-purple me-3"><i class="fa fa-cloud-upload"></i></div>
+                        <div>
+                            <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: #0f172a;">Engine 2: Outbound REST Poller</h3>
+                            <span style="font-size: 12px; color: #714b67; font-weight: 600;">Automated Schema Discovery &amp; Sync</span>
+                        </div>
+                    </div>
+                    <ul style="padding-left: 20px; font-size: 13px; color: #475569; margin-bottom: 16px;">
+                        <li class="mb-2"><strong>Zero Registry Freeze:</strong> Dynamically provisions models, fields, and views without restart cycles.</li>
+                        <li class="mb-2"><strong>Multi-Scheme Auth:</strong> Bearer Token, API Key header, HTTP Basic, and OAuth2 with automated refresh.</li>
+                        <li class="mb-2"><strong>Universal Pagination:</strong> Supports Page Numbers, Offset/Limit, and Cursor-based token pagination.</li>
+                        <li class="mb-2"><strong>Dynamic Schema Builder:</strong> Analyzes raw JSON responses, generating relational models and <code>&lt;list&gt;</code> views.</li>
+                        <li class="mb-2"><strong>Delta Sync Engine:</strong> Incremental updates using external IDs with missing attribute logging.</li>
+                    </ul>
+                    <div style="background: #faf5ff; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #6d28d9;">
+                        <i class="fa fa-check-circle"></i> Ideal for Open API v1/v2, ERP sync, CRM contacts, inventory pull.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 4. REAL SCREENSHOT SHOWCASE TOUR ================= -->
+    <section class="mb-5" id="showcase-tour" style="clear: both;">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 26px; font-weight: 800; color: #0f172a;">Visual Product Showcase</h2>
+            <p style="font-size: 14px; color: #64748b; max-width: 650px; margin: 0 auto;">
+                Authentic, high-resolution user interface captures from Odoo 19 Enterprise running <code>dn_connector_base</code>.
             </p>
         </div>
-        <div class="col-12 col-lg-5" style="text-align:center; padding-top:10px;">
-            <img src="logo.svg" alt="Universal REST Connector Base - Logo" style="max-width:240px; width:100%; height:auto; display:inline-block;"/>
-        </div>
-    </div>
-</section>
 
-<!-- ================= KEY FEATURES ================= -->
-<section class="oe_container mt-4">
-    <div class="row" style="padding:10px 0;">
-        <div class="col-12 text-center mb-4">
-            <h2 style="color:#21325d; font-size:24px; font-weight:800; margin:0;">Key Features</h2>
-            <p style="color:#5b677a; font-size:14px; line-height:1.7; margin:8px 0 0;">Everything you need to boost your productivity.</p>
-        </div>
-        <div class="col-12 col-md-4" style="margin-bottom:16px;">
-            <div style="background:#ffffff; border:1px solid #e6edf5; box-shadow:0 1px 0 rgba(17, 24, 39, 0.02); border-radius:16px; padding:22px 20px; height:100%; box-sizing:border-box; text-align:center;">
-                <div style="width:60px; height:60px; margin:0 auto 12px; background:#f0f4f8; border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                    <i class="fa fa-check-circle fa-2x" style="color:#017E84;"></i>
-                </div>
-                <h3 style="color:#21325d; font-size:16px; font-weight:800; line-height:1.3; margin:0 0 8px;">Enhances Odoo functionality</h3>
-                <p style="margin:0; color:#5b677a; font-size:14px; line-height:1.7;">Enhances Odoo functionality</p>
+        <!-- Showcase 1: Inbound Endpoints -->
+        <div class="showcase-card">
+            <div class="showcase-header">
+                <span class="badge" style="background:#ccfbf1; color:#0f766e; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">ENDPOINT CONFIGURATION</span>
+                <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 8px 0 4px 0;">
+                    Inbound Endpoints &amp; Cryptographic Routing
+                </h3>
+                <p style="font-size: 13px; color: #64748b; margin: 0;">
+                    Each endpoint features a unique cryptographic UUID token, automatically computing the full webhook URL for external integrations.
+                </p>
             </div>
-        </div>
-        <div class="col-12 col-md-4" style="margin-bottom:16px;">
-            <div style="background:#ffffff; border:1px solid #e6edf5; box-shadow:0 1px 0 rgba(17, 24, 39, 0.02); border-radius:16px; padding:22px 20px; height:100%; box-sizing:border-box; text-align:center;">
-                <div style="width:60px; height:60px; margin:0 auto 12px; background:#fff0f5; border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                    <i class="fa fa-star fa-2x" style="color:#ff6b86;"></i>
+            <div class="showcase-body">
+                <div class="showcase-content">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Flexible Handlers:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Store-Only audit archive, Raw Dynamic Staging models, Server Actions, or sandboxed Python Safe Eval.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Execution Modes:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Deferred mode (Inbox queue) for burst traffic protection, or Immediate mode for synchronous direct response.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Security Guard:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">HTTP Method guard (POST/PUT), IP allowlist (IPv4/IPv6 CIDR subnets), and encrypted shared secrets.</p>
+                        </div>
+                    </div>
                 </div>
-                <h3 style="color:#21325d; font-size:16px; font-weight:800; line-height:1.3; margin:0 0 8px;">Easy to configure and use</h3>
-                <p style="margin:0; color:#5b677a; font-size:14px; line-height:1.7;">Easy to configure and use</p>
-            </div>
-        </div>
-        <div class="col-12 col-md-4" style="margin-bottom:16px;">
-            <div style="background:#ffffff; border:1px solid #e6edf5; box-shadow:0 1px 0 rgba(17, 24, 39, 0.02); border-radius:16px; padding:22px 20px; height:100%; box-sizing:border-box; text-align:center;">
-                <div style="width:60px; height:60px; margin:0 auto 12px; background:#f0fdfa; border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                    <i class="fa fa-bolt fa-2x" style="color:#714B67;"></i>
-                </div>
-                <h3 style="color:#21325d; font-size:16px; font-weight:800; line-height:1.3; margin:0 0 8px;">Seamless integration</h3>
-                <p style="margin:0; color:#5b677a; font-size:14px; line-height:1.7;">Seamless integration</p>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- ================= DESCRIPTION ================= -->
-<section class="oe_container mt-4">
-    <div class="row" style="padding:10px 0;">
-        <div class="col-12">
-            <div style="background:#ffffff; border:1px solid #e6edf5; border-radius:16px; padding:24px 20px; box-sizing:border-box;">
-                <h3 style="color:#21325d; font-size:18px; font-weight:800; line-height:1.3; margin:0 0 12px;">Overview</h3>
-                <div style="color:#5b677a; font-size:14px; line-height:1.75; white-space: pre-wrap;">
-Universal REST Connector Framework
-==================================
-A framework to connect to any REST API, auto-discover schema from JSON responses,
-create dynamic models/fields/views, and import raw data. Business logic is handled
-by separate connector packs (Shopify, WooCommerce, etc.).
-Philosophy: Raw Data First - Business Later
+                <div class="showcase-visual">
+                    <div class="screenshot-container">
+                        <img src="screenshot_endpoints.png" class="screenshot-img w-100" alt="Inbound Endpoints List and Form View"/>
+                        <div class="screenshot-caption">
+                            <i class="fa fa-camera"></i> <em>Figure 1: Inbound Endpoints list &amp; form view showing UUID token, computed webhook URL, and Python handler.</em>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- ================= SUPPORT & FOOTER ================= -->
-<section class="oe_container mt-4" id="contact-support" style="background-color:#F8F9FA; border:1px solid #E5E7EB; border-radius:12px;">
-    <div class="container py-5 px-3">
-        <h2 class="text-center mb-4" style="font-weight:700; font-size:2rem; color:#714B67;">
-            Have Questions or Need Help?
-        </h2>
-        <p class="text-center" style="max-width:720px; margin:0 auto; font-size:1.05rem; color:#374151; line-height:1.6;">
-            If you have any questions, need assistance, or would like to request a demo,
-            we're here to help. Reach out to us about features, configuration,
-            or anything else.
-        </p>
-        <div class="text-center pt-4">
-            <span style="font-weight:700;background-color:#017E84;color:#FFFFFF;padding:.7rem 1.5rem;border-radius:8px;display:inline-block;font-size:1.05rem;">
-                dat030602@gmail.com
-            </span>
+        <!-- Showcase 2: Framework Presets -->
+        <div class="showcase-card">
+            <div class="showcase-header">
+                <span class="badge" style="background:#ede9fe; color:#6d28d9; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">SECURITY &amp; PRESETS</span>
+                <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 8px 0 4px 0;">
+                    Platform Framework Presets &amp; HMAC Engine
+                </h3>
+                <p style="font-size: 13px; color: #64748b; margin: 0;">
+                    Pre-configured, zero-config presets for major third-party platforms. Standardizes headers, signature hashing, and topic resolution out of the box.
+                </p>
+            </div>
+            <div class="showcase-body">
+                <div class="showcase-content">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Pre-built Platform Templates:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Zero-setup presets for Shopify, GitHub, Stripe, Generic REST, VN Address v1 &amp; NQ60.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">HMAC Signature Algorithms:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Cryptographic validation with SHA-256, SHA-1, and SHA-512 in Hex or Base64 encoding.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Prefix &amp; Template Parsing:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Supports GitHub <code>sha256=</code> prefix stripping and Stripe timestamped compound headers.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-visual">
+                    <div class="screenshot-container">
+                        <img src="screenshot_frameworks.png" class="screenshot-img w-100" alt="Framework Presets Form View"/>
+                        <div class="screenshot-caption">
+                            <i class="fa fa-camera"></i> <em>Figure 2: Framework Presets configuration specifying HMAC algorithms, auth headers, and execution mode.</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
 
-<!-- ================= FOOTER ================= -->
-<section class="oe_container mt-3">
-    <div class="row">
-        <div class="col-12 text-center">
-            <p style="font-size:11px; color:#9aa5b1; margin:0;">
-                <strong>Universal REST Connector Base</strong> v19.0.1.0.0 | Author: MJB Solutions
+        <!-- Showcase 3: Transactional Inbox & DLQ -->
+        <div class="showcase-card">
+            <div class="showcase-header">
+                <span class="badge" style="background:#dbeafe; color:#1d4ed8; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">TRANSACTIONAL INBOX</span>
+                <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 8px 0 4px 0;">
+                    Transactional Message Queue &amp; Dead Letter Isolation
+                </h3>
+                <p style="font-size: 13px; color: #64748b; margin: 0;">
+                    Every incoming event is persisted in <code>connector.inbound.message</code> before processing begins, ensuring absolute auditability and zero data loss.
+                </p>
+            </div>
+            <div class="showcase-body">
+                <div class="showcase-content">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Comprehensive State Lifecycle:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Transitions cleanly: Received &rarr; Queued &rarr; Processing &rarr; Done / Failed / Dead / Skipped.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Dead Letter Queue (DLQ):</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Poison-pill payloads isolate automatically after 5 failed attempts with full Python tracebacks.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">One-Click Manual Reprocess:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Administrators can review payloads, resolve data defects, and click "Process Now" immediately.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-visual">
+                    <div class="screenshot-container">
+                        <img src="screenshot_inbox.png" class="screenshot-img w-100" alt="Inbound Messages Inbox List and Form View"/>
+                        <div class="screenshot-caption">
+                            <i class="fa fa-camera"></i> <em>Figure 3: Inbound Message record displaying raw JSON payload, HTTP headers, execution duration, and state badges.</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Showcase 4: General Settings & Setup Guide -->
+        <div class="showcase-card">
+            <div class="showcase-header">
+                <span class="badge" style="background:#fef3c7; color:#b45309; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">ADMINISTRATION</span>
+                <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 8px 0 4px 0;">
+                    Centralized Settings &amp; Built-In Setup Guide
+                </h3>
+                <p style="font-size: 13px; color: #64748b; margin: 0;">
+                    Configure retention rules and processor tuning directly in Odoo General Settings, and launch the built-in interactive Setup Guide with a single click.
+                </p>
+            </div>
+            <div class="showcase-body">
+                <div class="showcase-content">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Retention Policy (Done Messages):</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Automatically purges completed inbox entries (default 30 days) via daily background cron.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">Dead Letter Preservation:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Retains failed events for deep audit (default 90 days) in 5,000-record batch deletions.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <i class="fa fa-check-circle text-success me-2 mt-1"></i>
+                        <div>
+                            <strong style="color: #0f172a; font-size: 14px;">In-App Documentation Viewer:</strong>
+                            <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0;">Instant access to administrator tutorials and developer references via the "Open Setup Guide" button.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="showcase-visual">
+                    <div class="screenshot-container">
+                        <img src="screenshot_settings.png" class="screenshot-img w-100" alt="General Settings Connector Base"/>
+                        <div class="screenshot-caption">
+                            <i class="fa fa-camera"></i> <em>Figure 4: General Settings view showing retention policies, batch size, and the "Open Setup Guide" button.</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 5. CONCURRENCY & RELIABILITY ENGINE ================= -->
+    <section class="mb-5" style="clear: both;">
+        <div class="hero-banner" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-6">
+                    <span class="badge-pill" style="background: rgba(14, 165, 233, 0.2) !important; border-color: #38bdf8 !important; color: #38bdf8 !important;">HIGH-CONCURRENCY ARCHITECTURE</span>
+                    <h2 style="font-size: 22px; font-weight: 800; margin-top: 12px; margin-bottom: 12px;">
+                        PostgreSQL <code>SKIP LOCKED</code> &amp; Exponential Jitter
+                    </h2>
+                    <p style="font-size: 13px; color: #cbd5e1 !important; line-height: 1.7; margin-bottom: 16px;">
+                        Standard Odoo cron workers often suffer from row contention and serialization failures when processing high-volume queues. 
+                        <code>dn_connector_base</code> utilizes non-blocking PostgreSQL row locking:
+                    </p>
+                    <ul style="padding-left: 20px; font-size: 13px; color: #94a3b8 !important;">
+                        <li class="mb-2"><strong style="color: #ffffff !important;">Multi-Worker Claiming:</strong> Concurrent cron threads claim distinct batches without waiting or locking each other out.</li>
+                        <li class="mb-2"><strong style="color: #ffffff !important;">Strict FIFO Ordering:</strong> When <code>ordering_key == 'entity_id'</code>, subsequent messages wait until preceding records complete.</li>
+                        <li class="mb-2"><strong style="color: #ffffff !important;">Exponential Backoff:</strong> Delay doubles per retry (10s, 20s, 40s...) plus randomized jitter to prevent thundering herd spikes.</li>
+                    </ul>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="code-block">
+<span class="code-comment"># Inbound Processor Queue Claim Query</span>
+query = SQL(<span class="code-string">"""
+    SELECT id FROM connector_inbound_message
+    WHERE state IN ('queued', 'failed')
+      AND (next_retry_at IS NULL OR next_retry_at &lt;= %s)
+    ORDER BY priority DESC, received_at ASC, id ASC
+    LIMIT %s
+    FOR UPDATE SKIP LOCKED
+"""</span>, now, batch_size)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 6. PYTHON SAFE EVAL & DYNAMIC IMPORTS ================= -->
+    <section class="mb-5" style="clear: both;">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 26px; font-weight: 800; color: #0f172a;">Extensibility: Sandboxed Python Handlers</h2>
+            <p style="font-size: 14px; color: #64748b; max-width: 650px; margin: 0 auto;">
+                Write custom business logic directly in the Odoo UI with safe execution, dynamic module importing, and Python 3.12 compatibility.
             </p>
         </div>
-    </div>
-</section>
+        <div class="row g-4 align-items-center">
+            <div class="col-12 col-lg-6">
+                <div class="showcase-card" style="height: 100%;">
+                    <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 12px;">
+                        Enterprise Sandboxing Safeguards
+                    </h3>
+                    <p style="font-size: 13px; color: #475569; margin-bottom: 14px;">
+                        Powered by <code>connector.code.mixin</code> and <code>odoo.tools.safe_eval</code>:
+                    </p>
+                    <table class="table-custom mb-3">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Safety Rule</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Dynamic Imports</strong></td>
+                                <td>Allows <code>_dynamic_import('math')</code>, <code>json</code>, <code>hashlib</code>, <code>hmac</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Blocked Modules</strong></td>
+                                <td>Strictly denies <code>os</code>, <code>subprocess</code>, <code>sys.modules</code>, <code>shutil</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Python 3.12 AST</strong></td>
+                                <td>Rewrites <code>assert</code> statements into conditional raises without opcode conflicts.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Context Variables</strong></td>
+                                <td>Injected: <code>payload</code>, <code>headers</code>, <code>message</code>, <code>endpoint</code>, <code>env</code>, <code>log()</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="code-block">
+<span class="code-comment"># Inbound Python Handler Sample</span>
+<span class="code-keyword">import</span> json
+math = _dynamic_import(<span class="code-string">'math'</span>)
+
+<span class="code-comment"># Extract order data from parsed JSON payload</span>
+order_data = payload.get(<span class="code-string">'order'</span>, {})
+order_ref = order_data.get(<span class="code-string">'name'</span>)
+total_amount = float(order_data.get(<span class="code-string">'total_price'</span>, 0.0))
+
+log(f<span class="code-string">"Processing order {order_ref} with total: {total_amount}"</span>)
+
+<span class="code-comment"># Create or update records using standard ORM</span>
+partner = env[<span class="code-string">'res.partner'</span>].search([
+    (<span class="code-string">'email'</span>, <span class="code-string">'='</span>, order_data.get(<span class="code-string">'email'</span>))
+], limit=1)
+
+<span class="code-comment"># Return execution result dictionary</span>
+result = {
+    <span class="code-string">'status'</span>: <span class="code-string">'success'</span>,
+    <span class="code-string">'partner_id'</span>: partner.id <span class="code-keyword">if</span> partner <span class="code-keyword">else</span> False,
+    <span class="code-string">'order_ref'</span>: order_ref
+}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 7. CONNECTOR PACK ECOSYSTEM ================= -->
+    <section class="mb-5" style="clear: both;">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 26px; font-weight: 800; color: #0f172a;">Modular Connector Pack Ecosystem</h2>
+            <p style="font-size: 14px; color: #64748b; max-width: 650px; margin: 0 auto;">
+                <code>dn_connector_base</code> provides the universal foundation for specialized business connectors.
+            </p>
+        </div>
+        <div class="row g-3">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="icon-box icon-teal mx-auto"><i class="fa fa-map-marker"></i></div>
+                    <h4 style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">dn_vn_address</h4>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">3-tier Vietnam administrative divisions &amp; Open API v1 direct integration.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="icon-box icon-purple mx-auto"><i class="fa fa-exchange"></i></div>
+                    <h4 style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">dn_vn_address_connector</h4>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">High-speed connector pack with N+1 batch dictionary lookups.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="icon-box icon-blue mx-auto"><i class="fa fa-flag"></i></div>
+                    <h4 style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">dn_vn_address_nq60</h4>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">NQ60 2-tier administrative reform (34 provinces, 3,321 wards, merger maps).</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="icon-box icon-rose mx-auto"><i class="fa fa-shopping-cart"></i></div>
+                    <h4 style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">E-Commerce Packs</h4>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">Shopify, WooCommerce, Shopee, TikTok Shop connector packs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 8. SETUP & QUICK START ================= -->
+    <section class="mb-5" style="clear: both;">
+        <div class="showcase-card">
+            <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 16px;">
+                <i class="fa fa-book text-primary me-2"></i> Administrator Quick Start in 3 Easy Steps
+            </h3>
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; height: 100%;">
+                        <div style="width: 32px; height: 32px; background: #017e84; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-weight: 800;">1</div>
+                        <h4 style="font-size: 14px; font-weight: 700; color: #0f172a;">Select Framework</h4>
+                        <p style="font-size: 12px; color: #64748b; margin: 0;">Go to <em>Connectors &gt; Framework Presets</em> and pick your platform (Shopify, GitHub, Stripe, Generic).</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; height: 100%;">
+                        <div style="width: 32px; height: 32px; background: #017e84; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-weight: 800;">2</div>
+                        <h4 style="font-size: 14px; font-weight: 700; color: #0f172a;">Create Endpoint</h4>
+                        <p style="font-size: 12px; color: #64748b; margin: 0;">Navigate to <em>Inbound Endpoints</em>, generate a UUID token, paste the URL in your webhook provider, and set secret.</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; text-align: center; height: 100%;">
+                        <div style="width: 32px; height: 32px; background: #017e84; color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-weight: 800;">3</div>
+                        <h4 style="font-size: 14px; font-weight: 700; color: #0f172a;">Process &amp; Monitor</h4>
+                        <p style="font-size: 12px; color: #64748b; margin: 0;">Events ingest instantly into <em>Inbound Messages</em>. Watch real-time execution or inspect DLQ logs.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <span style="font-size: 13px; color: #64748b;">
+                    Need in-depth instructions? Go to <strong>Settings &gt; Connectors</strong> and click <strong>"Open Setup Guide"</strong> for the complete developer manual.
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 9. SUPPORT & FOOTER ================= -->
+    <section style="clear: both;" id="contact-support">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px 24px; text-align: center;">
+            <h2 style="font-size: 22px; font-weight: 800; color: #714b67; margin-bottom: 10px;">
+                Enterprise Integration Support &amp; Custom Packs
+            </h2>
+            <p style="font-size: 14px; color: #475569; max-width: 680px; margin: 0 auto 18px;">
+                Looking to build high-volume custom connector packs, migrate legacy APIs, or optimize Odoo 19 queuing? Our integration specialists are ready to assist.
+            </p>
+            <div class="d-inline-flex align-items-center" style="background: #017e84; color: #ffffff; padding: 10px 24px; border-radius: 10px; font-weight: 700; font-size: 14px;">
+                <i class="fa fa-envelope me-2"></i> dat030602@gmail.com
+            </div>
+            <div style="margin-top: 20px; font-size: 12px; color: #94a3b8;">
+                <strong>Universal REST Connector Base</strong> | Version 19.0.2.0.0 | Compatible with Odoo 19 Community &amp; Enterprise
+            </div>
+        </div>
+    </section>
+</div>

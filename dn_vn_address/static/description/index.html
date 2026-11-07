@@ -1,0 +1,260 @@
+<!-- ==============================================================================
+     Vietnam Address Management (3-Tier Standard) - App Store Showcase
+     Module: dn_vn_address
+     Author: MJB Solutions & Tech Team
+     Platform: Odoo 19 Community & Enterprise, Python 3.12
+============================================================================== -->
+
+<style>
+    .vn-address-showcase {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #1e293b;
+        background-color: #f8fafc;
+        line-height: 1.6;
+    }
+    .vn-address-showcase .hero-banner {
+        background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #10b981 100%);
+        border-radius: 20px;
+        padding: 44px 32px;
+        color: #ffffff;
+        box-shadow: 0 10px 30px rgba(6, 78, 59, 0.2);
+    }
+    .vn-address-showcase .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        color: #ffffff;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .vn-address-showcase .badge-pill i {
+        margin-right: 6px;
+    }
+    .vn-address-showcase .feature-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 24px;
+        height: 100%;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .vn-address-showcase .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+    }
+    .vn-address-showcase .icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+    .vn-address-showcase .icon-green {
+        background: #d1fae5;
+        color: #047857;
+    }
+    .vn-address-showcase .icon-teal {
+        background: #ccfbf1;
+        color: #0f766e;
+    }
+    .vn-address-showcase .icon-amber {
+        background: #fef3c7;
+        color: #b45309;
+    }
+    .vn-address-showcase .screenshot-container {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 16px;
+        padding: 12px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        margin-top: 16px;
+        margin-bottom: 24px;
+    }
+    .vn-address-showcase .screenshot-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        display: block;
+        border: 1px solid #f1f5f9;
+    }
+    .vn-address-showcase .code-block {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="vn-address-showcase">
+    <!-- ================= HERO BANNER ================= -->
+    <section class="oe_container pt-4">
+        <div class="hero-banner">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-8">
+                    <div class="mb-3">
+                        <span class="badge-pill"><i class="fa fa-map-marker"></i> 3-Tier Administrative Hierarchy</span>
+                        <span class="badge-pill"><i class="fa fa-cloud-download"></i> Open API v1 Direct Sync</span>
+                        <span class="badge-pill"><i class="fa fa-check-circle"></i> Odoo 19 Certified</span>
+                    </div>
+                    <h1 style="font-size: 32px; font-weight: 800; line-height: 1.25; margin-bottom: 16px; color: #ffffff;">
+                        Vietnam Address Management (3-Tier Standard)
+                    </h1>
+                    <p style="font-size: 15px; color: #ecfdf5; line-height: 1.7; margin-bottom: 24px; max-width: 650px;">
+                        Implements official 3-tier Vietnamese administrative divisions: 
+                        <strong>Province / City &rarr; District &rarr; Ward / Commune</strong>. 
+                        Features automated Open API v1 synchronization, reactive dynamic domain cascading on contacts, and standard address formatting for Odoo 19.
+                    </p>
+                    <a href="#partner-cascading" class="btn btn-light" style="color: #064e3b; font-weight: 700; border-radius: 10px; padding: 10px 22px;">
+                        <i class="fa fa-eye"></i> See Address Cascading
+                    </a>
+                </div>
+                <div class="col-12 col-lg-4 text-center mt-4 mt-lg-0">
+                    <div style="background: rgba(255,255,255,0.12); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.2);">
+                        <i class="fa fa-building-o" style="font-size: 60px; color: #a7f3d0;"></i>
+                        <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-top: 12px; margin-bottom: 4px;">63 Provinces &amp; Cities</h4>
+                        <p style="font-size: 13px; color: #d1fae5; margin: 0;">705 Districts &bull; 10,600+ Wards</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 3-TIER ARCHITECTURE OVERVIEW ================= -->
+    <section class="oe_container mt-5">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 26px; font-weight: 800; color: #0f172a;">3-Tier Administrative Hierarchy</h2>
+            <p style="font-size: 15px; color: #64748b; max-width: 650px; margin: 0 auto;">
+                Strict relational data model seamlessly embedded into standard Odoo <code>res.partner</code> and <code>res.company</code>.
+            </p>
+        </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="feature-card text-center">
+                    <div class="icon-box icon-green mx-auto"><i class="fa fa-map"></i></div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #0f172a;">Tier 1: Provinces &amp; Cities</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 12px;">Model: <code>res.country.state</code></p>
+                    <p style="font-size: 13px; color: #475569; margin: 0;">
+                        63 Centrally-governed provinces and municipalities with national administrative codes (e.g., Hà Nội, TP. Hồ Chí Minh, Đà Nẵng).
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="feature-card text-center">
+                    <div class="icon-box icon-teal mx-auto"><i class="fa fa-compass"></i></div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #0f172a;">Tier 2: Urban &amp; Rural Districts</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 12px;">Model: <code>res.country.district</code></p>
+                    <p style="font-size: 13px; color: #475569; margin: 0;">
+                        705 Urban districts (Quận), rural districts (Huyện), provincial cities (Thành phố thuộc tỉnh), and towns (Thị xã) mapped to parent state.
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="feature-card text-center">
+                    <div class="icon-box icon-amber mx-auto"><i class="fa fa-home"></i></div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #0f172a;">Tier 3: Wards &amp; Communes</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 12px;">Model: <code>res.country.ward</code></p>
+                    <p style="font-size: 13px; color: #475569; margin: 0;">
+                        10,600+ Wards (Phường), communes (Xã), and townships (Thị trấn) dynamically linked to their corresponding district and province.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SCREENSHOT SHOWCASE ================= -->
+    <section class="oe_container mt-5" id="partner-cascading">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-5">
+                <span class="badge" style="background:#d1fae5; color:#047857; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">UI INTEGRATION</span>
+                <h3 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 10px;">
+                    Contact Partner Address Cascading
+                </h3>
+                <p style="font-size: 14px; color: #475569; line-height: 1.7;">
+                    Selecting <strong>Country: Vietnam</strong> unlocks dynamic cascading on contacts:
+                </p>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa fa-check-circle text-success me-2"></i>
+                    <span style="font-size: 13px;"><strong>Reactive Domain Filters:</strong> State &rarr; District &rarr; Ward dropdown filters update dynamically in real time.</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa fa-check-circle text-success me-2"></i>
+                    <span style="font-size: 13px;"><strong>Auto-Clear on Parent Change:</strong> Changing state automatically clears dependent district and ward values.</span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fa fa-check-circle text-success me-2"></i>
+                    <span style="font-size: 13px;"><strong>Official Vietnam Address Layout:</strong> Formatted cleanly for invoices, deliveries, and reports:</span>
+                </div>
+                <div class="code-block mb-3">
+%(street)s
+%(ward_name)s, %(district_name)s
+%(state_name)s
+%(country_name)s
+                </div>
+            </div>
+            <div class="col-12 col-lg-7">
+                <div class="screenshot-container">
+                    <img src="screenshot_vn_address.png" class="screenshot-img" alt="Vietnam 3-Tier Address Cascading Form"/>
+                    <div style="font-size: 12px; color: #64748b; text-align: center; margin-top: 8px;">
+                        <i class="fa fa-camera"></i> <em>Figure: Contact Partner form showing reactive Vietnam 3-tier address cascading and administrative unit tree.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= OPEN API V1 DIRECT INTEGRATION ================= -->
+    <section class="oe_container mt-5">
+        <div class="feature-card">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-7">
+                    <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 12px;">
+                        <i class="fa fa-cloud text-success me-2"></i> Automated Open API v1 Sync
+                    </h3>
+                    <p style="font-size: 14px; color: #475569; line-height: 1.7; margin-bottom: 16px;">
+                        No manual CSV uploads required. <code>dn_vn_address</code> synchronizes directly from the official open administrative division endpoint:
+                    </p>
+                    <ul style="padding-left: 20px; font-size: 13px; color: #475569; margin-bottom: 16px;">
+                        <li class="mb-1"><strong>Configurable Endpoint:</strong> Controlled via System Parameter <code>dn_vn_address.api_url</code> (Default: <code>https://provinces.open-api.vn/api/</code>).</li>
+                        <li class="mb-1"><strong>Scheduled Cron:</strong> Background cron keeps administrative names, codes, and division types synchronized.</li>
+                        <li class="mb-1"><strong>Idempotent Upsert:</strong> Matches on official GSO codes, ensuring existing contact addresses remain fully intact without duplicate records.</li>
+                    </ul>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center;">
+                        <i class="fa fa-refresh fa-3x" style="color: #047857; margin-bottom: 12px;"></i>
+                        <h4 style="font-size: 16px; font-weight: 800; color: #0f172a;">One-Click Sync Wizard</h4>
+                        <p style="font-size: 12px; color: #64748b; margin-bottom: 14px;">Import all 63 provinces, 705 districts, and 10,600+ wards in under 30 seconds.</p>
+                        <span class="badge" style="background: #d1fae5; color: #047857; font-size: 12px; padding: 6px 12px;">Status: API Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <section class="oe_container mt-5">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px 24px; text-align: center;">
+            <h3 style="font-size: 20px; font-weight: 800; color: #047857; margin-bottom: 8px;">
+                Vietnam Address Management (3-Tier Standard)
+            </h3>
+            <p style="font-size: 14px; color: #64748b; margin-bottom: 16px;">
+                Version 19.0.1.0.0 &bull; Author: MJB Solutions &bull; Contact: dat030602@gmail.com
+            </p>
+            <span style="font-size: 12px; color: #94a3b8;">
+                Seamlessly integrates with <strong>dn_connector_base</strong> and <strong>dn_vn_address_connector</strong>.
+            </span>
+        </div>
+    </section>
+</div>

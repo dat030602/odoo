@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-Level Root Menu -->
+    <menuitem id="menu_connector_root"
+              name="Connector"
+              web_icon="dn_connector_base,static/description/icon.png"
+              sequence="50"/>
+
+    <!-- 1. Inbound Gateway Category -->
+    <menuitem id="menu_connector_inbound"
+              name="Inbound Gateway"
+              parent="menu_connector_root"
+              sequence="10"/>
+
+    <menuitem id="menu_connector_inbound_endpoints"
+              name="Endpoints"
+              parent="menu_connector_inbound"
+              action="action_connector_inbound_endpoint"
+              sequence="10"/>
+
+    <menuitem id="menu_connector_inbound_messages"
+              name="Inbox Messages"
+              parent="menu_connector_inbound"
+              action="action_connector_inbound_message"
+              sequence="20"/>
+
+    <menuitem id="menu_connector_inbound_dead_letters"
+              name="Dead Letter Queue"
+              parent="menu_connector_inbound"
+              action="action_connector_inbound_message_dead"
+              sequence="30"/>
+
+    <!-- 2. Outbound & REST Integrations Category -->
+    <menuitem id="menu_connector_outbound"
+              name="Outbound REST"
+              parent="menu_connector_root"
+              sequence="20"/>
+
+    <menuitem id="menu_connector_config"
+              name="API Configurations"
+              parent="menu_connector_outbound"
+              action="action_connector_config"
+              sequence="10"/>
+
+    <menuitem id="menu_connector_outbound_endpoints"
+              name="Outbound Endpoints"
+              parent="menu_connector_outbound"
+              action="action_connector_outbound_endpoint"
+              sequence="20"/>
+
+    <!-- 3. Logs & Diagnostics Category -->
+    <menuitem id="menu_connector_logs"
+              name="Diagnostics"
+              parent="menu_connector_root"
+              sequence="30"/>
+
+    <menuitem id="menu_connector_sync_log"
+              name="Sync Logs"
+              parent="menu_connector_logs"
+              action="action_connector_sync_log"
+              sequence="10"/>
+
+    <menuitem id="menu_connector_code_log"
+              name="Code Execution Logs"
+              parent="menu_connector_logs"
+              action="action_connector_code_execution_log"
+              sequence="20"/>
+
+    <menuitem id="menu_connector_missing_log"
+              name="Missing Fields Log"
+              parent="menu_connector_logs"
+              action="action_connector_missing_log"
+              sequence="30"/>
+
+    <!-- 4. Configuration Category -->
+    <menuitem id="menu_connector_configuration"
+              name="Configuration"
+              parent="menu_connector_root"
+              sequence="100"/>
+
+    <menuitem id="menu_connector_frameworks"
+              name="Framework Presets"
+              parent="menu_connector_configuration"
+              action="action_connector_framework"
+              sequence="10"/>
+
+    <menuitem id="menu_connector_settings"
+              name="Settings"
+              parent="menu_connector_configuration"
+              action="action_connector_settings"
+              sequence="20"/>
+</odoo>

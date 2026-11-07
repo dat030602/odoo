@@ -16,7 +16,6 @@ Key features:
 - XML ID registration for actions and views.
 """,
     'author': 'MJB Solutions',
-    'website': 'https://www.mjbsolutions.com',
     'license': 'LGPL-3',
     'depends': ['base', 'web'],
     'data': [

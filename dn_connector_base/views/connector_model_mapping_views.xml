@@ -29,7 +29,9 @@
         </field>
     </record>
 
-    <act_window id="action_connector_model_mapping"
-        name="Model Mappings"
-        res_model="connector.model.mapping"
-        view_mode="list,form"/>
+    <record id="action_connector_model_mapping" model="ir.actions.act_window">
+        <field name="name">Model Mappings</field>
+        <field name="res_model">connector.model.mapping</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

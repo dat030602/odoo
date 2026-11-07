@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Connector Developer group - restricts access to code fields and sensitive credentials -->
-    <record id="group_connector_developer" model="res.groups">
-        <field name="name">Connector Developer</field>
-        <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+    <record id="module_category_connector" model="ir.module.category">
+        <field name="name">Connector</field>
+        <field name="description">Manage connector configurations, endpoints, and incoming/outgoing events.</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="res_groups_privilege_connector" model="res.groups.privilege">
+        <field name="name">Connector</field>
+        <field name="sequence">20</field>
+        <field name="category_id" ref="module_category_connector"/>
     </record>
 
     <!-- Connector User group - can view and run syncs but cannot edit code -->
     <record id="group_connector_user" model="res.groups">
         <field name="name">Connector User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="res_groups_privilege_connector"/>
+        <field name="implied_ids" eval="[Command.link(ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Connector Developer group - restricts access to code fields and sensitive credentials -->
+    <record id="group_connector_developer" model="res.groups">
+        <field name="name">Connector Developer</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="res_groups_privilege_connector"/>
+        <field name="implied_ids" eval="[Command.link(ref('dn_connector_base.group_connector_user'))]"/>
+    </record>
+
+    <!-- System administrator inherits Connector Developer -->
+    <record id="base.group_system" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('dn_connector_base.group_connector_developer'))]"/>
     </record>
 </odoo>

@@ -31,7 +31,7 @@
                         <field name="oauth_expires_at" invisible="auth_type != 'oauth2'"/>
                     </group>
                     <separator string="Endpoints"/>
-                    <field name="endpoint_ids" context="{'default_connector_id': active_id}" mode="list"/>
+                    <field name="endpoint_ids" mode="list"/>
                 </sheet>
             </form>
         </field>
@@ -63,8 +63,10 @@
         </field>
     </record>
 
-    <act_window id="action_connector_config"
-        name="Connector Configurations"
-        res_model="connector.config"
-        view_mode="list,form"
-        context="{'search_default_active': 1}"/>
+    <record id="action_connector_config" model="ir.actions.act_window">
+        <field name="name">Connector Configurations</field>
+        <field name="res_model">connector.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+    </record>
+</odoo>

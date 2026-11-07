@@ -18,7 +18,6 @@ This module provides demonstration data, extended fields, and an interactive pop
 - **OWL 2 Widget**: Custom `excel_preview_popup` button widget embedded on the form.
     """,
     'author': 'Dat Nguyen',
-    'website': 'https://github.com/unclecatvn',
     'license': 'LGPL-3',
     'depends': [
         'purchase',

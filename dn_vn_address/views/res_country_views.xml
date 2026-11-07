@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- State Views Extension -->
+    <record id="view_country_state_form_inherit_dn_vn" model="ir.ui.view">
+        <field name="name">res.country.state.form.inherit.dn.vn</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_sync_provinces_v1" string="Sync Administrative Units (v1)"
+                            type="object" class="btn-primary" groups="base.group_system"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="vn_code"/>
+                <field name="name_extension"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_country_state_tree_inherit_dn_vn" model="ir.ui.view">
+        <field name="name">res.country.state.list.inherit.dn.vn</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="base.view_country_state_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="vn_code" optional="show"/>
+                <field name="name_extension" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- District Views -->
+    <record id="view_country_district_list" model="ir.ui.view">
+        <field name="name">res.country.district.list</field>
+        <field name="model">res.country.district</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state_id"/>
+                <field name="name_extension" optional="hide"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_country_district_form" model="ir.ui.view">
+        <field name="name">res.country.district.form</field>
+        <field name="model">res.country.district</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="name_extension"/>
+                        </group>
+                        <group>
+                            <field name="state_id"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Wards" name="wards">
+                            <field name="ward_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="name_extension" optional="hide"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_country_district_search" model="ir.ui.view">
+        <field name="name">res.country.district.search</field>
+        <field name="model">res.country.district</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Province/State" name="group_state" context="{'group_by': 'state_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_country_district" model="ir.actions.act_window">
+        <field name="name">Districts</field>
+        <field name="res_model">res.country.district</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage Vietnam Administrative Districts.
+            </p>
+        </field>
+    </record>
+
+    <!-- Ward Views -->
+    <record id="view_country_ward_list" model="ir.ui.view">
+        <field name="name">res.country.ward.list</field>
+        <field name="model">res.country.ward</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="district_id"/>
+                <field name="state_id"/>
+                <field name="country_id" optional="hide"/>
+                <field name="name_extension" optional="hide"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_country_ward_form" model="ir.ui.view">
+        <field name="name">res.country.ward.form</field>
+        <field name="model">res.country.ward</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="name_extension"/>
+                        </group>
+                        <group>
+                            <field name="district_id"/>
+                            <field name="state_id"/>
+                            <field name="country_id"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_country_ward_search" model="ir.ui.view">
+        <field name="name">res.country.ward.search</field>
+        <field name="model">res.country.ward</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="district_id"/>
+                <field name="state_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="District" name="group_district" context="{'group_by': 'district_id'}"/>
+                <filter string="Province/State" name="group_state" context="{'group_by': 'state_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_country_ward" model="ir.actions.act_window">
+        <field name="name">Wards</field>
+        <field name="res_model">res.country.ward</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage Vietnam Administrative Wards / Communes.
+            </p>
+        </field>
+    </record>
+</odoo>

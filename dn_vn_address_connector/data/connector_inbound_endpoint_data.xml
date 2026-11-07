@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <record id="endpoint_vn_address_v1" model="connector.inbound.endpoint">
+        <field name="name">Open API v1 Address Ingestion</field>
+        <field name="framework_id" ref="preset_framework_vn_address_v1"/>
+        <field name="token">vn-address-v1-inbound-token</field>
+        <field name="handler_type">python</field>
+        <field name="execution_mode">immediate</field>
+        <field name="code"><![CDATA[
+vn = env.ref('base.vn', raise_if_not_found=False) or env['res.country'].search([('code', '=', 'VN')], limit=1)
+
+provinces = payload.get('provinces') or (payload if isinstance(payload, list) and payload and 'codename' in payload[0] and 'province_code' not in payload[0] else [])
+districts = payload.get('districts') or (payload if isinstance(payload, list) and payload and 'province_code' in payload[0] else [])
+wards = payload.get('wards') or (payload if isinstance(payload, list) and payload and 'district_code' in payload[0] else [])
+
+State = env['res.country.state']
+District = env['res.country.district'].with_context(active_test=False)
+Ward = env['res.country.ward'].with_context(active_test=False)
+
+# Batch pre-lookup dictionaries to prevent N+1 queries
+state_by_vn_code = {}
+state_by_code = {}
+for s in State.search([('country_id', '=', vn.id)]):
+    if s.vn_code:
+        state_by_vn_code[s.vn_code] = s
+    if s.code:
+        state_by_code[str(s.code)] = s
+
+district_by_state_and_code = {}
+district_by_code = {}
+for d in District.search([]):
+    district_by_state_and_code[(d.state_id.id, str(d.code))] = d
+    district_by_code[str(d.code)] = d
+
+ward_by_district_and_code = {}
+for w in Ward.search([]):
+    ward_by_district_and_code[(w.district_id.id, str(w.code))] = w
+
+if provinces:
+    for p in provinces:
+        p_code = p.get('code')
+        p_name = p.get('name')
+        p_codename = p.get('codename') or ''
+        state = state_by_vn_code.get(p_code) or state_by_code.get(str(p_code))
+        if state:
+            state.write({'name': p_name, 'vn_code': p_code, 'name_extension': p_codename})
+        else:
+            state = State.create({'name': p_name, 'code': str(p_code), 'vn_code': p_code, 'name_extension': p_codename, 'country_id': vn.id})
+        state_by_vn_code[p_code] = state
+        state_by_code[str(p_code)] = state
+
+if districts:
+    for d in districts:
+        d_code = str(d.get('code'))
+        d_name = d.get('name')
+        p_code = d.get('province_code')
+        d_codename = d.get('codename') or ''
+        state = state_by_vn_code.get(p_code) or state_by_code.get(str(p_code))
+        if not state:
+            state = State.search([('country_id', '=', vn.id), '|', ('vn_code', '=', p_code), ('code', '=', str(p_code))], limit=1)
+            if state:
+                state_by_vn_code[p_code] = state
+                state_by_code[str(p_code)] = state
+        if state:
+            district = district_by_state_and_code.get((state.id, d_code))
+            if district:
+                district.write({'name': d_name, 'name_extension': d_codename, 'active': True})
+            else:
+                district = District.create({'name': d_name, 'code': d_code, 'state_id': state.id, 'name_extension': d_codename, 'active': True})
+            district_by_state_and_code[(state.id, d_code)] = district
+            district_by_code[d_code] = district
+
+if wards:
+    for w in wards:
+        w_code = str(w.get('code'))
+        w_name = w.get('name')
+        d_code = str(w.get('district_code'))
+        w_codename = w.get('codename') or ''
+        district = district_by_code.get(d_code)
+        if not district:
+            district = District.search([('code', '=', d_code)], limit=1)
+            if district:
+                district_by_code[d_code] = district
+        if district:
+            ward = ward_by_district_and_code.get((district.id, w_code))
+            if ward:
+                ward.write({'name': w_name, 'name_extension': w_codename, 'active': True})
+            else:
+                ward = Ward.create({'name': w_name, 'code': w_code, 'district_id': district.id, 'name_extension': w_codename, 'active': True})
+            ward_by_district_and_code[(district.id, w_code)] = ward
+
+result = {'status': 'success'}
+]]></field>
+    </record>
+</odoo>

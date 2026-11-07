@@ -12,7 +12,6 @@
         Built on top of dn_payment_connector_base.
     """,
     'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
     'license': 'LGPL-3',
     'depends': [
         'payment',

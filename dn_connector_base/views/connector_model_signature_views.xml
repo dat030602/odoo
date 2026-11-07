@@ -44,7 +44,9 @@
         </field>
     </record>
 
-    <act_window id="action_connector_model_signature"
-        name="Model Signatures"
-        res_model="connector.model.signature"
-        view_mode="list,form"/>
+    <record id="action_connector_model_signature" model="ir.actions.act_window">
+        <field name="name">Model Signatures</field>
+        <field name="res_model">connector.model.signature</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

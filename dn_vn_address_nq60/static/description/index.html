@@ -1,0 +1,256 @@
+<!-- ==============================================================================
+     Vietnam Address Administrative Reform (Resolution 60/NQ-CP) - App Store Showcase
+     Module: dn_vn_address_nq60
+     Author: MJB Solutions & Tech Team
+     Platform: Odoo 19 Community & Enterprise, Python 3.12
+============================================================================== -->
+
+<style>
+    .vn-nq60-showcase {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #1e293b;
+        background-color: #f8fafc;
+        line-height: 1.6;
+    }
+    .vn-nq60-showcase .hero-banner {
+        background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #8b5cf6 100%);
+        border-radius: 20px;
+        padding: 44px 32px;
+        color: #ffffff;
+        box-shadow: 0 10px 30px rgba(67, 56, 202, 0.2);
+    }
+    .vn-nq60-showcase .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        color: #ffffff;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .vn-nq60-showcase .badge-pill i {
+        margin-right: 6px;
+    }
+    .vn-nq60-showcase .feature-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 24px;
+        height: 100%;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .vn-nq60-showcase .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+    }
+    .vn-nq60-showcase .icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+    .vn-nq60-showcase .icon-indigo {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+    .vn-nq60-showcase .icon-purple {
+        background: #ede9fe;
+        color: #6d28d9;
+    }
+    .vn-nq60-showcase .icon-emerald {
+        background: #d1fae5;
+        color: #059669;
+    }
+    .vn-nq60-showcase .screenshot-container {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 16px;
+        padding: 12px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        margin-top: 16px;
+        margin-bottom: 24px;
+    }
+    .vn-nq60-showcase .screenshot-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        display: block;
+        border: 1px solid #f1f5f9;
+    }
+    .vn-nq60-showcase .code-block {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="vn-nq60-showcase">
+    <!-- ================= HERO BANNER ================= -->
+    <section class="oe_container pt-4">
+        <div class="hero-banner">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-8">
+                    <div class="mb-3">
+                        <span class="badge-pill"><i class="fa fa-university"></i> Resolution 60/NQ-CP Compliant</span>
+                        <span class="badge-pill"><i class="fa fa-sitemap"></i> 2-Tier Administrative Hierarchy</span>
+                        <span class="badge-pill"><i class="fa fa-archive"></i> Districts Archived &amp; Hidden</span>
+                        <span class="badge-pill"><i class="fa fa-cloud-download"></i> Open API v2 Direct Sync</span>
+                    </div>
+                    <h1 style="font-size: 32px; font-weight: 800; line-height: 1.25; margin-bottom: 16px; color: #ffffff;">
+                        Vietnam Address Administrative Reform (NQ60)
+                    </h1>
+                    <p style="font-size: 15px; color: #e0e7ff; line-height: 1.7; margin-bottom: 24px; max-width: 650px;">
+                        Implements Vietnam's official National Administrative Reform per Resolution 60/NQ-CP: 
+                        Consolidation into <strong>34 Provinces</strong> and <strong>3,321 Wards</strong>. 
+                        Districts are archived and hidden from UI address forms, transitioning Odoo into a sleek, streamlined 2-tier address model.
+                    </p>
+                    <a href="#reform-details" class="btn btn-light" style="color: #4338ca; font-weight: 700; border-radius: 10px; padding: 10px 22px;">
+                        <i class="fa fa-balance-scale"></i> Explore NQ60 Reform
+                    </a>
+                </div>
+                <div class="col-12 col-lg-4 text-center mt-4 mt-lg-0">
+                    <div style="background: rgba(255,255,255,0.12); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.2);">
+                        <i class="fa fa-compass" style="font-size: 60px; color: #a5b4fc;"></i>
+                        <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-top: 12px; margin-bottom: 4px;">34 Provinces</h4>
+                        <p style="font-size: 13px; color: #e0e7ff; margin: 0;">3,321 Consolidated Wards</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 2-TIER REFORM COMPARISON ================= -->
+    <section class="oe_container mt-5" id="reform-details">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 26px; font-weight: 800; color: #0f172a;">The NQ60 Administrative Shift: Before vs After</h2>
+            <p style="font-size: 15px; color: #64748b; max-width: 650px; margin: 0 auto;">
+                Understanding the legal transformation from legacy 3-tier divisions to the modern 2-tier streamlined governance.
+            </p>
+        </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-6">
+                <div class="feature-card" style="border-top: 4px solid #94a3b8;">
+                    <span class="badge" style="background:#f1f5f9; color:#475569; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">LEGACY STRUCTURE (v1)</span>
+                    <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-top: 10px;">3-Tier Administrative Hierarchy</h3>
+                    <ul style="padding-left: 20px; font-size: 14px; color: #475569; margin-top: 14px;">
+                        <li class="mb-2"><strong>63 Provinces &amp; Cities</strong> across Northern, Central, and Southern Vietnam.</li>
+                        <li class="mb-2"><strong>705 Intermediate Districts</strong> (Quận, Huyện, Thị xã).</li>
+                        <li class="mb-2"><strong>10,600+ Fragmented Wards &amp; Communes</strong>.</li>
+                        <li class="mb-2">3-tier layout: <code>%(street)s\n%(ward)s, %(district)s\n%(state)s</code>.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="feature-card" style="border-top: 4px solid #6366f1;">
+                    <span class="badge" style="background:#ede9fe; color:#6d28d9; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">NQ60 REFORM (v2)</span>
+                    <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-top: 10px;">2-Tier Streamlined Hierarchy</h3>
+                    <ul style="padding-left: 20px; font-size: 14px; color: #475569; margin-top: 14px;">
+                        <li class="mb-2"><strong>34 Consolidated Provinces</strong> (merging smaller provincial units).</li>
+                        <li class="mb-2"><strong>Districts Eliminated:</strong> Automatically archived (<code>active=False</code>) &amp; hidden from UI.</li>
+                        <li class="mb-2"><strong>3,321 Consolidated Wards:</strong> Directly linked to parent Province.</li>
+                        <li class="mb-2">Clean 2-tier layout: <code>%(street)s\n%(ward_name)s\n%(state_name)s</code>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SCREENSHOT SHOWCASE ================= -->
+    <section class="oe_container mt-5">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-5">
+                <span class="badge" style="background:#e0e7ff; color:#4338ca; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">REFORM UI</span>
+                <h3 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 10px;">
+                    Modern 2-Tier Partner Address Form
+                </h3>
+                <p style="font-size: 14px; color: #475569; line-height: 1.7;">
+                    Experience the simplified form experience with zero visual clutter:
+                </p>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa fa-check-circle text-success me-2"></i>
+                    <span style="font-size: 13px;"><strong>Districts Removed:</strong> The District dropdown is dynamically suppressed on Vietnam addresses.</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fa fa-check-circle text-success me-2"></i>
+                    <span style="font-size: 13px;"><strong>Direct Ward Cascading:</strong> Selecting a Province immediately populates the consolidated ward list.</span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fa fa-check-circle text-success me-2"></i>
+                    <span style="font-size: 13px;"><strong>Merger Tracking:</strong> Relations <code>map_with_ward_ids</code> preserve legacy addresses for historical audit.</span>
+                </div>
+                <div class="code-block mb-3">
+<span style="color:#64748b;"># NQ60 2-Tier Address Layout</span>
+%(street)s
+%(ward_name)s
+%(state_name)s
+%(country_name)s
+                </div>
+            </div>
+            <div class="col-12 col-lg-7">
+                <div class="screenshot-container">
+                    <img src="screenshot_vn_nq60.png" class="screenshot-img" alt="Vietnam NQ60 2-Tier Address Reform"/>
+                    <div style="font-size: 12px; color: #64748b; text-align: center; margin-top: 8px;">
+                        <i class="fa fa-camera"></i> <em>Figure: Odoo 19 contact form with NQ60 2-tier address (District hidden), 34 Provinces, 3,321 Wards, and Ward Merger Tool.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= OPEN API V2 & MIGRATION WIZARD ================= -->
+    <section class="oe_container mt-5">
+        <div class="feature-card">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-7">
+                    <h3 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 12px;">
+                        <i class="fa fa-wrench text-primary me-2"></i> Administrative Ward Merger Tool
+                    </h3>
+                    <p style="font-size: 14px; color: #475569; line-height: 1.7; margin-bottom: 16px;">
+                        Migrating from legacy 3-tier to NQ60? <code>dn_vn_address_nq60</code> includes automated migration tools:
+                    </p>
+                    <ul style="padding-left: 20px; font-size: 13px; color: #475569; margin-bottom: 16px;">
+                        <li class="mb-1"><strong>Open API v2 Sync:</strong> Configurable via System Parameter <code>dn_vn_address_nq60.api_url</code>.</li>
+                        <li class="mb-1"><strong>Legacy Unit Mapping:</strong> Maps 2 or more old wards into newly consolidated wards via <code>map_with_ward_ids</code>.</li>
+                        <li class="mb-1"><strong>Historical Address Integrity:</strong> Existing invoices and delivery slips remain intact while new records use NQ60 format.</li>
+                    </ul>
+                </div>
+                <div class="col-12 col-lg-5 text-center">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                        <i class="fa fa-magic fa-3x" style="color: #6366f1; margin-bottom: 12px;"></i>
+                        <h4 style="font-size: 16px; font-weight: 800; color: #0f172a;">One-Click Merger Migration</h4>
+                        <p style="font-size: 12px; color: #64748b; margin-bottom: 14px;">Safely re-maps contacts and archived districts with complete rollback safety.</p>
+                        <span class="badge" style="background: #e0e7ff; color: #4338ca; font-size: 12px; padding: 6px 12px;">Status: NQ60 Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <section class="oe_container mt-5">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px 24px; text-align: center;">
+            <h3 style="font-size: 20px; font-weight: 800; color: #4338ca; margin-bottom: 8px;">
+                Vietnam Address Administrative Reform (Resolution 60/NQ-CP)
+            </h3>
+            <p style="font-size: 14px; color: #64748b; margin-bottom: 16px;">
+                Version 19.0.1.0.0 &bull; Author: MJB Solutions &bull; Contact: dat030602@gmail.com
+            </p>
+            <span style="font-size: 12px; color: #94a3b8;">
+                Fully compatible with <strong>dn_connector_base</strong> and <strong>dn_vn_address_nq60_connector</strong>.
+            </span>
+        </div>
+    </section>
+</div>

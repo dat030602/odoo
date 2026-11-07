@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <!-- Real Province vn_code updates -->
+    <record id="base.state_vn_VN-HN" model="res.country.state">
+        <field name="vn_code">1</field>
+        <field name="name_extension">thanh_pho_ha_noi</field>
+    </record>
+
+    <record id="base.state_vn_VN-DN" model="res.country.state">
+        <field name="vn_code">48</field>
+        <field name="name_extension">thanh_pho_da_nang</field>
+    </record>
+
+    <record id="base.state_vn_VN-SG" model="res.country.state">
+        <field name="vn_code">79</field>
+        <field name="name_extension">thanh_pho_ho_chi_minh</field>
+    </record>
+
+    <!-- Real Districts -->
+    <record id="district_real_ba_dinh" model="res.country.district">
+        <field name="name">Quận Ba Đình</field>
+        <field name="code">1</field>
+        <field name="state_id" ref="base.state_vn_VN-HN"/>
+        <field name="name_extension">quan_ba_dinh</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="district_real_hai_chau" model="res.country.district">
+        <field name="name">Quận Hải Châu</field>
+        <field name="code">490</field>
+        <field name="state_id" ref="base.state_vn_VN-DN"/>
+        <field name="name_extension">quan_hai_chau</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="district_real_quan_1" model="res.country.district">
+        <field name="name">Quận 1</field>
+        <field name="code">760</field>
+        <field name="state_id" ref="base.state_vn_VN-SG"/>
+        <field name="name_extension">quan_1</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Real Wards -->
+    <record id="ward_real_phuc_xa" model="res.country.ward">
+        <field name="name">Phường Phúc Xá</field>
+        <field name="code">1</field>
+        <field name="district_id" ref="district_real_ba_dinh"/>
+        <field name="name_extension">phuong_phuc_xa</field>
+    </record>
+
+    <record id="ward_real_thach_thang" model="res.country.ward">
+        <field name="name">Phường Thạch Thang</field>
+        <field name="code">20227</field>
+        <field name="district_id" ref="district_real_hai_chau"/>
+        <field name="name_extension">phuong_thach_thang</field>
+    </record>
+
+    <record id="ward_real_ben_nghe" model="res.country.ward">
+        <field name="name">Phường Bến Nghé</field>
+        <field name="code">26734</field>
+        <field name="district_id" ref="district_real_quan_1"/>
+        <field name="name_extension">phuong_ben_nghe</field>
+    </record>
+
+    <!-- Real Seed Connector Message -->
+    <record id="msg_seed_v1" model="connector.inbound.message">
+        <field name="endpoint_id" ref="endpoint_vn_address_v1"/>
+        <field name="event_type">seed_real_address_v1</field>
+        <field name="state">done</field>
+        <field name="body_raw">{"seeded": true, "provinces": ["Hanoi", "Da Nang", "HCM"]}</field>
+    </record>
+</odoo>

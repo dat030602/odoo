@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.connector</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="70"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Connector" string="Connector" name="dn_connector_base">
+                    <block title="Documentation &amp; User Manuals" name="connector_docs_block">
+                        <setting id="connector_setup_guide" string="Documentation &amp; User Manuals" help="View complete in-app setup manuals for configuring webhook integrations without touching source code.">
+                            <div class="mt8">
+                                <button name="action_open_setup_guide" type="object" string="Open Setup Guide" class="btn btn-primary" icon="fa-book"/>
+                            </div>
+                            <div class="text-muted mt4">
+                                <field name="setup_guide_url" readonly="1" widget="url"/>
+                            </div>
+                        </setting>
+                    </block>
+                    <block title="Inbound Gateway Retention &amp; Queue Operations" name="connector_settings_block">
+                        <setting string="Message Retention (Done)" help="Days to retain successfully processed messages before purge.">
+                            <field name="connector_retention_days_done"/>
+                        </setting>
+                        <setting string="Dead Letter Retention" help="Days to retain dead letters for debugging before purge.">
+                            <field name="connector_retention_days_dead"/>
+                        </setting>
+                        <setting string="Batch Processing Size" help="Number of messages claimed per batch by processor cron.">
+                            <field name="connector_default_batch_size"/>
+                        </setting>
+                        <setting string="Message Lock Timeout" help="Timeout threshold in seconds for worker lock contention.">
+                            <field name="connector_lock_timeout"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_connector_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'module': 'dn_connector_base'}</field>
+    </record>
+</odoo>

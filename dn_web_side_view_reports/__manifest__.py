@@ -8,7 +8,6 @@
         - Popup Mode (Opens the Form view in a modal/target new).
     """,
     'author': 'Dat Nguyen',
-    'website': 'https://www.datnguyen.dev',
     'category': 'Hidden',
     'version': '19.0.1.0.1',
     'license': 'OPL-1',

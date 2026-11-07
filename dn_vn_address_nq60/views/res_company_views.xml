@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_inherit_nq60" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.nq60</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="dn_vn_address.view_company_form_inherit_dn_vn"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='district_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -21,7 +21,6 @@
         - Create Account Move records
     """,
     'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
     'license': 'LGPL-3',
     'depends': [
         'base',

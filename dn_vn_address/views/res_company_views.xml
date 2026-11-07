@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_inherit_dn_vn" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.dn.vn</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='state_id']" position="after">
+                <field name="district_id" placeholder="District..." class="o_address_state"
+                       domain="[('state_id', '=?', state_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+                <field name="ward_id" placeholder="Ward..." class="o_address_state"
+                       domain="[('district_id', '=?', district_id)]"
+                       options="{'no_open': True, 'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Country State Form Extension -->
+    <record id="view_country_state_form_inherit_nq60" model="ir.ui.view">
+        <field name="name">res.country.state.form.inherit.nq60</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="dn_vn_address.view_country_state_form_inherit_dn_vn"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_sync_nq60_v2" string="Sync NQ60 Administrative Units (v2)"
+                        type="object" class="btn-secondary" groups="base.group_system"/>
+                <button name="action_merge_state_nq60" string="Merge Absorbed States"
+                        type="object" class="btn-primary" invisible="not map_with_state_ids"/>
+            </xpath>
+            <xpath expr="//field[@name='name_extension']" position="after">
+                <field name="map_with_state_ids" widget="many2many_tags"
+                       domain="[('country_id', '=', country_id), ('id', '!=', id)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Country State List Extension -->
+    <record id="view_country_state_tree_inherit_nq60" model="ir.ui.view">
+        <field name="name">res.country.state.list.inherit.nq60</field>
+        <field name="model">res.country.state</field>
+        <field name="inherit_id" ref="dn_vn_address.view_country_state_tree_inherit_dn_vn"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name_extension']" position="after">
+                <field name="map_with_state_ids" widget="many2many_tags" optional="show"/>
+                <button name="action_merge_state_nq60" string="Merge" type="object"
+                        class="btn-sm btn-outline-primary" invisible="not map_with_state_ids"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Ward List View Extension -->
+    <record id="view_country_ward_list_inherit_nq60" model="ir.ui.view">
+        <field name="name">res.country.ward.list.inherit.nq60</field>
+        <field name="model">res.country.ward</field>
+        <field name="inherit_id" ref="dn_vn_address.view_country_ward_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='district_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state_id']" position="after">
+                <field name="is_new" widget="boolean_toggle"/>
+                <field name="map_with_ward_ids" widget="many2many_tags" optional="show"/>
+                <button name="action_merge_ward_nq60" string="Merge" type="object"
+                        class="btn-sm btn-outline-primary" invisible="not map_with_ward_ids"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Ward Form View Extension -->
+    <record id="view_country_ward_form_inherit_nq60" model="ir.ui.view">
+        <field name="name">res.country.ward.form.inherit.nq60</field>
+        <field name="model">res.country.ward</field>
+        <field name="inherit_id" ref="dn_vn_address.view_country_ward_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_merge_ward_nq60" string="Merge Legacy Wards"
+                            type="object" class="btn-primary" invisible="not map_with_ward_ids"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='state_id']" position="after">
+                <field name="is_new"/>
+                <field name="map_with_ward_ids" widget="many2many_tags"
+                       domain="[('id', '!=', id)]"/>
+            </xpath>
+            <xpath expr="//field[@name='district_id']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

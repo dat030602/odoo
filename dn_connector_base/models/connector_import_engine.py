@@ -30,7 +30,7 @@ class ConnectorImportEngine(models.AbstractModel):
         Fetches all records from the API (with pagination), optionally
         discovers and applies schema, then imports each record.
 
-        :param endpoint: The connector.endpoint record to sync.
+        :param endpoint: The connector.outbound.endpoint record to sync.
         """
         connector = endpoint.connector_id
         cache = {"models": {}, "fields": {}}
@@ -54,7 +54,7 @@ class ConnectorImportEngine(models.AbstractModel):
 
         Handles page number, offset/limit, and cursor-based pagination.
 
-        :param endpoint: The connector.endpoint record to fetch from.
+        :param endpoint: The connector.outbound.endpoint record to fetch from.
         :return: A list of raw record dicts.
         """
         connector = endpoint.connector_id
@@ -87,7 +87,7 @@ class ConnectorImportEngine(models.AbstractModel):
     def _build_pagination_params(self, endpoint, page, cursor):
         """Build query parameters for pagination.
 
-        :param endpoint: The connector.endpoint record.
+        :param endpoint: The connector.outbound.endpoint record.
         :param page: The current page number (for page-based pagination).
         :param cursor: The current cursor token (for cursor-based pagination).
         :return: A dict of query parameters.
@@ -136,6 +136,9 @@ class ConnectorImportEngine(models.AbstractModel):
         """
         Model = self._get_cached_model(signature.target_model_name, cache)
         vals = {"x_payload": json.dumps(raw)}
+        if parent_id and signature.parent_signature_id:
+            parent_rel_field = f"x_{signature.parent_signature_id.target_model_name}_id"
+            vals[parent_rel_field] = parent_id
         external_id = raw.get("id") or raw.get("Id") or raw.get("ID")
         if external_id is not None:
             vals["x_external_id"] = str(external_id)
@@ -146,7 +149,7 @@ class ConnectorImportEngine(models.AbstractModel):
             field = self._get_cached_field(
                 signature.target_model_name, field_name, cache
             )
-            if field is None:
+            if not field:
                 missing_log.setdefault(
                     signature.target_model_name, set()
                 ).add(field_name)
@@ -160,13 +163,13 @@ class ConnectorImportEngine(models.AbstractModel):
 
         record = None
         if vals.get("x_external_id"):
-            record = Model.sudo().search(
+            record = Model.sudo().search(  # sudo: dynamic record lookup by external ID during import
                 [("x_external_id", "=", vals["x_external_id"])], limit=1
             )
         if record:
             record.write(vals)
         else:
-            record = Model.sudo().create(vals)
+            record = Model.sudo().create(vals)  # sudo: dynamic record creation during import
 
         for key, items in child_batches.items():
             child_signature = signature._get_child_signature(key)
@@ -210,10 +213,10 @@ class ConnectorImportEngine(models.AbstractModel):
         Groups missing fields by model and creates one log entry per model.
 
         :param missing_log: Dict mapping model names to sets of missing field names.
-        :param endpoint: The connector.endpoint record.
+        :param endpoint: The connector.outbound.endpoint record.
         """
         for model_name, field_names in missing_log.items():
-            self.env["connector.missing.log"].sudo().create({
+            self.env["connector.missing.log"].sudo().create({  # sudo: log missing schema fields during import
                 "endpoint_id": endpoint.id,
                 "model_name": model_name,
                 "field_names": ", ".join(sorted(field_names)),

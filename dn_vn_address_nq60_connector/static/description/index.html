@@ -1,0 +1,235 @@
+<!-- ==============================================================================
+     Vietnam Address NQ60 Connector Pack (v2 Reform) - App Store Showcase
+     Module: dn_vn_address_nq60_connector
+     Author: MJB Solutions & Tech Team
+     Platform: Odoo 19 Community & Enterprise, Python 3.12
+============================================================================== -->
+
+<style>
+    .vn-nq60-conn-showcase {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #1e293b;
+        background-color: #f8fafc;
+        line-height: 1.6;
+    }
+    .vn-nq60-conn-showcase .hero-banner {
+        background: linear-gradient(135deg, #3730a3 0%, #4f46e5 50%, #7c3aed 100%);
+        border-radius: 20px;
+        padding: 44px 32px;
+        color: #ffffff;
+        box-shadow: 0 10px 30px rgba(55, 48, 163, 0.25);
+    }
+    .vn-nq60-conn-showcase .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        color: #ffffff;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .vn-nq60-conn-showcase .badge-pill i {
+        margin-right: 6px;
+    }
+    .vn-nq60-conn-showcase .feature-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 24px;
+        height: 100%;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .vn-nq60-conn-showcase .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+    }
+    .vn-nq60-conn-showcase .icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+    .vn-nq60-conn-showcase .icon-indigo {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+    .vn-nq60-conn-showcase .icon-purple {
+        background: #ede9fe;
+        color: #6d28d9;
+    }
+    .vn-nq60-conn-showcase .icon-cyan {
+        background: #cffafe;
+        color: #0891b2;
+    }
+    .vn-nq60-conn-showcase .screenshot-container {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 16px;
+        padding: 12px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        margin-top: 16px;
+        margin-bottom: 24px;
+    }
+    .vn-nq60-conn-showcase .screenshot-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        display: block;
+        border: 1px solid #f1f5f9;
+    }
+    .vn-nq60-conn-showcase .code-block {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        overflow-x: auto;
+    }
+    .dn-conn-comment { color: #64748b; font-style: italic; }
+    .dn-conn-keyword { color: #f43f5e; font-weight: bold; }
+    .dn-conn-func { color: #38bdf8; }
+    .dn-conn-str { color: #4ade80; }
+</style>
+
+<div class="vn-nq60-conn-showcase">
+    <!-- ================= HERO BANNER ================= -->
+    <section class="oe_container pt-4">
+        <div class="hero-banner">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-8">
+                    <div class="mb-3">
+                        <span class="badge-pill"><i class="fa fa-plug"></i> NQ60 Connector Pack</span>
+                        <span class="badge-pill"><i class="fa fa-code-fork"></i> Preset vn_address_v2</span>
+                        <span class="badge-pill"><i class="fa fa-link"></i> Relational Ward Merger Linker</span>
+                        <span class="badge-pill"><i class="fa fa-check"></i> Odoo 19 Certified</span>
+                    </div>
+                    <h1 style="font-size: 32px; font-weight: 800; line-height: 1.25; margin-bottom: 16px; color: #ffffff;">
+                        Vietnam Address NQ60 Connector Pack (v2 Reform)
+                    </h1>
+                    <p style="font-size: 15px; color: #e0e7ff; line-height: 1.7; margin-bottom: 24px; max-width: 650px;">
+                        The specialized enterprise connector pack bridging 
+                        <strong>dn_connector_base</strong> with <strong>dn_vn_address_nq60</strong>. 
+                        Pre-configures the <code>vn_address_v2</code> framework preset, registers active endpoint <code>vn-address-v2-inbound-token</code>, and deploys intelligent Python handlers that automatically reconcile administrative mergers.
+                    </p>
+                    <a href="#nq60-pipeline" class="btn btn-light" style="color: #4338ca; font-weight: 700; border-radius: 10px; padding: 10px 22px;">
+                        <i class="fa fa-sitemap"></i> View Pipeline Architecture
+                    </a>
+                </div>
+                <div class="col-12 col-lg-4 text-center mt-4 mt-lg-0">
+                    <div style="background: rgba(255,255,255,0.12); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.2);">
+                        <i class="fa fa-exchange" style="font-size: 60px; color: #c7d2fe;"></i>
+                        <h4 style="font-size: 18px; font-weight: 800; color: #ffffff; margin-top: 12px; margin-bottom: 4px;">Preset: vn_address_v2</h4>
+                        <p style="font-size: 13px; color: #e0e7ff; margin: 0;">Open API v2 Inbound Ready</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ARCHITECTURAL HIGHLIGHTS ================= -->
+    <section class="oe_container mt-5" id="nq60-pipeline">
+        <div class="text-center mb-4">
+            <h2 style="font-size: 26px; font-weight: 800; color: #0f172a;">NQ60 Connector Pipeline &amp; Merger Handling</h2>
+            <p style="font-size: 15px; color: #64748b; max-width: 650px; margin: 0 auto;">
+                Seamlessly absorbs administrative re-organizations without interrupting daily sales, invoicing, or delivery operations.
+            </p>
+        </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="feature-card text-center">
+                    <div class="icon-box icon-indigo mx-auto"><i class="fa fa-cubes"></i></div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #0f172a;">1. Framework Preset</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 8px;"><code>preset_vn_address_v2</code></p>
+                    <p style="font-size: 13px; color: #475569; margin: 0;">
+                        Standardizes NQ60 webhook parameters, payload paths, and deferred execution queue settings for high-volume synchronization.
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="feature-card text-center">
+                    <div class="icon-box icon-purple mx-auto"><i class="fa fa-link"></i></div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #0f172a;">2. Pre-Configured Endpoint</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 8px;"><code>vn-address-v2-inbound-token</code></p>
+                    <p style="font-size: 13px; color: #475569; margin: 0;">
+                        Pre-seeded active inbound webhook endpoint ready to receive payloads from Open API v2 or corporate middleware in real time.
+                    </p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="feature-card text-center">
+                    <div class="icon-box icon-cyan mx-auto"><i class="fa fa-code-fork"></i></div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: #0f172a;">3. Relational Merger Handler</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 8px;"><code>(4, id)</code> Tuples &amp; <code>is_new</code></p>
+                    <p style="font-size: 13px; color: #475569; margin: 0;">
+                        Detects merged administrative wards, marks newly formed units (<code>is_new=True</code>), and links historical IDs to <code>map_with_ward_ids</code>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SCREENSHOT & CODE SHOWCASE ================= -->
+    <section class="oe_container mt-5">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-5">
+                <span class="badge" style="background:#ede9fe; color:#6d28d9; font-weight:700; padding:6px 12px; border-radius:8px; font-size:12px;">RELATIONAL MERGERS</span>
+                <h3 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 10px;">
+                    Smart Administrative Merger Tracking
+                </h3>
+                <p style="font-size: 14px; color: #475569; line-height: 1.7;">
+                    When two or more legacy wards merge under NQ60, the connector creates the new consolidated ward and maintains bidirectional links to legacy units:
+                </p>
+                <div class="code-block mb-3">
+<span class="dn-conn-comment"># Inbound NQ60 Python Handler</span>
+<span class="dn-conn-keyword">for</span> item <span class="dn-conn-keyword">in</span> payload.get(<span class="dn-conn-str">'wards'</span>, []):
+    legacy_ids = find_legacy_ward_ids(item.get(<span class="dn-conn-str">'merged_codes'</span>))
+    env[<span class="dn-conn-str">'res.country.ward'</span>].create({
+        <span class="dn-conn-str">'name'</span>: item[<span class="dn-conn-str">'name'</span>],
+        <span class="dn-conn-str">'code'</span>: item[<span class="dn-conn-str">'code'</span>],
+        <span class="dn-conn-str">'state_id'</span>: state_id,
+        <span class="dn-conn-str">'is_new'</span>: True,
+        <span class="dn-conn-str">'map_with_ward_ids'</span>: [(<span class="dn-conn-func">4</span>, lid) <span class="dn-conn-keyword">for</span> lid <span class="dn-conn-keyword">in</span> legacy_ids]
+    })
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fa fa-check-circle text-success me-2"></i>
+                    <span style="font-size: 13px;"><strong>100% Backward Compatible:</strong> No data loss on prior customer addresses.</span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-7">
+                <div class="screenshot-container">
+                    <img src="screenshot_vn_nq60_connector.png" class="screenshot-img" alt="Vietnam NQ60 Connector Pack Inbound Processing"/>
+                    <div style="font-size: 12px; color: #64748b; text-align: center; margin-top: 8px;">
+                        <i class="fa fa-camera"></i> <em>Figure: Odoo 19 contact partner view displaying NQ60 2-tier reform synced via dn_vn_address_nq60_connector.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <section class="oe_container mt-5">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px 24px; text-align: center;">
+            <h3 style="font-size: 20px; font-weight: 800; color: #4f46e5; margin-bottom: 8px;">
+                Vietnam Address NQ60 Connector Pack (v2 Reform)
+            </h3>
+            <p style="font-size: 14px; color: #64748b; margin-bottom: 16px;">
+                Version 19.0.1.0.0 &bull; Requires: <code>dn_connector_base</code> and <code>dn_vn_address_nq60</code> &bull; Contact: dat030602@gmail.com
+            </p>
+            <span style="font-size: 12px; color: #94a3b8;">
+                Engineered with transactional queues, idempotency safeguards, and full unit test coverage.
+            </span>
+        </div>
+    </section>
+</div>
