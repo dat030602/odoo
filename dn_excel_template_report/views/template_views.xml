@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_excel_report_template_list" model="ir.ui.view">
+        <field name="name">excel.report.template.list</field>
+        <field name="model">excel.report.template</field>
+        <field name="arch" type="xml">
+            <list string="Excel Report Templates">
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="config_mode"/>
+                <field name="empty_table_policy"/>
+                <field name="is_bound" widget="boolean_toggle"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_excel_report_template_form" model="ir.ui.view">
+        <field name="name">excel.report.template.form</field>
+        <field name="model">excel.report.template</field>
+        <field name="arch" type="xml">
+            <form string="Excel Report Template">
+                <header>
+                    <button name="action_validate_template"
+                            type="object"
+                            string="Validate Template"
+                            class="btn-primary"/>
+                    <button name="action_test_print"
+                            type="object"
+                            string="Test Print"
+                            class="btn-secondary"/>
+                    <button name="action_bind_print_button"
+                            type="object"
+                            string="Bind Print Action"
+                            class="btn-secondary"
+                            invisible="is_bound == True"/>
+                    <button name="action_unbind_print_button"
+                            type="object"
+                            string="Unbind Print Action"
+                            class="btn-secondary"
+                            invisible="is_bound == False"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Template Name (e.g. RFQ Summary Report)"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="left">
+                            <field name="model_id" options="{'no_create': True}"/>
+                            <field name="config_mode" widget="radio" options="{'horizontal': true}"/>
+                            <field name="template_filename" invisible="1"/>
+                            <field name="template_file" filename="template_filename"/>
+                            <field name="binding_action_id" readonly="1" invisible="not binding_action_id"/>
+                        </group>
+                        <group name="right">
+                            <field name="filename_expr"/>
+                            <field name="empty_table_policy"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="is_bound" invisible="1"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Python Code" name="python_code" invisible="config_mode != 'code'">
+                            <div class="mb-2">
+                                <button name="action_test_python_code"
+                                        type="object"
+                                        string="Test Python Code"
+                                        icon="fa-play"
+                                        class="btn-secondary"/>
+                                <span class="text-muted ms-3">
+                                    Execute code against a sample record of the target model to verify logic.
+                                </span>
+                            </div>
+                            <field name="python_code"
+                                   widget="ace"
+                                   options="{'mode': 'python'}"
+                                   placeholder="# Write your Python code here..."/>
+                        </page>
+                        <page string="Variables" name="variables" invisible="config_mode == 'code'">
+                            <field name="variable_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name" placeholder="e.g. tax_rate"/>
+                                    <field name="code" placeholder="e.g. record.amount_tax"/>
+                                    <field name="value_type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Data Sources" name="datasources" invisible="config_mode == 'code'">
+                            <field name="datasource_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="rows_expr"/>
+                                    <field name="column_ids" widget="many2many_tags"/>
+                                </list>
+                                <form string="Data Source">
+                                    <sheet>
+                                        <group>
+                                            <field name="name" placeholder="e.g. summary"/>
+                                            <field name="rows_expr" placeholder="e.g. record.order_line"/>
+                                        </group>
+                                        <notebook>
+                                            <page string="Columns" name="columns">
+                                                <field name="column_ids">
+                                                    <list editable="bottom">
+                                                        <field name="sequence" widget="handle"/>
+                                                        <field name="key" placeholder="e.g. product"/>
+                                                        <field name="expr" placeholder="e.g. line.product_id.display_name"/>
+                                                    </list>
+                                                </field>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Security &amp; Advanced" name="security">
+                            <group>
+                                <field name="group_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_excel_report_template_search" model="ir.ui.view">
+        <field name="name">excel.report.template.search</field>
+        <field name="model">excel.report.template</field>
+        <field name="arch" type="xml">
+            <search string="Search Excel Report Templates">
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="config_mode"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Model" name="group_by_model" domain="[]" context="{'group_by': 'model_id'}"/>
+                    <filter string="Config Mode" name="group_by_config_mode" domain="[]" context="{'group_by': 'config_mode'}"/>
+                    <filter string="Empty Table Policy" name="group_by_policy" domain="[]" context="{'group_by': 'empty_table_policy'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action Window -->
+    <record id="action_excel_report_template" model="ir.actions.act_window">
+        <field name="name">Excel Report Templates</field>
+        <field name="res_model">excel.report.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_excel_report_template_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Excel Report Template!
+            </p>
+            <p>
+                Upload a .xlsx file, configure dynamic placeholders, table data sources, and bind print actions directly to Odoo views.
+            </p>
+        </field>
+    </record>
+</odoo>

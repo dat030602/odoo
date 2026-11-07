@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_excel_report_python_module_list" model="ir.ui.view">
+        <field name="name">excel.report.python.module.list</field>
+        <field name="model">excel.report.python.module</field>
+        <field name="arch" type="xml">
+            <list string="Python Modules" editable="bottom" create="1" edit="1" delete="1">
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle" readonly="1"/>
+                <button name="action_test_module"
+                        type="object"
+                        string="Test Module"
+                        icon="fa-check"
+                        invisible="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_excel_report_python_module_search" model="ir.ui.view">
+        <field name="name">excel.report.python.module.search</field>
+        <field name="model">excel.report.python.module</field>
+        <field name="arch" type="xml">
+            <search string="Search Python Modules">
+                <field name="name"/>
+                <filter string="Enabled" name="enabled" domain="[('active', '=', True)]"/>
+                <filter string="Disabled" name="disabled" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_excel_report_python_module" model="ir.actions.act_window">
+        <field name="name">Python Modules</field>
+        <field name="res_model">excel.report.python.module</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="view_excel_report_python_module_search"/>
+        <field name="context">{'active_test': False}</field>
+        <field name="help" type="html">
+            <p>Create a module entry, test it, and enable it for Python Code templates.</p>
+        </field>
+    </record>
+</odoo>

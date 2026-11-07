@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-level Application Menu for Excel Reports -->
+    <menuitem id="menu_excel_report_root"
+              name="Excel Reports"
+              sequence="85"
+              web_icon="dn_excel_template_report,static/description/logo.png"
+              groups="dn_excel_template_report.group_manager"/>
+
+    <!-- Templates menu under Excel Reports -->
+    <menuitem id="menu_excel_report_template"
+              name="Templates"
+              parent="menu_excel_report_root"
+              action="action_excel_report_template"
+              sequence="10"/>
+
+    <menuitem id="menu_excel_report_python_module"
+              name="Python Modules"
+              parent="menu_excel_report_root"
+              action="action_excel_report_python_module"
+              sequence="20"/>
+
+    <!-- Technical Menu under Settings > Technical -->
+    <menuitem id="menu_excel_report_template_technical"
+              name="Excel Report Templates"
+              parent="base.menu_custom"
+              action="action_excel_report_template"
+              sequence="60"/>
+</odoo>
