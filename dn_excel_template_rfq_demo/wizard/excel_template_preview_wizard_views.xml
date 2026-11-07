@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_excel_template_preview_wizard_form" model="ir.ui.view">
+        <field name="name">excel.template.preview.wizard.form</field>
+        <field name="model">excel.template.preview.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Print Excel Template Report">
+                <sheet>
+                    <div class="alert alert-info" role="alert" invisible="state != 'draft'">
+                        <i class="fa fa-info-circle me-1"/>
+                        <span>Click <strong>Generate Spreadsheet</strong> to preview and prepare the pixel-perfect Excel report for download, or <strong>Direct Download</strong> to stream immediately.</span>
+                    </div>
+                    <div class="alert alert-success" role="alert" invisible="state != 'done'">
+                        <i class="fa fa-check-circle me-1"/>
+                        <span>Excel report generated successfully! Click the file link below to download.</span>
+                    </div>
+
+                    <group>
+                        <group string="Order Information">
+                            <field name="order_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="partner_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="line_count"/>
+                            <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Template Configuration">
+                            <field name="template_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Generated Report File" invisible="state != 'done'">
+                        <field name="filename" invisible="1"/>
+                        <field name="file_data" filename="filename" widget="binary" readonly="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_excel" string="Generate Spreadsheet" type="object" class="btn-primary" icon="fa-cogs" invisible="state == 'done'"/>
+                    <button name="action_print_direct" string="Direct Download" type="object" class="btn-secondary" icon="fa-download"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_excel_template_preview_wizard" model="ir.actions.act_window">
+        <field name="name">Print Excel Template Report</field>
+        <field name="res_model">excel.template.preview.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_excel_template_preview_wizard_form"/>
+    </record>
+</odoo>
