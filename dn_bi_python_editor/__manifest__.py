@@ -30,8 +30,8 @@ Workflow:
     """,
 
     # Author information
-    'author': 'Dat Nguyen',
-
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     # Module category
     'category': 'Tools',
 

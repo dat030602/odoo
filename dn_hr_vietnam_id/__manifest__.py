@@ -13,7 +13,8 @@ This module extends the standard Employee model (hr.employee) to manage Vietname
 * Fast search by ID Card Number in employee search view.
 * Automatic sync to standard identification_id if empty.
     """,
-    'author': "Dat Nguyen",
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
     'depends': ['hr'],
     'data': [

@@ -15,7 +15,8 @@ Features:
 - Asynchronous FIFO queueing and transactional Inbox processing.
 - Seeds real Vietnam address records (Hanoi, Da Nang, Ho Chi Minh) via connector inbox.
 """,
-    "author": "MJB Solutions",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     "license": "LGPL-3",
     "depends": ["base", "dn_connector_base", "dn_vn_address"],
     "data": [

@@ -18,7 +18,8 @@ Features:
 - Pluggable handlers: Store-only, Raw Dynamic Staging Models, Server Actions, Python safe_eval with _dynamic_import.
 - Centralized message retention and dead-letter queue operations.
 """,
-    "author": "MJB Solutions",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     "website": "https://www.mjbsolutions.com",
     "license": "LGPL-3",
     "depends": ["base", "web", "mail"],

@@ -6,7 +6,7 @@
     'summary': "Enable Dynamic Validation Process.",
     'sequence': 20,
     'category': 'Hidden/Tools',
-    'author': 'Majorbird',
+    'author': 'Dyan',
     'website': 'https://www.majorbird.com',
     'description': """
         Enable Dynamic Validation Process.
@@ -38,7 +38,7 @@
             {
                 "title": "Installation",
                 "description": "Find the module in the app list and click install!",
-                "images": ["image1.png"],
+    'images': ['static/description/banner.png'],
             },
             {
                 "title": "Configuration",

@@ -16,7 +16,8 @@ Features:
 - Maps consolidated wards (`is_new=True`) and legacy merger references (`map_with_ward_ids`).
 - Seeds real Vietnam NQ60 address records on database `odoo19`.
 """,
-    "author": "MJB Solutions",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     "license": "LGPL-3",
     "depends": ["base", "dn_connector_base", "dn_vn_address_nq60"],
     "data": [

@@ -2,7 +2,8 @@
     'name': "GraphQL API Gateway for Odoo",
     'version': "19.0.1.0.0",
     'category': "Technical/API",
-    'author': "Dat Nguyen / Antigravity",
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'license': "LGPL-3",
     'summary': "High-performance GraphQL API Gateway with API Key Auth, Odoo ACL, Atomic Savepoint Rollback, and Security Blocklist",
     'description': """

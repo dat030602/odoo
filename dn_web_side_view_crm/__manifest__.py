@@ -8,7 +8,7 @@
         - Popup Mode (Opens the Form view in a modal/target new).
     """,
     'version': '19.0.1.0.1',
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
     'category': 'Hidden',
     'license': 'OPL-1',
     'depends': ['dn_web_side_view', 'crm_enterprise'],
@@ -23,9 +23,7 @@
         ],
     },
     # App screenshots / icons
-    'images': [
-        'static/description/icon.png',
-    ],
+    'images': ['static/description/banner.png'],
     'price': 0.00,
     'currency': 'EUR',
 }

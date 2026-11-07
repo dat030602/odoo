@@ -4,7 +4,8 @@
     'version': '19.0.1.0.0',
     'category': 'Technical',
     'summary': 'No-code builder for defining Excel report models, fields, views and triggers.',
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'depends': ['dn_excel_report_base'],
     'data': [
         'security/ir.model.access.csv',

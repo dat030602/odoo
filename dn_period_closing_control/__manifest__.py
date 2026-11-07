@@ -1,5 +1,7 @@
 {
     'name': 'Period Closing Control',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'version': '1.0',
     'category': 'Accounting',
     'summary': 'Control Period Closings across operations',

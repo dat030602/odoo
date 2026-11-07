@@ -1,5 +1,7 @@
 {
     'name': 'Credit Sale Control',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'version': '1.0',
     'category': 'Sales',
     'summary': 'Control Credit limits in Sales',

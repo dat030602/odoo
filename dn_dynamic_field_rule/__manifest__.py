@@ -4,7 +4,8 @@
     "summary": "Profile-based UI field rules per model",
     "version": "19.0.1.0.0",
     "category": "Technical",
-    "author": "Your Company",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     "website": "https://www.yourcompany.com",
     "depends": ["base"],
     "data": [

@@ -1,5 +1,7 @@
 {
     'name': 'Credit Delivery Control',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'version': '1.0',
     'category': 'Inventory',
     'summary': 'Control Credit limits in Delivery',

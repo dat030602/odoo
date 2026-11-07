@@ -33,7 +33,8 @@ Usage:
 This feature helps prevent forgotten attachments and improves communication efficiency 
 through a flexible, configurable system.
     """,
-    'author': 'Your Company',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
     'depends': ['mail'],
     'data': [

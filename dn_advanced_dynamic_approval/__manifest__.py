@@ -19,7 +19,7 @@ Features:
 - Dynamic field behavior based on current approval stage
     """,
     # Author and website (required by App Store)
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
     # Module category on Odoo Store (Tools / Miscellaneous recommended for utility modules)
     'category': 'Tools',
     # Version format: [Odoo version].[module version] (19.0 -> Odoo 19)
@@ -43,9 +43,7 @@ Features:
         # 3. Wizards
         'wizards/approval_reason_wizard_views.xml',
     ],
-    'images': [
-        'static/description/icon.png',
-    ],
+    'images': ['static/description/banner.png'],
     # Static assets (JS, CSS, SCSS, QWeb templates)
     'assets': {
     },

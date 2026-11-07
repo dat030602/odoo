@@ -10,7 +10,8 @@
         A configuration-driven framework for integrating with external systems
         (Payment Gateways, Shipping, ERP, AI, etc.) without modifying core framework.
     """,
-    'author': 'Your Company',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'website': 'https://www.yourcompany.com',
     'license': 'LGPL-3',
     'depends': [

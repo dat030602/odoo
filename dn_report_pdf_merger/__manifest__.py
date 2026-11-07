@@ -16,8 +16,11 @@ Features:
 - Uses Odoo's built-in PDF merge tool (odoo.tools.pdf.merge_pdf)
 - Clean separation of concerns with a dedicated line model
 """,
-    'author': 'DN Solutions',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
+    'price': 3.00,
+    'currency': 'USD',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',

@@ -16,7 +16,8 @@ Key Features:
 - Multi-Model Isolation: Global cache service maintains isolated caches per model.
 - High Performance: Saves database load and network traffic for high-frequency navigation workflows.
     """,
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'depends': ['web'],
     'data': [],
     'assets': {

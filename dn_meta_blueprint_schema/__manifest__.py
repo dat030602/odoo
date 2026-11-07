@@ -15,7 +15,8 @@ Key features:
 - Full support for computed fields, related fields, monetary fields, one2many, many2many, etc.
 - XML ID registration for actions and views.
 """,
-    'author': 'MJB Solutions',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
     'depends': ['base', 'web'],
     'data': [

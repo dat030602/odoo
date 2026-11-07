@@ -1,5 +1,7 @@
 {
     'name': 'MRP Shortage Manager',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'version': '1.0',
     'category': 'Manufacturing',
     'summary': 'Manage Material Shortages in Manufacturing',

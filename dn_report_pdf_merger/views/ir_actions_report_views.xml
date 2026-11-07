@@ -10,14 +10,16 @@
                         <field name="prepend_file_ids" context="{'default_position': 'prepend'}">
                             <list editable="bottom">
                                 <field name="sequence" widget="handle"/>
-                                <field name="attachment_id"/>
+                                <field name="name" required="1"/>
+                                <field name="datas"/>
                                 <field name="position" column_invisible="1"/>
                             </list>
                         </field>
                         <field name="append_file_ids" context="{'default_position': 'append'}">
                             <list editable="bottom">
                                 <field name="sequence" widget="handle"/>
-                                <field name="attachment_id"/>
+                                <field name="name" required="1"/>
+                                <field name="datas"/>
                                 <field name="position" column_invisible="1"/>
                             </list>
                         </field>

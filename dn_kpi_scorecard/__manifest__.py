@@ -3,7 +3,7 @@
     "name": "DatNg - KPI Balanced Scorecard",
     "version": "19.0.1.0.4",
     "category": "Extra Tools",
-    'author': 'support@bizapps.vn',
+    'author': 'Dyan',
     'website': 'https://www.bizapps.vn',
     "license": "Other proprietary",
     "application": True,
@@ -44,9 +44,7 @@
     ],
     "external_dependencies": {},
     "summary": "The tool to set up KPI targets and control their fulfillment by periods",
-    "images": [
-        "static/description/main.png"
-    ],
+    'images': ['static/description/banner.png'],
     "price": "198.0",
     "currency": "EUR",
     "live_test_url": "https://faotools.com/my/tickets/newticket?&url_app_id=138&ticket_version=15.0&url_type_id=3",

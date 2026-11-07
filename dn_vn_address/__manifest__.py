@@ -19,7 +19,8 @@ Features:
 - Computed full address (full_address_vi).
 - Direct Open API v1 synchronization via system parameter `dn_vn_address.api_url`.
 """,
-    "author": "MJB Solutions",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     "license": "LGPL-3",
     "depends": ["base", "contacts"],
     "data": [

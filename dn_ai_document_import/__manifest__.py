@@ -5,7 +5,8 @@
     "summary": "Import sales and documents using Odoo 19 AI multimodal models",
     "version": "19.0.1.0.0",
     "category": "Productivity/Artificial Intelligence",
-    "author": "Antigravity",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     "license": "OEEL-1",
     "depends": [
         "sale",

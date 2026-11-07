@@ -4,7 +4,8 @@
     'summary': 'Open One2many and Many2many lists in fullscreen mode',
     'description': 'Adds a button to X2Many fields to open them in fullscreen mode.',
     'category': 'Customizations',
-    'author': 'DN',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'depends': ['base', 'web'],
     'data': [],
     'assets': {

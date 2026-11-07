@@ -1,4 +1,6 @@
-from odoo import models, fields
+import base64
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class ReportPdfFile(models.Model):
@@ -13,11 +15,10 @@ class ReportPdfFile(models.Model):
         ondelete='cascade',
         required=True,
     )
-    attachment_id = fields.Many2one(
-        'ir.attachment',
+    datas = fields.Binary(
         string='PDF File',
         required=True,
-        domain="[('mimetype', '=', 'application/pdf')]",
+        attachment=True,
     )
     position = fields.Selection(
         [
@@ -27,3 +28,20 @@ class ReportPdfFile(models.Model):
         string='Position',
         required=True,
     )
+    name = fields.Char(
+        string='File Name',
+        required=True,
+        help='The name of the PDF file to be merged with the report.',
+    )
+
+    @api.constrains('datas')
+    def _check_pdf_file(self):
+        for record in self:
+            if record.datas:
+                try:
+                    file_content = base64.b64decode(record.datas)
+                except Exception:
+                    raise ValidationError(_('Invalid file data.'))
+
+                if not file_content.startswith(b'%PDF-'):
+                    raise ValidationError(_('Invalid file format. Only valid PDF files are allowed.'))

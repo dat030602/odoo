@@ -20,7 +20,8 @@ Key features
 * Batch print: select many records and download a ZIP of Excel files.
 * Per-template access groups and multi-company isolation.
     """,
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'maintainer': 'Dat Nguyen',
     'support': 'dat030602@gmail.com',
     'license': 'OPL-1',

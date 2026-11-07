@@ -7,7 +7,7 @@
     - Split View Mode (Splits screen: List on the left, Form on the right).
     - Popup Mode (Opens the Form view in a modal/target new).
     """,
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
     'category': 'Hidden',
     'version': '19.0.1.0.1',
     'license': 'OPL-1',
@@ -19,9 +19,7 @@
         ],
     },
     # App screenshots / icons
-    'images': [
-        'static/description/icon.png',
-    ],
+    'images': ['static/description/banner.png'],
     'demo': [],
     'installable': True,
     'application': False,

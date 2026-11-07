@@ -15,7 +15,8 @@ Implements the 2-tier administrative reorganization under Resolution 60/NQ-CP:
 - Data merging tools: map_with_state_ids, map_with_ward_ids, action_merge_state_nq60(), action_merge_ward_nq60().
 - Direct API Sync v2 via system parameter `dn_vn_address_nq60.api_url`.
 """,
-    "author": "MJB Solutions",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     "license": "LGPL-3",
     "depends": ["base", "dn_vn_address"],
     "data": [

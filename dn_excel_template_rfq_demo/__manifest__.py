@@ -17,7 +17,8 @@ This module provides demonstration data, extended fields, and an interactive pop
 - **Dual Print Actions**: Separate header buttons to test print using Builder mode or Python Code mode directly.
 - **OWL 2 Widget**: Custom `excel_preview_popup` button widget embedded on the form.
     """,
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
     'depends': [
         'purchase',

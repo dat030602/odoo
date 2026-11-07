@@ -9,7 +9,8 @@
 This module allows users to select specific lines from a Purchase Order (PO) to create a bill. It enhances the standard Odoo functionality by providing a more granular control over which items are billed, enabling better management of billing processes and customer orders.
     """,
     # Author information
-    "author": "Dat Nguyen",
+    "author": 'Dyan',
+    'images': ['static/description/banner.png'],
     # Module category
     "category": "Tools",
     # Version format: OdooVersion.ModuleVersion

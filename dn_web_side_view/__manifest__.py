@@ -21,8 +21,7 @@ Features:
     """,
 
     # Author and website (required by App Store)
-    'author': 'Dat Nguyen',
-
+    'author': 'Dyan',
     # Module category on Odoo Store
     'category': 'Tools',
 
@@ -42,10 +41,7 @@ Features:
     'data': [],
 
     # App screenshots / icons
-    'images': [
-        'static/description/icon.png',
-    ],
-
+    'images': ['static/description/banner.png'],
     # Static assets (JS, CSS, SCSS, QWeb templates)
     'assets': {
         'web.assets_backend': [

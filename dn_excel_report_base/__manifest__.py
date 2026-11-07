@@ -37,7 +37,8 @@ Dependencies:
 -------------
     pip install openpyxl simpleeval
 """,
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',

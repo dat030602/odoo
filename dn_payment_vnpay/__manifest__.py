@@ -11,7 +11,7 @@
         Integrates VNPay Payment Gateway with Odoo 19 Payment Framework.
         Built on top of dn_payment_connector_base.
     """,
-    'author': 'Your Company',
+    'author': 'Dyan',
     'license': 'LGPL-3',
     'depends': [
         'payment',
@@ -25,7 +25,7 @@
         'views/payment_transaction_views.xml',
         'data/vnpay_payment_data.xml',
     ],
-    'images': ['static/description/icon.png'],
+    'images': ['static/description/banner.png'],
     'installable': True,
     'application': False,
     'auto_install': False,

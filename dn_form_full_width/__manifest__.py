@@ -4,7 +4,8 @@
     'summary': 'Toggle form full width with a floating button',
     'description': 'Adds a floating button to toggle the form full width and keeps the preference available per user.',
     'category': 'Customizations',
-    'author': 'DN',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'depends': ['base', 'web', 'mail'],
     'data': [],
     'assets': {

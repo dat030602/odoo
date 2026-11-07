@@ -1,5 +1,7 @@
 {
     'name': 'Inventory Commitment Dashboard',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'version': '1.0',
     'category': 'Inventory',
     'summary': 'Dashboard for inventory commitments',

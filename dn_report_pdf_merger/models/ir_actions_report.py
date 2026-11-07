@@ -52,16 +52,16 @@ class IrActionsReport(models.Model):
 
         # Add prepend files (cover pages) sorted by sequence
         for pdf_file in prepends:
-            if pdf_file.attachment_id.datas:
-                streams.append(base64.b64decode(pdf_file.attachment_id.datas))
+            if pdf_file.datas:
+                streams.append(base64.b64decode(pdf_file.datas))
 
         # Add the original report PDF
         streams.append(content)
 
         # Add append files (appendix pages) sorted by sequence
         for pdf_file in appends:
-            if pdf_file.attachment_id.datas:
-                streams.append(base64.b64decode(pdf_file.attachment_id.datas))
+            if pdf_file.datas:
+                streams.append(base64.b64decode(pdf_file.datas))
 
         try:
             merged_content = merge_pdf(streams)

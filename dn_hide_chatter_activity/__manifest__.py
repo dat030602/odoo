@@ -4,7 +4,8 @@
     'summary': 'Dynamically hide chatter and activity by model',
     'description': 'Provides a setting to hide the chatter or activity views for specific models.',
     'category': 'Customizations',
-    'author': 'DN',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'depends': ['base', 'web', 'mail'],
     'data': [
         'security/ir.model.access.csv',

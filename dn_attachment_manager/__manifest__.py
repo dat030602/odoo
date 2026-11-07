@@ -4,7 +4,8 @@
     'category': 'Tools',
     'summary': 'Dynamic attachment manager system with configurable keywords and activities',
     'description': """Attachment Manager for Odoo""",
-    'author': 'Your Company',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
     'depends': ['base'],
     'data': [

@@ -22,7 +22,8 @@ Account resolution priority:
 2. Recursive lookup up the location parent hierarchy.
 3. Fallback to ``product.category.property_stock_valuation_account_id``.
     """,
-    'author': 'DN Dev',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'category': 'Inventory/Inventory',
     'depends': ['stock_account'],
     'data': [

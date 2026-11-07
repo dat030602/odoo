@@ -1,5 +1,7 @@
 {
     'name': 'Notification Auto Fetch Record',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'version': '1.0',
     'category': 'Hidden',
     'summary': 'Auto fetch/reload record when a notification is displayed',

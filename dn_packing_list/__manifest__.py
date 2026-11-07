@@ -2,7 +2,7 @@
 {
     'name': 'Packing List',
     'version': '19.0.0.3',
-    'author': "Majorbird",
+    'author': 'Dyan',
     "website": "https://www.majorbird.com",
     'category': 'Inventory',
     'summary': 'This module revolutionizes the way you manage your packing lists in Odoo. The module adds functionality to create, track, and manage packing lists with ease. With its comprehensive set of features, this module takes the guesswork out of packing list management, optimizing your logistics operations and ensuring no detail is overlooked.', 
@@ -46,7 +46,7 @@
             {  
             'title': 'Installation and Setup',  
             'description': 'Begin by installing the module from the Odoo Apps store. Complete the setup by following the on-screen guide.',  
-            'images': ['image1.png']  
+    'images': ['static/description/banner.png'],
             },
             {  
             'title': 'Configuring for Carton',  

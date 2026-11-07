@@ -25,8 +25,7 @@ Features:
     """,
 
     # Author information
-    'author': 'Dat Nguyen',
-
+    'author': 'Dyan',
     # Module category
     'category': 'Tools',
 
@@ -48,10 +47,7 @@ Features:
     ],
 
     # App icon
-    'images': [
-        'static/description/icon.png',
-    ],
-
+    'images': ['static/description/banner.png'],
     # Static assets
     'assets': {
         'web.assets_backend': [

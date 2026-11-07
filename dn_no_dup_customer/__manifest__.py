@@ -12,8 +12,8 @@ This module provides functionality to detect and prevent duplicate customer entr
     """,
 
     # Author information
-    'author': 'Dat Nguyen',
-
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     # Module category
     'category': 'Tools',
 

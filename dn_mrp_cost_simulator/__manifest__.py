@@ -36,7 +36,8 @@ Key Features:
    - High-performance PostgreSQL SQL Views (`_auto = False`) with Pivot and Graph analysis.
    - Gross Margin Analysis connecting Sales Orders to Manufacturing Orders.
     """,
-    'author': 'Dat Nguyen',
+    'author': 'Dyan',
+    'images': ['static/description/banner.png'],
     'depends': [
         'mrp',
         'stock_account',
