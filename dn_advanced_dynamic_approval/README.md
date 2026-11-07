@@ -283,7 +283,7 @@ dn_advanced_dynamic_approval/
 
 ## Support
 
-- **Author:** Dat Nguyen - https://www.datnguyen.dev
+- **Author:** Dyan
 - **Email:** dat030602@gmail.com
 - Bug fixes and installation assistance are provided for supported configurations. Do not uninstall the module on databases with existing records - contact support instead.
 

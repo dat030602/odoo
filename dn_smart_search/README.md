@@ -10,7 +10,6 @@ grouped by model, and opened instantly — without leaving your current screen.
 | Field        | Value                          |
 |--------------|--------------------------------|
 | Author       | Dat Nguyen                     |
-| Website      | https://www.datnguyen.dev      |
 | Category     | Tools                          |
 | Version      | 19.0.1.0.0                     |
 | License      | OPL-1                          |
