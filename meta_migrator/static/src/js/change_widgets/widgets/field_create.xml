@@ -13,6 +13,14 @@
         <span class="o_mm_badge o_mm_badge--create">New field</span>
       </div>
 
+      <!-- Order dependency hint -->
+      <Banner t-if="orderHint" level="'info'" text="orderHint"/>
+
+      <!-- Structural warnings -->
+      <t t-if="warnings.length">
+        <Banner t-foreach="warnings" t-as="w" t-key="w" level="'warning'" text="w"/>
+      </t>
+
       <!-- Groups Grid -->
       <div class="o_mm_groups">
         <section t-foreach="groups" t-as="g" t-key="g.id"

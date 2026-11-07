@@ -1,9 +1,10 @@
 from unittest.mock import MagicMock
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 from odoo.exceptions import ValidationError
-from ..models.migration_step import ALLOWED_ACTIONS, REQUIRED_INPUTS
+from odoo.addons.meta_migrator.models.migration_step import ALLOWED_ACTIONS, REQUIRED_INPUTS
 
 
+@tagged('post_install', '-at_install')
 class TestStepCombinations(TransactionCase):
 
     @classmethod
@@ -45,18 +46,12 @@ class TestStepCombinations(TransactionCase):
                 'action': 'create',
                 'model_name': 'x_combo_model',
                 'field_name': 'x_combo_char',
-                'field_description': 'Combo Char Field',
-                'ttype': 'char',
-                'help': 'Tooltip for combo char',
             },
             # 3. view create
             {
                 'object_type': 'view',
                 'action': 'create',
                 'model_name': 'x_combo_model',
-                'view_name': 'x_combo_model_form',
-                'view_type': 'form',
-                'arch': '<form><sheet><field name="x_combo_char"/></sheet></form>',
             },
             # 4. view update
             {
@@ -70,46 +65,32 @@ class TestStepCombinations(TransactionCase):
                 'object_type': 'server_action',
                 'action': 'create',
                 'model_name': 'x_combo_model',
-                'action_name': 'Combo Action Create',
                 'xml_id': 'meta_migrator.action_combo_create',
-                'state': 'code',
-                'code': 'record.write({"x_combo_char": "done"})\n',
             },
             # 6. server_action update
             {
                 'object_type': 'server_action',
                 'action': 'update',
                 'model_name': 'x_combo_model',
-                'action_name': 'Combo Action Update',
                 'xml_id': 'meta_migrator.action_combo_update',
-                'state': 'code',
-                'code': 'record.write({"x_combo_char": "updated"})\n',
             },
             # 7. menu create
             {
                 'object_type': 'menu',
                 'action': 'create',
                 'model_name': 'x_combo_model',
-                'menu_name': 'Combo Menu',
-                'parent_xml_id': 'base.menu_custom',
             },
             # 8. access_right create
             {
                 'object_type': 'access_right',
                 'action': 'create',
                 'model_name': 'x_combo_model',
-                'access_name': 'access_x_combo_model_user',
-                'group_xml_id': 'base.group_user',
-                'perm_read': True,
-                'perm_write': True,
             },
             # 9. record_rule create
             {
                 'object_type': 'record_rule',
                 'action': 'create',
                 'model_name': 'x_combo_model',
-                'rule_name': 'Combo Rule Multi Company',
-                'domain_force': "['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]",
             },
         ]
 
@@ -153,21 +134,46 @@ class TestStepCombinations(TransactionCase):
                 'action': 'create',
             })
 
-        # Missing view_type for view create
+        # View create with only model_name is VALID (auto-fetches all views of model from source)
+        view_step = self.env['meta.migration.step'].create({
+            'job_id': self.job.id,
+            'object_type': 'view',
+            'action': 'create',
+            'model_name': 'x_combo_model',
+        })
+        self.assertTrue(view_step.exists())
+
+        # View create without model_name and without xml_id is REJECTED
         with self.assertRaises(ValidationError):
             self.env['meta.migration.step'].create({
                 'job_id': self.job.id,
                 'object_type': 'view',
                 'action': 'create',
-                'model_name': 'x_combo_model',
             })
 
-        # Missing xml_id for view update
+        # Server action create with only model_name is VALID (auto-fetches all actions for model from source)
+        sa_step = self.env['meta.migration.step'].create({
+            'job_id': self.job.id,
+            'object_type': 'server_action',
+            'action': 'create',
+            'model_name': 'x_combo_model',
+        })
+        self.assertTrue(sa_step.exists())
+
+        # Server action create without model_name and without xml_id is REJECTED
         with self.assertRaises(ValidationError):
             self.env['meta.migration.step'].create({
                 'job_id': self.job.id,
-                'object_type': 'view',
-                'action': 'update',
+                'object_type': 'server_action',
+                'action': 'create',
+            })
+
+        # Menu create without model_name and without xml_id is REJECTED
+        with self.assertRaises(ValidationError):
+            self.env['meta.migration.step'].create({
+                'job_id': self.job.id,
+                'object_type': 'menu',
+                'action': 'create',
             })
 
         # Malformed xml_id without dot
@@ -179,102 +185,90 @@ class TestStepCombinations(TransactionCase):
                 'xml_id': 'nodotxmlid',
             })
 
-    def test_04_field_compute_depends_mutual_requirement(self):
-        """Test: If depends is set, compute is required; if compute is set, depends is required."""
-        # Case A: compute set, depends empty -> ValidationError
-        with self.assertRaises(ValidationError) as cm:
-            self.env['meta.migration.step'].create({
-                'job_id': self.job.id,
-                'object_type': 'field',
-                'action': 'create',
-                'model_name': 'x_combo_model',
-                'field_name': 'x_comp_no_dep',
-                'ttype': 'char',
-                'compute': 'for rec in self: rec.x_comp_no_dep = "ok"',
-                'depends': '',
-            })
-        self.assertIn("depends", str(cm.exception).lower())
-
-        # Case B: depends set, compute empty -> ValidationError
-        with self.assertRaises(ValidationError) as cm:
-            self.env['meta.migration.step'].create({
-                'job_id': self.job.id,
-                'object_type': 'field',
-                'action': 'create',
-                'model_name': 'x_combo_model',
-                'field_name': 'x_dep_no_comp',
-                'ttype': 'char',
-                'compute': False,
-                'depends': 'x_source_field',
-            })
-        self.assertIn("compute", str(cm.exception).lower())
-
-        # Case C: both compute and depends set -> Success
-        step_ok = self.env['meta.migration.step'].create({
+    def test_04_simplified_step_inputs(self):
+        """Test simplified inputs for field, access_right, and record_rule."""
+        # Field step with only model_name (migrate all manual fields)
+        step_field_all = self.env['meta.migration.step'].create({
             'job_id': self.job.id,
             'object_type': 'field',
             'action': 'create',
             'model_name': 'x_combo_model',
-            'field_name': 'x_comp_with_dep',
-            'ttype': 'char',
-            'compute': 'for rec in self: rec.x_comp_with_dep = "ok"',
-            'depends': 'x_source_field',
-            'help': 'Computed field with dependency',
         })
-        self.assertTrue(step_ok.exists())
-        self.assertEqual(step_ok.help, 'Computed field with dependency')
+        self.assertTrue(step_field_all.exists())
+        self.assertIn("all manual fields", step_field_all.label)
 
-    def test_05_field_related_mutual_exclusion(self):
-        """Test: If related is set, depends and compute cannot be set."""
-        # Case A: related with compute -> ValidationError
-        with self.assertRaises(ValidationError) as cm:
-            self.env['meta.migration.step'].create({
-                'job_id': self.job.id,
-                'object_type': 'field',
-                'action': 'create',
-                'model_name': 'x_combo_model',
-                'field_name': 'x_rel_and_comp',
-                'ttype': 'char',
-                'related': 'partner_id.name',
-                'compute': 'for rec in self: pass',
-                'depends': 'partner_id',
-            })
-        self.assertIn("related", str(cm.exception).lower())
-
-        # Case B: related alone -> Success
-        step_rel = self.env['meta.migration.step'].create({
+        # Field step with xml_id
+        step_field_xml = self.env['meta.migration.step'].create({
             'job_id': self.job.id,
             'object_type': 'field',
             'action': 'create',
-            'model_name': 'x_combo_model',
-            'field_name': 'x_rel_alone',
-            'ttype': 'char',
-            'related': 'partner_id.name',
-            'help': 'Related field from partner',
+            'xml_id': 'base.field_res_partner__name',
         })
-        self.assertTrue(step_rel.exists())
-        self.assertFalse(step_rel.compute)
-        self.assertFalse(step_rel.depends)
+        self.assertTrue(step_field_xml.exists())
+        self.assertIn("base.field_res_partner__name", step_field_xml.label)
 
-    def test_06_field_onchange_behavior(self):
-        """Test onchange methods: setting related clears compute/depends, setting compute clears related."""
-        step = self.env['meta.migration.step'].new({
-            'object_type': 'field',
+        # Access right step with only model_name
+        step_acc_all = self.env['meta.migration.step'].create({
+            'job_id': self.job.id,
+            'object_type': 'access_right',
             'action': 'create',
-            'compute': 'for rec in self: pass',
-            'depends': 'partner_id',
+            'model_name': 'x_combo_model',
         })
-        # Trigger onchange related
-        step.related = 'partner_id.name'
-        step._onchange_related()
-        self.assertFalse(step.compute)
-        self.assertFalse(step.depends)
+        self.assertTrue(step_acc_all.exists())
+        self.assertIn("access rights for x_combo_model", step_acc_all.label)
 
-        # Trigger onchange compute/depends
-        step.compute = 'for rec in self: pass'
-        step.depends = 'partner_id'
-        step._onchange_compute_depends()
-        self.assertFalse(step.related)
+        # Access right step with xml_id
+        step_acc_xml = self.env['meta.migration.step'].create({
+            'job_id': self.job.id,
+            'object_type': 'access_right',
+            'action': 'create',
+            'xml_id': 'base.access_res_partner_group_user',
+        })
+        self.assertTrue(step_acc_xml.exists())
+        self.assertIn("base.access_res_partner_group_user", step_acc_xml.label)
+
+        # Record rule step with only model_name
+        step_rule_all = self.env['meta.migration.step'].create({
+            'job_id': self.job.id,
+            'object_type': 'record_rule',
+            'action': 'create',
+            'model_name': 'x_combo_model',
+        })
+        self.assertTrue(step_rule_all.exists())
+        self.assertIn("record rules for x_combo_model", step_rule_all.label)
+
+        # Record rule step with xml_id
+        step_rule_xml = self.env['meta.migration.step'].create({
+            'job_id': self.job.id,
+            'object_type': 'record_rule',
+            'action': 'create',
+            'xml_id': 'base.res_partner_rule',
+        })
+        self.assertTrue(step_rule_xml.exists())
+        self.assertIn("base.res_partner_rule", step_rule_xml.label)
+
+    def test_05_model_step_related_options(self):
+        """Test model step with related options (menu, access rights, views)."""
+        step_model = self.env['meta.migration.step'].create({
+            'job_id': self.job.id,
+            'object_type': 'model',
+            'action': 'create',
+            'model_name': 'x_combo_model',
+            'create_list_view': True,
+            'create_form_view': True,
+            'create_search_view': True,
+            'create_menu': True,
+            'copy_access_rights': True,
+            'copy_record_rules': True,
+        })
+        self.assertTrue(step_model.exists())
+        snap = step_model._to_snapshot()
+        self.assertTrue(snap['create_menu'])
+        self.assertTrue(snap['copy_access_rights'])
+        self.assertTrue(snap['copy_record_rules'])
+        self.assertTrue(snap['create_list_view'])
+        self.assertTrue(snap['create_form_view'])
+        self.assertTrue(snap['create_search_view'])
 
     def test_07_view_dispatch_plan_and_apply(self):
         """Test that _plan_view and _apply_view properly dispatch create and update actions."""
@@ -293,15 +287,22 @@ class TestStepCombinations(TransactionCase):
             'cache': {},
             'planned_models': {'res.partner'},
         }
-        mock_ctx['target_rpc'].search_read.return_value = [{'id': 1}]
+        mock_ctx['target_rpc'].search_read.return_value = []
+        mock_ctx['source_rpc'].search_read.return_value = [{
+            'id': 10,
+            'name': 'Partner Form',
+            'type': 'form',
+            'arch': '<form><sheet/></form>',
+            'priority': 16,
+            'inherit_id': False,
+            'mode': 'primary',
+            'model': 'res.partner',
+        }]
 
         step_create_view = {
             'action': 'create',
             'object_type': 'view',
             'model_name': 'res.partner',
-            'view_type': 'form',
-            'view_name': 'res.partner.form.test',
-            'arch': '<form><sheet/></form>',
         }
         changes_create = run._plan_view(step_create_view, mock_ctx)
         self.assertTrue(isinstance(changes_create, list))

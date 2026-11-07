@@ -25,6 +25,10 @@ class MetaMigrationJob(models.Model):
     target_connection_id = fields.Many2one(
         'meta.migration.connection', string='Target Link', required=True,
     )
+    target_module_name = fields.Char(
+        string='Target Module Name', default='meta_migrator', required=True,
+        help="Module prefix for generated XML IDs on target system.",
+    )
     on_conflict = fields.Selection([
         ('skip', 'Skip if already exists'),
         ('overwrite', 'Overwrite if already exists'),
@@ -41,6 +45,9 @@ class MetaMigrationJob(models.Model):
 
     step_ids = fields.One2many(
         'meta.migration.step', 'job_id', string='Steps',
+    )
+    migrated_line_ids = fields.One2many(
+        'meta.migration.job.line', 'job_id', string='Migrated Items',
     )
     run_ids = fields.One2many(
         'meta.migration.run', 'job_id', string='Runs',
@@ -132,3 +139,30 @@ class MetaMigrationJob(models.Model):
             'target': 'new',
             'context': {'default_job_id': self.id},
         }
+
+    def record_migrated_item(self, object_type, model_name, name, xml_id, res_id=False, state='applied', message=False):
+        self.ensure_one()
+        if not xml_id:
+            return False
+        Line = self.env['meta.migration.job.line']
+        existing = Line.search([('job_id', '=', self.id), ('xml_id', '=', xml_id)], limit=1)
+        vals = {
+            'object_type': object_type,
+            'model_name': model_name or '',
+            'name': name or xml_id,
+            'target_res_id': res_id or 0,
+            'state': state,
+            'last_sync_date': fields.Datetime.now(),
+            'message': message or '',
+        }
+        if existing:
+            existing.write(vals)
+            line = existing
+        else:
+            vals.update({
+                'job_id': self.id,
+                'xml_id': xml_id,
+                'sequence': (len(self.migrated_line_ids) + 1) * 10,
+            })
+            line = Line.create(vals)
+        return line

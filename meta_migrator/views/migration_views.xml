@@ -32,6 +32,7 @@
                             <field name="target_connection_id"/>
                         </group>
                         <group string="Execution Options">
+                            <field name="target_module_name" placeholder="e.g. meta_migrator"/>
                             <field name="on_conflict"/>
                             <field name="stop_on_error"/>
                             <field name="run_in_background"/>
@@ -51,6 +52,23 @@
                                     <field name="object_type" widget="badge"/>
                                     <field name="model_name"/>
                                     <field name="label" string="Step Summary"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Migrated Items">
+                            <field name="migrated_line_ids" readonly="1">
+                                <list default_order="sequence, id">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="object_type" widget="badge"/>
+                                    <field name="model_name"/>
+                                    <field name="name"/>
+                                    <field name="xml_id"/>
+                                    <field name="target_res_id"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'applied'"
+                                           decoration-warning="state in ('planned', 'skipped')"
+                                           decoration-danger="state == 'failed'"/>
+                                    <field name="last_sync_date"/>
                                 </list>
                             </field>
                         </page>
@@ -153,54 +171,12 @@
                     <!-- 2. FIELD SETUP -->
                     <group string="Field Definition" invisible="object_type != 'field'">
                         <group>
-                            <field name="model_name" required="object_type == 'field'"
+                            <field name="model_name" required="object_type == 'field' and not xml_id"
                                    placeholder="e.g. sale.order"/>
                             <field name="field_name"
                                    placeholder="e.g. x_custom_field (empty = all manual fields)"/>
-                            <field name="field_description" placeholder="e.g. Custom Notes"/>
-                            <field name="ttype"/>
-                            <field name="help" placeholder="Tooltip text displayed to users"/>
-                        </group>
-                        <group>
-                            <field name="relation"
-                                   invisible="ttype not in ('many2one', 'one2many', 'many2many')"
-                                   required="ttype in ('many2one', 'one2many', 'many2many')"
-                                   placeholder="e.g. res.partner"/>
-                            <field name="relation_field"
-                                   invisible="ttype != 'one2many'"
-                                   required="ttype == 'one2many'"
-                                   placeholder="e.g. order_id"/>
-                            <field name="on_delete"
-                                   invisible="ttype != 'many2one'"/>
-                            <field name="selection"
-                                   invisible="ttype != 'selection'"
-                                   required="ttype == 'selection'"
-                                   placeholder="[('draft', 'Draft'), ('done', 'Done')]"/>
-                        </group>
-                        <group string="Field Properties" colspan="2">
-                            <group>
-                                <field name="required"/>
-                                <field name="readonly"/>
-                                <field name="store"/>
-                            </group>
-                            <group>
-                                <field name="index"/>
-                                <field name="copied"/>
-                                <field name="translate" invisible="ttype not in ('char', 'text', 'html')"/>
-                            </group>
-                        </group>
-                        <group string="Compute &amp; Advanced Logic" colspan="2">
-                            <field name="compute"
-                                   invisible="related"
-                                   required="object_type == 'field' and not related and depends"
-                                   placeholder="# Python compute code: for rec in self: rec.x_field = ..."/>
-                            <field name="depends"
-                                   invisible="related"
-                                   required="object_type == 'field' and not related and compute"
-                                   placeholder="e.g. partner_id,order_line.price_subtotal"/>
-                            <field name="related"
-                                   invisible="compute or depends"
-                                   placeholder="e.g. partner_id.name"/>
+                            <field name="xml_id"
+                                   placeholder="e.g. module.field_x_name (optional: if set, only this field is migrated)"/>
                         </group>
                     </group>
 
@@ -208,89 +184,47 @@
                     <group string="View Definition" invisible="object_type != 'view'">
                         <group>
                             <field name="model_name"
-                                   required="object_type == 'view' and action == 'create'"
+                                   required="object_type == 'view' and not xml_id"
                                    placeholder="e.g. sale.order"/>
-                            <field name="view_name" placeholder="e.g. sale.order.form.custom"/>
-                            <field name="view_type"
-                                   required="object_type == 'view' and action == 'create'"/>
-                            <field name="priority"/>
-                        </group>
-                        <group>
                             <field name="xml_id"
-                                   required="object_type == 'view' and action == 'update'"
-                                   placeholder="e.g. sale.view_order_form"/>
-                            <field name="inherit_xml_id" placeholder="e.g. base.view_partner_form"/>
-                            <field name="mode"/>
-                        </group>
-                        <group string="Architecture XML" colspan="2">
-                            <field name="arch" placeholder="&lt;form&gt; ... &lt;/form&gt; or &lt;data&gt; ... &lt;/data&gt;"/>
+                                   placeholder="e.g. sale.view_order_form (optional: if set, only this view is migrated)"/>
                         </group>
                     </group>
 
                     <!-- 4. SERVER ACTION SETUP -->
                     <group string="Server Action Definition" invisible="object_type != 'server_action'">
                         <group>
-                            <field name="action_name" placeholder="e.g. Update Partner Status"/>
-                            <field name="model_name" placeholder="e.g. res.partner"/>
-                            <field name="xml_id" required="object_type == 'server_action'"
-                                   placeholder="e.g. custom_module.action_update_partner"/>
-                        </group>
-                        <group>
-                            <field name="state"/>
-                            <field name="binding_model" placeholder="e.g. res.partner"/>
-                            <field name="binding_type"/>
-                        </group>
-                        <group string="Python Code" colspan="2">
-                            <field name="code" placeholder="# Python code executed by the server action"/>
+                            <field name="model_name" required="object_type == 'server_action' and not xml_id"
+                                   placeholder="e.g. res.partner"/>
+                            <field name="xml_id"
+                                   placeholder="e.g. custom_module.action_update_partner (optional: if set, only this action is migrated)"/>
                         </group>
                     </group>
 
                     <!-- 5. ACCESS RIGHT SETUP -->
                     <group string="Access Right (ACL) Definition" invisible="object_type != 'access_right'">
                         <group>
-                            <field name="access_name" placeholder="e.g. access_x_custom_model_user"/>
-                            <field name="model_name" required="object_type == 'access_right'"
+                            <field name="model_name" required="object_type == 'access_right' and not xml_id"
                                    placeholder="e.g. x_custom_model"/>
-                            <field name="group_xml_id" placeholder="e.g. base.group_user (empty = all users)"/>
-                        </group>
-                        <group string="Permissions">
-                            <field name="perm_read"/>
-                            <field name="perm_write"/>
-                            <field name="perm_create"/>
-                            <field name="perm_unlink"/>
+                            <field name="xml_id" placeholder="e.g. module.access_x_custom (optional: if set, only this access right is migrated)"/>
                         </group>
                     </group>
 
                     <!-- 6. RECORD RULE SETUP -->
                     <group string="Record Rule Definition" invisible="object_type != 'record_rule'">
                         <group>
-                            <field name="rule_name" placeholder="e.g. Multi-Company Rule"/>
-                            <field name="model_name" required="object_type == 'record_rule'"
+                            <field name="model_name" required="object_type == 'record_rule' and not xml_id"
                                    placeholder="e.g. x_custom_model"/>
-                            <field name="group_xml_id" placeholder="e.g. base.group_user (empty = all groups)"/>
-                            <field name="rule_active" widget="boolean_toggle"/>
-                        </group>
-                        <group string="Permissions">
-                            <field name="perm_read"/>
-                            <field name="perm_write"/>
-                            <field name="perm_create"/>
-                            <field name="perm_unlink"/>
-                        </group>
-                        <group string="Domain Filter" colspan="2">
-                            <field name="domain_force" placeholder="['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"/>
+                            <field name="xml_id" placeholder="e.g. module.rule_x_custom (optional: if set, only this rule is migrated)"/>
                         </group>
                     </group>
 
                     <!-- 7. MENU SETUP -->
                     <group string="Menu Definition" invisible="object_type != 'menu'">
                         <group>
-                            <field name="menu_name" placeholder="e.g. Custom Management"/>
-                            <field name="model_name" required="object_type == 'menu'"
+                            <field name="model_name" required="object_type == 'menu' and not xml_id"
                                    placeholder="e.g. x_custom_model"/>
-                        </group>
-                        <group>
-                            <field name="parent_xml_id" placeholder="e.g. base.menu_custom"/>
-                            <field name="menu_sequence"/>
+                            <field name="xml_id" placeholder="e.g. base.menu_custom (optional: if set, only this menu is migrated)"/>
                         </group>
                     </group>
 

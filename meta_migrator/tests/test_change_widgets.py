@@ -1,8 +1,9 @@
 import json
-from odoo.tests.common import TransactionCase
-from .test_planner import FakeRPC
+from odoo.tests.common import TransactionCase, tagged
+from odoo.addons.meta_migrator.tests.test_planner import FakeRPC
 
 
+@tagged('post_install', '-at_install')
 class TestChangeWidgets(TransactionCase):
 
     @classmethod

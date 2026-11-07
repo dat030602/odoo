@@ -1,8 +1,9 @@
-import unittest
+from odoo.tests.common import BaseCase, tagged
 from odoo.addons.meta_migrator.models import view_merge
 
 
-class TestViewMerge(unittest.TestCase):
+@tagged('post_install', '-at_install')
+class TestViewMerge(BaseCase):
 
     def test_canonical_text(self):
         xml1 = '<field name="foo" required="1" invisible="0"/>'

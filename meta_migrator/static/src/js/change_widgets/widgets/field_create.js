@@ -55,6 +55,38 @@ export class MetaFieldCreate extends Component {
         return parseDepends(this.vals.depends);
     }
 
+    get warnings() {
+        const v = this.vals;
+        const warns = [];
+        if (v.compute && !v.depends) {
+            warns.push("'compute' is set but 'depends' is missing.");
+        }
+        if (v.depends && !v.compute) {
+            warns.push("'depends' is set but 'compute' is missing.");
+        }
+        if (v.related && v.compute) {
+            warns.push("'related' and 'compute' are mutually exclusive.");
+        }
+        if (v.related && v.depends) {
+            warns.push("'related' and 'depends' are mutually exclusive.");
+        }
+        if (["many2one", "one2many", "many2many"].includes(v.ttype) && !v.relation) {
+            warns.push(`'${v.ttype}' field requires a 'relation'.`);
+        }
+        if (v.ttype === "one2many" && !v.relation_field) {
+            warns.push("'one2many' requires 'relation_field'.");
+        }
+        return warns;
+    }
+
+    get orderHint() {
+        const v = this.vals;
+        if (v.ttype === "one2many" && v.relation && v.relation_field) {
+            return `Requires '${v.relation}.${v.relation_field}' (many2one) to exist first on target.`;
+        }
+        return null;
+    }
+
     get groups() {
         const v = this.vals;
         const res = [];

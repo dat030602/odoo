@@ -30,13 +30,13 @@ meta.migration.job        (Reusable migration scenario configuration)
 
 | Object Type (`object_type`) | Allowed Actions (`action`) | Mandatory Key Input | Notes |
 | :--- | :--- | :--- | :--- |
-| **`model`** | `create` only | `model_name` | Creates model or checks differences if already exists. |
+| **`model`** | `create` only | `model_name` | Creates model. If model already exists on target, checks all source manual fields, creates missing fields, updates changed attributes, and records diffs. |
 | **`field`** | `create` only | `model_name` | Creates field or updates attributes if already exists. |
-| **`view`** | `create`, `update` | `model_name` + `view_type` (create)<br>`xml_id` (update) | `create` generates a new view.<br>`update` appends elements to an existing view via XPath. |
-| **`server_action`** | `create`, `update` | `xml_id` | `create` declares a new action.<br>`update` overrides code/bindings of existing action. |
+| **`view`** | `create`, `update` | `model_name` or `xml_id` | If `xml_id` is provided, migrates only that specific view. If only `model_name` is provided, fetches all views of that model from source. View attributes & arch are fetched automatically from source. |
+| **`server_action`** | `create`, `update` | `model_name` or `xml_id` | If `xml_id` is provided, migrates only that action. If only `model_name` is provided, fetches all server actions for that model from source. Code & configuration are fetched automatically from source. |
 | **`access_right`** | `create` only | `model_name` | Creates/updates model ACL (`ir.model.access`). |
 | **`record_rule`** | `create` only | `model_name` | Creates/updates security domain filter (`ir.rule`). |
-| **`menu`** | `create` only | `model_name` | Creates menu and associated window action. |
+| **`menu`** | `create` only | `model_name` or `xml_id` | If `xml_id` is provided, migrates only that menu. If only `model_name` is provided, fetches all menus and window actions for that model from source. |
 
 > [!CAUTION]
 > **STRICT CONSTRAINT:** Setting `action='update'` on `model`, `field`, `menu`, `access_right`, or `record_rule` will raise an immediate Odoo `ValidationError`. Update detection for these types is handled automatically by the planner at runtime.
@@ -49,154 +49,80 @@ meta.migration.job        (Reusable migration scenario configuration)
 - **Action:** Must be `'create'`.
 - **Required Fields:**
   - `model_name` *(Char)*: Technical name (e.g., `'x_warranty_claim'` or existing `'sale.order'`).
+- **Existing Model Synchronization:**
+  - If the model already exists on target, the planner automatically inspects all manual fields on the source model.
+  - Missing fields on target are planned and created (`action='create'`).
+  - Fields with differing attributes (label, required, readonly, selection, compute, etc.) are planned and updated (`action='update'`).
+  - All changes are recorded in `meta.migration.change` for diff inspection.
 - **Optional Setup Fields:**
   - `model_description` *(Char)*: Display name/label (e.g., `'Warranty Claim'`).
   - `target_model_name` *(Char)*: Rename model on target system (leave blank to keep `model_name`).
   - `transient` *(Boolean)*: `True` if `models.TransientModel` (wizard), `False` for standard `models.Model` (default `False`).
   - **Auto-create Flags (Booleans):**
-    - `create_list_view`: Auto-generate list/tree view on target (default `True`).
-    - `create_form_view`: Auto-generate form view on target (default `True`).
-    - `create_search_view`: Auto-generate search view on target (default `True`).
-    - `create_menu`: Auto-generate menu item under custom menus (default `True`).
-    - `copy_access_rights`: Copy model access rights (default `True`).
-    - `copy_record_rules`: Copy record rules (default `False`).
+    - `create_list_view`: Auto-migrate list/tree view from source (default `True`).
+    - `create_form_view`: Auto-migrate form view from source (default `True`).
+    - `create_search_view`: Auto-migrate search view from source (default `True`).
+    - `create_menu`: Auto-migrate or auto-generate window action and menu item on target (default `True`).
+    - `copy_access_rights`: Auto-migrate access rights from source or auto-generate default access right on target (default `True`).
+    - `copy_record_rules`: Auto-migrate record rules from source (default `False`).
 
 ---
 
 ### 3.2. Field Step (`object_type = 'field'`)
 - **Action:** Must be `'create'`.
-- **Required Fields:**
-  - `model_name` *(Char)*: Model containing the field (e.g., `'x_warranty_claim'`).
-  - `field_name` *(Char)*: Technical field name (e.g., `'x_serial_no'`). *Empty string means migrate all manual fields of the model.*
-- **Core Field Properties:**
-  - `field_description` *(Char)*: Field label displayed in UI.
-  - `ttype` *(Selection)*: Field type:
-    `'char'`, `'integer'`, `'float'`, `'monetary'`, `'boolean'`, `'text'`, `'html'`, `'date'`, `'datetime'`, `'binary'`, `'selection'`, `'many2one'`, `'one2many'`, `'many2many'`.
-  - `help` *(Text)*: **Located in Field Definition group.** Tooltip text displayed to users.
-- **Relational & Selection Fields (Conditional Requirements):**
-  - If `ttype in ('many2one', 'one2many', 'many2many')`:
-    - `relation` *(Char, Required)*: Comodel technical name (e.g., `'res.partner'`).
-  - If `ttype == 'one2many'`:
-    - `relation_field` *(Char, Required)*: Inverse field on comodel (e.g., `'claim_id'`).
-  - If `ttype == 'many2one'`:
-    - `on_delete` *(Selection)*: `'set null'` (default), `'cascade'`, `'restrict'`.
-  - If `ttype == 'selection'`:
-    - `selection` *(Text, Required)*: Python list of string tuples, e.g. `"[('draft', 'Draft'), ('approved', 'Approved'), ('rejected', 'Rejected')]"`
-- **ORM Storage & Flags:**
-  - `required` *(Boolean)*: Default `False`.
-  - `readonly` *(Boolean)*: Default `False`.
-  - `store` *(Boolean)*: Default `True`.
-  - `index` *(Boolean)*: Default `False`.
-  - `copied` *(Boolean)*: Default `True`.
-  - `translate` *(Boolean)*: Default `False` (valid for `char`, `text`, `html`).
-
-#### Strict Rules for Computed vs. Related Fields:
-> [!IMPORTANT]
-> 1. **Compute & Depends Mutual Requirement:**
->    - If `compute` is set $\rightarrow$ `depends` is **MANDATORY**.
->    - If `depends` is set $\rightarrow$ `compute` is **MANDATORY**.
-> 2. **Related Mutual Exclusion:**
->    - If `related` is set $\rightarrow$ `compute` and `depends` **MUST BE EMPTY / FALSE**.
->    - If `compute` or `depends` is set $\rightarrow$ `related` **MUST BE EMPTY / FALSE**.
-> 3. **Syntax:**
->    - `compute`: Multi-line Python snippet, e.g.:
->      ```python
->      for rec in self:
->          rec.x_total_days = (rec.date_end - rec.date_start).days if rec.date_end and rec.date_start else 0
->      ```
->    - `depends`: Comma-separated dependencies, e.g. `'date_start,date_end'`
->    - `related`: Dot-notated path, e.g. `'partner_id.phone'`
+- **Zero Re-input Law:** Only `model_name` (and optionally `field_name` or `xml_id`) is needed on the step. All metadata (type, compute, depends, relation, selection, etc.) are fetched directly from the source server.
+- **Inputs:**
+  - `model_name` *(Char)*: Model containing the fields (e.g., `'x_warranty_claim'`).
+  - `field_name` *(Char, Optional)*: Specific field name (e.g., `'x_serial_no'`). *Leave empty to migrate ALL manual fields of this model.*
+  - `xml_id` *(Char, Optional)*: External ID of a specific field (e.g., `'base.field_res_partner__custom_code'`).
 
 ---
 
 ### 3.3. View Step (`object_type = 'view'`)
 - **Actions:** `'create'` OR `'update'`.
-- **Case A: `action = 'create'` (New View):**
-  - `model_name` *(Char, Required)*: e.g. `'x_warranty_claim'`.
-  - `view_type` *(Selection, Required)*: `'list'`, `'form'`, `'search'`, `'kanban'`, `'qweb'`.
-  - `view_name` *(Char, Optional)*: e.g. `'x_warranty_claim.form'`.
-  - `priority` *(Integer, Optional)*: Sequence priority (default `16`).
-  - `arch` *(Text, Optional)*: XML definition string, e.g.:
-    ```xml
-    <form string="Warranty Claim">
-        <header>
-            <field name="x_status" widget="statusbar"/>
-        </header>
-        <sheet>
-            <group>
-                <field name="x_name"/>
-                <field name="x_partner_id"/>
-            </group>
-        </sheet>
-    </form>
-    ```
-- **Case B: `action = 'update'` (Extension / Inheritance):**
-  - `xml_id` *(Char, Required)*: Target view external ID with module prefix, e.g. `'sale.view_order_form'`.
-  - `inherit_xml_id` *(Char, Optional)*: Base view to inherit from.
-  - `mode` *(Selection)*: `'extension'` (default for updates) or `'primary'`.
-  - `arch` *(Text, Required)*: XPath modification snippet, e.g.:
-    ```xml
-    <xpath expr="//field[@name='payment_term_id']" position="after">
-        <field name="x_claim_reference"/>
-    </xpath>
-    ```
+- **Required Fields:**
+  - Either `model_name` *(Char)* OR `xml_id` *(Char)* is required.
+  - **Single View Migration:** If `xml_id` is supplied (e.g. `'sale.view_order_form'`), only that single view is fetched from source and planned/applied on target.
+  - **Model Views Migration:** If only `model_name` is supplied (e.g. `'x_warranty_claim'`), all active views for that model are fetched from the source and compared with target.
+  - **Zero Re-input Law:** Only `model_name` (or `xml_id`) is needed on the step. All metadata, types, and XML architectures are automatically retrieved from the source server.
 
 ---
 
 ### 3.4. Server Action Step (`object_type = 'server_action'`)
 - **Actions:** `'create'` OR `'update'`.
 - **Required Fields:**
-  - `xml_id` *(Char, Required)*: Must use `'module.name'` format, e.g. `'x_warranty.action_approve_claim'`.
-- **Setup Fields:**
-  - `action_name` *(Char)*: Label displayed in Action dropdown, e.g. `'Approve Claim'`.
-  - `model_name` *(Char)*: Technical target model, e.g. `'x_warranty_claim'`.
-  - `state` *(Selection)*: `'code'` (default), `'object_create'`, `'object_write'`, `'multi'`.
-  - `code` *(Text)*: Python logic executed in server context (`record`, `records`, `env`):
-    ```python
-    for record in records:
-        if record.x_status == 'draft':
-            record.write({'x_status': 'approved'})
-    ```
-  - `binding_model` *(Char, Optional)*: Model where button/action appears.
-  - `binding_type` *(Selection)*: `'action'` (Action menu button) or `'report'`.
+  - Either `model_name` *(Char)* OR `xml_id` *(Char)* is required.
+  - **Single Action Migration:** If `xml_id` is supplied (e.g. `'x_warranty.action_approve_claim'`), only that specific action is fetched from source and planned/applied.
+  - **Model Actions Migration:** If only `model_name` is supplied (e.g. `'x_warranty_claim'`), all server actions associated with that model (`model_id` or `binding_model_id`) are retrieved from source.
+  - **Zero Re-input Law:** Only `model_name` (or `xml_id`) is needed on the step. All Python code, state, and binding configurations are read directly from the source server.
 
 ---
 
 ### 3.5. Access Right Step (`object_type = 'access_right'`)
 - **Action:** Must be `'create'`.
-- **Required Fields:**
-  - `model_name` *(Char, Required)*: Model being secured, e.g. `'x_warranty_claim'`.
-- **Setup Fields:**
-  - `access_name` *(Char)*: Identifier, e.g. `'access_x_warranty_claim_user'`.
-  - `group_xml_id` *(Char)*: Target security group external ID (e.g. `'base.group_user'`). *Leave empty to apply to all internal users.*
-  - `perm_read` *(Boolean)*: Default `True`.
-  - `perm_write` *(Boolean)*: Default `False`.
-  - `perm_create` *(Boolean)*: Default `False`.
-  - `perm_unlink` *(Boolean)*: Default `False`.
+- **Zero Re-input Law:** Only `model_name` OR `xml_id` is required. All security groups and permissions are automatically read from the source instance.
+- **Inputs:**
+  - `model_name` *(Char)*: Migrates all access rights for this model from source (or auto-generates default access right if none exists on source).
+  - `xml_id` *(Char)*: Migrates only the specific `ir.model.access` record identified by XML ID.
 
 ---
 
 ### 3.6. Record Rule Step (`object_type = 'record_rule'`)
 - **Action:** Must be `'create'`.
-- **Required Fields:**
-  - `model_name` *(Char, Required)*: Model being restricted, e.g. `'x_warranty_claim'`.
-- **Setup Fields:**
-  - `rule_name` *(Char)*: Rule label, e.g. `'Warranty Multi-Company Rule'`.
-  - `domain_force` *(Text)*: Odoo domain string filter, e.g.:
-    `"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"`
-  - `group_xml_id` *(Char, Optional)*: Group XML ID (empty = global rule).
-  - `rule_active` *(Boolean)*: Default `True`.
+- **Zero Re-input Law:** Only `model_name` OR `xml_id` is required. Domain filters and group mappings are retrieved from the source server.
+- **Inputs:**
+  - `model_name` *(Char)*: Migrates all record rules for this model from source.
+  - `xml_id` *(Char)*: Migrates only the specific `ir.rule` record identified by XML ID.
 
 ---
 
 ### 3.7. Menu Step (`object_type = 'menu'`)
 - **Action:** Must be `'create'`.
 - **Required Fields:**
-  - `model_name` *(Char, Required)*: Model to open via window action.
-- **Setup Fields:**
-  - `menu_name` *(Char)*: Label displayed in sidebar/topbar.
-  - `parent_xml_id` *(Char, Optional)*: Parent menu item external ID (e.g. `'base.menu_custom'`).
-  - `menu_sequence` *(Integer)*: Ordering index (default `10`).
+  - Either `model_name` *(Char)* OR `xml_id` *(Char)* is required.
+  - **Single Menu Migration:** If `xml_id` is supplied, only that specific menu item (and its action) is fetched from source and migrated.
+  - **Model Menus Migration:** If only `model_name` is supplied, all window actions and menus pointing to that model on the source server are discovered and migrated.
+  - **Zero Re-input Law:** Only `model_name` (or `xml_id`) is needed on the step. All menu hierarchies and actions are retrieved automatically from the source instance.
 
 ---
 
