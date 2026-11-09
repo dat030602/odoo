@@ -1,0 +1,26 @@
+[
+  {
+    "id": "mjb_rule",
+    "name": "MJB Development Rules & Workflow",
+    "file": "rules/mjb_rule.md",
+    "description": "MASTER workflow rule. Defines the 5-step execution workflow (Plan → Code → Review → Test → Summary), Subagent-First Policy, Task Classification (Type A: field-only vs Type B: logic change), and the mandatory PRE-EXECUTION GATE (skill lookup + subagent lookup + no-wandering rule). Read this FIRST for any Odoo task."
+  },
+  {
+    "id": "coding-style",
+    "name": "Coding Style",
+    "file": "rules/coding-style.md",
+    "description": "General coding style rules: imports at top (stdlib → third-party → local), naming conventions, indentation, and code formatting standards. Apply when writing or reviewing any code."
+  },
+  {
+    "id": "security",
+    "name": "Security Guidelines",
+    "file": "rules/security.md",
+    "description": "Mandatory pre-commit security checklist: no hardcoded secrets, input validation, SQL injection prevention (parameterized queries), XSS prevention, CSRF protection, rate limiting, and safe error messages. Apply to every commit."
+  },
+  {
+    "id": "dn-module-standards",
+    "name": "DN Module Standards",
+    "file": "rules/dn-module-standards.md",
+    "description": "Standards for Odoo modules: module prefix, author, and Odoo version are read from .agents/.env.local (keys: MODULE_PREFIX, AUTHOR, ODOO_VERSION). Enforces one-model-per-file (py + xml), manifest defaults (license LGPL-3, no website, free module), and complete English summary, description, documentation, and asset metadata."
+  }
+]

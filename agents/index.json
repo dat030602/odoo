@@ -1,0 +1,50 @@
+[
+  {
+    "id": "planner",
+    "name": "planner",
+    "file": "agents/planner.md",
+    "description": "Read-only analyst. Analyzes existing code, checks models/fields with odoo-workflow, drafts architectural plan following Odoo 20 patterns. Returns the plan as text reply only. Never edits or creates files. Use FIRST before any code change."
+  },
+  {
+    "id": "odoo-coder",
+    "name": "odoo-coder",
+    "file": "agents/odoo-coder.md",
+    "description": "Implementer. Writes minimal, clean Odoo 20 code (models, business logic, security, XML views, menus, actions) strictly following the planner's approved plan and the tester's failing tests. Does NOT write or edit tests."
+  },
+  {
+    "id": "odoo-code-review",
+    "name": "odoo-code-review",
+    "file": "agents/odoo-code-review.md",
+    "description": "Expert code reviewer. Evaluates Odoo code against version-specific standards (Odoo 16–20). Checks correctness, security, performance (N+1, CachedModel, _table_sql), and Odoo 20 conventions (ir.access, no ir.rule, <list> views). Produces a scored report."
+  },
+  {
+    "id": "odoo-code-tracer",
+    "name": "odoo-code-tracer",
+    "file": "agents/odoo-code-tracer.md",
+    "description": "Execution flow tracer. Follows method calls, overrides, inheritance chains, entry points (/json/2/, web_unlink), and AST parent chains. Use when planning tasks or understanding how features work end-to-end."
+  },
+  {
+    "id": "tester",
+    "name": "tester",
+    "file": "agents/tester.md",
+    "description": "Test specialist. Drives TDD with TransactionCase, HttpCase, @odoo/hoot for JS tests, and XML-RPC scenarios against a throwaway test database. Use FIRST to write failing tests (red), then AGAIN after odoo-coder to verify (green). Never edits production code."
+  },
+  {
+    "id": "security-reviewer",
+    "name": "security-reviewer",
+    "file": "agents/security-reviewer.md",
+    "description": "Security auditor. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10. Enforces unified ir.access.csv, safe SQL parametrization, and access checks before sudo(). Use PROACTIVELY after writing code that handles user input, auth, or APIs."
+  },
+  {
+    "id": "build-error-resolver",
+    "name": "build-error-resolver",
+    "file": "agents/build-error-resolver.md",
+    "description": "Build and TypeScript error specialist. Fixes build/type errors with minimal diffs only — no architectural changes. Use PROACTIVELY when build fails or type errors occur."
+  },
+  {
+    "id": "doc-updater",
+    "name": "doc-updater",
+    "file": "agents/doc-updater.md",
+    "description": "Documentation and codemap specialist. Generates docs/CODEMAPS/*, updates READMEs and guides. Use for /update-codemaps and /update-docs commands."
+  }
+]
