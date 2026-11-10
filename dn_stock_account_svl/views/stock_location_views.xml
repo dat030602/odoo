@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_location_form_inherit_dn_svl" model="ir.ui.view">
+        <field name="name">stock.location.form.inherit.dn.svl</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='additional_info']" position="after">
+                <div>
+                    <group string="Valuation Account" invisible="usage != 'internal'">
+                        <field name="dn_valuation_account_id"
+                               options="{'no_create': True}"
+                               help="Accounting account representing the stock value held at this location. If empty, the system resolves the account from the parent location hierarchy and ultimately falls back to the product category."/>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

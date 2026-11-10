@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List view -->
+    <record id="view_stock_valuation_layer_list" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.list</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="arch" type="xml">
+            <list string="Valuation Layers" create="false" edit="false" delete="false">
+                <field name="date" string="Date"/>
+                <field name="product_id"/>
+                <field name="description"/>
+                <button name="action_dn_view_account_move"
+                        type="object"
+                        icon="fa-arrow-right"
+                        title="View Journal Entry"
+                        invisible="not account_move_id"/>
+                <field name="quantity"/>
+                <field name="uom_id" string="UoM"/>
+                <field name="unit_cost"/>
+                <field name="value"/>
+                <field name="remaining_qty"/>
+                <field name="remaining_value"/>
+                <field name="stock_move_id" optional="hide"/>
+                <field name="account_move_id" column_invisible="True"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_stock_valuation_layer_form" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.form</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="arch" type="xml">
+            <form string="Valuation Layer" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_dn_view_account_move"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-bars"
+                                string="Journal Entry"
+                                invisible="not account_move_id"/>
+                    </div>
+                    <group>
+                        <group string="Valuation">
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                            <field name="uom_id"/>
+                            <field name="unit_cost"/>
+                            <field name="value"/>
+                            <field name="remaining_qty"/>
+                            <field name="remaining_value"/>
+                            <field name="description"/>
+                        </group>
+                        <group string="Links">
+                            <field name="date"/>
+                            <field name="stock_move_id"/>
+                            <field name="account_move_id"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search view -->
+    <record id="view_stock_valuation_layer_search" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.search</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="arch" type="xml">
+            <search string="Valuation Layers">
+                <field name="product_id"/>
+                <field name="description"/>
+                <field name="stock_move_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date:day'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action to open SVL list -->
+    <record id="action_stock_valuation_layer" model="ir.actions.act_window">
+        <field name="name">Valuation Layers</field>
+        <field name="res_model">stock.valuation.layer</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_stock_valuation_layer_list"/>
+        <field name="search_view_id" ref="view_stock_valuation_layer_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No valuation layers found.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu item in Reporting -->
+    <menuitem id="menu_stock_valuation_layers"
+              name="Valuation Layers"
+              parent="stock.menu_warehouse_report"
+              sequence="160"
+              action="action_stock_valuation_layer"
+              groups="stock.group_stock_manager"/>
+</odoo>

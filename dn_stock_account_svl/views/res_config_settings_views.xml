@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_dn_svl" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.dn.svl</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock_account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block name="valuation_setting_container" position="inside">
+                <setting
+                    id="stock_valuation_modification_setting"
+                    title="Done Move Valuation Adjustment"
+                    help="Configure valuation recalculation rules when modifying completed stock moves.">
+                    <div class="content-group">
+                        <div class="mt8">
+                            <label for="svl_modification_mode" class="o_form_label" string="Modification Mode"/>
+                            <field name="svl_modification_mode"/>
+                        </div>
+                        <div class="mt8">
+                            <label for="svl_modification_date_mode" class="o_form_label" string="Date Mode"/>
+                            <field name="svl_modification_date_mode"/>
+                        </div>
+                        <div class="mt8">
+                            <label for="svl_decrease_cost_basis" class="o_form_label" string="Decrease Cost Basis"/>
+                            <field name="svl_decrease_cost_basis"/>
+                        </div>
+                    </div>
+                </setting>
+            </block>
+        </field>
+    </record>
+</odoo>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged
 
 
@@ -30,7 +31,7 @@ class TestStockLocationValuation(TransactionCase):
             'company_ids': [cls.company.id],
         })
         cls.account_categ = cls.env['account.account'].create({
-            'name': 'Category Fallback Valuation Account',
+            'name': 'Category Valuation Account',
             'code': '1010103',
             'account_type': account_type_id,
             'company_ids': [cls.company.id],
@@ -45,13 +46,32 @@ class TestStockLocationValuation(TransactionCase):
             'name': 'Test Category Without Valuation',
         })
 
-        # Create product
-        cls.product = cls.env['product.product'].create({
-            'name': 'Test Storable Product',
+        # Products with different configurations
+        cls.product_default = cls.env['product.product'].create({
+            'name': 'Test Storable Product (Default)',
             'type': 'consu',
             'is_storable': True,
             'categ_id': cls.product_category.id,
             'standard_price': 100.0,
+            'use_location_valuation_account': False,
+        })
+        cls.product = cls.product_default
+
+        cls.product_use_location = cls.env['product.product'].create({
+            'name': 'Test Storable Product (Use Location)',
+            'type': 'consu',
+            'is_storable': True,
+            'categ_id': cls.product_category.id,
+            'standard_price': 100.0,
+            'use_location_valuation_account': True,
+        })
+
+        cls.product_no_acc = cls.env['product.product'].create({
+            'name': 'Product Without Direct Category Account',
+            'type': 'consu',
+            'is_storable': True,
+            'categ_id': cls.product_category_no_acc.id,
+            'use_location_valuation_account': False,
         })
 
         # Create locations hierarchy
@@ -75,82 +95,85 @@ class TestStockLocationValuation(TransactionCase):
             'usage': 'internal',
         })
 
-    def test_01_direct_valuation_account(self):
-        """Verify that direct dn_valuation_account_id on location is resolved first."""
+    def test_01_default_product_prioritizes_category_account(self):
+        """When use_location_valuation_account is False (default) and both have accounts, Category account is returned."""
+        resolved = self.parent_location._get_valuation_account(self.product_default)
         self.assertEqual(
-            self.parent_location._get_valuation_account(self.product),
-            self.account_parent,
-            "Direct valuation account on the location should take top precedence."
+            resolved,
+            self.account_categ,
+            "Default behavior must prioritize product category valuation account over location account."
         )
 
-    def test_02_parent_location_inheritance(self):
-        """Verify that child location inherits valuation account from parent."""
-        self.assertFalse(self.child_location.dn_valuation_account_id)
-        resolved_account = self.child_location._get_valuation_account(self.product)
+    def test_02_default_product_falls_back_to_location_account(self):
+        """When use_location_valuation_account is False and category has no account, location account is used as fallback."""
+        self.company.account_stock_valuation_id = False
+        resolved = self.parent_location._get_valuation_account(self.product_no_acc)
         self.assertEqual(
-            resolved_account,
+            resolved,
             self.account_parent,
-            "Child location without account should inherit from its parent location."
+            "When category has no valuation account, location account must be used as fallback."
         )
 
-    def test_03_grandchild_recursive_inheritance(self):
-        """Verify recursive ancestor traversal for nested locations."""
-        self.assertFalse(self.grandchild_location.dn_valuation_account_id)
-        resolved_account = self.grandchild_location._get_valuation_account(self.product)
+    def test_03_use_location_flag_prioritizes_location_account(self):
+        """When use_location_valuation_account is True and both have accounts, Location account is returned."""
+        resolved = self.parent_location._get_valuation_account(self.product_use_location)
         self.assertEqual(
-            resolved_account,
+            resolved,
+            self.account_parent,
+            "Flagged product must prioritize location valuation account over category account."
+        )
+
+    def test_04_use_location_flag_falls_back_to_category_account(self):
+        """When use_location_valuation_account is True and location has no account, category account is used as fallback."""
+        resolved = self.standalone_location._get_valuation_account(self.product_use_location)
+        self.assertEqual(
+            resolved,
+            self.account_categ,
+            "When location has no valuation account, category account must be used as fallback."
+        )
+
+    def test_05_location_hierarchy_inheritance_with_use_location(self):
+        """Verify child and grandchild locations inherit valuation account when using location priority."""
+        self.assertEqual(
+            self.child_location._get_valuation_account(self.product_use_location),
+            self.account_parent,
+            "Child location should inherit valuation account from parent location."
+        )
+        self.assertEqual(
+            self.grandchild_location._get_valuation_account(self.product_use_location),
             self.account_parent,
             "Grandchild location should resolve account from grandparent location."
         )
 
-    def test_04_child_override_parent_account(self):
-        """Verify that assigning an account to child overrides parent's account."""
+    def test_06_child_override_parent_account_with_use_location(self):
+        """Verify child location override takes precedence over parent location."""
         self.child_location.dn_valuation_account_id = self.account_child.id
         self.assertEqual(
-            self.child_location._get_valuation_account(self.product),
+            self.child_location._get_valuation_account(self.product_use_location),
             self.account_child,
             "Child location direct account must override parent's account."
         )
-        # Grandchild should now inherit from child_location
         self.assertEqual(
-            self.grandchild_location._get_valuation_account(self.product),
+            self.grandchild_location._get_valuation_account(self.product_use_location),
             self.account_child,
             "Grandchild should inherit from nearest ancestor."
         )
 
-    def test_05_fallback_to_product_category(self):
-        """Verify fallback to product category when location tree has no account."""
-        self.assertFalse(self.standalone_location.dn_valuation_account_id)
-        resolved_account = self.standalone_location._get_valuation_account(self.product)
-        self.assertEqual(
-            resolved_account,
-            self.account_categ,
-            "Should fall back to product category property_stock_valuation_account_id."
-        )
+    def test_07_user_error_when_neither_category_nor_location_has_account(self):
+        """Verify UserError is raised when neither category nor location has an account."""
+        self.company.account_stock_valuation_id = False
+        with self.assertRaises(UserError):
+            self.standalone_location._get_valuation_account(self.product_no_acc)
 
-    def test_06_fallback_company_default_when_category_has_no_account(self):
-        """Verify fallback resolves company-dependent default when category has no direct account."""
-        product_no_acc = self.env['product.product'].create({
-            'name': 'Product Without Direct Valuation Account',
-            'type': 'consu',
-            'is_storable': True,
-            'categ_id': self.product_category_no_acc.id,
-        })
-        resolved_account = self.standalone_location._get_valuation_account(product_no_acc)
-        self.assertTrue(
-            resolved_account,
-            "Should resolve company-dependent fallback stock valuation account."
-        )
-
-    def test_07_get_valuation_account_without_product(self):
-        """Verify _get_valuation_account handles product=None safely."""
+    def test_08_get_valuation_account_without_product(self):
+        """Verify _get_valuation_account handles product=None."""
         account = self.parent_location._get_valuation_account(product=None)
         self.assertEqual(account, self.account_parent)
 
-        empty_account = self.standalone_location._get_valuation_account(product=None)
-        self.assertFalse(empty_account)
+        with self.assertRaises(UserError):
+            self.standalone_location._get_valuation_account(product=None)
 
-    def test_08_location_crud_operations(self):
+    def test_09_location_crud_operations(self):
         """Verify CRUD operations on stock.location with dn_valuation_account_id."""
         loc = self.env['stock.location'].create({
             'name': 'CRUD Test Location',

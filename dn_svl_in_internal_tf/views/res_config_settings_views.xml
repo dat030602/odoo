@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!--
-            Add "Internal Transfer Valuation" checkbox to the Valuation block
-            inside Inventory Settings.
-        -->
-        <record id="res_config_settings_view_form_inherit" model="ir.ui.view">
-            <field name="name">res.config.settings.view.form.inherit.dn.svl.internal</field>
-            <field name="model">res.config.settings</field>
-            <field name="inherit_id" ref="stock_account.res_config_settings_view_form"/>
-            <field name="arch" type="xml">
-                <block name="valuation_setting_container" position="inside">
-                    <setting
-                        id="internal_transfer_valuation_setting"
-                        title="Generate Stock Valuation Layers and accounting journal entries when moving goods between two internal warehouse locations with different valuation accounts."
-                        help="Automatically post accounting entries for inter-warehouse moves (e.g. Warehouse A to Warehouse B).">
-                        <field name="group_internal_transfer_valuation"/>
-                        <label for="group_internal_transfer_valuation"
-                               string="Internal Transfer Valuation"/>
-                    </setting>
-                </block>
-            </field>
-        </record>
-    </data>
+    <record id="res_config_settings_view_form_inherit_dn_svl_internal" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.dn.svl.internal</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock_account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block name="valuation_setting_container" position="inside">
+                <setting
+                    id="stock_valuation_move_types_setting"
+                    title="Valuation Move Types"
+                    help="Select stock move types that automatically generate valuation layers and journal entries. Note: Journal Entries require Valuation Layers to be enabled.">
+                    <div class="content-group">
+                        <div class="mt8">
+                            <label for="auto_svl_move_type_ids" class="o_form_label" string="Valuation Layers (SVL)"/>
+                            <field name="auto_svl_move_type_ids" widget="many2many_checkboxes"/>
+                        </div>
+                        <div class="mt8">
+                            <label for="auto_je_move_type_ids" class="o_form_label" string="Journal Entries"/>
+                            <field name="auto_je_move_type_ids" widget="many2many_checkboxes"/>
+                        </div>
+                    </div>
+                </setting>
+            </block>
+        </field>
+    </record>
 </odoo>

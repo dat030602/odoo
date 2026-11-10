@@ -1,231 +1,325 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-"""stock.move - Generate SVL & Journal Entry for internal warehouse transfers.
+"""stock.move - Extension for Internal Transfer Valuation and Move Type Filtering."""
 
-Flow
-====
-1. ``_action_done`` calls ``_create_internal_transfer_svl`` after super().
-2. ``_is_internal_transfer`` - guards activation:
-   * The ``group_internal_transfer_valuation`` flag is enabled.
-   * Both source and destination have ``usage == 'internal'``.
-   * The product has ``valuation == 'real_time'`` (perpetual).
-3. ``_create_internal_transfer_svl`` - creates 2 SVL records (negative OUT + positive IN).
-4. ``_create_internal_transfer_account_move`` - creates & posts a Journal Entry
-   (only when debit_account is different from credit_account).
-"""
-
-from odoo import _, api, fields, models, Command
+from odoo import _, fields, models
 from odoo.tools import float_is_zero
+from odoo.exceptions import UserError
 
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    stock_valuation_layer_ids = fields.One2many(
-        'stock.valuation.layer',
-        'stock_move_id',
-        string='Stock Valuation Layers',
-    )
-
     # -------------------------------------------------------------------------
-    # Helpers - condition check
+    # Classification & Move Type Filtering
     # -------------------------------------------------------------------------
 
     def _is_internal_transfer(self):
-        """Return True when this move is an internal transfer that requires valuation.
-
-        All conditions must be met simultaneously:
-        * The ``group_internal_transfer_valuation`` configuration flag is enabled.
-        * ``location_id.usage == 'internal'``.
-        * ``location_dest_id.usage == 'internal'``.
-        * ``product_id.valuation == 'real_time'`` (perpetual/automatic valuation).
-        """
+        """Check if move is an internal transfer eligible for valuation."""
         self.ensure_one()
-
-        # Check the feature flag
-        feature_enabled = self.env.user.has_group(
-            'dn_svl_in_internal_tf.group_internal_transfer_valuation'
-        )
-        if not feature_enabled:
+        if self._get_valuation_move_type_key() != 'internal_transfer':
             return False
-
-        if self.location_id.usage != 'internal':
-            return False
-        if self.location_dest_id.usage != 'internal':
-            return False
-
-        # Product must use automated (perpetual) valuation
         product = self.product_id.with_company(self.company_id)
-        if product.valuation != 'real_time':
+        if not product.is_storable or product.valuation != 'real_time':
             return False
+        return 'internal_transfer' in self.company_id.auto_svl_move_type_ids.mapped('key')
 
-        return True
+    def _should_create_in_svl(self):
+        """Filter incoming SVL creation based on company auto_svl_move_type_ids."""
+        if self.company_id.auto_svl_move_type_ids:
+            return 'receipt' in self.company_id.auto_svl_move_type_ids.mapped('key')
+        return super()._should_create_in_svl()
+
+    def _should_create_out_svl(self):
+        """Filter outgoing SVL creation based on company auto_svl_move_type_ids."""
+        if self.company_id.auto_svl_move_type_ids:
+            return 'delivery' in self.company_id.auto_svl_move_type_ids.mapped('key')
+        return super()._should_create_out_svl()
 
     # -------------------------------------------------------------------------
-    # Override _action_done
+    # Internal Transfer SVL Creation
     # -------------------------------------------------------------------------
 
-    def _action_done(self, cancel_backorder=False):
-        moves = super()._action_done(cancel_backorder=cancel_backorder)
-        moves._create_internal_transfer_svl()
-        return moves
-
-    # -------------------------------------------------------------------------
-    # SVL creation
-    # -------------------------------------------------------------------------
-
-    def _create_internal_transfer_svl(self):
-        """Create an OUT/IN SVL pair for each qualifying internal transfer move."""
-        SVL = self.env['stock.valuation.layer']
+    def _create_internal_transfer_svl(self, forced_quantity=None):
+        """Create paired Stock Valuation Layers for internal transfer moves."""
+        svl_vals_list = []
         for move in self:
-            if not move._is_internal_transfer():
-                continue
-
-            qty = move._get_internal_transfer_qty()
+            qty = forced_quantity if forced_quantity is not None else move._get_move_quantity()
             if float_is_zero(qty, precision_rounding=move.product_uom.rounding):
                 continue
 
-            unit_cost = move._get_internal_transfer_unit_cost()
-            value = unit_cost * qty
-
+            product = move.product_id.with_company(move.company_id)
+            unit_cost = product.standard_price
+            value = move.company_id.currency_id.round(qty * unit_cost)
             description = _(
-                'Internal transfer: %(ref)s', ref=move.reference or move.description_picking or move.product_id.display_name
+                'Internal transfer: %(ref)s',
+                ref=move.reference or move.description_picking or move.product_id.display_name,
             )
 
-            # Layer 1 - Source location OUT (negative)
-            svl_out = SVL.sudo().create({
+            # Layer 1: Source location OUT (negative)
+            svl_vals_list.append({
                 'product_id': move.product_id.id,
                 'quantity': -qty,
                 'uom_id': move.product_id.uom_id.id,
                 'unit_cost': unit_cost,
                 'value': -value,
+                'remaining_qty': 0.0,
+                'remaining_value': 0.0,
                 'stock_move_id': move.id,
                 'company_id': move.company_id.id,
                 'description': description,
+                'date': move.date or fields.Datetime.now(),
             })
 
-            # Layer 2 - Destination location IN (positive)
-            svl_in = SVL.sudo().create({
+            # Layer 2: Destination location IN (positive)
+            svl_vals_list.append({
                 'product_id': move.product_id.id,
                 'quantity': qty,
                 'uom_id': move.product_id.uom_id.id,
                 'unit_cost': unit_cost,
                 'value': value,
+                'remaining_qty': 0.0,
+                'remaining_value': 0.0,
                 'stock_move_id': move.id,
                 'company_id': move.company_id.id,
                 'description': description,
+                'date': move.date or fields.Datetime.now(),
             })
 
-            # Create a Journal Entry when the two accounts differ
-            move._create_internal_transfer_account_move(svl_out, svl_in)
+        return self.env['stock.valuation.layer'].sudo().create(svl_vals_list)
 
-    def _get_internal_transfer_qty(self):
-        """Return the transferred quantity in the product's UoM."""
-        self.ensure_one()
-        qty = sum(
-            ml.quantity_product_uom
-            for ml in self.move_line_ids
-            if ml.picked and not ml._should_exclude_for_valuation()
-        )
-        if not qty:
-            qty = self.product_uom._compute_quantity(
-                self.quantity, self.product_id.uom_id
-            )
-        return qty
-
-    def _get_internal_transfer_unit_cost(self):
-        """Return the current standard cost of the product for this company."""
+    def _get_interim_transit_account(self):
+        """Return transit/interim account for balancing internal transfer entries."""
         self.ensure_one()
         product = self.product_id.with_company(self.company_id)
-        return product.standard_price
-
-    # -------------------------------------------------------------------------
-    # Journal Entry creation
-    # -------------------------------------------------------------------------
+        accounts = product._get_product_accounts()
+        transit_account = (
+            accounts.get('stock_variation')
+            or accounts.get('stock_input')
+            or accounts.get('stock_output')
+            or getattr(self.company_id, 'account_stock_variation_id', self.env['account.account'])
+            or product.categ_id.property_stock_valuation_account_id
+        )
+        return transit_account
 
     def _get_internal_transfer_accounts(self):
-        """Return (credit_account, debit_account) for the internal transfer.
-
-        * ``credit_account``: valuation account of the source location.
-        * ``debit_account``:  valuation account of the destination location.
-
-        Resolution: per-location account -> parent hierarchy -> product category.
-        """
+        """Return (credit_account, debit_account) for internal transfer."""
         self.ensure_one()
         product = self.product_id.with_company(self.company_id)
-        credit_account = self.location_id._get_valuation_account(product)
         debit_account = self.location_dest_id._get_valuation_account(product)
+        credit_account = self.location_id._get_valuation_account(product)
         return credit_account, debit_account
 
-    def _create_internal_transfer_account_move(self, svl_out, svl_in):
-        """Create and post a Journal Entry for the internal transfer.
+    # -------------------------------------------------------------------------
+    # Override _action_done & _account_entry_move
+    # -------------------------------------------------------------------------
 
-        Skipped when:
-        * Either account is missing.
-        * Both accounts are identical (no ledger impact - avoids noise entries).
+    def _action_done(self, cancel_backorder=False):
+        moves = super()._action_done(cancel_backorder=cancel_backorder)
+        moves_internal = moves.filtered(lambda m: m._is_internal_transfer())
+        if moves_internal:
+            stock_valuation_layers = moves_internal._create_internal_transfer_svl()
+            if stock_valuation_layers:
+                stock_valuation_layers._validate_accounting_entries()
+        return moves
 
-        After posting, ``account_move_id`` is written on both SVL records
-        for full audit traceability.
-        """
+    def _account_entry_move(self, qty, description, svl_id, cost):
+        """Prepare journal entry values with transit account for internal transfers."""
         self.ensure_one()
-        credit_account, debit_account = self._get_internal_transfer_accounts()
+        company = self.company_id
 
-        # Skip if accounts are missing or identical
-        if not credit_account or not debit_account:
+        if self._is_internal_transfer():
+            abs_cost = abs(cost)
+            if float_is_zero(abs_cost, precision_rounding=company.currency_id.rounding):
+                return []
+
+            if 'internal_transfer' not in company.auto_je_move_type_ids.mapped('key'):
+                return []
+
+            credit_account, debit_account = self._get_internal_transfer_accounts()
+            transit_account = self._get_interim_transit_account()
+            if not credit_account or not debit_account or not transit_account:
+                return []
+
+            journal_id, _, _, _ = self._get_accounting_data_for_valuation()
+            if not journal_id:
+                return []
+
+            svl = self.env['stock.valuation.layer'].browse(svl_id) if svl_id else None
+            entry_date = (
+                fields.Date.context_today(self, svl.date)
+                if svl and svl.date
+                else fields.Date.context_today(self)
+            )
+
+            base_ref = description or self.reference or self.name or self.product_id.display_name
+            if qty < 0:
+                ref = f"{base_ref} - OUT"
+                vals = self._prepare_account_move_vals(
+                    credit_account.id, transit_account.id, journal_id, qty, ref, svl_id, abs_cost, date=entry_date
+                )
+                return [vals]
+            else:
+                ref = f"{base_ref} - IN"
+                vals = self._prepare_account_move_vals(
+                    transit_account.id, debit_account.id, journal_id, qty, ref, svl_id, abs_cost, date=entry_date
+                )
+                return [vals]
+
+        # Receipt or Delivery: check auto_je_move_type_ids if auto_svl_move_type_ids is configured
+        if company.auto_svl_move_type_ids:
+            je_keys = set(company.auto_je_move_type_ids.mapped('key'))
+            if self._is_in() and 'receipt' not in je_keys:
+                return []
+            if self._is_out() and 'delivery' not in je_keys:
+                return []
+
+        return super()._account_entry_move(qty, description, svl_id, cost)
+
+    # -------------------------------------------------------------------------
+    # Internal Transfer Done Move Modification
+    # -------------------------------------------------------------------------
+
+    def _handle_valuation_quantity_change(self, old_qty, new_qty):
+        """Handle valuation modification for internal transfers."""
+        self.ensure_one()
+        if not self._is_internal_transfer():
+            return super()._handle_valuation_quantity_change(old_qty, new_qty)
+
+        if self.env.context.get('skip_valuation_adjust'):
             return
-        if credit_account.id == debit_account.id:
+
+        if not self.env.user.has_group('stock.group_stock_manager') and not self.env.is_superuser():
+            raise UserError(_("Only Stock Managers are allowed to modify quantities on completed stock moves."))
+
+        datetime_val, date_val = self._get_valuation_modification_datetime()
+        self._check_lock_date(date_val)
+
+        delta_qty = new_qty - old_qty
+        if float_is_zero(delta_qty, precision_rounding=self.product_uom.rounding):
             return
 
-        value = abs(svl_in.value)
-        if float_is_zero(value, precision_rounding=self.company_id.currency_id.rounding):
-            return
+        mode = self.company_id.svl_modification_mode or 'create_diff'
+        if mode == 'create_diff':
+            unit_cost = self.product_id.with_company(self.company_id).standard_price
+            abs_qty = abs(delta_qty)
+            abs_val = self.company_id.currency_id.round(abs_qty * unit_cost)
 
-        ref = _('Internal Transfer: %(ref)s', ref=self.reference or self.description_picking or self.product_id.display_name)
-        product_name = self.product_id.display_name
+            if delta_qty > 0:
+                svl_vals_list = [
+                    {
+                        'product_id': self.product_id.id,
+                        'quantity': -abs_qty,
+                        'uom_id': self.product_id.uom_id.id,
+                        'unit_cost': unit_cost,
+                        'value': -abs_val,
+                        'remaining_qty': 0.0,
+                        'remaining_value': 0.0,
+                        'stock_move_id': self.id,
+                        'company_id': self.company_id.id,
+                        'description': _('Adjustment (Increase OUT): %(ref)s', ref=self.reference or self.name),
+                        'date': datetime_val,
+                    },
+                    {
+                        'product_id': self.product_id.id,
+                        'quantity': abs_qty,
+                        'uom_id': self.product_id.uom_id.id,
+                        'unit_cost': unit_cost,
+                        'value': abs_val,
+                        'remaining_qty': 0.0,
+                        'remaining_value': 0.0,
+                        'stock_move_id': self.id,
+                        'company_id': self.company_id.id,
+                        'description': _('Adjustment (Increase IN): %(ref)s', ref=self.reference or self.name),
+                        'date': datetime_val,
+                    },
+                ]
+            else:
+                svl_vals_list = [
+                    {
+                        'product_id': self.product_id.id,
+                        'quantity': abs_qty,
+                        'uom_id': self.product_id.uom_id.id,
+                        'unit_cost': unit_cost,
+                        'value': abs_val,
+                        'remaining_qty': 0.0,
+                        'remaining_value': 0.0,
+                        'stock_move_id': self.id,
+                        'company_id': self.company_id.id,
+                        'description': _('Adjustment (Decrease OUT): %(ref)s', ref=self.reference or self.name),
+                        'date': datetime_val,
+                    },
+                    {
+                        'product_id': self.product_id.id,
+                        'quantity': -abs_qty,
+                        'uom_id': self.product_id.uom_id.id,
+                        'unit_cost': unit_cost,
+                        'value': -abs_val,
+                        'remaining_qty': 0.0,
+                        'remaining_value': 0.0,
+                        'stock_move_id': self.id,
+                        'company_id': self.company_id.id,
+                        'description': _('Adjustment (Decrease IN): %(ref)s', ref=self.reference or self.name),
+                        'date': datetime_val,
+                    },
+                ]
 
-        journal = self.company_id.account_stock_journal_id
-        if not journal:
-            journal = self.env['account.journal'].search([
-                ('company_id', '=', self.company_id.id),
-                ('type', '=', 'general'),
-            ], limit=1)
-        if not journal:
-            return
+            new_svls = self.env['stock.valuation.layer'].sudo().create(svl_vals_list)
+            new_svls._validate_accounting_entries()
 
-        account_move = self.env['account.move'].sudo().create({
-            'move_type': 'entry',
-            'ref': ref,
-            'journal_id': journal.id,
-            'date': fields.Date.context_today(self),
-            'line_ids': [
-                Command.create({
-                    'account_id': credit_account.id,
-                    'name': ref + ' - ' + product_name,
-                    'debit': 0.0,
-                    'credit': value,
-                    'product_id': self.product_id.id,
-                }),
-                Command.create({
-                    'account_id': debit_account.id,
-                    'name': ref + ' - ' + product_name,
-                    'debit': value,
-                    'credit': 0.0,
-                    'product_id': self.product_id.id,
-                }),
-            ],
-        })
-        account_move._post()
+            if self.company_id.svl_modification_date_mode == 'picking_date':
+                self.with_context(skip_valuation_adjust=True).write({'date': datetime_val})
+                self.move_line_ids.with_context(skip_valuation_adjust=True).write({'date': datetime_val})
 
-        # Link both SVL records to the posted journal entry for traceability
-        (svl_out | svl_in).sudo().write({'account_move_id': account_move.id})
+            if self.picking_id:
+                jes = new_svls.account_move_id
+                self.picking_id.message_post(body=_(
+                    "Valuation Adjustment for internal transfer move %(move)s: quantity changed from %(old)s to %(new)s %(uom)s.<br/>"
+                    "Layers created: %(svls)s.<br/>"
+                    "Journal entries created: %(jes)s.",
+                    move=self.reference or self.name,
+                    old=old_qty,
+                    new=new_qty,
+                    uom=self.product_uom.name,
+                    svls=", ".join(map(str, new_svls.ids)),
+                    jes=", ".join(jes.mapped('name')) if jes else "None",
+                ))
 
+        elif mode == 'update_existing':
+            svls = self.stock_valuation_layer_ids.filtered(lambda l: l.quantity != 0)
+            svl_out = svls.filtered(lambda l: l.quantity < 0)
+            svl_in = svls.filtered(lambda l: l.quantity > 0)
+            if not svl_out or not svl_in:
+                # Fallback to diff
+                self.company_id.svl_modification_mode = 'create_diff'
+                self._handle_valuation_quantity_change(old_qty, new_qty)
+                self.company_id.svl_modification_mode = 'update_existing'
+                return
 
-class AccountMove(models.Model):
-    _inherit = 'account.move'
+            orig_out = svl_out[0]
+            orig_in = svl_in[0]
+            unit_cost = orig_out.unit_cost
+            new_val = self.company_id.currency_id.round(new_qty * unit_cost)
 
-    stock_valuation_layer_ids = fields.One2many(
-        'stock.valuation.layer',
-        'account_move_id',
-        string='Stock Valuation Layers',
-    )
+            orig_out.write({'quantity': -new_qty, 'value': -new_val, 'date': datetime_val})
+            orig_in.write({'quantity': new_qty, 'value': new_val, 'date': datetime_val})
+
+            self._update_existing_account_moves(orig_out, date_val)
+            self._update_existing_account_moves(orig_in, date_val)
+
+            if self.company_id.svl_modification_date_mode == 'picking_date':
+                self.with_context(skip_valuation_adjust=True).write({'date': datetime_val})
+                self.move_line_ids.with_context(skip_valuation_adjust=True).write({'date': datetime_val})
+
+            if self.picking_id:
+                self.picking_id.message_post(body=_(
+                    "Valuation Update for internal transfer move %(move)s: quantity updated from %(old)s to %(new)s %(uom)s.<br/>"
+                    "Updated layers %(out_id)s and %(in_id)s.",
+                    move=self.reference or self.name,
+                    old=old_qty,
+                    new=new_qty,
+                    uom=self.product_uom.name,
+                    out_id=orig_out.id,
+                    in_id=orig_in.id,
+                ))

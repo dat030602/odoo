@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
-from . import test_stock_location
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from . import test_internal_transfer_valuation
-from . import test_security
+from . import test_valuation_move_types

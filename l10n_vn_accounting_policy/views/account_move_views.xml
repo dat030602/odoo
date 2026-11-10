@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.l10n_vn_accounting_policy</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@id='header_left_group']" position="inside">
+                <field name="vn_allow_different_partner" readonly="state != 'draft'"/>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']/list/field[@name='partner_id']" position="attributes">
+                <attribute name="column_invisible">parent.move_type != 'entry' and not parent.vn_allow_different_partner</attribute>
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='partner_id']" position="attributes">
+                <attribute name="column_invisible">not parent.vn_allow_different_partner</attribute>
+                <attribute name="optional">show</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
