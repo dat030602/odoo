@@ -22,6 +22,9 @@ Use this file as the version-specific ruleset when the resolved Odoo version is 
 ## Views
 
 - Same as 18: `<list>` tag, direct-expression attrs. Reference: `references/odoo-19-view-guide.md`.
+- **`<group expand= string=>` removed from search views** — the RelaxNG schema (`search_view.rng`) no longer allows `expand` or `string` attributes on `<group>` inside a `<search>`. Using them raises `ParseError: Invalid attribute expand for element group` at module install/upgrade.
+  - ❌ `<group expand="0" string="Group By">` — **INVALID in 19, causes ParseError**
+  - ✅ `<group name="group_by">` — correct form; the label is automatic
 
 ## Fields
 
@@ -46,5 +49,6 @@ Use this file as the version-specific ruleset when the resolved Odoo version is 
 - ❌ `self._cr` / `self._uid` / `self._context` — use `self.env.cr` / `self.env.uid` / `self.env.context`.
 - ❌ New model without `_name` — works through the CamelCase fallback but logs a warning; set `_name`.
 - ❌ List `_inherit` without `_name` on a class whose name does not map to the inherited model — creates a new model instead of extending it.
+- ❌ `<group expand="0" string="Group By">` inside `<search>` — **causes ParseError at install**; use `<group name="group_by">` instead.
 - ✅ `@api.private` on a public method that must not be RPC-callable.
 - All 18 rules still apply (`<list>`, direct-expression attrs, `aggregator=`, `@api.ondelete`, `@api.model_create_multi`, `check_access` / `has_access` / `_filtered_access`).

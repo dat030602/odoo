@@ -102,6 +102,10 @@ Use this file as the version-specific ruleset when the resolved Odoo version is 
 
 - **Search Date Filters**:
   - Attributes `start_month`, `end_month`, `start_year`, `end_year` are removed from `<filter name="..." date="..."/>`.
+- **Search View `<group>` element**:
+  - `expand=` and `string=` attributes are **not allowed** on `<group>` inside `<search>` (removed since Odoo 19; schema `search_view.rng` rejects them).
+  - ❌ `<group expand="0" string="Group By">` — **ParseError at install**
+  - ✅ `<group name="group_by">` — correct form
 - **Parametric `t-call`**:
   - Direct attributes on `t-call`: `<t t-call="report.external_layout" doc="o"/>` or `variable.f="literal"` instead of child `<t t-set="doc" t-value="o"/>`.
 - **XML Binary Fields**:
@@ -138,6 +142,7 @@ Use this file as the version-specific ruleset when the resolved Odoo version is 
 
 - ❌ `Model._table_query` — removed in 20.0; use `@property def _table_sql(self) -> SQL:`.
 - ❌ Calling `exists()` over RPC — decorated with `@api.private`.
+- ❌ `<group expand="0" string="Group By">` inside `<search>` — **ParseError at install** (since 19.0); use `<group name="group_by">` instead.
 - ❌ Passing `bin_size` to `read()` or context — removed; use `load='web'`.
 - ❌ Calling `/xmlrpc/2/db` or `/jsonrpc` with service `'db'` — removed.
 - ❌ `security/ir.model.access.csv` — must be `security/ir.access.csv`.

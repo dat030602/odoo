@@ -200,7 +200,8 @@ Guide for creating views in Odoo 19: list, form, search, kanban, calendar, graph
             <field name="code"/>
             <filter string="Active" name="active" domain="[('active','=',True)]"/>
             <separator/>
-            <group expand="0" string="Group By">
+            <!-- ✅ Odoo 19: use name="group_by", NO expand= or string= on <group> -->
+            <group name="group_by">
                 <filter string="State" name="state" context="{'group_by': 'state'}"/>
             </group>
         </search>
@@ -224,8 +225,11 @@ Guide for creating views in Odoo 19: list, form, search, kanban, calendar, graph
     <!-- Separator -->
     <separator/>
 
-    <!-- Group by -->
-    <group expand="0" string="Group By">
+    <!-- Group by: NO expand= or string= attributes on <group> in Odoo 19 -->
+    <!-- ❌ WRONG (Odoo 17/18 style, causes ParseError in 19): -->
+    <!--   <group expand="0" string="Group By"> -->
+    <!-- ✅ CORRECT (Odoo 19): -->
+    <group name="group_by">
         <filter string="State" name="state" context="{'group_by': 'state'}"/>
         <filter string="Partner" name="partner_id" context="{'group_by': 'partner_id'}"/>
     </group>

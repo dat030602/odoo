@@ -128,8 +128,10 @@
             <!-- Clean Odoo 20 date filter (no start_month/end_month) -->
             <filter name="date_deadline" string="Deadline" date="date_deadline"/>
 
-            <!-- Group by -->
-            <group expand="0" string="Group By">
+            <!-- Group by: NO expand= or string= on <group> in Odoo 19/20 -->
+            <!-- ❌ WRONG: <group expand="0" string="Group By"> -->
+            <!-- ✅ CORRECT: -->
+            <group name="group_by">
                 <filter name="group_user" string="Assignee" context="{'group_by': 'user_id'}"/>
                 <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
             </group>
