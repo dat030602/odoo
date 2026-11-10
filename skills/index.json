@@ -4,56 +4,102 @@
     "name": "Odoo 20 Development",
     "file": "skills/odoo-20.0/SKILL.md",
     "references_dir": "skills/odoo-20.0/references/",
-    "description": "PRIMARY skill for this project. Odoo 20 knowledge base: Unified Security & ACL (ir.access, security/ir.access.csv, no ir.rule), OWL 3 (useProps, proxy, signals, plugins, explicit this. in templates), Models & ORM (CachedModel, compute_sql, init_storage, Domain AST), API Decorators (@api.ormcache from odoo.api, @api.readonly, @api.private), SQL Constraints (models.Constraint, models.Index, models.UniqueIndex), Views (<list> not <tree>, direct-expression attrs), Migration (v19→v20), Performance (search_fetch, _read_group). Use for ANY Odoo 20 Python/JS/XML/CSV code."
+    "description": "PRIMARY skill for this project. Odoo 20 knowledge base: Unified Security & ACL (ir.access, security/ir.access.csv, no ir.rule), OWL 3 (useProps, proxy, signals, plugins, explicit this. in templates), Models & ORM (CachedModel, compute_sql, init_storage, Domain AST), API Decorators (@api.ormcache from odoo.api, @api.readonly, @api.private), SQL Constraints (models.Constraint, models.Index, models.UniqueIndex), Views (list not tree, direct-expression attrs), Migration (v19 to v20), Performance (search_fetch, _read_group). Use for ANY Odoo 20 Python/JS/XML/CSV code.",
+    "risk": "safe",
+    "category": "odoo",
+    "source": "builtin",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "odoo-19",
     "name": "Odoo 19 Development",
     "file": "skills/odoo-19.0/SKILL.md",
     "references_dir": "skills/odoo-19.0/references/",
-    "description": "Odoo 19 knowledge base: Actions, Controllers, Data files, API Decorators, SQL Constraints (models.Constraint), Database Indexes, Field types, Mixins, ORM methods, Migration scripts, OWL components, Performance, QWeb Reports, Security/ACL, Testing, Translations, XML Views. Use only when working on Odoo 19 code."
+    "description": "Odoo 19 knowledge base: Actions, Controllers, Data files, API Decorators, SQL Constraints (models.Constraint), Database Indexes, Field types, Mixins, ORM methods, Migration scripts, OWL components, Performance, QWeb Reports, Security/ACL, Testing, Translations, XML Views. Use only when working on Odoo 19 code.",
+    "risk": "safe",
+    "category": "odoo",
+    "source": "builtin",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "odoo-workflow",
     "name": "Odoo Workflow (Pre-Code Gate)",
     "file": "skills/odoo-workflow/SKILL.md",
-    "description": "MANDATORY pre-code gate for ANY Odoo change. Traces real source (file:line) before any design or coding. Covers: add field, override method, inherit view/xpath, OWL/JS patch, wizard, cron, controller, report, security, migration, bug fix, refactor. Also use when debugging tracebacks or install/upgrade errors (ParseError, missing xmlid). Run BEFORE planning or coding."
+    "description": "MANDATORY pre-code gate for ANY Odoo change. Traces real source (file:line) before any design or coding. Covers: add field, override method, inherit view/xpath, OWL/JS patch, wizard, cron, controller, report, security, migration, bug fix, refactor. Also use when debugging tracebacks or install/upgrade errors (ParseError, missing xmlid). Run BEFORE planning or coding.",
+    "risk": "safe",
+    "category": "odoo",
+    "source": "builtin",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "odoo-test",
     "name": "Odoo Test Runner",
     "file": "skills/odoo-test/SKILL.md",
-    "description": "Run Odoo unit tests (TransactionCase/HttpCase) and XML-RPC end-to-end scenarios against a throwaway test database. Commands: odoo_test.sh unit <module>, odoo_test.sh serve, odoo_test.sh rpc, odoo_test.sh all. Use whenever code must be verified or logs inspected."
+    "description": "Run Odoo unit tests (TransactionCase/HttpCase) and XML-RPC end-to-end scenarios against a throwaway test database. Commands: odoo_test.sh unit module, odoo_test.sh serve, odoo_test.sh rpc, odoo_test.sh all. Use whenever code must be verified or logs inspected.",
+    "risk": "safe",
+    "category": "odoo",
+    "source": "builtin",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "odoo-commit",
     "name": "Odoo Commit Style",
     "file": "skills/odoo-commit/SKILL.md",
-    "description": "Guides Odoo-style git commits: [TAG] module: short description format, amend vs new commit logic, explicit file staging, git commit -F for multi-line messages. Auto-invokes for commit-related requests. Takes priority over generic commit skills."
+    "description": "Guides Odoo-style git commits: TAG module: short description format, amend vs new commit logic, explicit file staging, git commit -F for multi-line messages. Auto-invokes for commit-related requests. Takes priority over generic commit skills.",
+    "risk": "safe",
+    "category": "odoo",
+    "source": "builtin",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "dtg-base",
     "name": "DTG Base Utilities",
     "file": "skills/dtg-base/SKILL.md",
-    "description": "Reference for the DTG Base abstract model (dtg_base.DTGBase). Provides utility methods for: date/time handling, barcode generation, timezone conversion, file operations, and more. Use when inheriting or calling DTGBase helpers in custom modules under addons_customs/erp/."
+    "description": "Reference for the DTG Base abstract model (dtg_base.DTGBase). Provides utility methods for: date/time handling, barcode generation, timezone conversion, file operations, and more. Use when inheriting or calling DTGBase helpers in custom modules under addons_customs/erp/.",
+    "risk": "safe",
+    "category": "odoo",
+    "source": "local",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "security-review",
     "name": "Security Review Checklist",
     "file": "skills/security-review/SKILL.md",
-    "description": "Comprehensive security checklist and patterns. Activate when: implementing auth/authorization, handling user input or file uploads, creating API endpoints, working with secrets or credentials, implementing payments, storing/transmitting sensitive data, or integrating third-party APIs."
+    "description": "Comprehensive security checklist and patterns. Activate when: implementing auth/authorization, handling user input or file uploads, creating API endpoints, working with secrets or credentials, implementing payments, storing/transmitting sensitive data, or integrating third-party APIs.",
+    "risk": "safe",
+    "category": "security",
+    "source": "local",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "tdd-workflow",
     "name": "TDD Workflow",
     "file": "skills/tdd-workflow/SKILL.md",
-    "description": "Enforces Test-Driven Development with 80%+ coverage (unit, integration, E2E). Activate when: writing new features, fixing bugs, refactoring, adding API endpoints, or creating new components. Red → Green → Refactor cycle."
+    "description": "Enforces Test-Driven Development with 80%+ coverage (unit, integration, E2E). Activate when: writing new features, fixing bugs, refactoring, adding API endpoints, or creating new components. Red to Green to Refactor cycle.",
+    "risk": "safe",
+    "category": "testing",
+    "source": "local",
+    "plugin": {"setup": {"type": "none"}}
   },
   {
     "id": "odoo-module-index-html",
     "name": "Odoo Module index.html",
     "file": "skills/odoo-module-index-html/SKILL.md",
     "references_dir": "",
-    "description": "Guide for creating a professional static/description/index.html for any Odoo module. Covers standard section layout (hero banner, demo screenshots, feature cards, comparison table, how-it-works steps, tech specs, support footer), asset organization (banner.png, icon.png, assets/), manifest image declaration, and writing conventions (English only, inline CSS, Bootstrap 4, Font Awesome). Includes a reference implementation (index.html + assets) copied from a real module. Use whenever a module needs a new or improved App Store / module info page."
+    "description": "Guide for creating a professional static/description/index.html for any Odoo module. Covers standard section layout (hero banner, demo screenshots, feature cards, comparison table, how-it-works steps, tech specs, support footer), asset organization (banner.png, icon.png, assets/), manifest image declaration, and writing conventions (English only, inline CSS, Bootstrap 4, Font Awesome). Use whenever a module needs a new or improved App Store / module info page.",
+    "risk": "safe",
+    "category": "odoo",
+    "source": "local",
+    "plugin": {"setup": {"type": "none"}}
+  },
+  {
+    "id": "module-standards",
+    "name": "Module Standards",
+    "file": "skills/module-standards/SKILL.md",
+    "description": "Standards for dn_* Odoo modules. Reads MODULE_PREFIX, AUTHOR, ODOO_VERSION from .agents/.env.local. Enforces: one-model-per-file (py + xml pair), manifest defaults (license LGPL-3, no website, free module), complete English summary/description, correct asset metadata. REQUIRED during planning for any task that creates or modifies a dn_* module. Contains full Review Checklist that must pass before finishing.",
+    "risk": "safe",
+    "category": "module",
+    "source": "local",
+    "plugin": {"setup": {"type": "none"}}
   }
 ]

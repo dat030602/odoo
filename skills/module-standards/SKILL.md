@@ -1,17 +1,29 @@
-# DN Module Standards
+---
+name: module-standards
+description: >-
+  Standards for dn_* Odoo modules: reads MODULE_PREFIX, AUTHOR, ODOO_VERSION
+  from .agents/.env.local; enforces one-model-per-file (py + xml), manifest
+  defaults (license LGPL-3, no website, free module by default), complete
+  English summary/description, and correct asset metadata. Required during
+  planning for any task that creates or modifies a dn_* module.
+globs: "addons/dn_*/**/*.{py,xml,csv,js,ts}"
+risk: safe
+---
+
+# Module Standards Skill
 
 ## Configuration Source
 
 All project-level defaults (module prefix, author, Odoo version) are defined in:
 
 ```
-/opt/odoo19/.agents/.env.local
+/opt/odoo16/.agents/.env.local
 ```
 
 **Before starting any task on a `dn_*` module, read that file and use its values.**
 If the file is missing or a key is absent, fall back to the defaults shown below.
 
-| Key            | Current value | Purpose                              |
+| Key            | Default value | Purpose                              |
 |----------------|---------------|--------------------------------------|
 | `MODULE_PREFIX` | `dn_`        | Required prefix for module directory and technical name |
 | `AUTHOR`        | `Dyan`       | Value of `author` in every manifest  |
@@ -108,19 +120,19 @@ views/
 
 ---
 
-## Review Checklist
+## Review Checklist (must pass before finishing)
 
-Before finishing work on a `dn_*` module, verify:
+Before finishing work on a `dn_*` module, verify all of the following. **None may be skipped.**
 
-- The module directory starts with the `MODULE_PREFIX` value from `.env.local` (default: `dn_`).
-- The manifest `author` matches the `AUTHOR` value from `.env.local` (default: `Dyan`).
-- The manifest `version` starts with the `ODOO_VERSION` value from `.env.local` (default: `19.0`).
-- No website key was added without an explicit request.
-- The default module is free and does not define paid-app metadata.
-- Summary and description are complete, accurate, and written in English.
-- Referenced assets exist and the manifest compiles as valid Python.
-- Each model class lives in its own `.py` file under `models/`.
-- Each model has a matching `views/<model_name>_views.xml` file.
-- No `.py` file contains more than one model class.
-- No XML file mixes views from more than one model.
-- All new model files are imported in `models/__init__.py` and listed in the manifest `data`.
+- [ ] The module directory starts with the `MODULE_PREFIX` value from `.env.local` (default: `dn_`).
+- [ ] The manifest `author` matches the `AUTHOR` value from `.env.local` (default: `Dyan`).
+- [ ] The manifest `version` starts with the `ODOO_VERSION` value from `.env.local` (default: `19.0`).
+- [ ] No `website` key was added without an explicit request.
+- [ ] The module is free and does not define paid-app metadata (unless explicitly requested).
+- [ ] `summary` and `description` are complete, accurate, and written in English.
+- [ ] Referenced assets exist and the manifest compiles as valid Python.
+- [ ] Each model class lives in its own `.py` file under `models/`.
+- [ ] Each model has a matching `views/<model_name>_views.xml` file.
+- [ ] No `.py` file contains more than one model class.
+- [ ] No XML file mixes views from more than one model.
+- [ ] All new model files are imported in `models/__init__.py` and listed in the manifest `data`.

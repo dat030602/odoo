@@ -3,7 +3,7 @@
     "id": "planner",
     "name": "planner",
     "file": "agents/planner.md",
-    "description": "Read-only analyst. Analyzes existing code, checks models/fields with odoo-workflow, drafts architectural plan following Odoo 20 patterns. Returns the plan as text reply only. Never edits or creates files. Use FIRST before any code change."
+    "description": "Read-only analyst and planner. ALWAYS invoked first before any code change. Analyzes existing code, checks models/fields, drafts architectural plan. For dn_* modules: reads and applies the module-standards skill (skills/module-standards/SKILL.md) as a required input to the plan. Returns the plan as text reply only. Never edits or creates files."
   },
   {
     "id": "odoo-coder",
