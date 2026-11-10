@@ -107,8 +107,8 @@ class StockMove(models.Model):
             line = self.purchase_line_id
             order = line.order_id
             price_unit = line.price_unit
-            if line.product_uom != self.product_id.uom_id:
-                price_unit = line.product_uom._compute_price(price_unit, self.product_id.uom_id)
+            if line.product_uom_id != self.product_id.uom_id:
+                price_unit = line.product_uom_id._compute_price(price_unit, self.product_id.uom_id)
             if order.currency_id != self.company_id.currency_id:
                 price_unit = order.currency_id._convert(
                     price_unit,

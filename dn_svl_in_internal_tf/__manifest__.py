@@ -12,6 +12,9 @@
         'dn_stock_account_svl',
         'stock_account',
     ],
+    'images': [
+        'static/description/banner.png',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'data/stock_valuation_move_type_data.xml',

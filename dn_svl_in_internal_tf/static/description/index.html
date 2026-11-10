@@ -1,6 +1,6 @@
 <!-- ============================================================================== -->
 <!-- Odoo 19 Module Description: dn_svl_in_internal_tf                              -->
-<!-- Stock Valuation Layer & Automated Accounting Entries                          -->
+<!-- Stock Valuation Layer & Journal Entries for Internal Transfers                -->
 <!-- Responsive, Clean, Professional Presentation for Odoo App Store & Module Info  -->
 <!-- ============================================================================== -->
 
@@ -14,34 +14,34 @@
             </div>
             
             <h1 style="color: #ffffff; font-size: 34px; font-weight: 800; line-height: 1.25; margin: 0 0 16px; letter-spacing: -0.5px;">
-                Stock Valuation Layer &amp; Automated Accounting Entries
+                Stock Valuation Layer &amp; Balanced Journal Entries for Internal Transfers
                 <span style="display: block; font-size: 20px; font-weight: 400; color: #94a3b8; margin-top: 8px;">
-                    Perpetual Inventory Valuation &amp; Inter-Warehouse Accounting
+                    Automated 2-Step Journal Entry Creation via Transit Account &amp; 1:1 SVL-to-JE Reconciliation
                 </span>
             </h1>
             
             <p style="color: #cbd5e1; font-size: 16px; line-height: 1.65; margin: 0 0 24px;">
-                Perpetual inventory valuation layers (SVL) and automated journal entries for <strong>Receipts</strong>, <strong>Deliveries</strong>, and <strong>Inter-Warehouse Transfers</strong>. Restores granular valuation tracking in Odoo 19 with audit-ready cost histories and automated financial balancing.
+                Eliminate balance sheet discrepancies and transit inventory blindness during inter-warehouse and internal stock transfers. This module automatically creates <strong>paired Stock Valuation Layers (SVL)</strong> and <strong>two balanced Journal Entries</strong> routed cleanly through an <strong>Inter-Warehouse Transit Clearing Account</strong> for 100% audit-proof inventory accounting.
             </p>
             
             <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                 <span style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
-                    <i class="fa fa-database" style="color: #38bdf8; margin-right: 6px;"></i>Recreated SVL in Odoo 19
+                    <i class="fa fa-exchange" style="color: #38bdf8; margin-right: 6px;"></i>2-JE Balancing Architecture
                 </span>
                 <span style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
-                    <i class="fa fa-sliders" style="color: #4ade80; margin-right: 6px;"></i>Receipt &amp; Delivery Automation
+                    <i class="fa fa-balance-scale" style="color: #4ade80; margin-right: 6px;"></i>Inter-Warehouse Transit Clearing
                 </span>
                 <span style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
-                    <i class="fa fa-exchange" style="color: #facc15; margin-right: 6px;"></i>Inter-Warehouse Valuation
+                    <i class="fa fa-link" style="color: #facc15; margin-right: 6px;"></i>1:1 SVL-to-JE Reconciliation
                 </span>
                 <span style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
-                    <i class="fa fa-external-link" style="color: #a78bfa; margin-right: 6px;"></i>Bidirectional Smart Buttons
+                    <i class="fa fa-cogs" style="color: #a78bfa; margin-right: 6px;"></i>Move Type Config Engine
                 </span>
                 <span style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
-                    <i class="fa fa-shield" style="color: #f472b6; margin-right: 6px;"></i>Strict Data Integrity
+                    <i class="fa fa-pencil-square-o" style="color: #f472b6; margin-right: 6px;"></i>Done Move Modification
                 </span>
                 <span style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #f8fafc; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;">
-                    <i class="fa fa-building-o" style="color: #34d399; margin-right: 6px;"></i>Multi-Company
+                    <i class="fa fa-building-o" style="color: #34d399; margin-right: 6px;"></i>Multi-Company &amp; Multi-Branch
                 </span>
             </div>
         </div>
@@ -49,413 +49,668 @@
         <div class="col-12 col-lg-4 text-center mt-4 mt-lg-0">
             <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 26px 20px;">
                 <div style="width: 72px; height: 72px; background: rgba(1, 126, 132, 0.2); border: 1px solid rgba(1, 126, 132, 0.4); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                    <i class="fa fa-cubes" style="font-size: 34px; color: #00d2d3;"></i>
+                    <i class="fa fa-arrows-h" style="font-size: 34px; color: #00d2d3;"></i>
                 </div>
-                <h4 style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px;">Perpetual Inventory Tracking</h4>
+                <h4 style="color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px;">2-Step Transit Balancing</h4>
                 <p style="color: #94a3b8; font-size: 13px; line-height: 1.55; margin: 0 0 16px;">
-                    Accurately tracks every unit cost, quantity change, and financial impact for real-time inventory valuation compliance in Odoo 19.
+                    Source OUT entry and Destination IN entry balance each other through a dedicated interim clearing account with net-zero variance.
                 </p>
                 <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 10px; color: #34d399; font-size: 12px; font-weight: 600;">
-                    <i class="fa fa-check-circle" style="margin-right: 6px;"></i>Full Financial Reconciliation
+                    <i class="fa fa-check-circle" style="margin-right: 6px;"></i>Net Residual: $0.00 &bull; Balanced Books
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- MODULE BANNER HERO IMAGE -->
+<!-- MODULE HERO BANNER IMAGE -->
 <section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
     <div class="row">
         <div class="col-12">
-            <img src="banner.png" alt="Stock Valuation Layer &amp; Accounting Automation Banner" style="display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid #cbd5e1; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);">
+            <img src="banner.png" alt="Stock Valuation Layer &amp; Journal Entries for Internal Transfers Banner" style="display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid #cbd5e1; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);">
         </div>
     </div>
 </section>
 
-<!-- 2. VALUE HIGHLIGHTS (3-COLUMN BENEFIT CARDS) -->
+<!-- 2. THE PROBLEM VS THE SOLUTION -->
 <section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
     <div class="row text-center mb-4">
         <div class="col-12">
-            <div style="display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Key Capabilities</div>
+            <div style="display: inline-block; background: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Accounting Gap</div>
             <h2 style="color: #0f172a; font-size: 26px; font-weight: 800; margin-bottom: 8px;">
-                Why Choose This Valuation Engine?
+                The Inter-Warehouse Valuation Problem in Standard Odoo
             </h2>
-            <p style="color: #64748b; font-size: 15px; max-width: 760px; margin: 0 auto;">
-                Bridging the gap between warehouse movements and financial accounting with complete auditability, automated reconciliation, and modular move-type control.
+            <p style="color: #64748b; font-size: 15px; max-width: 820px; margin: 0 auto;">
+                In native Odoo 19, internal transfers between warehouses, branch stores, or fulfillment centers frequently bypass perpetual stock valuation or produce single lumped journal entries lacking transit account clearing.
             </p>
         </div>
     </div>
     
     <div class="row g-4">
-        <!-- Benefit Card 1 -->
-        <div class="col-12 col-md-4">
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div style="width: 52px; height: 52px; background: #ecfdf5; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                    <i class="fa fa-line-chart" style="font-size: 24px; color: #10b981;"></i>
+        <!-- Problem Card -->
+        <div class="col-12 col-md-6">
+            <div style="background: #fff5f5; border: 1px solid #fed7d7; border-radius: 16px; padding: 28px 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
+                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                    <div style="width: 44px; height: 44px; background: #fee2e2; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 14px;">
+                        <i class="fa fa-times-circle" style="font-size: 22px; color: #dc2626;"></i>
+                    </div>
+                    <div>
+                        <h4 style="color: #991b1b; font-size: 18px; font-weight: 700; margin: 0;">Without dn_svl_in_internal_tf</h4>
+                        <span style="color: #b91c1c; font-size: 12px;">Standard Odoo Internal Transfer Limitations</span>
+                    </div>
                 </div>
-                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
-                    Recreated SVL in Odoo 19
-                </h3>
-                <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0;">
-                    Maintains an immutable historical record of inventory values. Every stock movement captures exact quantity, unit cost, calculated valuation amount, and timestamps for seamless auditing and inventory balance verification.
-                </p>
+                <ul style="color: #4b5563; font-size: 14px; line-height: 1.7; padding-left: 20px; margin: 0;">
+                    <li style="margin-bottom: 10px;"><strong>No SVL on Internal Moves:</strong> Stock Valuation Layers are completely skipped, hiding physical inventory transfers from valuation reports.</li>
+                    <li style="margin-bottom: 10px;"><strong>Unbalanced Branch Balance Sheets:</strong> When transferring goods between branches with separate valuation accounts, direct journal lines fail to trace in-transit inventory.</li>
+                    <li style="margin-bottom: 10px;"><strong>Audit Trail Disconnect:</strong> Inventory managers and financial auditors cannot match individual transfer lines to specific general ledger journal entries.</li>
+                    <li><strong>Rigid All-or-Nothing System:</strong> No granular control to choose which move types (Receipts, Deliveries, Transfers) should automate valuation vs entries.</li>
+                </ul>
             </div>
         </div>
         
-        <!-- Benefit Card 2 -->
-        <div class="col-12 col-md-4">
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div style="width: 52px; height: 52px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                    <i class="fa fa-sliders" style="font-size: 24px; color: #0284c7;"></i>
+        <!-- Solution Card -->
+        <div class="col-12 col-md-6">
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 28px 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
+                <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                    <div style="width: 44px; height: 44px; background: #dcfce7; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 14px;">
+                        <i class="fa fa-check-circle" style="font-size: 22px; color: #16a34a;"></i>
+                    </div>
+                    <div>
+                        <h4 style="color: #166534; font-size: 18px; font-weight: 700; margin: 0;">With dn_svl_in_internal_tf</h4>
+                        <span style="color: #15803d; font-size: 12px;">Automated 2-Step Balanced Valuation</span>
+                    </div>
                 </div>
-                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
-                    Granular Automation Matrix
-                </h3>
-                <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0;">
-                    Tailor automation to your company workflows. Enable Valuation Layers and Journal Entries independently for Receipts, Deliveries, and Internal Transfers via intuitive checkboxes with strict constraint validation.
-                </p>
-            </div>
-        </div>
-        
-        <!-- Benefit Card 3 -->
-        <div class="col-12 col-md-4">
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div style="width: 52px; height: 52px; background: #f0fdfa; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                    <i class="fa fa-balance-scale" style="font-size: 24px; color: #017e84;"></i>
-                </div>
-                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
-                    Location Valuation Difference
-                </h3>
-                <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0;">
-                    Seamless inter-warehouse accounting. When goods move between warehouses with distinct valuation accounts, the engine automatically creates balancing SVL pairs and posts the corresponding debit/credit journal entries.
-                </p>
+                <ul style="color: #374151; font-size: 14px; line-height: 1.7; padding-left: 20px; margin: 0;">
+                    <li style="margin-bottom: 10px;"><strong>Paired SVL Records:</strong> Automatically creates paired layers: <em>Source Location OUT (-qty, -value)</em> and <em>Destination Location IN (+qty, +value)</em>.</li>
+                    <li style="margin-bottom: 10px;"><strong>2-Step Transit Accounting:</strong> Automatically posts two balanced journal entries through a designated Inter-Warehouse Transit Clearing Account.</li>
+                    <li style="margin-bottom: 10px;"><strong>1:1 SVL-to-JE Direct Mapping:</strong> Outbound SVL links directly to the OUT journal entry; Inbound SVL links directly to the IN journal entry.</li>
+                    <li><strong>Granular Move Type Engine:</strong> Flexible configuration toggles to selectively activate SVL and JE generation for Deliveries, Receipts, and Transfers.</li>
+                </ul>
             </div>
         </div>
     </div>
 </section>
 
-<!-- 3. HOW IT WORKS (4-STEP PROCESS CARDS) -->
-<section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="row align-items-center" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 40px 30px;">
-        <div class="col-12 text-center mb-4">
-            <div style="display: inline-block; background: #e2e8f0; color: #334155; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Automated Workflow</div>
-            <h2 style="color: #0f172a; font-size: 24px; font-weight: 800; margin-bottom: 8px;">
-                How It Works in 4 Steps
-            </h2>
-            <p style="color: #64748b; font-size: 14px; max-width: 680px; margin: 0 auto;">
-                Operates transparently in the background of your daily inventory operations without altering standard warehouse staff processes:
-            </p>
-        </div>
-        
-        <div class="col-12 col-md-6 col-lg-3 mb-3">
-            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 22px 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #0284c7; background: #e0f2fe; padding: 3px 10px; border-radius: 6px; text-transform: uppercase;">Step 1</span>
-                    <i class="fa fa-cog" style="color: #0284c7; font-size: 18px;"></i>
-                </div>
-                <h4 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px;">Configure Settings</h4>
-                <p style="font-size: 13px; color: #64748b; margin: 0; line-height: 1.55;">
-                    Navigate to <strong>Inventory &gt; Settings</strong>. Enable <em>Internal Transfer Valuation</em> and select move types (Receipts, Deliveries, Transfers) for SVL and Journal Entry generation.
-                </p>
-            </div>
-        </div>
-        
-        <div class="col-12 col-md-6 col-lg-3 mb-3">
-            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 22px 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #10b981; background: #ecfdf5; padding: 3px 10px; border-radius: 6px; text-transform: uppercase;">Step 2</span>
-                    <i class="fa fa-truck" style="color: #10b981; font-size: 18px;"></i>
-                </div>
-                <h4 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px;">Validate Operation</h4>
-                <p style="font-size: 13px; color: #64748b; margin: 0; line-height: 1.55;">
-                    Warehouse operators process transfers, vendor receipts, or customer deliveries as normal. When the picking reaches the <strong>Done</strong> state, our hook triggers automatically.
-                </p>
-            </div>
-        </div>
-        
-        <div class="col-12 col-md-6 col-lg-3 mb-3">
-            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 22px 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #8b5cf6; background: #f5f3ff; padding: 3px 10px; border-radius: 6px; text-transform: uppercase;">Step 3</span>
-                    <i class="fa fa-book" style="color: #8b5cf6; font-size: 18px;"></i>
-                </div>
-                <h4 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px;">Auto-Post Accounting</h4>
-                <p style="font-size: 13px; color: #64748b; margin: 0; line-height: 1.55;">
-                    The system generates valuation layers with exact unit costs. If inter-warehouse valuation accounts differ, a balanced <code>account.move</code> is generated and posted immediately.
-                </p>
-            </div>
-        </div>
-        
-        <div class="col-12 col-md-6 col-lg-3 mb-3">
-            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 22px 18px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                    <span style="font-size: 12px; font-weight: 800; color: #017e84; background: #f0fdfa; padding: 3px 10px; border-radius: 6px; text-transform: uppercase;">Step 4</span>
-                    <i class="fa fa-search" style="color: #017e84; font-size: 18px;"></i>
-                </div>
-                <h4 style="font-size: 16px; font-weight: 700; color: #1e293b; margin: 0 0 8px;">360&deg; Traceability</h4>
-                <p style="font-size: 13px; color: #64748b; margin: 0; line-height: 1.55;">
-                    Auditors and accountants navigate seamlessly between pickings, valuation layers, and journal entries with one-click bidirectional smart buttons across all views.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 4. SMART NAVIGATION SYSTEM -->
+<!-- 3. 2-STEP TRANSIT ACCOUNTING ARCHITECTURE -->
 <section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
     <div class="row text-center mb-4">
         <div class="col-12">
-            <div style="display: inline-block; background: #fdf2f8; color: #db2777; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Native Ergonomics</div>
+            <div style="display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Accounting Flow</div>
             <h2 style="color: #0f172a; font-size: 26px; font-weight: 800; margin-bottom: 8px;">
-                Bidirectional 360&deg; Smart Navigation System
+                2-Step Transit Accounting Architecture
             </h2>
-            <p style="color: #64748b; font-size: 15px; max-width: 760px; margin: 0 auto;">
-                Every record is interconnected. Financial controllers can audit any ledger entry straight to physical stock moves, and logistics teams can review the financial impact directly from any picking.
+            <p style="color: #64748b; font-size: 15px; max-width: 820px; margin: 0 auto;">
+                How internal transfer movements are split into two legally independent, self-balancing accounting entries connected through an Inter-Warehouse Transit Clearing Account.
             </p>
         </div>
     </div>
     
-    <div class="row g-4">
-        <!-- Node 1: Stock Picking -->
-        <div class="col-12 col-md-4">
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                    <div style="width: 44px; height: 44px; background: #ecfdf5; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fa fa-truck" style="font-size: 20px; color: #10b981;"></i>
-                    </div>
-                    <div>
-                        <h4 style="color: #1e293b; font-size: 16px; font-weight: 700; margin: 0;">Stock Picking</h4>
-                        <span style="color: #64748b; font-size: 12px;">Warehouse Operations</span>
-                    </div>
+    <!-- Accounting Diagram Cards -->
+    <div class="row g-4 mb-4">
+        <!-- Entry 1: Source OUT -->
+        <div class="col-12 col-lg-5">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); height: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="background: #eff6ff; color: #2563eb; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">Step 1 &bull; Outbound Move</span>
+                    <span style="color: #64748b; font-size: 12px; font-weight: 600;">Ref: [REF] - OUT</span>
                 </div>
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px;">
-                    <div style="font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; margin-bottom: 8px;">Integrated Stat Buttons:</div>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 13px; color: #0f172a;">
-                        <i class="fa fa-book" style="color: #0284c7; width: 16px;"></i>
-                        <strong>Journal Entries:</strong> View all posted accounting moves.
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #0f172a;">
-                        <i class="fa fa-list" style="color: #10b981; width: 16px;"></i>
-                        <strong>Valuation Layers:</strong> View generated SVL records.
-                    </div>
-                </div>
-                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0;">
-                    Stat buttons automatically hide when counts are zero, keeping the form clean and uncluttered.
+                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
+                    Source Location Valuation Exit
+                </h3>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+                    Records goods departing the source warehouse location. Crediting source inventory and debiting inter-warehouse transit clearing.
                 </p>
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; font-family: monospace; font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #0f172a;">
+                        <span><strong style="color: #2563eb;">Debit:</strong> Inter-Warehouse Transit</span>
+                        <span style="font-weight: 700; color: #0f172a;">+$1,000.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #0f172a;">
+                        <span><strong style="color: #dc2626;">Credit:</strong> Source Valuation Acc</span>
+                        <span style="font-weight: 700; color: #0f172a;">-$1,000.00</span>
+                    </div>
+                </div>
+                <div style="margin-top: 14px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #475569;">
+                    <i class="fa fa-tag" style="color: #2563eb;"></i>
+                    <span>Linked Layer: <strong>Source SVL (Qty: -10, Val: -$1,000)</strong></span>
+                </div>
             </div>
         </div>
         
-        <!-- Node 2: Valuation Layer -->
-        <div class="col-12 col-md-4">
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                    <div style="width: 44px; height: 44px; background: #eff6ff; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fa fa-database" style="font-size: 20px; color: #0284c7;"></i>
-                    </div>
-                    <div>
-                        <h4 style="color: #1e293b; font-size: 16px; font-weight: 700; margin: 0;">Valuation Layer</h4>
-                        <span style="color: #64748b; font-size: 12px;">Stock Valuation Layer (SVL)</span>
-                    </div>
-                </div>
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px;">
-                    <div style="font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; margin-bottom: 8px;">Integrated Stat Buttons:</div>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 13px; color: #0f172a;">
-                        <i class="fa fa-book" style="color: #0284c7; width: 16px;"></i>
-                        <strong>Journal Entry:</strong> Direct jump to linked journal entry.
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #0f172a;">
-                        <i class="fa fa-exchange" style="color: #8b5cf6; width: 16px;"></i>
-                        <strong>Stock Move Link:</strong> Trace exact move &amp; company.
-                    </div>
-                </div>
-                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0;">
-                    Complete read-only protection ensures financial auditors review authentic, un-tampered data.
-                </p>
+        <!-- Center Transit Node -->
+        <div class="col-12 col-lg-2 text-center d-flex flex-column justify-content-center align-items-center">
+            <div style="background: linear-gradient(135deg, #017e84 0%, #00d2d3 100%); color: #ffffff; width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(1, 126, 132, 0.4); margin: 0 auto 12px;">
+                <i class="fa fa-random" style="font-size: 26px;"></i>
+            </div>
+            <div style="font-weight: 800; font-size: 14px; color: #0f172a;">Transit Clearing</div>
+            <div style="font-size: 12px; color: #16a34a; font-weight: 700; background: #dcfce7; padding: 2px 8px; border-radius: 4px; margin-top: 4px;">
+                Nets to $0.00
             </div>
         </div>
         
-        <!-- Node 3: Journal Entry -->
-        <div class="col-12 col-md-4">
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                    <div style="width: 44px; height: 44px; background: #f0fdfa; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fa fa-book" style="font-size: 20px; color: #017e84;"></i>
-                    </div>
-                    <div>
-                        <h4 style="color: #1e293b; font-size: 16px; font-weight: 700; margin: 0;">Journal Entry</h4>
-                        <span style="color: #64748b; font-size: 12px;">Accounting &amp; General Ledger</span>
-                    </div>
+        <!-- Entry 2: Destination IN -->
+        <div class="col-12 col-lg-5">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); height: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <span style="background: #f0fdf4; color: #16a34a; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase;">Step 2 &bull; Inbound Move</span>
+                    <span style="color: #64748b; font-size: 12px; font-weight: 600;">Ref: [REF] - IN</span>
                 </div>
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px;">
-                    <div style="font-size: 12px; font-weight: 700; color: #334155; text-transform: uppercase; margin-bottom: 8px;">Integrated Stat Buttons:</div>
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 13px; color: #0f172a;">
-                        <i class="fa fa-list" style="color: #10b981; width: 16px;"></i>
-                        <strong>Valuation Layers:</strong> Cross-reference all source SVLs.
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #0f172a;">
-                        <i class="fa fa-exchange" style="color: #f59e0b; width: 16px;"></i>
-                        <strong>Stock Moves:</strong> Trace origin stock movement lines.
-                    </div>
-                </div>
-                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0;">
-                    Eliminates manual searches and speeds up period-end closing audits across all warehouses.
+                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
+                    Destination Location Valuation Entry
+                </h3>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+                    Records goods arriving at the destination warehouse location. Debiting destination inventory and crediting inter-warehouse transit clearing.
                 </p>
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; font-family: monospace; font-size: 13px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #0f172a;">
+                        <span><strong style="color: #2563eb;">Debit:</strong> Dest Valuation Acc</span>
+                        <span style="font-weight: 700; color: #0f172a;">+$1,000.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #0f172a;">
+                        <span><strong style="color: #dc2626;">Credit:</strong> Inter-Warehouse Transit</span>
+                        <span style="font-weight: 700; color: #0f172a;">-$1,000.00</span>
+                    </div>
+                </div>
+                <div style="margin-top: 14px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #475569;">
+                    <i class="fa fa-tag" style="color: #16a34a;"></i>
+                    <span>Linked Layer: <strong>Dest SVL (Qty: +10, Val: +$1,000)</strong></span>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- 5. LOCATION ACCOUNT RESOLUTION LOGIC -->
+<!-- DEMO SCREENSHOTS SHOWCASE -->
 <section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="row" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 36px 30px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-        <div class="col-12 mb-3">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                <span style="background: #f0fdf4; color: #15803d; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase;">Smart Fallback</span>
-                <h3 style="color: #0f172a; font-size: 22px; font-weight: 800; margin: 0;">Multi-Tier Valuation Account Resolution</h3>
-            </div>
-            <p style="color: #64748b; font-size: 14px; margin: 0 0 20px;">
-                Avoid configuration bottlenecks. When moving goods between locations, the system resolves the stock valuation account using a clean 3-tier hierarchical lookup:
+    <div class="row text-center mb-4">
+        <div class="col-12">
+            <div style="display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Real Backend UI</div>
+            <h2 style="color: #0f172a; font-size: 26px; font-weight: 800; margin-bottom: 8px;">
+                See It In Action Inside Odoo 19
+            </h2>
+            <p style="color: #64748b; font-size: 15px; max-width: 820px; margin: 0 auto;">
+                Seamless integration directly into standard stock picking views, valuation layer lists, and journal entries.
             </p>
         </div>
-        
-        <div class="col-12 col-md-4 mb-3 mb-md-0">
-            <div style="background: #f8fafc; border-left: 4px solid #017e84; border-radius: 8px; padding: 18px 16px; height: 100%;">
-                <div style="font-size: 12px; font-weight: 800; color: #017e84; text-transform: uppercase; margin-bottom: 4px;">Tier 1 &bull; Direct Location Account</div>
-                <h5 style="color: #1e293b; font-size: 15px; font-weight: 700; margin: 0 0 6px;">Location Specific</h5>
-                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0;">
-                    Checks the <code>dn_valuation_account_id</code> configured directly on the internal warehouse location form.
-                </p>
+    </div>
+    
+    <!-- Screenshot 1: Transfer Picking with Smart Buttons -->
+    <div class="row align-items-center mb-5">
+        <div class="col-12 col-lg-7">
+            <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);">
+                <img src="assets/demo_picking.jpg" alt="Internal Transfer Picking with Valuation Smart Buttons" style="width: 100%; height: auto; display: block;">
             </div>
         </div>
-        
-        <div class="col-12 col-md-4 mb-3 mb-md-0">
-            <div style="background: #f8fafc; border-left: 4px solid #0284c7; border-radius: 8px; padding: 18px 16px; height: 100%;">
-                <div style="font-size: 12px; font-weight: 800; color: #0284c7; text-transform: uppercase; margin-bottom: 4px;">Tier 2 &bull; Recursive Hierarchy</div>
-                <h5 style="color: #1e293b; font-size: 15px; font-weight: 700; margin: 0 0 6px;">Parent Warehouse Lookup</h5>
-                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0;">
-                    If empty, automatically walks up the location tree (e.g. Rack &gt; Zone &gt; Warehouse) to inherit from the parent location.
+        <div class="col-12 col-lg-5 mt-4 mt-lg-0">
+            <div style="padding-left: 12px;">
+                <div style="display: inline-block; background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px;">Picking Integration</div>
+                <h3 style="color: #0f172a; font-size: 22px; font-weight: 700; margin-bottom: 12px;">
+                    Smart Buttons for SVL &amp; Journal Entries
+                </h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.65; margin-bottom: 16px;">
+                    Internal transfer stock pickings now feature dedicated stat buttons directly in the form header. View the exact number of valuation layers created and jump straight into the related accounting journal entries with a single click.
                 </p>
+                <div style="display: flex; gap: 12px;">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; flex: 1;">
+                        <i class="fa fa-cubes" style="color: #017e84; margin-right: 6px;"></i>
+                        <span style="font-weight: 700; color: #0f172a; font-size: 13px;">Stock Valuation Layers</span>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; flex: 1;">
+                        <i class="fa fa-book" style="color: #017e84; margin-right: 6px;"></i>
+                        <span style="font-weight: 700; color: #0f172a; font-size: 13px;">Journal Entries</span>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="col-12 col-md-4">
-            <div style="background: #f8fafc; border-left: 4px solid #10b981; border-radius: 8px; padding: 18px 16px; height: 100%;">
-                <div style="font-size: 12px; font-weight: 800; color: #10b981; text-transform: uppercase; margin-bottom: 4px;">Tier 3 &bull; Category Fallback</div>
-                <h5 style="color: #1e293b; font-size: 15px; font-weight: 700; margin: 0 0 6px;">Product Category Property</h5>
-                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin: 0;">
-                    If no location account is set in the hierarchy, falls back smoothly to <code>property_stock_valuation_account_id</code>.
+    </div>
+    
+    <!-- Screenshot 2: Paired SVL Layers -->
+    <div class="row align-items-center mb-5 flex-lg-row-reverse">
+        <div class="col-12 col-lg-7">
+            <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);">
+                <img src="assets/demo_svl.jpg" alt="Paired Stock Valuation Layers for Internal Transfer" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+        <div class="col-12 col-lg-5 mt-4 mt-lg-0">
+            <div style="padding-right: 12px;">
+                <div style="display: inline-block; background: #ecfdf5; color: #047857; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px;">Valuation Symmetry</div>
+                <h3 style="color: #0f172a; font-size: 22px; font-weight: 700; margin-bottom: 12px;">
+                    Symmetrical Paired SVL Records
+                </h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.65; margin-bottom: 16px;">
+                    Every validated internal transfer produces two distinct Stock Valuation Layers. One negative layer mirrors stock departure from the source location, while a positive layer reflects stock arrival at the target warehouse location at exact standard or average cost.
                 </p>
+                <ul style="color: #475569; font-size: 13px; line-height: 1.7; padding-left: 20px; margin: 0;">
+                    <li>Accurate FIFO / AVCO remaining value tracking.</li>
+                    <li>Source and destination location tracking on each layer.</li>
+                    <li>Explicit link to individual journal entries via <code>account_move_id</code>.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshot 3: 2 Balanced Journal Entries -->
+    <div class="row align-items-center mb-5">
+        <div class="col-12 col-lg-7">
+            <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);">
+                <img src="assets/demo_je.jpg" alt="Balanced Journal Entries for Internal Transfers" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+        <div class="col-12 col-lg-5 mt-4 mt-lg-0">
+            <div style="padding-left: 12px;">
+                <div style="display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 10px;">General Ledger Integrity</div>
+                <h3 style="color: #0f172a; font-size: 22px; font-weight: 700; margin-bottom: 12px;">
+                    Two Balanced Journal Entries via Transit
+                </h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.65; margin-bottom: 16px;">
+                    Instead of a confusing single entry, the system generates two balanced journal entries with clear <strong>- OUT</strong> and <strong>- IN</strong> reference tags. Both entries pass through the Inter-Warehouse Transit Clearing Account, guaranteeing zero balance sheet residual.
+                </p>
+                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; color: #166534; font-size: 13px; font-weight: 600;">
+                    <i class="fa fa-shield" style="margin-right: 6px;"></i>Compliant with international GAAP &amp; IFRS transfer pricing standards.
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- 6. COMPARISON TABLE -->
+<!-- 4. MOVEMENT TYPE CONFIGURATION ENGINE -->
 <section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="row">
+    <div class="row text-center mb-4">
         <div class="col-12">
-            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 36px 30px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow-x: auto;">
-                <div style="text-align: center; margin-bottom: 28px;">
-                    <div style="display: inline-block; background: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Feature Comparison</div>
-                    <h2 style="color: #0f172a; font-size: 24px; font-weight: 800; margin: 0;">
-                        Standard Odoo 19 vs. dn_svl_in_internal_tf
-                    </h2>
+            <div style="display: inline-block; background: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Customizable Workflow</div>
+            <h2 style="color: #0f172a; font-size: 26px; font-weight: 800; margin-bottom: 8px;">
+                Movement Type Configuration Engine
+            </h2>
+            <p style="color: #64748b; font-size: 15px; max-width: 820px; margin: 0 auto;">
+                Complete company-level control over automated stock valuation and journal entry posting by movement classification.
+            </p>
+        </div>
+    </div>
+    
+    <div class="row align-items-center">
+        <div class="col-12 col-lg-6">
+            <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08); margin-bottom: 20px;">
+                <img src="assets/field_config.jpg" alt="Stock Valuation Move Types Configuration in Inventory Settings" style="width: 100%; height: auto; display: block;">
+            </div>
+            <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);">
+                <img src="assets/fied_location.jpg" alt="Stock Location Valuation Account Configuration" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+        
+        <div class="col-12 col-lg-6 mt-4 mt-lg-0">
+            <div style="padding-left: 16px;">
+                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <span style="width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px;">
+                            <i class="fa fa-sliders" style="color: #2563eb;"></i>
+                        </span>
+                        <h4 style="color: #0f172a; font-size: 16px; font-weight: 700; margin: 0;">Automated SVL Move Types</h4>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+                        Specify precisely which movement types automatically produce Stock Valuation Layers (<code>auto_svl_move_type_ids</code>): <strong>Receipts</strong>, <strong>Deliveries</strong>, or <strong>Internal Transfers</strong>.
+                    </p>
                 </div>
                 
-                <table style="width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
-                    <thead>
-                        <tr style="background: #f8fafc; text-align: left; font-size: 14px; border-bottom: 2px solid #e2e8f0;">
-                            <th style="padding: 16px 20px; font-weight: 700; color: #1e293b;">Key Functional Dimension</th>
-                            <th style="padding: 16px 20px; font-weight: 700; color: #64748b;">Standard Odoo 19</th>
-                            <th style="padding: 16px 20px; font-weight: 700; color: #017e84; background: #f0fdfa;">dn_svl_in_internal_tf</th>
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: 14px; color: #475569;">
-                        <tr>
-                            <td style="padding: 14px 20px; font-weight: 600; border-top: 1px solid #e2e8f0;">Dedicated Stock Valuation Layer (SVL)</td>
-                            <td style="padding: 14px 20px; color: #ef4444; border-top: 1px solid #e2e8f0;"><i class="fa fa-times"></i> Replaced / Limited visibility</td>
-                            <td style="padding: 14px 20px; color: #10b981; font-weight: 700; background: #f0fdfa; border-top: 1px solid #e2e8f0;"><i class="fa fa-check"></i> Recreated full SVL model &amp; views</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 14px 20px; font-weight: 600; border-top: 1px solid #e2e8f0;">Inter-Warehouse Transfer Accounting</td>
-                            <td style="padding: 14px 20px; color: #ef4444; border-top: 1px solid #e2e8f0;"><i class="fa fa-times"></i> No automatic balancing entries</td>
-                            <td style="padding: 14px 20px; color: #10b981; font-weight: 700; background: #f0fdfa; border-top: 1px solid #e2e8f0;"><i class="fa fa-check"></i> Auto-posts journal entry on account diff</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 14px 20px; font-weight: 600; border-top: 1px solid #e2e8f0;">Location-Level Valuation Accounts</td>
-                            <td style="padding: 14px 20px; color: #f59e0b; border-top: 1px solid #e2e8f0;"><i class="fa fa-minus"></i> Global product category accounts only</td>
-                            <td style="padding: 14px 20px; color: #10b981; font-weight: 700; background: #f0fdfa; border-top: 1px solid #e2e8f0;"><i class="fa fa-check"></i> Per-location accounts + hierarchical inheritance</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 14px 20px; font-weight: 600; border-top: 1px solid #e2e8f0;">Move Type Granular Automation</td>
-                            <td style="padding: 14px 20px; color: #ef4444; border-top: 1px solid #e2e8f0;"><i class="fa fa-times"></i> Fixed, rigid core behavior</td>
-                            <td style="padding: 14px 20px; color: #10b981; font-weight: 700; background: #f0fdfa; border-top: 1px solid #e2e8f0;"><i class="fa fa-check"></i> Independent toggles for Receipts, Deliveries &amp; Transfers</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 14px 20px; font-weight: 600; border-top: 1px solid #e2e8f0;">360&deg; Cross-Linking Stat Buttons</td>
-                            <td style="padding: 14px 20px; color: #f59e0b; border-top: 1px solid #e2e8f0;"><i class="fa fa-minus"></i> Disconnected navigation</td>
-                            <td style="padding: 14px 20px; color: #10b981; font-weight: 700; background: #f0fdfa; border-top: 1px solid #e2e8f0;"><i class="fa fa-check"></i> Seamless bidirectional button boxes</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 14px 20px; font-weight: 600; border-top: 1px solid #e2e8f0;">Audit Trail &amp; Data Integrity</td>
-                            <td style="padding: 14px 20px; color: #f59e0b; border-top: 1px solid #e2e8f0;"><i class="fa fa-minus"></i> Hard to reconcile historical changes</td>
-                            <td style="padding: 14px 20px; color: #10b981; font-weight: 700; background: #f0fdfa; border-top: 1px solid #e2e8f0;"><i class="fa fa-check"></i> Strict validation constraints &amp; immutable SVL lines</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <span style="width: 32px; height: 32px; border-radius: 8px; background: #f0fdf4; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px;">
+                            <i class="fa fa-book" style="color: #16a34a;"></i>
+                        </span>
+                        <h4 style="color: #0f172a; font-size: 16px; font-weight: 700; margin: 0;">Automated Journal Entry Move Types</h4>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+                        Independently govern which movement types automatically post general ledger journal entries (<code>auto_je_move_type_ids</code>), allowing phased rollouts or non-accounting staging warehouses.
+                    </p>
+                </div>
+                
+                <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <span style="width: 32px; height: 32px; border-radius: 8px; background: #fdf2f8; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px;">
+                            <i class="fa fa-map-marker" style="color: #db2777;"></i>
+                        </span>
+                        <h4 style="color: #0f172a; font-size: 16px; font-weight: 700; margin: 0;">Location Valuation Account Fallback</h4>
+                    </div>
+                    <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+                        Assign location-specific stock valuation accounts directly on <code>stock.location</code>. Transfers smoothly debit/credit location accounts, falling back to product category defaults when unassigned.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- 7. TECHNICAL SPECIFICATIONS & MULTI-COMPANY -->
+<!-- 5. VALUE HIGHLIGHTS -->
 <section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="row" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px 28px;">
-        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
-            <h3 style="color: #0f172a; font-size: 20px; font-weight: 800; margin-bottom: 16px;">
-                Technical Specifications
-            </h3>
-            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #475569; line-height: 2;">
-                <li><i class="fa fa-check-circle" style="color: #10b981; margin-right: 8px;"></i><strong>Odoo Compatibility:</strong> Version 19.0 (Community &amp; Enterprise)</li>
-                <li><i class="fa fa-check-circle" style="color: #10b981; margin-right: 8px;"></i><strong>Module Technical Name:</strong> <code>dn_svl_in_internal_tf</code></li>
-                <li><i class="fa fa-check-circle" style="color: #10b981; margin-right: 8px;"></i><strong>Version:</strong> 19.0.1.0.0</li>
-                <li><i class="fa fa-check-circle" style="color: #10b981; margin-right: 8px;"></i><strong>Dependencies:</strong> <code>stock_account</code></li>
-                <li><i class="fa fa-check-circle" style="color: #10b981; margin-right: 8px;"></i><strong>License:</strong> LGPL-3</li>
-                <li><i class="fa fa-check-circle" style="color: #10b981; margin-right: 8px;"></i><strong>Author:</strong> Dyan</li>
-            </ul>
+    <div class="row text-center mb-4">
+        <div class="col-12">
+            <div style="display: inline-block; background: #ecfdf5; color: #047857; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Key Benefits</div>
+            <h2 style="color: #0f172a; font-size: 26px; font-weight: 800; margin-bottom: 8px;">
+                Why Financial &amp; Inventory Teams Choose This Module
+            </h2>
+            <p style="color: #64748b; font-size: 15px; max-width: 820px; margin: 0 auto;">
+                Three foundational pillars that transform stock transfers into transparent, GAAP-compliant accounting records.
+            </p>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <!-- Benefit 1 -->
+        <div class="col-12 col-md-4">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px 22px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column;">
+                <div style="width: 52px; height: 52px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+                    <i class="fa fa-balance-scale" style="font-size: 24px; color: #2563eb;"></i>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase; margin-bottom: 6px;">Pillar 1</div>
+                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
+                    Zero Transit Residual
+                </h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0 0 16px; flex-grow: 1;">
+                    By routing Outbound and Inbound transfer steps through the Inter-Warehouse Transit Clearing Account, debit and credit movements exactly match down to the cent, guaranteeing a zero balance clearing state.
+                </p>
+                <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; color: #0f172a; font-size: 12px; font-weight: 600;">
+                    <i class="fa fa-check text-success" style="margin-right: 6px;"></i>100% Balanced General Ledger
+                </div>
+            </div>
         </div>
         
-        <div class="col-12 col-lg-6">
-            <h3 style="color: #0f172a; font-size: 20px; font-weight: 800; margin-bottom: 16px;">
-                Architecture &amp; Data Integrity
-            </h3>
-            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #475569; line-height: 2;">
-                <li><i class="fa fa-shield" style="color: #3b82f6; margin-right: 8px;"></i><strong>Multi-Company:</strong> Strict isolation by <code>company_id</code> across all SVL and Journal records</li>
-                <li><i class="fa fa-shield" style="color: #3b82f6; margin-right: 8px;"></i><strong>Constraint Integrity:</strong> Requires active SVL when enabling Journal Entries per move type</li>
-                <li><i class="fa fa-shield" style="color: #3b82f6; margin-right: 8px;"></i><strong>Read-Only SVL View:</strong> Prevents manual alteration of historical valuation layers</li>
-                <li><i class="fa fa-shield" style="color: #3b82f6; margin-right: 8px;"></i><strong>Zero Overhead:</strong> Non-intrusive inheritance extending <code>_action_done</code> via super</li>
-                <li><i class="fa fa-shield" style="color: #3b82f6; margin-right: 8px;"></i><strong>Odoo 19 Standard Views:</strong> Modern <code>&lt;list&gt;</code> syntax and direct expression visibility</li>
-            </ul>
+        <!-- Benefit 2 -->
+        <div class="col-12 col-md-4">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px 22px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column;">
+                <div style="width: 52px; height: 52px; background: #f0fdf4; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+                    <i class="fa fa-sitemap" style="font-size: 24px; color: #16a34a;"></i>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #16a34a; text-transform: uppercase; margin-bottom: 6px;">Pillar 2</div>
+                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
+                    Branch Independence
+                </h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0 0 16px; flex-grow: 1;">
+                    Multi-warehouse organizations can assign distinct valuation accounts to each physical location or branch. Each branch's balance sheet remains completely self-contained and auditable without manual adjustment journals.
+                </p>
+                <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; color: #0f172a; font-size: 12px; font-weight: 600;">
+                    <i class="fa fa-check text-success" style="margin-right: 6px;"></i>Isolated Per-Branch Trial Balance
+                </div>
+            </div>
+        </div>
+        
+        <!-- Benefit 3 -->
+        <div class="col-12 col-md-4">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px 22px; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column;">
+                <div style="width: 52px; height: 52px; background: #fdf2f8; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+                    <i class="fa fa-puzzle-piece" style="font-size: 24px; color: #db2777;"></i>
+                </div>
+                <div style="font-size: 11px; font-weight: 800; color: #db2777; text-transform: uppercase; margin-bottom: 6px;">Pillar 3</div>
+                <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin-bottom: 12px;">
+                    Costing Core Integration
+                </h3>
+                <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0 0 16px; flex-grow: 1;">
+                    Built on top of <code>dn_stock_account_svl</code>, transfers inherit full compatibility with Standard Costing, AVCO, FIFO, and post-validation quantity modifications with automatic delta adjustment entries.
+                </p>
+                <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; color: #0f172a; font-size: 12px; font-weight: 600;">
+                    <i class="fa fa-check text-success" style="margin-right: 6px;"></i>Done Move Modification Ready
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- 8. SUPPORT & AUTHOR FOOTER -->
-<section class="oe_container" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="row text-center" style="background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%); border: 1px solid #cbd5e1; border-radius: 20px; padding: 40px 24px;">
+<!-- 6. FEATURE COMPARISON TABLE -->
+<section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <div class="row text-center mb-4">
         <div class="col-12">
-            <h3 style="color: #0f172a; font-size: 22px; font-weight: 800; margin-bottom: 8px;">
-                Professional Support &amp; Tailored Implementation
-            </h3>
-            <p style="color: #64748b; font-size: 14px; max-width: 620px; margin: 0 auto 20px; line-height: 1.6;">
-                Looking for custom accounting workflows, multi-company consolidation, or assistance deploying automated valuation in your Odoo 19 environment? We are ready to help.
+            <div style="display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Feature Comparison</div>
+            <h2 style="color: #0f172a; font-size: 26px; font-weight: 800; margin-bottom: 8px;">
+                Native Odoo 19 vs. dn_svl_in_internal_tf
+            </h2>
+            <p style="color: #64748b; font-size: 15px; max-width: 820px; margin: 0 auto;">
+                A side-by-side technical breakdown of internal transfer valuation capabilities.
             </p>
-            <div style="display: inline-flex; align-items: center; gap: 12px; background: #017e84; color: #ffffff; padding: 10px 24px; border-radius: 9999px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px -1px rgba(1, 126, 132, 0.3);">
-                <i class="fa fa-envelope"></i>
-                <span>dat030602@gmail.com</span>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);">
+                <div class="table-responsive">
+                    <table class="table" style="margin-bottom: 0; width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #0f172a; color: #ffffff;">
+                                <th style="padding: 16px 20px; font-weight: 700; border: none; width: 40%;">Capability / Workflow</th>
+                                <th style="padding: 16px 20px; font-weight: 700; border: none; text-align: center; width: 30%;">Standard Odoo 19</th>
+                                <th style="padding: 16px 20px; font-weight: 700; border: none; text-align: center; width: 30%; background: #017e84;">dn_svl_in_internal_tf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 16px 20px; font-weight: 600; color: #1e293b;">
+                                    Internal Transfer SVL Creation
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 400;">Generates perpetual stock valuation records for internal transfers</div>
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #ef4444; font-weight: 600;">
+                                    <i class="fa fa-times" style="margin-right: 6px;"></i>Skipped
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #059669; font-weight: 700; background: #f0fdf4;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>Paired OUT / IN SVLs
+                                </td>
+                            </tr>
+                            
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 16px 20px; font-weight: 600; color: #1e293b;">
+                                    Journal Entry Balancing
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 400;">Accounting entries generated when stock is transferred internally</div>
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #ef4444; font-weight: 600;">
+                                    <i class="fa fa-times" style="margin-right: 6px;"></i>Single lumped or None
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #059669; font-weight: 700; background: #f0fdf4;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>2 Separate Balanced JEs
+                                </td>
+                            </tr>
+                            
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 16px 20px; font-weight: 600; color: #1e293b;">
+                                    Inter-Warehouse Transit Clearing
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 400;">Uses transit interim account with guaranteed net-zero residual</div>
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #ef4444; font-weight: 600;">
+                                    <i class="fa fa-times" style="margin-right: 6px;"></i>Not supported
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #059669; font-weight: 700; background: #f0fdf4;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>Automatic Net-Zero ($0.00)
+                                </td>
+                            </tr>
+                            
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 16px 20px; font-weight: 600; color: #1e293b;">
+                                    1:1 SVL-to-JE Reconciliation
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 400;">Direct relational link between valuation layer and journal entry</div>
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #ef4444; font-weight: 600;">
+                                    <i class="fa fa-times" style="margin-right: 6px;"></i>No direct link
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #059669; font-weight: 700; background: #f0fdf4;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>Direct 1:1 (-OUT / -IN)
+                                </td>
+                            </tr>
+                            
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 16px 20px; font-weight: 600; color: #1e293b;">
+                                    Granular Move Type Filtering
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 400;">Independent toggles for SVL and JE creation by movement class</div>
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #ef4444; font-weight: 600;">
+                                    <i class="fa fa-times" style="margin-right: 6px;"></i>Hardcoded
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #059669; font-weight: 700; background: #f0fdf4;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>Receipts, Deliveries, Transfers
+                                </td>
+                            </tr>
+                            
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 16px 20px; font-weight: 600; color: #1e293b;">
+                                    Location-Specific Valuation Accounts
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 400;">Allows distinct inventory accounts per warehouse or location</div>
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #ef4444; font-weight: 600;">
+                                    <i class="fa fa-times" style="margin-right: 6px;"></i>Product category only
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #059669; font-weight: 700; background: #f0fdf4;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>Location with fallback
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding: 16px 20px; font-weight: 600; color: #1e293b;">
+                                    Done Move Quantity Editing
+                                    <div style="font-size: 12px; color: #64748b; font-weight: 400;">Modifying transfer quantity after picking validation</div>
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #ef4444; font-weight: 600;">
+                                    <i class="fa fa-times" style="margin-right: 6px;"></i>Blocked
+                                </td>
+                                <td style="padding: 16px 20px; text-align: center; color: #059669; font-weight: 700; background: #f0fdf4;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>Supported + Delta Entries
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div style="margin-top: 16px; font-size: 12px; color: #94a3b8;">
-                Developed by <strong>Dyan</strong> &bull; License: <strong>LGPL-3</strong> &bull; Built with Odoo Best Practices
+        </div>
+    </div>
+</section>
+
+<!-- 7. HOW IT WORKS (4 STEPS) -->
+<section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <div class="row text-center mb-4">
+        <div class="col-12">
+            <div style="display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Simple Implementation</div>
+            <h2 style="color: #0f172a; font-size: 26px; font-weight: 800; margin-bottom: 8px;">
+                How It Works: 4 Simple Steps
+            </h2>
+            <p style="color: #64748b; font-size: 15px; max-width: 820px; margin: 0 auto;">
+                Get enterprise-grade inter-warehouse transfer accounting up and running in minutes.
+            </p>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <!-- Step 1 -->
+        <div class="col-12 col-md-3">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 18px; text-align: center; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
+                <div style="width: 44px; height: 44px; border-radius: 50%; background: #017e84; color: #ffffff; font-weight: 800; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    1
+                </div>
+                <h4 style="color: #0f172a; font-size: 16px; font-weight: 700; margin-bottom: 10px;">Configure Accounts</h4>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+                    Define the Inter-Warehouse Transit Clearing Account and assign optional location-specific stock valuation accounts.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="col-12 col-md-3">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 18px; text-align: center; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
+                <div style="width: 44px; height: 44px; border-radius: 50%; background: #017e84; color: #ffffff; font-weight: 800; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    2
+                </div>
+                <h4 style="color: #0f172a; font-size: 16px; font-weight: 700; margin-bottom: 10px;">Select Move Types</h4>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+                    In Inventory Settings, enable <strong>Internal Transfer</strong> in Automated SVL Move Types and Journal Entry Move Types.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="col-12 col-md-3">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 18px; text-align: center; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
+                <div style="width: 44px; height: 44px; border-radius: 50%; background: #017e84; color: #ffffff; font-weight: 800; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    3
+                </div>
+                <h4 style="color: #0f172a; font-size: 16px; font-weight: 700; margin-bottom: 10px;">Validate Transfer</h4>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+                    Process and validate any internal transfer picking between internal locations as normal.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="col-12 col-md-3">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px 18px; text-align: center; height: 100%; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);">
+                <div style="width: 44px; height: 44px; border-radius: 50%; background: #017e84; color: #ffffff; font-weight: 800; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    4
+                </div>
+                <h4 style="color: #0f172a; font-size: 16px; font-weight: 700; margin-bottom: 10px;">Instant Audit</h4>
+                <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+                    Click smart buttons to inspect paired SVLs and the two balanced journal entries with net-zero transit balance.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 8. TECHNICAL SPECIFICATIONS & SUPPORT FOOTER -->
+<section class="oe_container mb-5" style="font-family:'Montserrat', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <div class="row g-4">
+        <!-- Tech Specs Column -->
+        <div class="col-12 col-lg-7">
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 30px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); height: 100%;">
+                <h3 style="color: #0f172a; font-size: 20px; font-weight: 700; margin-bottom: 18px;">
+                    Technical Specifications
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px;">
+                        <span style="color: #64748b; font-size: 11px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 4px;">Odoo Version</span>
+                        <strong style="color: #0f172a; font-size: 14px;">19.0 (Community &amp; Enterprise)</strong>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px;">
+                        <span style="color: #64748b; font-size: 11px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 4px;">License</span>
+                        <strong style="color: #0f172a; font-size: 14px;">LGPL-3</strong>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px;">
+                        <span style="color: #64748b; font-size: 11px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 4px;">Author</span>
+                        <strong style="color: #0f172a; font-size: 14px;">Dyan</strong>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px;">
+                        <span style="color: #64748b; font-size: 11px; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 4px;">Category</span>
+                        <strong style="color: #0f172a; font-size: 14px;">Inventory / Accounting</strong>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 14px 18px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #1e40af; margin-bottom: 4px;">
+                        <i class="fa fa-cubes" style="margin-right: 6px;"></i>Required Dependencies
+                    </div>
+                    <div style="color: #1e3a8a; font-size: 13px;">
+                        <code>dn_stock_account_svl</code>, <code>stock_account</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Support & Quality Column -->
+        <div class="col-12 col-lg-5">
+            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 16px; padding: 30px; color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h3 style="color: #ffffff; font-size: 20px; font-weight: 700; margin-bottom: 12px;">
+                        Enterprise Support &amp; Updates
+                    </h3>
+                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 18px;">
+                        Engineered with strict Odoo 19 ORM standards, zero monkey-patching, and clean inheritance architecture. Regular maintenance and version compatibility updates guaranteed.
+                    </p>
+                    <ul style="color: #cbd5e1; font-size: 13px; line-height: 1.8; padding-left: 20px; margin: 0 0 20px;">
+                        <li>Fast bug fixes &amp; minor updates.</li>
+                        <li>Clean English code &amp; documentation.</li>
+                        <li>Multi-currency &amp; multi-company verified.</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 12px 16px; text-align: center;">
+                    <span style="color: #00d2d3; font-size: 12px; font-weight: 700;">
+                        <i class="fa fa-envelope-o" style="margin-right: 6px;"></i>Need customization or assistance?
+                    </span>
+                    <div style="color: #f8fafc; font-size: 12px; margin-top: 4px;">
+                        Contact author via official Odoo Apps channel.
+                    </div>
+                </div>
             </div>
         </div>
     </div>

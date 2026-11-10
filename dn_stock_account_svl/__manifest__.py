@@ -8,8 +8,13 @@
     'summary': "Stock Valuation Layer recreation, Standard/AVCO/FIFO costing engine, and completed move modification.",
     'author': "Dyan",
     'license': "LGPL-3",
+    'price': 15.00,
+    'currency': 'USD',
     'depends': [
         'stock_account',
+    ],
+    'images': [
+        'static/description/banner.png',
     ],
     'data': [
         'security/ir.model.access.csv',
