@@ -71,7 +71,7 @@ Build the page in this order. Each section uses the CSS class `oe_container` whi
 backend wraps in a responsive container.
 
 ```
-1. HERO BANNER          Dark gradient card with title, subtitle, tag pills, right panel
+1. HERO BANNER          Light card with title, subtitle, tag pills, right panel
 2. WORKFLOW OPTIONS     Two-column cards (e.g. No-Code vs Python-Code modes)
 3. DEMO SCREENSHOTS     Full-width images with captions that show real UI
 4. VALUE HIGHLIGHTS     3-column benefit cards (icon + heading + paragraph)
@@ -85,6 +85,28 @@ Not all sections are mandatory — include only what is relevant to the module.
 
 ---
 
+## Odoo Store Sanitizer Compatibility Rules
+
+When Odoo renders `index.html` on the official Odoo App Store and inside the backend Apps view, the HTML is parsed and sanitized by `odoo.tools.mail.html_sanitize`. The underlying sanitizer applies an aggressive style whitelist (`_style_whitelist` in `odoo/tools/mail.py` / `lxml` cleaner):
+- The shorthand property `background:` (especially with `linear-gradient(...)` or `url(...)`) is **completely stripped** by the sanitizer! If you rely on a dark background gradient, the background disappears and turns into transparent/white, rendering white text completely invisible (white text on white background)!
+- `box-shadow` is **completely stripped**. Cards relying solely on shadows lose their visual separation.
+- `gap` (flexbox gap) is **completely stripped**. Flex items will collapse together without spacing.
+- `backdrop-filter` is **completely stripped**.
+
+### Golden Rules for 100% Sanitizer Compatibility
+
+1. **100% use `background-color:` instead of `background:`**: Always specify explicit background colors using `background-color: #f8fafc;` or `background-color: #ffffff;`. Never use shorthand `background:`.
+2. **Never use gradients on containers containing text**: Gradients are stripped, leaving light text on a transparent or white background.
+3. **Never rely on `box-shadow` for card separation**: Always use clean, visible borders such as `border: 1px solid #cbd5e1;` or `border: 1px solid #e2e8f0;`.
+4. **Never use inline `gap:`**: Use `margin-right` / `margin-bottom` on child elements (with `display: inline-block;` or `display: inline-flex;`) instead of `gap:` on the parent container.
+5. **Dark Palette for all typography**:
+   - Primary Headings (H1, H2): `#0f172a` or `#111827`
+   - Secondary Headings / Subtitles (H3, H4): `#1e293b`
+   - Body & Paragraphs: `#334155` or `#475569`
+   - Never use white (`#ffffff`) or light gray (`#cbd5e1`, `#94a3b8`) for text on main page containers.
+
+---
+
 ## Writing Rules
 
 | Rule | Detail |
@@ -95,48 +117,49 @@ Not all sections are mandatory — include only what is relevant to the module.
 | **Icons** | Font Awesome 4 is available: `<i class="fa fa-check-circle">` |
 | **Images** | Always include `alt` text, `width:100%`, `height:auto` |
 | **No JS** | Do not add `<script>` tags — the backend strips them |
-| **Colors** | Use the Odoo teal palette: `#017e84` (primary), `#0f172a` (dark), `#f8fafc` (light) |
+| **Colors** | Use the Odoo teal palette: `#017e84` (primary), `#0f172a` (dark text), `#334155` (body text), `#f8fafc` (card light bg) |
 
 ---
 
 ## Section 1 — Hero Banner
 
-Dark gradient card with the module name, one-liner subtitle, feature pills on the left,
+Light card with the module name, one-liner subtitle, feature pills on the left,
 and a small info panel on the right.
 
 ```html
 <section class="oe_container" style="font-family:'Montserrat','Segoe UI',Roboto,sans-serif;">
-    <div class="row align-items-center" style="background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+    <div class="row align-items-center" style="background-color:#f8fafc; border:1px solid #cbd5e1;
          border-radius:20px; padding:48px 36px; margin:0 0 32px 0;">
 
         <!-- Left: title + description + pills -->
         <div class="col-12 col-lg-8" style="padding-right:24px;">
             <!-- Badge -->
-            <div style="display:inline-flex; align-items:center; gap:8px;
-                 background:rgba(1,126,132,.2); border:1px solid rgba(1,126,132,.5);
+            <div style="display:inline-flex; align-items:center;
+                 background-color:#f0fdfa; border:1px solid #017e84;
                  border-radius:9999px; padding:6px 16px; margin-bottom:20px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#00d2d3;"></span>
-                <span style="color:#5eead4;font-size:12px;font-weight:700;text-transform:uppercase;">
+                <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background-color:#017e84; margin-right:8px;"></span>
+                <span style="color:#017e84; font-size:12px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase;">
                     Odoo 19 Ready &bull; Community &amp; Enterprise
                 </span>
             </div>
 
-            <h1 style="color:#fff;font-size:34px;font-weight:800;margin:0 0 16px;">
+            <h1 style="color:#0f172a; font-size:34px; font-weight:800; line-height:1.25; margin:0 0 16px;">
                 Module Name
-                <span style="display:block;font-size:20px;font-weight:400;color:#94a3b8;margin-top:6px;">
+                <span style="display:block; font-size:20px; font-weight:400; color:#334155; margin-top:6px;">
                     One-line subtitle
                 </span>
             </h1>
 
-            <p style="color:#cbd5e1;font-size:16px;line-height:1.65;margin:0 0 24px;">
+            <p style="color:#334155; font-size:16px; line-height:1.65; margin:0 0 24px;">
                 Short description of what the module does.
             </p>
 
             <!-- Feature pills -->
-            <div style="display:flex;flex-wrap:wrap;gap:10px;">
-                <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
-                      color:#f8fafc;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;">
-                    <i class="fa fa-cubes" style="color:#38bdf8;margin-right:6px;"></i>Feature A
+            <div style="margin-bottom:12px;">
+                <span style="display:inline-block; background-color:#ffffff; border:1px solid #cbd5e1;
+                      color:#1e293b; padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600;
+                      margin-right:8px; margin-bottom:8px;">
+                    <i class="fa fa-cubes" style="color:#017e84; margin-right:6px;"></i>Feature A
                 </span>
                 <!-- repeat for each key feature -->
             </div>
@@ -144,11 +167,11 @@ and a small info panel on the right.
 
         <!-- Right: summary panel -->
         <div class="col-12 col-lg-4 text-center mt-4 mt-lg-0">
-            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-                 border-radius:16px;padding:24px;">
-                <i class="fa fa-file-excel-o" style="font-size:72px;color:#10b981;margin-bottom:16px;"></i>
-                <h4 style="color:#fff;font-size:18px;font-weight:700;margin-bottom:8px;">Key Concept</h4>
-                <p style="color:#94a3b8;font-size:13px;line-height:1.5;margin:0 0 16px;">
+            <div style="background-color:#ffffff; border:1px solid #cbd5e1;
+                 border-radius:16px; padding:24px;">
+                <i class="fa fa-file-excel-o" style="font-size:72px; color:#017e84; margin-bottom:16px; display:inline-block;"></i>
+                <h4 style="color:#0f172a; font-size:18px; font-weight:700; margin-bottom:8px;">Key Concept</h4>
+                <p style="color:#334155; font-size:13px; line-height:1.5; margin:0 0 16px;">
                     Brief supporting text.
                 </p>
             </div>
@@ -171,8 +194,7 @@ caption right) for the first screenshot, then full-width for subsequent ones.
             <img src="assets/screenshot1.jpg"
                  alt="Description of what is shown"
                  style="display:block;width:100%;height:auto;
-                        border:1px solid #cbd5e1;border-radius:12px;
-                        box-shadow:0 8px 20px rgba(15,23,42,.12);">
+                        border:1px solid #cbd5e1;border-radius:12px;">
         </div>
         <div class="col-12 col-lg-5">
             <h2 style="color:#0f172a;font-size:26px;font-weight:800;margin:0 0 12px;">
@@ -194,16 +216,16 @@ caption right) for the first screenshot, then full-width for subsequent ones.
 <section class="oe_container mb-5" style="font-family:'Montserrat','Segoe UI',Roboto,sans-serif;">
     <div class="row g-4">
         <div class="col-12 col-md-4">
-            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;
-                 padding:28px 24px;height:100%;box-shadow:0 4px 6px -1px rgba(0,0,0,.05);">
-                <div style="width:52px;height:52px;background:#ecfdf5;border-radius:12px;
+            <div style="background-color:#ffffff;border:1px solid #e2e8f0;border-radius:16px;
+                 padding:28px 24px;height:100%;">
+                <div style="width:52px;height:52px;background-color:#ecfdf5;border-radius:12px;
                      display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
                     <i class="fa fa-paint-brush" style="font-size:24px;color:#10b981;"></i>
                 </div>
                 <h3 style="color:#1e293b;font-size:18px;font-weight:700;margin-bottom:12px;">
                     Benefit Title
                 </h3>
-                <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0;">
+                <p style="color:#334155;font-size:14px;line-height:1.6;margin:0;">
                     Two to three sentences explaining this benefit clearly.
                 </p>
             </div>
@@ -234,3 +256,9 @@ caption right) for the first screenshot, then full-width for subsequent ones.
 - [ ] All text is in English
 - [ ] No `<script>` tags, no `<style>` blocks
 - [ ] Page renders without broken images when opened as a local HTML file
+
+### Sanitizer Compatibility Checklist
+- [ ] 100% using `background-color:`, 0 occurrences of shorthand `background:`
+- [ ] 0 occurrences of `linear-gradient`
+- [ ] 0 occurrences of `box-shadow`, `gap`, `backdrop-filter`
+- [ ] All text uses dark typography colors (`#0f172a`, `#1e293b`, `#334155`, `#475569`), no white or light gray text on light containers
