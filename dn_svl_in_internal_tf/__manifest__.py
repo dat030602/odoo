@@ -8,6 +8,8 @@
     'summary': "Stock Valuation Layer & Journal Entries for Internal Transfers",
     'author': "Dyan",
     'license': "LGPL-3",
+    'price': 0.00,
+    'currency': 'USD',
     'depends': [
         'dn_stock_account_svl',
         'stock_account',

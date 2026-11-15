@@ -28,17 +28,24 @@ class DnGraphqlLog(models.Model):
     rolled_back = fields.Boolean(string='Atomic Rollback Executed', readonly=True)
 
     @classmethod
-    def log_request_isolated(cls, env, log_vals: dict):
+    def log_request(cls, env, log_vals: dict):
         """
-        Writes log record using an independent database cursor in production.
-        In test runner context (where registry cursor is restricted), writes directly via env.
-        Wrapped in savepoint to prevent aborting active transactions.
+        Writes log record using current env cursor savepoint.
+        Only falls back to isolated registry cursor if main cursor transaction is aborted.
         """
         if not env:
             return
 
-        is_test = odoo.tools.config.get('test_enable') or hasattr(env.cr, '_readonly')
+        # Main path: savepoint within existing transaction
+        try:
+            with env.cr.savepoint():
+                env['dn.graphql.log'].sudo().create(log_vals)
+            return
+        except Exception as e:
+            _logger.warning("Main cursor savepoint log creation failed: %s; falling back to emergency isolated cursor.", e)
 
+        # Emergency fallback path: isolated cursor when outer transaction is aborted
+        is_test = odoo.tools.config.get('test_enable') or hasattr(env.cr, '_readonly')
         if not is_test:
             try:
                 from odoo.modules.registry import Registry
@@ -47,12 +54,10 @@ class DnGraphqlLog(models.Model):
                     isolated_env = odoo.api.Environment(log_cr, odoo.SUPERUSER_ID, {})
                     isolated_env['dn.graphql.log'].create(log_vals)
                     log_cr.commit()
-                return
-            except Exception as e:
-                _logger.debug("Isolated cursor failed, falling back to env: %s", e)
+            except Exception as fallback_ex:
+                _logger.error("Emergency isolated log cursor failed: %s", fallback_ex)
 
-        try:
-            with env.cr.savepoint():
-                env['dn.graphql.log'].sudo().create(log_vals)
-        except Exception as e:
-            _logger.debug("Failed to commit GraphQL log (read-only transaction): %s", e)
+    @classmethod
+    def log_request_isolated(cls, env, log_vals: dict):
+        """Backward-compatible alias pointing to log_request."""
+        return cls.log_request(env, log_vals)

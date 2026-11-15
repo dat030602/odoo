@@ -24,13 +24,14 @@ class DnGraphqlKey(models.Model):
     key_index = fields.Char(string="Key Prefix / Index", readonly=True, copy=False)
     raw_key = fields.Char(
         string="Secret Key Token",
+        store=False,
         readonly=True,
         copy=False,
-        help="Displayed upon generation. Copy and store it securely."
+        help="Displayed once upon generation. Never persisted in the database."
     )
 
     state = fields.Selection([
-        ('draft', 'Draft (Not Generated)'),
+        ('draft', 'Draft'),
         ('active', 'Active'),
         ('revoked', 'Revoked'),
     ], default='draft', string="Status", required=True)
@@ -122,21 +123,22 @@ class DnGraphqlKey(models.Model):
         row = self.env.cr.fetchone()
         key_id = row[0] if row else False
 
+        self.raw_key = raw_token
         self.write({
-            'raw_key': raw_token,
             'key_id': key_id,
             'key_index': index,
             'state': 'active',
         })
 
         return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _("API Key Generated Successfully"),
-                'message': _("Your new API key has been generated and displayed on screen. Please copy and store it securely!"),
-                'type': 'success',
-                'sticky': True,
+            'type': 'ir.actions.act_window',
+            'name': 'API Key Generated',
+            'res_model': 'dn.graphql.key.show',
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'target': 'new',
+            'context': {
+                'default_key': raw_token,
             }
         }
 
@@ -144,9 +146,9 @@ class DnGraphqlKey(models.Model):
         self.ensure_one()
         if self.key_id and self.key_id.exists():
             self.key_id.sudo()._remove()
+        self.raw_key = False
         self.write({
             'state': 'revoked',
-            'raw_key': False,
             'key_id': False,
         })
         return True

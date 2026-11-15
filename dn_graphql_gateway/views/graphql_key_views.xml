@@ -40,7 +40,7 @@
                             class="btn-danger"
                             invisible="state != 'active'"
                             confirm="Are you sure you want to revoke this API key? All applications using it will be blocked immediately."/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,active,revoked"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active"/>
                 </header>
                 <sheet>
                     <div class="alert alert-warning" role="alert" invisible="not raw_key">

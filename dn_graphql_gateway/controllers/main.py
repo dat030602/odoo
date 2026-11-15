@@ -79,10 +79,15 @@ class GraphQLController(http.Controller):
 
         try:
             # 1. Determine Database
-            # In auth='none', resolve database from session or host
+            # In auth='none', resolve database from request or config
+            db_name = request.db or odoo.tools.config.get('db_name')
+            if not db_name:
+                return make_resp(
+                    format_error_payload("Database could not be determined. Bad Request.", code='GRAPHQL_VALIDATION_FAILED', request_id=request_id),
+                    code=400
+                )
             if not request.db:
-                request.session.db = odoo.tools.config.get('db_name') or 'odoo19'
-            db_name = request.db or 'odoo19'
+                request.session.db = db_name
 
             # 2. Upload Check: Strictly prohibit multipart/form-data file uploads
             content_type = request.httprequest.content_type or ''
@@ -104,9 +109,10 @@ class GraphQLController(http.Controller):
             cr = request.env.cr
             index = raw_key[:8]
             cr.execute("""
-                SELECT id, user_id, expiration_date, key
-                FROM res_users_apikeys
-                WHERE index = %s AND (scope IS NULL OR scope = 'graphql')
+                SELECT k.id, k.user_id, k.expiration_date, k.key
+                FROM res_users_apikeys k
+                INNER JOIN res_users u ON u.id = k.user_id
+                WHERE k.index = %s AND k.scope = 'graphql' AND u.active = true
             """, (index,))
             rows = cr.fetchall()
 
@@ -244,6 +250,9 @@ class GraphQLController(http.Controller):
                 )
 
             node_count = context_val.get('node_count', 0)
+            max_nodes = int(request.env['ir.config_parameter'].sudo().get_param('dn_graphql_gateway.max_nodes', 1000))
+            if max_nodes > 0 and node_count > max_nodes:
+                raise ForbiddenResourceError("Query exceeded maximum allowable node count.")
 
             # 10. Format and Restore Quoted Names in Response
             response_payload = {}
@@ -330,7 +339,7 @@ class GraphQLController(http.Controller):
                     'node_count': node_count,
                     'rolled_back': rolled_back,
                 }
-                DnGraphqlLog.log_request_isolated(request.env, log_vals)
+                DnGraphqlLog.log_request(request.env, log_vals)
             except Exception as log_ex:
                 _logger.warning("Failed to commit GraphQL log: %s", log_ex)
 

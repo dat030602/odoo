@@ -30,6 +30,7 @@ A production-ready, high-performance GraphQL API Gateway running directly inside
         'data/default_deny.xml',
         'views/graphql_model_views.xml',
         'views/graphql_key_views.xml',
+        'views/graphql_key_show_views.xml',
         'views/graphql_deny_views.xml',
         'views/graphql_log_views.xml',
         'views/res_config_settings_views.xml',

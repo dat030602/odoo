@@ -27,9 +27,10 @@ def encode_cursor(offset):
     return base64.b64encode(str(offset).encode('utf-8')).decode('utf-8')
 
 
-def parse_safe_domain(domain_val, deny_checker, model_name):
+def parse_safe_domain(domain_val, deny_checker, model_name, env=None):
     """
     Safely parses domain argument and verifies no denied field is accessed.
+    Recursively inspects comodel relations across dot-navigated expressions.
     """
     if not domain_val:
         return []
@@ -49,17 +50,38 @@ def parse_safe_domain(domain_val, deny_checker, model_name):
     else:
         return []
 
-    # Guard: check domain tokens for denied fields
+    if env is None and deny_checker and hasattr(deny_checker, 'env'):
+        env = deny_checker.env
+
+    # Guard: check domain tokens for denied fields across dot navigation
     if deny_checker and isinstance(parsed, (list, tuple)):
         for item in parsed:
             if isinstance(item, (list, tuple)) and len(item) == 3:
                 field_expr = str(item[0])
-                # Check direct field or dot-navigated field
                 field_parts = field_expr.split('.')
-                direct_field = field_parts[0]
-                denied, reason = deny_checker.is_denied(model_name, field=direct_field, operation='read')
-                if denied:
-                    raise ForbiddenResourceError(f"Field '{direct_field}' in domain is restricted: {reason}")
+                current_model = model_name
+
+                for idx, part in enumerate(field_parts):
+                    # Check if the model itself is denied
+                    denied_model, model_reason = deny_checker.is_denied(current_model, field=None, operation='read')
+                    if denied_model:
+                        raise ForbiddenResourceError(f"Access to model '{current_model}' in domain expression '{field_expr}' is forbidden: {model_reason}")
+
+                    # Check if the field on current_model is denied
+                    denied, reason = deny_checker.is_denied(current_model, field=part, operation='read')
+                    if denied:
+                        raise ForbiddenResourceError(f"Field '{part}' in domain is restricted: {reason}")
+
+                    # If there are subsequent parts, resolve comodel
+                    if idx < len(field_parts) - 1:
+                        if env and current_model in env:
+                            field_def = env[current_model]._fields.get(part)
+                            if field_def and field_def.relational and field_def.comodel_name:
+                                current_model = field_def.comodel_name
+                            else:
+                                break
+                        else:
+                            break
 
     return parsed
 
@@ -132,7 +154,7 @@ def make_connection_resolver(model_name, default_limit=20, max_limit=100):
         elif 'ids' in args and args['ids']:
             domain.append(('id', 'in', args['ids']))
         elif 'domain' in args and args['domain']:
-            domain += parse_safe_domain(args['domain'], deny_checker, model_name)
+            domain += parse_safe_domain(args['domain'], deny_checker, model_name, env=env)
 
         try:
             Model = env[model_name]
@@ -352,7 +374,15 @@ def _execute_model_method(info, model_name, method, id=None, ids=None, args=None
             extensions={'code': 'FORBIDDEN_RESOURCE'}
         )
 
-    # 2. Model existence check
+    # 2. Whitelist guard
+    whitelist_count = env['dn.graphql.model'].sudo().search_count([
+        ('model_name', '=', model_name),
+        ('active', '=', True)
+    ])
+    if not whitelist_count:
+        raise ForbiddenResourceError(f"Model '{model_name}' is not in the active GraphQL whitelist.")
+
+    # 3. Model existence check
     if model_name not in env:
         return {
             'success': False,
@@ -360,7 +390,7 @@ def _execute_model_method(info, model_name, method, id=None, ids=None, args=None
             'userErrors': [{'message': f"Model '{model_name}' does not exist.", 'field': 'model', 'code': 'NOT_FOUND'}]
         }
 
-    # 3. Deny policy check
+    # 4. Deny policy check
     if deny_checker:
         denied, reason = deny_checker.is_denied(model_name, field=method, operation='call')
         if not denied:

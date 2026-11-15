@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dn_graphql_key_show_form" model="ir.ui.view">
+        <field name="name">dn.graphql.key.show.form</field>
+        <field name="model">dn.graphql.key.show</field>
+        <field name="arch" type="xml">
+            <form string="API Key Generated">
+                <sheet>
+                    <p class="text-muted">
+                        Please copy your API key now. For security reasons, you will not be able to view it again after closing this window.
+                    </p>
+                    <group>
+                        <field name="key" widget="CopyClipboardChar" readonly="1" class="font-monospace fs-5"/>
+                    </group>
+                    <div class="alert alert-warning" role="alert">
+                        Store this key securely. It grants access to your GraphQL endpoints and cannot be retrieved later.
+                    </div>
+                </sheet>
+                <footer>
+                    <button special="cancel" string="I have copied my key" class="btn-primary" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -73,9 +73,10 @@ class DnGraphqlModel(models.Model):
         help="Maximum records allowed per request to protect against large data scraping."
     )
 
-    _sql_constraints = [
-        ('unique_model', 'unique(model_id)', 'This Odoo model is already configured in the GraphQL Gateway!')
-    ]
+    _unique_model = models.Constraint(
+        'UNIQUE(model_id)',
+        'This Odoo model is already configured in the GraphQL Gateway!'
+    )
 
     @api.depends('model_id', 'model_name')
     def _compute_name(self):

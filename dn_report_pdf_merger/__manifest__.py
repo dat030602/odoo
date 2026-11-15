@@ -18,7 +18,7 @@ Features:
 """,
     'author': 'Dyan',
     'images': ['static/description/banner.png'],
-    'license': 'LGPL-3',
+    'license': 'OPL-1',
     'price': 3.00,
     'currency': 'USD',
     'depends': ['base', 'web'],

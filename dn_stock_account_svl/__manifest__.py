@@ -7,7 +7,7 @@
     'category': "Inventory/Inventory",
     'summary': "Stock Valuation Layer recreation, Standard/AVCO/FIFO costing engine, and completed move modification.",
     'author': "Dyan",
-    'license': "LGPL-3",
+    'license': "OPL-1",
     'price': 15.00,
     'currency': 'USD',
     'depends': [

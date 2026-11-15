@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from ..core.schema_builder import invalidate_schema_cache
+import contextlib
 
 
 class DnGraphqlDeny(models.Model):
@@ -10,7 +11,7 @@ class DnGraphqlDeny(models.Model):
     name = fields.Char(
         string='Rule Summary',
         compute='_compute_name',
-        store=True
+        store=True,
     )
     key_rec_id = fields.Many2one(
         'dn.graphql.key',
@@ -24,13 +25,13 @@ class DnGraphqlDeny(models.Model):
         string='Native API Key',
         ondelete='set null',
         index=True,
-        help="Optional fallback to native Odoo API Key."
+        help="Optional fallback to native Odoo API Key.",
     )
     is_global = fields.Boolean(
         string='Is Global Policy',
         compute='_compute_is_global',
         store=True,
-        index=True
+        index=True,
     )
 
     model_id = fields.Many2one(
@@ -38,13 +39,13 @@ class DnGraphqlDeny(models.Model):
         string='Odoo Model',
         required=True,
         ondelete='cascade',
-        index=True
+        index=True,
     )
     model_name = fields.Char(
         string='Model Technical Name',
         related='model_id.model',
         store=True,
-        index=True
+        index=True,
     )
 
     field_id = fields.Many2one(
@@ -58,15 +59,15 @@ class DnGraphqlDeny(models.Model):
         string='Field Technical Name',
         related='field_id.name',
         store=True,
-        index=True
+        index=True,
     )
 
     operation = fields.Selection([
-        ('all', 'All Operations (Read & Write)'),
-        ('read', 'Read Only (Queries)'),
-        ('write', 'Write Only (Updates)'),
-        ('create', 'Create Only'),
-        ('unlink', 'Delete Only')
+        ('all', 'All'),
+        ('read', 'Read'),
+        ('write', 'Write'),
+        ('create', 'Create'),
+        ('unlink', 'Delete'),
     ], string='Restricted Operation', default='all', required=True)
 
     active = fields.Boolean(
@@ -82,15 +83,13 @@ class DnGraphqlDeny(models.Model):
     def init(self):
         super().init()
         # Self-healing: clear any orphan foreign keys pointing to deleted native apikeys
-        try:
+        with contextlib.suppress(Exception):
             self.env.cr.execute("""
                 UPDATE dn_graphql_deny
                 SET api_key_id = NULL
                 WHERE api_key_id IS NOT NULL
                   AND api_key_id NOT IN (SELECT id FROM res_users_apikeys)
             """)
-        except Exception:
-            pass
 
     @api.depends('key_rec_id', 'api_key_id')
     def _compute_is_global(self):
