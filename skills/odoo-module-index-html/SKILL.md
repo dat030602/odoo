@@ -5,12 +5,13 @@ description: >
   Covers the standard section layout (hero banner, feature highlights, demo screenshots,
   syntax showcase, comparison table, how-it-works steps, technical specs, support footer),
   asset organization (banner.png, icon.png, assets/ folder), manifest image declaration,
-  and writing conventions (English only, inline CSS, Odoo Bootstrap classes, Font Awesome icons).
+  and writing conventions (English only, inline CSS, Odoo Bootstrap classes, zero Font Awesome,
+  self-contained PNG icons, and pure-CSS badges).
   Use whenever a module needs a new or improved App Store / module info page.
 globs: "**/static/description/index.html"
 license: MIT
 author: Dat Nguyen
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Odoo Module `index.html` — Creation Guide
@@ -33,7 +34,9 @@ creating one from scratch, maintaining the same look and feel as the reference e
         ├── index.html          ← the page you are building
         ├── banner.png          ← wide hero image (1200×300 px recommended)
         ├── icon.png            ← square module icon (256×256 px)
-        └── assets/             ← demo screenshots referenced inside index.html
+        └── assets/             ← demo screenshots & PNG icons
+            ├── icon_feature1.png (64×64 or 48×48 px)
+            ├── icon_feature2.png
             ├── screenshot1.jpg
             ├── screenshot2.jpg
             └── ...
@@ -42,6 +45,8 @@ creating one from scratch, maintaining the same look and feel as the reference e
 Images inside `index.html` are referenced with **relative paths**:
 ```html
 <img src="assets/screenshot1.jpg" ...>
+<img src="assets/icon_feature1.png" ...>
+<img src="icon.png" ...>
 <img src="banner.png" ...>
 ```
 
@@ -93,13 +98,30 @@ When Odoo renders `index.html` on the official Odoo App Store and inside the bac
 - `gap` (flexbox gap) is **completely stripped**. Flex items will collapse together without spacing.
 - `backdrop-filter` is **completely stripped**.
 
-### Golden Rules for 100% Sanitizer Compatibility
+### The Font Awesome Trap on Odoo App Store (`apps.odoo.com`)
+
+> [!CAUTION]
+> **NEVER use Font Awesome (`<i class="fa fa-*"></i>`) in `index.html`!**
+> The public Odoo App Store website (`apps.odoo.com`) does **NOT** load Font Awesome 4 webfonts in module descriptions!
+> If you use `<i class="fa fa-*">`, the browser will fail to find the icon font and will:
+> - Display **system emojis** instead of icons (e.g. `fa-dashboard` renders as 🎨, `fa-file-text-o` renders as 📄).
+> - Display **raw text or symbols** (e.g. `fa-code` renders as `</>`).
+> - Display **empty square boxes `▯` or question marks**.
+
+### Golden Rules for 100% Sanitizer & App Store Compatibility
 
 1. **100% use `background-color:` instead of `background:`**: Always specify explicit background colors using `background-color: #f8fafc;` or `background-color: #ffffff;`. Never use shorthand `background:`.
-2. **Never use gradients on containers containing text**: Gradients are stripped, leaving light text on a transparent or white background.
-3. **Never rely on `box-shadow` for card separation**: Always use clean, visible borders such as `border: 1px solid #cbd5e1;` or `border: 1px solid #e2e8f0;`.
-4. **Never use inline `gap:`**: Use `margin-right` / `margin-bottom` on child elements (with `display: inline-block;` or `display: inline-flex;`) instead of `gap:` on the parent container.
-5. **Dark Palette for all typography**:
+2. **Zero Font Awesome (`<i class="fa ...">`)**:
+   - For all card and feature icons: Use self-contained **64×64 or 48×48 PNG images** in `static/description/assets/` (`<img src="assets/icon_*.png" style="width: 28px; height: 28px; vertical-align: middle; margin-right: 8px;">`).
+   - For the Hero info card: Use `<img src="icon.png" style="width: 80px; height: 80px; border-radius: 16px; border: 1px solid #cbd5e1;">`.
+   - For table checkmarks and crossmarks: Use **pure-CSS circular badges with Unicode symbols**:
+     - Checkmark: `<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background-color:#dcfce7; color:#15803d; font-size:13px; font-weight:bold; margin-right:6px;">&#x2713;</span>`
+     - Crossmark: `<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background-color:#fee2e2; color:#b91c1c; font-size:12px; font-weight:bold; margin-right:6px;">&#x2715;</span>`
+   - For pill badges: Use colored CSS dots `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background-color:#017e84; margin-right:6px;"></span>`.
+3. **Never use gradients on containers containing text**: Gradients are stripped, leaving light text on a transparent or white background.
+4. **Never rely on `box-shadow` for card separation**: Always use clean, visible borders such as `border: 1px solid #cbd5e1;` or `border: 1px solid #e2e8f0;`.
+5. **Never use inline `gap:`**: Use `margin-right` / `margin-bottom` on child elements (with `display: inline-block;` or `display: inline-flex;`) instead of `gap:` on the parent container.
+6. **Dark Palette for all typography**:
    - Primary Headings (H1, H2): `#0f172a` or `#111827`
    - Secondary Headings / Subtitles (H3, H4): `#1e293b`
    - Body & Paragraphs: `#334155` or `#475569`
@@ -114,8 +136,8 @@ When Odoo renders `index.html` on the official Odoo App Store and inside the bac
 | **Language** | English only — no Vietnamese inside `index.html` |
 | **Styling** | Inline CSS only — no `<style>` tags, no external CSS files |
 | **Framework** | Odoo ships Bootstrap 4 — use `col-12`, `col-lg-6`, `row`, `g-4`, `mb-5` etc. |
-| **Icons** | Font Awesome 4 is available: `<i class="fa fa-check-circle">` |
-| **Images** | Always include `alt` text, `width:100%`, `height:auto` |
+| **Icons** | Zero Font Awesome. Use PNG icons in `assets/` and pure-CSS Unicode badges (`&#x2713;`, `&#x2715;`). |
+| **Images** | Always include `alt` text, `width:100%`, `height:auto` for screenshots, explicit width/height for icons |
 | **No JS** | Do not add `<script>` tags — the backend strips them |
 | **Colors** | Use the Odoo teal palette: `#017e84` (primary), `#0f172a` (dark text), `#334155` (body text), `#f8fafc` (card light bg) |
 
@@ -154,22 +176,22 @@ and a small info panel on the right.
                 Short description of what the module does.
             </p>
 
-            <!-- Feature pills -->
+            <!-- Feature pills (colored dots instead of fa icons) -->
             <div style="margin-bottom:12px;">
                 <span style="display:inline-block; background-color:#ffffff; border:1px solid #cbd5e1;
                       color:#1e293b; padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600;
                       margin-right:8px; margin-bottom:8px;">
-                    <i class="fa fa-cubes" style="color:#017e84; margin-right:6px;"></i>Feature A
+                    <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background-color:#017e84; margin-right:6px;"></span>Feature A
                 </span>
                 <!-- repeat for each key feature -->
             </div>
         </div>
 
-        <!-- Right: summary panel -->
+        <!-- Right: summary panel with module icon -->
         <div class="col-12 col-lg-4 text-center mt-4 mt-lg-0">
             <div style="background-color:#ffffff; border:1px solid #cbd5e1;
                  border-radius:16px; padding:24px;">
-                <i class="fa fa-file-excel-o" style="font-size:72px; color:#017e84; margin-bottom:16px; display:inline-block;"></i>
+                <img src="icon.png" alt="Module Icon" style="width:80px; height:80px; display:inline-block; margin-bottom:16px; border-radius:16px; border:1px solid #cbd5e1;">
                 <h4 style="color:#0f172a; font-size:18px; font-weight:700; margin-bottom:8px;">Key Concept</h4>
                 <p style="color:#334155; font-size:13px; line-height:1.5; margin:0 0 16px;">
                     Brief supporting text.
@@ -220,7 +242,7 @@ caption right) for the first screenshot, then full-width for subsequent ones.
                  padding:28px 24px;height:100%;">
                 <div style="width:52px;height:52px;background-color:#ecfdf5;border-radius:12px;
                      display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
-                    <i class="fa fa-paint-brush" style="font-size:24px;color:#10b981;"></i>
+                    <img src="assets/feature_benefit1.png" alt="Benefit" style="width:28px;height:28px;">
                 </div>
                 <h3 style="color:#1e293b;font-size:18px;font-weight:700;margin-bottom:12px;">
                     Benefit Title
@@ -243,6 +265,7 @@ caption right) for the first screenshot, then full-width for subsequent ones.
 |-------|------|-------|
 | `banner.png` | 1200 × 300 px | Wide landscape; used as App Store thumbnail |
 | `icon.png` | 256 × 256 px | Square; transparent background preferred |
+| `assets/icon_*.png` | 64 × 64 or 48 × 48 px | Crisp PNG icons for cards and features; replaces Font Awesome |
 | `assets/*.jpg` | 1280–1920 px wide | JPEG quality 85–90; keep under 300 KB each |
 
 ---
@@ -257,8 +280,10 @@ caption right) for the first screenshot, then full-width for subsequent ones.
 - [ ] No `<script>` tags, no `<style>` blocks
 - [ ] Page renders without broken images when opened as a local HTML file
 
-### Sanitizer Compatibility Checklist
+### Sanitizer & Store Compatibility Checklist
+- [ ] **0 occurrences of Font Awesome (`<i class="fa `)** — 100% self-contained PNG icons in `assets/` and pure-CSS Unicode badges
 - [ ] 100% using `background-color:`, 0 occurrences of shorthand `background:`
 - [ ] 0 occurrences of `linear-gradient`
 - [ ] 0 occurrences of `box-shadow`, `gap`, `backdrop-filter`
 - [ ] All text uses dark typography colors (`#0f172a`, `#1e293b`, `#334155`, `#475569`), no white or light gray text on light containers
+

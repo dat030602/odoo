@@ -71,7 +71,7 @@ Every module whose name begins with `MODULE_PREFIX` must follow these defaults u
   - Security, access-control, automation, or integration behavior.
   - Important limitations, file formats, or operational requirements.
 - Keep descriptions accurate to the code. Do not claim features that are not implemented.
-- If the module has an App Store page at `static/description/index.html`, keep all visible copy in English and keep it consistent with the manifest summary and description.
+- If the module has an App Store page at `static/description/index.html`, follow the `odoo-module-index-html` skill: keep all visible copy in English, consistent with the manifest summary and description, with zero Font Awesome dependencies (use standalone PNG assets in `assets/` and pure-CSS Unicode badges to prevent broken glyphs on `apps.odoo.com`), and strict sanitizer compliance (`background-color:` only, no `box-shadow`, no `gap`).
 
 ## Documentation and Assets
 

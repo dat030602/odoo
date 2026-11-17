@@ -497,6 +497,20 @@ name = fields.Char(
 
 ---
 
+## Relational Field `context` Attribute
+
+- In Odoo Python model field definitions (such as `fields.Many2one`), the `context` attribute must **not** be a string literal like `context="{'key': True}"`.
+- In Odoo 19 `web_read()`:
+  ```python
+  if 'context' in field_spec:
+      co_records = co_records.with_context(**field_spec['context'])
+  ```
+  Odoo unpacks `field_spec['context']` via `**`. If `context` was declared as a string on the Python field, `with_context(**...)` raises:
+  `TypeError: odoo.orm.models.BaseModel.with_context() argument after ** must be a mapping, not str`.
+- **Rule**: If a context is needed for a Many2one field in views, set `context="..."` in the XML view `<field name="..." context="{'key': True}"/>`, or compute the display directly in `_compute_display_name()`. Do not define `context="..."` string on the Python field itself.
+
+---
+
 ## Reserved Field Names
 
 | Name | Purpose |
