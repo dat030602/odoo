@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="dn_attachment_excel_editor.ExcelSaveDialog">
+        <Dialog size="'md'" title="'Save Excel File'">
+            <div class="mb-3">
+                <p class="text-muted mb-3">Please choose how you want to save this spreadsheet:</p>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="saveMode" id="saveModeOverwrite"
+                           value="overwrite"
+                           t-model="state.saveMode"/>
+                    <label class="form-check-label" for="saveModeOverwrite">
+                        <span class="fw-bold">Overwrite original file</span>
+                        <div class="text-muted small">Update the current attachment with your changes.</div>
+                    </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="saveMode" id="saveModeNewVersion"
+                           value="new_version"
+                           t-model="state.saveMode"/>
+                    <label class="form-check-label" for="saveModeNewVersion">
+                        <span class="fw-bold">Create a new version</span>
+                        <div class="text-muted small">Keep the original and save changes as a new copy (e.g. filename (v2).xlsx).</div>
+                    </label>
+                </div>
+                <hr class="my-3"/>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" id="rememberChoice"
+                           t-model="state.rememberChoice"/>
+                    <label class="form-check-label text-primary" for="rememberChoice">
+                        Remember this choice (do not ask again)
+                    </label>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="() => this.onConfirm()">
+                    Confirm &amp; Save
+                </button>
+                <button class="btn btn-secondary" t-on-click="() => this.onCancel()">
+                    Cancel
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="dn_attachment_excel_editor.ExcelEditor">
+        <div class="o_excel_editor">
+            <div class="o_excel_editor_header">
+                <i class="fa fa-file-excel-o text-success fa-lg"/>
+                <span class="o_excel_editor_title text-truncate" t-esc="state.name"/>
+                <span t-if="state.dirty" class="badge text-bg-warning">Unsaved</span>
+                <span t-if="state.readonly and model" class="badge text-bg-secondary">Read Only</span>
+                <div class="ms-auto d-flex gap-1">
+                    <button t-if="canSave" class="btn btn-primary btn-sm o_excel_save"
+                            data-hotkey="s"
+                            title="Save (Alt+S)"
+                            t-att-disabled="state.saving or !state.dirty"
+                            t-on-click="() => this.save()">
+                        <i class="fa fa-save"/> Save
+                    </button>
+                    <button t-if="model" class="btn btn-secondary btn-sm o_excel_download"
+                            t-on-click="() => this.download()">
+                        <i class="fa fa-download"/> Download
+                    </button>
+                    <button t-if="props.onExpand" class="btn btn-secondary btn-sm o_excel_expand"
+                            t-on-click="() => this.onExpand()">
+                        <i class="fa fa-expand"/> Full Page
+                    </button>
+                    <button class="btn btn-secondary btn-sm o_excel_close"
+                            data-hotkey="escape"
+                            title="Close (Esc)"
+                            t-on-click="() => this.onClose()">
+                        <i class="fa fa-times"/> Close
+                    </button>
+                </div>
+            </div>
+            <div t-if="state.hasMacro" class="alert alert-warning m-0 py-1 px-3 rounded-0">
+                This file contains VBA macros. Macros are not supported: they will be removed and saved as .xlsx.
+            </div>
+            <div t-if="state.error" class="alert alert-danger m-3" t-esc="state.error"/>
+            <div t-elif="model" class="o_excel_editor_body">
+                <Spreadsheet model="model"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="dn_attachment_excel_editor.ExcelEditorPopup">
+        <div class="o_attachment_excel_editor_popup">
+            <ExcelEditor attachmentId="props.attachmentId"
+                         attachmentName="props.attachmentName"
+                         onClose="props.onClose"
+                         onExpand="props.onExpand"/>
+        </div>
+    </t>
+
+    <t t-name="dn_attachment_excel_editor.ExcelEditorAction">
+        <div class="o_excel_editor_action">
+            <ExcelEditor attachmentId="attachmentId"
+                         attachmentName="attachmentName"
+                         onClose="() => this.onClose()"/>
+        </div>
+    </t>
+
+</templates>

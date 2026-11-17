@@ -1,0 +1,63 @@
+.o_attachment_excel {
+    cursor: pointer;
+}
+
+.o_attachment_excel_editor_popup {
+    position: fixed;
+    inset: 0;
+    // Above navbar/dropdown but below bootstrap modal (1055) so confirmation dialogs display properly
+    z-index: 1045;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+
+    @include media-breakpoint-down(md) {
+        padding: 0;
+    }
+
+    .o_excel_editor {
+        flex: 1 1 auto;
+        min-width: 0;
+        background: var(--body-bg, #fff);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.4);
+    }
+}
+
+.o_excel_editor {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    .o_excel_editor_header {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.75rem;
+        border-bottom: 1px solid var(--border-color, #dee2e6);
+        background: var(--o-view-background-color, #fff);
+    }
+
+    .o_excel_editor_title {
+        font-weight: 600;
+        min-width: 0;
+    }
+
+    .o_excel_editor_body {
+        flex: 1 1 auto;
+        min-height: 0;
+        position: relative;
+        // o-spreadsheet requires explicit height
+        > .o-spreadsheet {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+.o_action_manager .o_excel_editor_action {
+    height: 100%;
+}

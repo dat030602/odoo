@@ -1,0 +1,338 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dn_attachment_excel_editor
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-15 15:00+0000\n"
+"PO-Revision-Date: 2026-11-15 15:00+0000\n"
+"Last-Translator: Dyan\n"
+"Language-Team: Vietnamese\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: dn_attachment_excel_editor
+#: model:ir.model.fields,field_description:dn_attachment_excel_editor.field_res_users__excel_editor_save_option
+msgid "Excel Save Option"
+msgstr "Tùy chọn lưu Excel"
+
+#. module: dn_attachment_excel_editor
+#: model:ir.model.fields.selection,name:dn_attachment_excel_editor.selection__res_users__excel_editor_save_option__ask
+msgid "Ask every time"
+msgstr "Hỏi mỗi lần lưu"
+
+#. module: dn_attachment_excel_editor
+#: model:ir.model.fields.selection,name:dn_attachment_excel_editor.selection__res_users__excel_editor_save_option__overwrite
+msgid "Always overwrite original file"
+msgstr "Luôn ghi đè tệp gốc"
+
+#. module: dn_attachment_excel_editor
+#: model:ir.model.fields.selection,name:dn_attachment_excel_editor.selection__res_users__excel_editor_save_option__new_version
+msgid "Always create a new version"
+msgstr "Luôn tạo bản sao mới"
+
+#. module: dn_attachment_excel_editor
+#: model:ir.model.fields,help:dn_attachment_excel_editor.field_res_users__excel_editor_save_option
+msgid "Choose how edited Excel attachments are saved by default."
+msgstr "Chọn cách lưu tệp Excel đã chỉnh sửa theo mặc định."
+
+#. module: dn_attachment_excel_editor
+#: model:ir.model.fields,field_description:dn_attachment_excel_editor.field_res_partner__excel_attachment_ids
+msgid "Attachments"
+msgstr "Tệp đính kèm"
+
+#. module: dn_attachment_excel_editor
+#: model:ir.model.fields,help:dn_attachment_excel_editor.field_res_partner__excel_attachment_ids
+msgid "Attach Excel (.xlsx) files; click to open and edit directly."
+msgstr "Đính kèm tệp Excel (.xlsx); bấm vào để mở và chỉnh sửa trực tiếp."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Attachment does not exist or has been deleted."
+msgstr "Tệp đính kèm không tồn tại hoặc đã bị xóa."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "You do not have permission to modify this file."
+msgstr "Bạn không có quyền sửa tệp này."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "You do not have permission to view this file."
+msgstr "Bạn không có quyền xem tệp này."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Only binary attachments are supported."
+msgstr "Chỉ hỗ trợ tệp đính kèm dạng nhị phân."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Only .xlsx / .xlsm files are supported."
+msgstr "Chỉ hỗ trợ tệp .xlsx / .xlsm."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Attachment file is empty."
+msgstr "Tệp đính kèm rỗng."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "File is too large (maximum %s MB)."
+msgstr "Tệp quá lớn (tối đa %s MB)."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "The xlsx file has too many entries."
+msgstr "Tệp xlsx có quá nhiều thành phần."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Uncompressed file content is too large."
+msgstr "Nội dung tệp sau khi giải nén quá lớn."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "The file is not a valid xlsx archive (it may be corrupted or password-protected)."
+msgstr "Tệp không phải định dạng xlsx hợp lệ (có thể bị hỏng hoặc đặt mật khẩu)."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Invalid xlsx file: missing [Content_Types].xml."
+msgstr "Tệp xlsx không hợp lệ: thiếu [Content_Types].xml."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "The file has been modified by someone else since you opened it. Please download your changes and reload the record."
+msgstr "Tệp đã được cập nhật bởi người khác kể từ khi bạn mở. Vui lòng tải xuống các thay đổi và tải lại bản ghi."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Saved file exceeds allowed size limit."
+msgstr "Tệp sau khi lưu vượt quá dung lượng cho phép."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "No data to save."
+msgstr "Không có dữ liệu để lưu."
+
+#. module: dn_attachment_excel_editor
+#: code:addons/dn_attachment_excel_editor/models/ir_attachment.py:0
+#, python-format
+msgid "Invalid file path in spreadsheet archive."
+msgstr "Đường dẫn tệp trong gói bảng tính không hợp lệ."
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/backend/excel_opener.js:0
+#, python-format
+msgid "Could not load spreadsheet editor."
+msgstr "Không tải được trình soạn thảo bảng tính."
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Attachment details are missing. Please reopen the file from its record."
+msgstr "Thiếu thông tin tệp đính kèm. Vui lòng mở lại tệp từ bản ghi."
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Could not parse Excel spreadsheet: %s"
+msgstr "Không thể phân tích tệp bảng tính Excel: %s"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Created new version: %s"
+msgstr "Đã tạo phiên bản mới: %s"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Excel file saved successfully."
+msgstr "Đã lưu tệp Excel thành công."
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Unsaved Changes"
+msgstr "Thay đổi chưa được lưu"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Do you want to save changes before closing?"
+msgstr "Bạn có muốn lưu các thay đổi trước khi đóng không?"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Save & Close"
+msgstr "Lưu và đóng"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Close without saving"
+msgstr "Đóng không lưu"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Changes must be saved before switching to full page view."
+msgstr "Cần lưu thay đổi trước khi chuyển sang chế độ toàn trang."
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Save & Open Full Page"
+msgstr "Lưu và mở toàn trang"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.js:0
+#, python-format
+msgid "Stay"
+msgstr "Ở lại"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Save Excel File"
+msgstr "Lưu tệp Excel"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Please choose how you want to save this spreadsheet:"
+msgstr "Vui lòng chọn cách lưu tệp bảng tính này:"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Overwrite original file"
+msgstr "Ghi đè tệp gốc"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Update the current attachment with your changes."
+msgstr "Cập nhật tệp đính kèm hiện tại với các thay đổi của bạn."
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Create a new version"
+msgstr "Tạo bản sao mới"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Keep the original and save changes as a new copy (e.g. filename (v2).xlsx)."
+msgstr "Giữ lại bản gốc và lưu các thay đổi thành bản sao mới (vd: tên_tệp (v2).xlsx)."
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Remember this choice (do not ask again)"
+msgstr "Ghi nhớ lựa chọn này (không hỏi lại)"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Confirm & Save"
+msgstr "Xác nhận & Lưu"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Unsaved"
+msgstr "Chưa lưu"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Read Only"
+msgstr "Chỉ đọc"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Save"
+msgstr "Lưu"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Download"
+msgstr "Tải xuống"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Full Page"
+msgstr "Toàn trang"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "Close"
+msgstr "Đóng"
+
+#. module: dn_attachment_excel_editor
+#. odoo-javascript
+#: code:addons/dn_attachment_excel_editor/static/src/bundle/excel_editor.xml:0
+#, python-format
+msgid "This file contains VBA macros. Macros are not supported: they will be removed and saved as .xlsx."
+msgstr "Tệp này có chứa macro VBA. Macro không được hỗ trợ: chúng sẽ bị loại bỏ và tệp được lưu dưới dạng .xlsx."

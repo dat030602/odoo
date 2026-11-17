@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="web.Many2ManyBinaryField.attachment_preview"
+       t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_attachment_wrap')]" position="attributes">
+            <attribute name="t-on-click">(ev) => this.onClickAttachment(ev, file)</attribute>
+            <attribute name="t-att-class">isExcel(file) ? 'o_attachment_excel' : ''</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('caption')]/a" position="attributes">
+            <attribute name="t-att-href">isExcel(file) ? '#' : url</attribute>
+            <attribute name="t-att-download">isExcel(file) ? undefined : ''</attribute>
+            <attribute name="t-att-data-tooltip">isExcel(file) ? ('Open ' + file.name) : ('Download ' + file.name)</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_image_box')]/a" position="attributes">
+            <attribute name="t-att-href">isExcel(file) ? '#' : url</attribute>
+            <attribute name="t-att-download">isExcel(file) ? undefined : ''</attribute>
+            <attribute name="t-att-data-tooltip">isExcel(file) ? ('Open ' + file.name) : ('Download ' + file.name)</attribute>
+        </xpath>
+    </t>
+</templates>
