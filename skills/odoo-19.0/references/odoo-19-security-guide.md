@@ -413,6 +413,35 @@ def _get_state_value(self, res_id, state_field):
 
 ---
 
+## Access Groups and Privileges (res.groups & res.groups.privilege)
+
+In Odoo 19, the structure of access groups (`res.groups`) has been refactored:
+1. `category_id` has been removed from `res.groups` and moved to `res.groups.privilege`.
+2. A `res.groups` record now links to `res.groups.privilege` via `privilege_id`.
+3. The users relation on `res.groups` is `user_ids` (not `users`). Using `category_id` or `users` directly on `res.groups` will trigger `ValueError: Invalid field in 'res.groups'`.
+
+**Example:**
+```xml
+<record id="module_category_custom" model="ir.module.category">
+    <field name="name">Custom Module</field>
+    <field name="sequence">20</field>
+</record>
+
+<record id="privilege_custom_feature" model="res.groups.privilege">
+    <field name="name">Custom Feature</field>
+    <field name="category_id" ref="module_category_custom"/>
+    <field name="sequence">10</field>
+</record>
+
+<record id="group_custom_feature" model="res.groups">
+    <field name="name">User / Manager</field>
+    <field name="privilege_id" ref="privilege_custom_feature"/>
+    <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+</record>
+```
+
+---
+
 ## References
 
 - Source: Odoo 19 documentation `/doc/developer/reference/backend/security.rst`

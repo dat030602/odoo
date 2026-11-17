@@ -228,7 +228,9 @@ Guide for creating views in Odoo 19: list, form, search, kanban, calendar, graph
     <!-- Group by: NO expand= or string= attributes on <group> in Odoo 19 -->
     <!-- ❌ WRONG (Odoo 17/18 style, causes ParseError in 19): -->
     <!--   <group expand="0" string="Group By"> -->
-    <!-- ✅ CORRECT (Odoo 19): -->
+    <!--   <group string="Group By"> -->
+    <!-- ✅ CORRECT (Odoo 19 RelaxNG search_view.rng schema): -->
+    <!--   Only name, invisible, groups, col, colspan, rowspan, fill, height, width, color are allowed. -->
     <group name="group_by">
         <filter string="State" name="state" context="{'group_by': 'state'}"/>
         <filter string="Partner" name="partner_id" context="{'group_by': 'partner_id'}"/>

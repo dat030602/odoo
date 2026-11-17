@@ -22,9 +22,10 @@ Use this file as the version-specific ruleset when the resolved Odoo version is 
 ## Views
 
 - Same as 18: `<list>` tag, direct-expression attrs. Reference: `references/odoo-19-view-guide.md`.
-- **`<group expand= string=>` removed from search views** — the RelaxNG schema (`search_view.rng`) no longer allows `expand` or `string` attributes on `<group>` inside a `<search>`. Using them raises `ParseError: Invalid attribute expand for element group` at module install/upgrade.
+- **`<group expand= string=>` removed from search views** — the RelaxNG schema (`search_view.rng` & `common.rng`) no longer allows `expand` or `string` attributes on `<group>` inside a `<search>`. Using them raises `ParseError: Invalid attribute expand/string for element group` at module install/upgrade.
   - ❌ `<group expand="0" string="Group By">` — **INVALID in 19, causes ParseError**
-  - ✅ `<group name="group_by">` — correct form; the label is automatic
+  - ❌ `<group string="Group By">` — **INVALID in 19, causes ParseError**
+  - ✅ `<group name="group_by">` or `<group>` — correct form; the label is automatic or not needed on group container in search view
 
 ## Fields
 
@@ -41,6 +42,34 @@ Use this file as the version-specific ruleset when the resolved Odoo version is 
 
 - New databases are created **without** demo data unless `--with-demo` is passed (Odoo 18 loads demo data by default). Tests must create their own records instead of relying on demo XML IDs or the `demo` / `portal` users.
 
+## Security & Access Groups
+
+- **`res.groups` schema changes in 19.0**:
+  - `category_id` has been removed from `res.groups`. It is replaced by `privilege_id` (pointing to `res.groups.privilege`). A privilege in turn points to `category_id` (`ir.module.category`).
+  - The `users` relation field on `res.groups` is named `user_ids` (writing to `users` raises `ValueError: Invalid field 'users' in 'res.groups'`).
+  - Defining custom groups in XML:
+    ```xml
+    <!-- 1. Privilege -->
+    <record id="privilege_custom_feature" model="res.groups.privilege">
+        <field name="name">Feature Name</field>
+        <field name="category_id" ref="base.module_category_custom"/>
+    </record>
+
+    <!-- 2. Group -->
+    <record id="group_custom_feature" model="res.groups">
+        <field name="name">Can edit feature</field>
+        <field name="privilege_id" ref="privilege_custom_feature"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+    ```
+
+## Accounting & Invoicing Synchronization
+
+- **`account.move.line` Currency Rate & Payment Term Rebalancing**:
+  - In Odoo 19, `account.move.line._sync_invoice()` automatically recalculates `line.balance = line.company_currency_id.round(line.amount_currency / line.currency_rate)` when `currency_rate` changes.
+  - For `display_type == 'payment_term'`, recalculating balance directly via naive division causes off-by-cent rounding discrepancies with tax-rounded base lines (especially on non-decimal company currencies or low unit currencies like VND).
+  - Solution: In custom rate modules or rate hooks, protect `balance` on `payment_term` lines during `_sync_invoice` and ensure the invoice payment term lines balance the entry in `_sync_dynamic_lines`.
+
 ## Quick review checks (v19-specific)
 
 - ❌ `_sql_constraints = [...]` — ignored in 19; use `models.Constraint` / `models.Index` / `models.UniqueIndex`.
@@ -49,6 +78,6 @@ Use this file as the version-specific ruleset when the resolved Odoo version is 
 - ❌ `self._cr` / `self._uid` / `self._context` — use `self.env.cr` / `self.env.uid` / `self.env.context`.
 - ❌ New model without `_name` — works through the CamelCase fallback but logs a warning; set `_name`.
 - ❌ List `_inherit` without `_name` on a class whose name does not map to the inherited model — creates a new model instead of extending it.
-- ❌ `<group expand="0" string="Group By">` inside `<search>` — **causes ParseError at install**; use `<group name="group_by">` instead.
+- ❌ `<group expand="0" string="Group By">` or `<group string="...">` inside `<search>` — **causes ParseError at install**; use `<group name="group_by">` or `<group>` instead.
 - ✅ `@api.private` on a public method that must not be RPC-callable.
 - All 18 rules still apply (`<list>`, direct-expression attrs, `aggregator=`, `@api.ondelete`, `@api.model_create_multi`, `check_access` / `has_access` / `_filtered_access`).
