@@ -3,6 +3,8 @@
     'version': "19.0.1.0.0",
     'category': "Technical/API",
     'author': 'Dyan',
+    'price': 15.00,
+    'currency': 'USD',
     'images': ['static/description/banner.png'],
     'license': "LGPL-3",
     'summary': "High-performance GraphQL API Gateway with API Key Auth, Odoo ACL, Atomic Savepoint Rollback, and Security Blocklist",
