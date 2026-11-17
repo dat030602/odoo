@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_currency_rate_search_inherit_datetime" model="ir.ui.view">
+        <field name="name">res.currency.rate.search.inherit.datetime</field>
+        <field name="model">res.currency.rate</field>
+        <field name="inherit_id" ref="base.view_currency_rate_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Date &amp; Time</attribute>
+            </xpath>
+            <xpath expr="//search" position="inside">
+                <group>
+                    <filter string="Date" name="group_by_day" context="{'group_by': 'name:day'}"/>
+                    <filter string="Currency" name="group_by_currency" context="{'group_by': 'currency_id'}"/>
+                    <filter string="Company" name="group_by_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_currency_rate_tree_inherit_datetime" model="ir.ui.view">
+        <field name="name">res.currency.rate.list.inherit.datetime</field>
+        <field name="model">res.currency.rate</field>
+        <field name="inherit_id" ref="base.view_currency_rate_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="widget">datetime</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_currency_rate_form_inherit_datetime" model="ir.ui.view">
+        <field name="name">res.currency.rate.form.inherit.datetime</field>
+        <field name="model">res.currency.rate</field>
+        <field name="inherit_id" ref="base.view_currency_rate_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="widget">datetime</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_manual_rate" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.manual.rate</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="currency_rate" invisible="1"/>
+                <field name="company_currency_id" invisible="1"/>
+                <field name="rate_mode"
+                       invisible="currency_id == company_currency_id"
+                       readonly="state not in ('draft', 'sent')"
+                       groups="dn_currency_rate_manual_base.group_manual_currency_rate"/>
+                <field name="selected_rate_id"
+                       invisible="currency_id == company_currency_id or rate_mode != 'custom'"
+                       readonly="state not in ('draft', 'sent')"
+                       options="{'no_create': True, 'no_open': True}"
+                       groups="dn_currency_rate_manual_base.group_manual_currency_rate"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

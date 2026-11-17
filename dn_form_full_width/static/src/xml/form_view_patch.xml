@@ -7,7 +7,8 @@
                     t-on-click="() => this.toggleDnFullWidth()"
                     t-att-class="this.dnFullWidthState.isActive ? 'btn-primary text-white' : 'btn-light text-dark'"
                     title="Toggle Full Width">
-                <i class="fa fa-arrows-h"/>
+                <i t-if="!this.dnFullWidthState.isActive" class="fa fa-expand"/>
+                <i t-if="this.dnFullWidthState.isActive" class="fa fa-compress"/>
             </button>
         </xpath>
     </t>
