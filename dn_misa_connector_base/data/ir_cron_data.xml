@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sequence for Queue Jobs -->
+        <record id="seq_misa_queue_job" model="ir.sequence">
+            <field name="name">MISA Queue Job</field>
+            <field name="code">misa.queue.job</field>
+            <field name="prefix">JOB/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Cron: Process Queue Jobs -->
+        <record id="ir_cron_misa_queue_job_process" model="ir.cron">
+            <field name="name">MISA: Process Queue Jobs</field>
+            <field name="model_id" ref="model_misa_queue_job"/>
+            <field name="state">code</field>
+            <field name="code">model.process_queue_jobs()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- Cron: Check and Refresh Tokens -->
+        <record id="ir_cron_misa_refresh_tokens" model="ir.cron">
+            <field name="name">MISA: Refresh Expiring Tokens</field>
+            <field name="model_id" ref="base.model_res_company"/>
+            <field name="state">code</field>
+            <field name="code">
+companies = model.search([('misa_tax_code', '!=', False)])
+for comp in companies:
+    try:
+        comp.action_refresh_meinvoice_token()
+    except Exception:
+        pass
+    try:
+        comp.action_get_inbot_jwt_token()
+    except Exception:
+        pass
+            </field>
+            <field name="interval_number">12</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

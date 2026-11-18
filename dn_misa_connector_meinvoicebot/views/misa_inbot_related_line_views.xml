@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_misa_inbot_related_line_tree" model="ir.ui.view">
+        <field name="name">misa.inbot.related.line.list</field>
+        <field name="model">misa.inbot.related.line</field>
+        <field name="arch" type="xml">
+            <list string="INBOT Related Lines" create="false">
+                <field name="document_id"/>
+                <field name="rel_template_no"/>
+                <field name="rel_series"/>
+                <field name="rel_invoice_no"/>
+                <field name="rel_invoice_date"/>
+                <field name="related_type"/>
+                <field name="original_inbot_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_misa_inbot_related_line_form" model="ir.ui.view">
+        <field name="name">misa.inbot.related.line.form</field>
+        <field name="model">misa.inbot.related.line</field>
+        <field name="arch" type="xml">
+            <form string="INBOT Related Line">
+                <sheet>
+                    <group>
+                        <field name="document_id"/>
+                        <field name="rel_template_no"/>
+                        <field name="rel_series"/>
+                        <field name="rel_invoice_no"/>
+                        <field name="rel_invoice_date"/>
+                        <field name="related_type"/>
+                        <field name="original_inbot_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

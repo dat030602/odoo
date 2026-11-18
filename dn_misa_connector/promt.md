@@ -1,4 +1,4 @@
-Đọc kỹ 2 tài liệu đặc tả OpenAPI đính kèm (`dn_misa_connector_meinvoice_doc.md` và `dn_misa_connector_meinvoicebot_doc.md`) và triển khai hệ thống tích hợp MISA trên Odoo 19 theo kiến trúc **Decoupled Document Models** (Tách bảng độc lập):
+Đọc kỹ 2 tài liệu đặc tả OpenAPI đính kèm (`dn_misa_connector_meinvoice_doc.md` và `dn_misa_connector_meinvoicebot_doc.md`) (mô tả description_*.md) và file summary.md là mô tả chung và triển khai hệ thống tích hợp MISA trên Odoo 19 theo kiến trúc **Decoupled Document Models** (Tách bảng độc lập):
 
 - **Nguyên tắc cốt lõi**: Tuyệt đối KHÔNG nhồi nhét các trường dữ liệu đặc thù của MISA vào bảng `account.move`, `account.move.line`, `pos.order` hay `stock.picking`. Toàn bộ dữ liệu nghiệp vụ, trạng thái, JSON/XML, kết quả kiểm tra rủi ro và trường mở rộng (NĐ123, NĐ70, Phụ lục XVII, PXK) phải được lưu trên các **Model trung gian độc lập**. Các chứng từ gốc của Odoo chỉ giữ trường liên kết (`Many2one` / `One2many`) sang các model này.
 

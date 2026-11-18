@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_misa_inbot_fee_line_tree" model="ir.ui.view">
+        <field name="name">misa.inbot.fee.line.list</field>
+        <field name="model">misa.inbot.fee.line</field>
+        <field name="arch" type="xml">
+            <list string="INBOT Fee Lines" create="false">
+                <field name="document_id"/>
+                <field name="fee_name"/>
+                <field name="fee_amount"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_misa_inbot_fee_line_form" model="ir.ui.view">
+        <field name="name">misa.inbot.fee.line.form</field>
+        <field name="model">misa.inbot.fee.line</field>
+        <field name="arch" type="xml">
+            <form string="INBOT Fee Line">
+                <sheet>
+                    <group>
+                        <field name="document_id"/>
+                        <field name="fee_name"/>
+                        <field name="fee_amount"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

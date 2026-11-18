@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_misa_einvoice_tax_line_tree" model="ir.ui.view">
+        <field name="name">misa.einvoice.tax.line.list</field>
+        <field name="model">misa.einvoice.tax.line</field>
+        <field name="arch" type="xml">
+            <list string="Tax Rate Summary">
+                <field name="vat_rate_name"/>
+                <field name="amount_without_vat_oc" widget="monetary"/>
+                <field name="vat_amount_oc" widget="monetary"/>
+                <field name="amount_without_vat" widget="monetary"/>
+                <field name="vat_amount" widget="monetary"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="company_currency_id" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_misa_einvoice_tax_line_form" model="ir.ui.view">
+        <field name="name">misa.einvoice.tax.line.form</field>
+        <field name="model">misa.einvoice.tax.line</field>
+        <field name="arch" type="xml">
+            <form string="Tax Rate Line">
+                <sheet>
+                    <group>
+                        <group string="Tax Category">
+                            <field name="document_id" readonly="1"/>
+                            <field name="vat_rate_name"/>
+                        </group>
+                        <group string="Amounts">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_currency_id" invisible="1"/>
+                            <field name="amount_without_vat_oc" widget="monetary"/>
+                            <field name="vat_amount_oc" widget="monetary"/>
+                            <field name="amount_without_vat" widget="monetary"/>
+                            <field name="vat_amount" widget="monetary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

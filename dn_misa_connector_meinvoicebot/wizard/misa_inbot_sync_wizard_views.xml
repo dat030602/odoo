@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_misa_inbot_sync_wizard_form" model="ir.ui.view">
+        <field name="name">misa.inbot.sync.wizard.form</field>
+        <field name="model">misa.inbot.sync.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Synchronize MISA INBOT Invoices">
+                <sheet>
+                    <group>
+                        <group string="Target Organization">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="organization_id"/>
+                            <field name="invoice_direction"/>
+                        </group>
+                        <group string="Date Filter &amp; Pagination">
+                            <field name="from_date"/>
+                            <field name="to_date"/>
+                            <field name="is_filter_inv_date"/>
+                            <field name="take"/>
+                            <field name="skip"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_sync_invoices" string="Synchronize Invoices" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_misa_inbot_sync_wizard" model="ir.actions.act_window">
+        <field name="name">Sync INBOT Invoices</field>
+        <field name="res_model">misa.inbot.sync.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

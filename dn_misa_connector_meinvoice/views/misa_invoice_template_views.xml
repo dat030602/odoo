@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_misa_invoice_template_tree" model="ir.ui.view">
+        <field name="name">misa.invoice.template.list</field>
+        <field name="model">misa.invoice.template</field>
+        <field name="arch" type="xml">
+            <list string="Invoice Templates" decoration-muted="inactive">
+                <field name="inv_series"/>
+                <field name="inv_template_no"/>
+                <field name="template_name"/>
+                <field name="invoice_type"/>
+                <field name="tax_authority_code_type"/>
+                <field name="invoice_system_type"/>
+                <field name="is_send_summary"/>
+                <field name="is_petrol"/>
+                <field name="is_more_vat_rate"/>
+                <field name="inactive"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_misa_invoice_template_form" model="ir.ui.view">
+        <field name="name">misa.invoice.template.form</field>
+        <field name="model">misa.invoice.template</field>
+        <field name="arch" type="xml">
+            <form string="Invoice Template">
+                <header>
+                    <button name="sync_templates" string="Sync Templates from MISA" type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="template_name"/>
+                        <h1>
+                            <field name="template_name" placeholder="e.g. Hóa đơn GTGT điện tử"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Template Information">
+                            <field name="inv_series"/>
+                            <field name="inv_template_no"/>
+                            <field name="template_id_misa"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" invisible="1"/>
+                            <field name="inactive"/>
+                        </group>
+                        <group string="Series Parsing">
+                            <field name="invoice_type"/>
+                            <field name="tax_authority_code_type"/>
+                            <field name="invoice_system_type"/>
+                        </group>
+                    </group>
+                    <group string="Template Flags">
+                        <group>
+                            <field name="is_send_summary"/>
+                            <field name="is_petrol"/>
+                        </group>
+                        <group>
+                            <field name="is_more_vat_rate"/>
+                            <field name="is_inherit_from_old"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_misa_invoice_template_search" model="ir.ui.view">
+        <field name="name">misa.invoice.template.search</field>
+        <field name="model">misa.invoice.template</field>
+        <field name="arch" type="xml">
+            <search string="Search Invoice Templates">
+                <field name="inv_series"/>
+                <field name="template_name"/>
+                <filter string="Active" name="active" domain="[('inactive', '=', False)]"/>
+                <filter string="With CQT Code (C)" name="filter_with_code" domain="[('tax_authority_code_type', '=', 'C')]"/>
+                <filter string="Cash Register (M)" name="filter_pos" domain="[('invoice_system_type', '=', 'M')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Invoice Type" name="group_inv_type" context="{'group_by': 'invoice_type'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_misa_invoice_template" model="ir.actions.act_window">
+        <field name="name">Invoice Templates</field>
+        <field name="res_model">misa.invoice.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_misa_invoice_template_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No invoice templates synchronized yet!
+            </p>
+            <p>
+                Click "Sync Templates from MISA" to fetch active templates from your meInvoice account.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_misa_invoice_template"
+              name="Templates &amp; Series"
+              parent="dn_misa_connector_base.menu_misa_root"
+              action="action_misa_invoice_template"
+              sequence="20"/>
+</odoo>

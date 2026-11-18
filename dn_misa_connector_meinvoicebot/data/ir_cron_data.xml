@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Cron: Scheduled background synchronization for modified INBOT invoices -->
+        <record id="ir_cron_sync_inbot_modified_invoices" model="ir.cron">
+            <field name="name">MISA INBOT: Periodic Sync Modified Invoices</field>
+            <field name="model_id" ref="model_misa_inbot_sync_wizard"/>
+            <field name="state">code</field>
+            <field name="code">
+companies = env['res.company'].search([('misa_inbot_jwt_token', '!=', False)])
+for comp in companies:
+    orgs = env['misa.organization'].search([('company_id', '=', comp.id)])
+    for org in orgs:
+        try:
+            wiz = env['misa.inbot.sync.wizard'].create({
+                'company_id': comp.id,
+                'organization_id': org.id,
+                'invoice_direction': 'in_invoice',
+                'from_date': (datetime.date.today() - datetime.timedelta(days=2)),
+                'to_date': datetime.date.today(),
+                'is_filter_inv_date': False,
+                'take': 100,
+            })
+            wiz.action_sync_invoices()
+        except Exception as e:
+            pass
+            </field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Cron: Process scheduled asynchronous ZIP downloads -->
+        <record id="ir_cron_process_inbot_zip_downloads" model="ir.cron">
+            <field name="name">MISA INBOT: Process Scheduled ZIP Downloads</field>
+            <field name="model_id" ref="model_misa_inbot_zip_downloader"/>
+            <field name="state">code</field>
+            <field name="code">model.process_scheduled_zip_downloads()</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

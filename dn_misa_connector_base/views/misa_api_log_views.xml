@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_misa_api_log_tree" model="ir.ui.view">
+        <field name="name">misa.api.log.list</field>
+        <field name="model">misa.api.log</field>
+        <field name="arch" type="xml">
+            <list string="MISA API Logs" create="false" edit="false" decoration-danger="not is_success" decoration-success="is_success">
+                <field name="create_date" string="Date/Time"/>
+                <field name="service_type"/>
+                <field name="http_method"/>
+                <field name="endpoint"/>
+                <field name="response_status"/>
+                <field name="duration"/>
+                <field name="is_success" widget="boolean_toggle"/>
+                <field name="error_code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_misa_api_log_form" model="ir.ui.view">
+        <field name="name">misa.api.log.form</field>
+        <field name="model">misa.api.log</field>
+        <field name="arch" type="xml">
+            <form string="MISA API Log" create="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Request Details">
+                            <field name="service_type"/>
+                            <field name="http_method"/>
+                            <field name="endpoint"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="create_date" string="Timestamp"/>
+                        </group>
+                        <group string="Response Summary">
+                            <field name="response_status"/>
+                            <field name="duration"/>
+                            <field name="is_success"/>
+                            <field name="error_code"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Error Message" invisible="is_success">
+                            <field name="error_message" widget="text"/>
+                        </page>
+                        <page string="Request Body">
+                            <field name="request_body" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                        <page string="Response Body">
+                            <field name="response_body" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                        <page string="Headers">
+                            <field name="request_headers" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_misa_api_log_search" model="ir.ui.view">
+        <field name="name">misa.api.log.search</field>
+        <field name="model">misa.api.log</field>
+        <field name="arch" type="xml">
+            <search string="Search API Logs">
+                <field name="name"/>
+                <field name="endpoint"/>
+                <field name="error_code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <separator/>
+                <filter string="Failed Requests" name="failed" domain="[('is_success', '=', False)]"/>
+                <filter string="Successful Requests" name="success" domain="[('is_success', '=', True)]"/>
+                <separator/>
+                <filter string="meInvoice" name="meinvoice" domain="[('service_type', '=', 'meinvoice')]"/>
+                <filter string="INBOT" name="inbot" domain="[('service_type', '=', 'inbot')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Service" name="group_by_service" domain="[]" context="{'group_by': 'service_type'}"/>
+                    <filter string="Status Code" name="group_by_status" domain="[]" context="{'group_by': 'response_status'}"/>
+                    <filter string="Company" name="group_by_company" domain="[]" context="{'group_by': 'company_id'}"/>
+                    <filter string="Date" name="group_by_date" domain="[]" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_misa_api_log" model="ir.actions.act_window">
+        <field name="name">API Request Logs</field>
+        <field name="res_model">misa.api.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_misa_api_log_search"/>
+    </record>
+
+    <menuitem id="menu_misa_api_log" name="API Logs" parent="menu_misa_root" action="action_misa_api_log" sequence="90"/>
+</odoo>

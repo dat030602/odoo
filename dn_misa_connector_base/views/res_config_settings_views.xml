@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_misa" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.misa</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="MISA Connector" string="MISA Connector" name="dn_misa_connector_base">
+                    <block title="General Credentials" id="misa_general_credentials">
+                        <setting id="misa_tax_code_setting" string="Tax Code &amp; Account" help="MISA Account authentication credentials">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="misa_tax_code" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_tax_code"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="misa_username" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_username"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="misa_password" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_password" password="True"/>
+                                </div>
+                            </div>
+                        </setting>
+
+                        <setting id="misa_api_credentials_setting" string="API App Credentials" help="ClientID &amp; ClientSecret provided by MISA">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="misa_client_id" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_client_id"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="misa_client_secret" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_client_secret" password="True"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="misa_device_id" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_device_id"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="MISA meInvoice (e-Invoice Publishing)" id="misa_meinvoice_block">
+                        <setting id="misa_meinvoice_setting" string="meInvoice Settings" help="Endpoints and connection testing for meInvoice">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="misa_meinvoice_base_url" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_meinvoice_base_url"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="misa_meinvoice_token_expiry" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_meinvoice_token_expiry" readonly="1"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="action_test_meinvoice_connection" string="Test Connection" type="object" class="btn-primary me-2"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="misa_otp_code" class="col-lg-3 o_light_label" string="2FA OTP Code"/>
+                                    <div class="col-lg-9 d-flex align-items-center">
+                                        <field name="misa_otp_code" class="me-2" placeholder="OTP code..."/>
+                                        <button name="action_verify_meinvoice_2fa" string="Verify 2FA" type="object" class="btn-secondary"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                    <block title="MISA INBOT (Input / Output Invoices)" id="misa_inbot_block">
+                        <setting id="misa_inbot_setting" string="INBOT Settings" help="Endpoints and subscriber settings for MISA INBOT">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="misa_inbot_base_url" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_inbot_base_url"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="misa_inbot_subscribers_id" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_inbot_subscribers_id"/>
+                                </div>
+                                <div class="row mt8">
+                                    <label for="misa_inbot_token_expiry" class="col-lg-3 o_light_label"/>
+                                    <field name="misa_inbot_token_expiry" readonly="1"/>
+                                </div>
+                                <div class="mt16">
+                                    <button name="action_test_inbot_connection" string="Test INBOT Connection" type="object" class="btn-primary me-2"/>
+                                    <button name="action_sync_inbot_subscribers_and_organizations" string="Sync Organizations" type="object" class="btn-secondary"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
